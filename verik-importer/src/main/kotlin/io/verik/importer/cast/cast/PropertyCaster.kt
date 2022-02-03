@@ -17,8 +17,8 @@
 package io.verik.importer.cast.cast
 
 import io.verik.importer.antlr.SystemVerilogParser
-import io.verik.importer.ast.sv.element.common.SvContainerElement
-import io.verik.importer.ast.sv.element.declaration.SvProperty
+import io.verik.importer.ast.element.common.EContainerElement
+import io.verik.importer.ast.element.declaration.EProperty
 import io.verik.importer.cast.common.CastContext
 import io.verik.importer.cast.common.SignatureBuilder
 import io.verik.importer.common.ElementCopier
@@ -28,25 +28,31 @@ object PropertyCaster {
     fun castPropertiesFromDataDeclarationData(
         ctx: SystemVerilogParser.DataDeclarationDataContext,
         castContext: CastContext
-    ): SvContainerElement? {
+    ): EContainerElement? {
         val isMutable = ctx.CONST() == null
-        val descriptor = castContext.castDescriptor(ctx.dataTypeOrImplicit()) ?: return null
-        val identifiers = ctx.listOfVariableDeclAssignments()
+        val baseDescriptor = castContext.castDescriptor(ctx.dataTypeOrImplicit()) ?: return null
+        val variableDeclAssignmentVariables = ctx.listOfVariableDeclAssignments()
             .variableDeclAssignment()
             .filterIsInstance<SystemVerilogParser.VariableDeclAssignmentVariableContext>()
-            .map { it.variableIdentifier() }
-        val properties = identifiers.map {
-            val location = castContext.getLocation(it)
-            val name = it.text
+        val properties = variableDeclAssignmentVariables.map { variableDeclAssignmentVariable ->
+            val identifier = variableDeclAssignmentVariable.variableIdentifier()
+            val location = castContext.getLocation(identifier)
+            val name = identifier.text
             val signature = SignatureBuilder.buildSignature(ctx, name)
-            SvProperty(
+            val baseDescriptorCopy = ElementCopier.deepCopy(baseDescriptor)
+            val descriptors = variableDeclAssignmentVariable.variableDimension()
+                .map { castContext.castDescriptor(it) ?: return null }
+            val descriptor = descriptors.fold(baseDescriptorCopy) { accumulatedDescriptor, descriptor ->
+                accumulatedDescriptor.wrap(descriptor)
+            }
+            EProperty(
                 location,
                 name,
                 signature,
-                ElementCopier.deepCopy(descriptor),
+                descriptor,
                 isMutable
             )
         }
-        return SvContainerElement(castContext.getLocation(ctx), properties)
+        return EContainerElement(castContext.getLocation(ctx), properties)
     }
 }

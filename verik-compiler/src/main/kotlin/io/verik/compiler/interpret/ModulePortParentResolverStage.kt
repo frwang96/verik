@@ -16,10 +16,10 @@
 
 package io.verik.compiler.interpret
 
-import io.verik.compiler.ast.element.sv.EModuleInterface
-import io.verik.compiler.ast.element.sv.EModulePort
-import io.verik.compiler.ast.element.sv.EModulePortInstantiation
-import io.verik.compiler.ast.interfaces.cast
+import io.verik.compiler.ast.common.cast
+import io.verik.compiler.ast.element.declaration.sv.EModuleInterface
+import io.verik.compiler.ast.element.declaration.sv.EModulePort
+import io.verik.compiler.ast.element.declaration.sv.EModulePortInstantiation
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage

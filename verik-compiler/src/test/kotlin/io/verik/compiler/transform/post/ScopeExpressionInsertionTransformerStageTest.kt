@@ -34,7 +34,7 @@ internal class ScopeExpressionInsertionTransformerStageTest : BaseTest() {
             """
                 CallExpression(
                     ArrayList<Boolean>,
-                    _${'$'}new,
+                    __new,
                     ScopeExpression(Void, ArrayList<Boolean>),
                     [],
                     [Boolean]

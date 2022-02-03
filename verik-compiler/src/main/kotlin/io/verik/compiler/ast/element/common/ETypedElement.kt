@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 package io.verik.compiler.ast.element.common
 
-import io.verik.compiler.ast.property.Type
+import io.verik.compiler.ast.common.Type
 
 abstract class ETypedElement : EElement() {
 

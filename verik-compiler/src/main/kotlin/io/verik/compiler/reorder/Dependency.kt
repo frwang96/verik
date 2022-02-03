@@ -16,8 +16,8 @@
 
 package io.verik.compiler.reorder
 
-import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EElement
+import io.verik.compiler.ast.element.declaration.common.EDeclaration
 
 class Dependency(
     val fromDeclaration: EDeclaration,

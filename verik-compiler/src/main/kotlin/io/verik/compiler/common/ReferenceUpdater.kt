@@ -16,12 +16,13 @@
 
 package io.verik.compiler.common
 
-import io.verik.compiler.ast.element.common.EAbstractClass
-import io.verik.compiler.ast.element.common.ECallExpression
-import io.verik.compiler.ast.element.common.EDeclaration
-import io.verik.compiler.ast.element.common.EReceiverExpression
+import io.verik.compiler.ast.common.Declaration
+import io.verik.compiler.ast.common.Type
 import io.verik.compiler.ast.element.common.ETypedElement
-import io.verik.compiler.ast.property.Type
+import io.verik.compiler.ast.element.declaration.common.EAbstractClass
+import io.verik.compiler.ast.element.declaration.common.EDeclaration
+import io.verik.compiler.ast.element.expression.common.ECallExpression
+import io.verik.compiler.ast.element.expression.common.EReceiverExpression
 import io.verik.compiler.main.ProjectContext
 
 class ReferenceUpdater(val projectContext: ProjectContext) {
@@ -44,19 +45,17 @@ class ReferenceUpdater(val projectContext: ProjectContext) {
         referenceMap.clear()
     }
 
-    private class ReferenceUpdaterVisitor(private val referenceMap: Map<EDeclaration, EDeclaration>) : TreeVisitor() {
+    private class ReferenceUpdaterVisitor(
+        private val referenceMap: Map<EDeclaration, EDeclaration>
+    ) : TreeVisitor() {
 
-        private fun updateReference(receiverExpression: EReceiverExpression) {
-            val updatedReference = referenceMap[receiverExpression.reference]
-            if (updatedReference != null)
-                receiverExpression.reference = updatedReference
+        private fun updateReference(reference: Declaration): Declaration {
+            return referenceMap[reference] ?: reference
         }
 
         private fun updateTypeReferences(type: Type) {
-            val reference = referenceMap[type.reference]
-            if (reference != null)
-                type.reference = reference
             type.arguments.forEach { updateTypeReferences(it) }
+            type.reference = updateReference(type.reference)
         }
 
         override fun visitTypedElement(typedElement: ETypedElement) {
@@ -66,7 +65,7 @@ class ReferenceUpdater(val projectContext: ProjectContext) {
                 updateTypeReferences(typedElement.superType)
             }
             if (typedElement is EReceiverExpression) {
-                updateReference(typedElement)
+                typedElement.reference = updateReference(typedElement.reference)
             }
             if (typedElement is ECallExpression) {
                 typedElement.typeArguments.forEach { updateTypeReferences(it) }

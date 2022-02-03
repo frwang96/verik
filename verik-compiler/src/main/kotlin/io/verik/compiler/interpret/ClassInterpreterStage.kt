@@ -16,19 +16,19 @@
 
 package io.verik.compiler.interpret
 
-import io.verik.compiler.ast.element.common.EBlockExpression
-import io.verik.compiler.ast.element.common.ECallExpression
-import io.verik.compiler.ast.element.common.EDeclaration
-import io.verik.compiler.ast.element.common.EProperty
-import io.verik.compiler.ast.element.common.EPropertyStatement
-import io.verik.compiler.ast.element.common.EReferenceExpression
-import io.verik.compiler.ast.element.common.EReturnStatement
-import io.verik.compiler.ast.element.common.ESuperExpression
-import io.verik.compiler.ast.element.kt.EKtClass
-import io.verik.compiler.ast.element.kt.EKtConstructor
-import io.verik.compiler.ast.element.sv.ESvClass
-import io.verik.compiler.ast.element.sv.ESvFunction
-import io.verik.compiler.ast.element.sv.ESvValueParameter
+import io.verik.compiler.ast.element.declaration.common.EDeclaration
+import io.verik.compiler.ast.element.declaration.common.EProperty
+import io.verik.compiler.ast.element.declaration.kt.EKtClass
+import io.verik.compiler.ast.element.declaration.kt.EKtConstructor
+import io.verik.compiler.ast.element.declaration.sv.ESvClass
+import io.verik.compiler.ast.element.declaration.sv.ESvFunction
+import io.verik.compiler.ast.element.declaration.sv.ESvValueParameter
+import io.verik.compiler.ast.element.expression.common.EBlockExpression
+import io.verik.compiler.ast.element.expression.common.ECallExpression
+import io.verik.compiler.ast.element.expression.common.EPropertyStatement
+import io.verik.compiler.ast.element.expression.common.EReferenceExpression
+import io.verik.compiler.ast.element.expression.common.EReturnStatement
+import io.verik.compiler.ast.element.expression.common.ESuperExpression
 import io.verik.compiler.ast.property.FunctionQualifierType
 import io.verik.compiler.common.ReferenceUpdater
 import io.verik.compiler.common.TreeVisitor
@@ -108,22 +108,20 @@ object ClassInterpreterStage : ProjectStage() {
                     declarations.add(it)
                 }
             }
-            referenceUpdater.replace(
-                `class`,
-                ESvClass(
-                    `class`.location,
-                    `class`.bodyStartLocation,
-                    `class`.bodyEndLocation,
-                    `class`.name,
-                    `class`.type,
-                    `class`.annotationEntries,
-                    `class`.documentationLines,
-                    `class`.superType,
-                    declarations,
-                    `class`.isAbstract,
-                    `class`.isObject
-                )
+            val interpretedClass = ESvClass(
+                `class`.location,
+                `class`.bodyStartLocation,
+                `class`.bodyEndLocation,
+                `class`.name,
+                `class`.type,
+                `class`.annotationEntries,
+                `class`.documentationLines,
+                `class`.superType,
+                declarations,
+                `class`.isAbstract,
+                `class`.isObject
             )
+            referenceUpdater.replace(`class`, interpretedClass)
         }
 
         private fun interpretConstructorAndInitializer(

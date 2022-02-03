@@ -27,11 +27,9 @@ interface NormalizationChecker {
 
         fun check(projectContext: ProjectContext, projectStage: ProjectStage) {
             ElementParentChecker.check(projectContext, projectStage)
-            SvElementAliasChecker.check(projectContext, projectStage)
-            KtElementAliasChecker.check(projectContext, projectStage)
+            ElementAliasChecker.check(projectContext, projectStage)
             TypeAliasChecker.check(projectContext, projectStage)
-            SvDanglingReferenceChecker.check(projectContext, projectStage)
-            KtDanglingReferenceChecker.check(projectContext, projectStage)
+            DanglingReferenceChecker.check(projectContext, projectStage)
         }
     }
 }

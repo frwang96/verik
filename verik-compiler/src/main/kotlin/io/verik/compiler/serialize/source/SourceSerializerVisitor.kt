@@ -16,63 +16,63 @@
 
 package io.verik.compiler.serialize.source
 
-import io.verik.compiler.ast.element.common.EBlockExpression
-import io.verik.compiler.ast.element.common.ECallExpression
-import io.verik.compiler.ast.element.common.EConstantExpression
-import io.verik.compiler.ast.element.common.EDeclaration
 import io.verik.compiler.ast.element.common.EElement
-import io.verik.compiler.ast.element.common.EEnumEntry
-import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.element.common.EIfExpression
-import io.verik.compiler.ast.element.common.ENullExpression
-import io.verik.compiler.ast.element.common.EParenthesizedExpression
-import io.verik.compiler.ast.element.common.EProperty
-import io.verik.compiler.ast.element.common.EPropertyStatement
-import io.verik.compiler.ast.element.common.EReferenceExpression
-import io.verik.compiler.ast.element.common.EReturnStatement
-import io.verik.compiler.ast.element.common.ESuperExpression
-import io.verik.compiler.ast.element.common.EThisExpression
-import io.verik.compiler.ast.element.common.EWhileStatement
-import io.verik.compiler.ast.element.sv.EAlwaysComBlock
-import io.verik.compiler.ast.element.sv.EAlwaysSeqBlock
-import io.verik.compiler.ast.element.sv.ECaseStatement
-import io.verik.compiler.ast.element.sv.EClockingBlockInstantiation
-import io.verik.compiler.ast.element.sv.EComponentInstantiation
-import io.verik.compiler.ast.element.sv.EConcatenationExpression
-import io.verik.compiler.ast.element.sv.EConstantPartSelectExpression
-import io.verik.compiler.ast.element.sv.EDelayExpression
-import io.verik.compiler.ast.element.sv.EEnum
-import io.verik.compiler.ast.element.sv.EEventControlExpression
-import io.verik.compiler.ast.element.sv.EEventExpression
-import io.verik.compiler.ast.element.sv.EForeverStatement
-import io.verik.compiler.ast.element.sv.EForkStatement
-import io.verik.compiler.ast.element.sv.EImmediateAssertStatement
-import io.verik.compiler.ast.element.sv.EInitialBlock
-import io.verik.compiler.ast.element.sv.EInjectedProperty
-import io.verik.compiler.ast.element.sv.EInjectedStatement
-import io.verik.compiler.ast.element.sv.EInlineIfExpression
-import io.verik.compiler.ast.element.sv.EModule
-import io.verik.compiler.ast.element.sv.EModuleInterface
-import io.verik.compiler.ast.element.sv.EModulePortInstantiation
-import io.verik.compiler.ast.element.sv.EPort
-import io.verik.compiler.ast.element.sv.ERepeatStatement
-import io.verik.compiler.ast.element.sv.EReplicationExpression
-import io.verik.compiler.ast.element.sv.EScopeExpression
-import io.verik.compiler.ast.element.sv.EStreamingExpression
-import io.verik.compiler.ast.element.sv.EStringExpression
-import io.verik.compiler.ast.element.sv.EStruct
-import io.verik.compiler.ast.element.sv.EStructLiteralExpression
-import io.verik.compiler.ast.element.sv.ESvArrayAccessExpression
-import io.verik.compiler.ast.element.sv.ESvBinaryExpression
-import io.verik.compiler.ast.element.sv.ESvClass
-import io.verik.compiler.ast.element.sv.ESvForStatement
-import io.verik.compiler.ast.element.sv.ESvFunction
-import io.verik.compiler.ast.element.sv.ESvUnaryExpression
-import io.verik.compiler.ast.element.sv.ESvValueParameter
-import io.verik.compiler.ast.element.sv.ETask
-import io.verik.compiler.ast.element.sv.ETypeDefinition
-import io.verik.compiler.ast.element.sv.EWaitForkStatement
-import io.verik.compiler.ast.element.sv.EWidthCastExpression
+import io.verik.compiler.ast.element.declaration.common.EDeclaration
+import io.verik.compiler.ast.element.declaration.common.EEnumEntry
+import io.verik.compiler.ast.element.declaration.common.EProperty
+import io.verik.compiler.ast.element.declaration.sv.EAlwaysComBlock
+import io.verik.compiler.ast.element.declaration.sv.EAlwaysSeqBlock
+import io.verik.compiler.ast.element.declaration.sv.EClockingBlockInstantiation
+import io.verik.compiler.ast.element.declaration.sv.EComponentInstantiation
+import io.verik.compiler.ast.element.declaration.sv.EEnum
+import io.verik.compiler.ast.element.declaration.sv.EInitialBlock
+import io.verik.compiler.ast.element.declaration.sv.EInjectedProperty
+import io.verik.compiler.ast.element.declaration.sv.EModule
+import io.verik.compiler.ast.element.declaration.sv.EModuleInterface
+import io.verik.compiler.ast.element.declaration.sv.EModulePortInstantiation
+import io.verik.compiler.ast.element.declaration.sv.EPort
+import io.verik.compiler.ast.element.declaration.sv.EStruct
+import io.verik.compiler.ast.element.declaration.sv.ESvClass
+import io.verik.compiler.ast.element.declaration.sv.ESvFunction
+import io.verik.compiler.ast.element.declaration.sv.ESvValueParameter
+import io.verik.compiler.ast.element.declaration.sv.ETask
+import io.verik.compiler.ast.element.declaration.sv.ETypeDefinition
+import io.verik.compiler.ast.element.expression.common.EBlockExpression
+import io.verik.compiler.ast.element.expression.common.ECallExpression
+import io.verik.compiler.ast.element.expression.common.EConstantExpression
+import io.verik.compiler.ast.element.expression.common.EExpression
+import io.verik.compiler.ast.element.expression.common.EIfExpression
+import io.verik.compiler.ast.element.expression.common.ENullExpression
+import io.verik.compiler.ast.element.expression.common.EParenthesizedExpression
+import io.verik.compiler.ast.element.expression.common.EPropertyStatement
+import io.verik.compiler.ast.element.expression.common.EReferenceExpression
+import io.verik.compiler.ast.element.expression.common.EReturnStatement
+import io.verik.compiler.ast.element.expression.common.ESuperExpression
+import io.verik.compiler.ast.element.expression.common.EThisExpression
+import io.verik.compiler.ast.element.expression.common.EWhileStatement
+import io.verik.compiler.ast.element.expression.sv.ECaseStatement
+import io.verik.compiler.ast.element.expression.sv.EConcatenationExpression
+import io.verik.compiler.ast.element.expression.sv.EConstantPartSelectExpression
+import io.verik.compiler.ast.element.expression.sv.EDelayExpression
+import io.verik.compiler.ast.element.expression.sv.EEventControlExpression
+import io.verik.compiler.ast.element.expression.sv.EEventExpression
+import io.verik.compiler.ast.element.expression.sv.EForeverStatement
+import io.verik.compiler.ast.element.expression.sv.EForkStatement
+import io.verik.compiler.ast.element.expression.sv.EImmediateAssertStatement
+import io.verik.compiler.ast.element.expression.sv.EInjectedStatement
+import io.verik.compiler.ast.element.expression.sv.EInlineIfExpression
+import io.verik.compiler.ast.element.expression.sv.ERepeatStatement
+import io.verik.compiler.ast.element.expression.sv.EReplicationExpression
+import io.verik.compiler.ast.element.expression.sv.EScopeExpression
+import io.verik.compiler.ast.element.expression.sv.EStreamingExpression
+import io.verik.compiler.ast.element.expression.sv.EStringExpression
+import io.verik.compiler.ast.element.expression.sv.EStructLiteralExpression
+import io.verik.compiler.ast.element.expression.sv.ESvArrayAccessExpression
+import io.verik.compiler.ast.element.expression.sv.ESvBinaryExpression
+import io.verik.compiler.ast.element.expression.sv.ESvForStatement
+import io.verik.compiler.ast.element.expression.sv.ESvUnaryExpression
+import io.verik.compiler.ast.element.expression.sv.EWaitForkStatement
+import io.verik.compiler.ast.element.expression.sv.EWidthCastExpression
 import io.verik.compiler.ast.property.SerializationType
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.Messages
@@ -132,7 +132,7 @@ class SourceSerializerVisitor(
     }
 
     override fun visitSvClass(`class`: ESvClass) {
-        DeclarationSerializer.serializeSvClass(`class`, serializeContext)
+        DeclarationSerializer.serializeClass(`class`, serializeContext)
     }
 
     override fun visitModule(module: EModule) {
@@ -152,7 +152,7 @@ class SourceSerializerVisitor(
     }
 
     override fun visitSvFunction(function: ESvFunction) {
-        DeclarationSerializer.serializeSvFunction(function, serializeContext)
+        DeclarationSerializer.serializeFunction(function, serializeContext)
     }
 
     override fun visitTask(task: ETask) {
@@ -192,7 +192,7 @@ class SourceSerializerVisitor(
     }
 
     override fun visitSvValueParameter(valueParameter: ESvValueParameter) {
-        DeclarationSerializer.serializeSvValueParameter(valueParameter, serializeContext)
+        DeclarationSerializer.serializeValueParameter(valueParameter, serializeContext)
     }
 
     override fun visitPort(port: EPort) {
@@ -212,11 +212,11 @@ class SourceSerializerVisitor(
     }
 
     override fun visitSvUnaryExpression(unaryExpression: ESvUnaryExpression) {
-        ExpressionSerializer.serializeSvUnaryExpression(unaryExpression, serializeContext)
+        ExpressionSerializer.serializeUnaryExpression(unaryExpression, serializeContext)
     }
 
     override fun visitSvBinaryExpression(binaryExpression: ESvBinaryExpression) {
-        ExpressionSerializer.serializeSvBinaryExpression(binaryExpression, serializeContext)
+        ExpressionSerializer.serializeBinaryExpression(binaryExpression, serializeContext)
     }
 
     override fun visitReferenceExpression(referenceExpression: EReferenceExpression) {
@@ -264,7 +264,7 @@ class SourceSerializerVisitor(
     }
 
     override fun visitSvArrayAccessExpression(arrayAccessExpression: ESvArrayAccessExpression) {
-        ExpressionSerializer.serializeSvArrayAccessExpression(arrayAccessExpression, serializeContext)
+        ExpressionSerializer.serializeArrayAccessExpression(arrayAccessExpression, serializeContext)
     }
 
     override fun visitConstantPartSelectExpression(constantPartSelectExpression: EConstantPartSelectExpression) {

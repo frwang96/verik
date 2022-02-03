@@ -20,10 +20,20 @@ package imported
 
 import io.verik.core.*
 
-enum class e {
+enum class e0 {
     E0,
     E1,
     E2
 }
 
-var x0: e = imported()
+var x0: e0 = imported()
+
+open class c {
+
+    enum class e1 {
+        E3,
+        E4
+    }
+
+    var x1: e1 = imported()
+}

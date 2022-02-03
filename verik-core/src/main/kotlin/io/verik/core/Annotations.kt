@@ -85,7 +85,8 @@ annotation class SynthTop
 annotation class SimTop
 
 /**
- * Annotates input ports of a component. Input ports must be declared as var.
+ * Annotates input ports of a component. Mutable input ports are declared as var. Immutable input ports are declared as
+ * val and must be assigned a constant expression when instantiated.
  *
  *  ```
  *  class M(@In var x: Boolean) : Module()

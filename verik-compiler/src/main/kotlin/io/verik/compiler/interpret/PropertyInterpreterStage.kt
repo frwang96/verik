@@ -16,21 +16,21 @@
 
 package io.verik.compiler.interpret
 
-import io.verik.compiler.ast.element.common.ECallExpression
-import io.verik.compiler.ast.element.common.EDeclaration
-import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.element.common.EProperty
-import io.verik.compiler.ast.element.common.EReferenceExpression
-import io.verik.compiler.ast.element.kt.EStringTemplateExpression
-import io.verik.compiler.ast.element.sv.EAbstractContainerComponent
-import io.verik.compiler.ast.element.sv.EClockingBlock
-import io.verik.compiler.ast.element.sv.EClockingBlockInstantiation
-import io.verik.compiler.ast.element.sv.EComponentInstantiation
-import io.verik.compiler.ast.element.sv.EEventControlExpression
-import io.verik.compiler.ast.element.sv.EInjectedProperty
-import io.verik.compiler.ast.element.sv.EModulePort
-import io.verik.compiler.ast.element.sv.EModulePortInstantiation
-import io.verik.compiler.ast.element.sv.EPort
+import io.verik.compiler.ast.element.declaration.common.EDeclaration
+import io.verik.compiler.ast.element.declaration.common.EProperty
+import io.verik.compiler.ast.element.declaration.sv.EAbstractContainerComponent
+import io.verik.compiler.ast.element.declaration.sv.EClockingBlock
+import io.verik.compiler.ast.element.declaration.sv.EClockingBlockInstantiation
+import io.verik.compiler.ast.element.declaration.sv.EComponentInstantiation
+import io.verik.compiler.ast.element.declaration.sv.EInjectedProperty
+import io.verik.compiler.ast.element.declaration.sv.EModulePort
+import io.verik.compiler.ast.element.declaration.sv.EModulePortInstantiation
+import io.verik.compiler.ast.element.declaration.sv.EPort
+import io.verik.compiler.ast.element.expression.common.ECallExpression
+import io.verik.compiler.ast.element.expression.common.EExpression
+import io.verik.compiler.ast.element.expression.common.EReferenceExpression
+import io.verik.compiler.ast.element.expression.kt.EStringTemplateExpression
+import io.verik.compiler.ast.element.expression.sv.EEventControlExpression
 import io.verik.compiler.ast.property.PortInstantiation
 import io.verik.compiler.ast.property.StringEntry
 import io.verik.compiler.common.ReferenceUpdater

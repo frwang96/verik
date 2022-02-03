@@ -16,14 +16,14 @@
 
 package io.verik.compiler.core.declaration.vk
 
-import io.verik.compiler.ast.element.common.ECallExpression
-import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.element.kt.EKtBinaryExpression
-import io.verik.compiler.ast.element.sv.EConstantPartSelectExpression
-import io.verik.compiler.ast.element.sv.EStreamingExpression
-import io.verik.compiler.ast.element.sv.EStringExpression
-import io.verik.compiler.ast.element.sv.ESvArrayAccessExpression
-import io.verik.compiler.ast.element.sv.EWidthCastExpression
+import io.verik.compiler.ast.element.expression.common.ECallExpression
+import io.verik.compiler.ast.element.expression.common.EExpression
+import io.verik.compiler.ast.element.expression.kt.EKtBinaryExpression
+import io.verik.compiler.ast.element.expression.sv.EConstantPartSelectExpression
+import io.verik.compiler.ast.element.expression.sv.EStreamingExpression
+import io.verik.compiler.ast.element.expression.sv.EStringExpression
+import io.verik.compiler.ast.element.expression.sv.ESvArrayAccessExpression
+import io.verik.compiler.ast.element.expression.sv.EWidthCastExpression
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
 import io.verik.compiler.ast.property.SvUnaryOperatorKind
 import io.verik.compiler.constant.ConstantBuilder

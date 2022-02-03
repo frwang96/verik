@@ -17,13 +17,14 @@
 package io.verik.importer.cast.cast
 
 import io.verik.importer.antlr.SystemVerilogParser
-import io.verik.importer.ast.sv.element.descriptor.SvBitDescriptor
-import io.verik.importer.ast.sv.element.descriptor.SvDescriptor
-import io.verik.importer.ast.sv.element.descriptor.SvPackedDescriptor
-import io.verik.importer.ast.sv.element.descriptor.SvReferenceDescriptor
-import io.verik.importer.ast.sv.element.descriptor.SvSimpleDescriptor
+import io.verik.importer.ast.common.Type
+import io.verik.importer.ast.element.descriptor.EBitDescriptor
+import io.verik.importer.ast.element.descriptor.EDescriptor
+import io.verik.importer.ast.element.descriptor.EPackedDescriptor
+import io.verik.importer.ast.element.descriptor.EQueueDescriptor
+import io.verik.importer.ast.element.descriptor.EReferenceDescriptor
+import io.verik.importer.ast.element.descriptor.ESimpleDescriptor
 import io.verik.importer.cast.common.CastContext
-import io.verik.importer.common.Type
 import io.verik.importer.core.Cardinal
 import io.verik.importer.core.Core
 import io.verik.importer.message.SourceLocation
@@ -33,10 +34,10 @@ object DescriptorCaster {
     fun castDescriptorFromDataTypeVector(
         ctx: SystemVerilogParser.DataTypeVectorContext,
         castContext: CastContext
-    ): SvDescriptor? {
+    ): EDescriptor? {
         val location = castContext.getLocation(ctx)
         val isSigned = castIsSignedFromSigning(ctx.signing()) ?: false
-        return castDescriptorFromPackedDimension(
+        return castDescriptorFromPackedDimensions(
             location,
             ctx.packedDimension(),
             isSigned,
@@ -47,20 +48,20 @@ object DescriptorCaster {
     fun castDescriptorFromDataTypeInteger(
         ctx: SystemVerilogParser.DataTypeIntegerContext,
         castContext: CastContext
-    ): SvDescriptor? {
+    ): EDescriptor? {
         val location = castContext.getLocation(ctx)
         val isSigned = castIsSignedFromSigning(ctx.signing()) ?: true
         val integerAtomType = ctx.integerAtomType()
         return when {
             integerAtomType.INT() != null || integerAtomType.INTEGER() != null -> {
                 if (isSigned) {
-                    SvSimpleDescriptor(location, Core.C_Int.toType())
+                    ESimpleDescriptor(location, Core.C_Int.toType())
                 } else {
-                    SvSimpleDescriptor(location, Core.C_Ubit.toType(Cardinal.of(32).toType()))
+                    ESimpleDescriptor(location, Core.C_Ubit.toType(Cardinal.of(32).toType()))
                 }
             }
             integerAtomType.TIME() != null ->
-                SvSimpleDescriptor(location, Core.C_Time.toType())
+                ESimpleDescriptor(location, Core.C_Time.toType())
             else -> null
         }
     }
@@ -68,27 +69,27 @@ object DescriptorCaster {
     fun castDescriptorFromDataTypeString(
         ctx: SystemVerilogParser.DataTypeStringContext,
         castContext: CastContext
-    ): SvDescriptor {
+    ): EDescriptor {
         val location = castContext.getLocation(ctx)
-        return SvSimpleDescriptor(location, Core.C_String.toType())
+        return ESimpleDescriptor(location, Core.C_String.toType())
     }
 
     fun castDescriptorFromDataTypeTypeIdentifier(
         ctx: SystemVerilogParser.DataTypeTypeIdentifierContext,
         castContext: CastContext
-    ): SvDescriptor {
+    ): EDescriptor {
         val location = castContext.getLocation(ctx)
         val name = ctx.typeIdentifier().text
-        return SvReferenceDescriptor(location, Type.unresolved(), name)
+        return EReferenceDescriptor(location, Type.unresolved(), name)
     }
 
     fun castDescriptorFromImplicitDataType(
         ctx: SystemVerilogParser.ImplicitDataTypeContext,
         castContext: CastContext
-    ): SvDescriptor? {
+    ): EDescriptor? {
         val location = castContext.getLocation(ctx)
         val isSigned = castIsSignedFromSigning(ctx.signing()) ?: false
-        return castDescriptorFromPackedDimension(
+        return castDescriptorFromPackedDimensions(
             location,
             ctx.packedDimension(),
             isSigned,
@@ -99,24 +100,36 @@ object DescriptorCaster {
     fun castDescriptorFromClassType(
         ctx: SystemVerilogParser.ClassTypeContext,
         castContext: CastContext
-    ): SvDescriptor {
+    ): EDescriptor {
         val location = castContext.getLocation(ctx)
         val identifier = ctx.psClassIdentifier().classIdentifier()
         val name = identifier.text
-        return SvReferenceDescriptor(location, Type.unresolved(), name)
+        return EReferenceDescriptor(location, Type.unresolved(), name)
     }
 
     fun castDescriptorFromDataTypeOrVoid(
         ctx: SystemVerilogParser.DataTypeOrVoidContext,
         castContext: CastContext
-    ): SvDescriptor? {
+    ): EDescriptor? {
         val dataType = ctx.dataType()
         return if (dataType != null) {
             castContext.castDescriptor(dataType)
         } else {
             val location = castContext.getLocation(ctx)
-            SvSimpleDescriptor(location, Core.C_Unit.toType())
+            ESimpleDescriptor(location, Core.C_Unit.toType())
         }
+    }
+
+    fun castDescriptorFromQueueDimension(
+        ctx: SystemVerilogParser.QueueDimensionContext,
+        castContext: CastContext
+    ): EDescriptor {
+        val location = castContext.getLocation(ctx)
+        return EQueueDescriptor(
+            location,
+            Type.unresolved(),
+            ESimpleDescriptor(location, Core.C_Boolean.toType())
+        )
     }
 
     private fun castIsSignedFromSigning(
@@ -129,36 +142,38 @@ object DescriptorCaster {
         }
     }
 
-    private fun castDescriptorFromPackedDimension(
+    private fun castDescriptorFromPackedDimensions(
         location: SourceLocation,
         ctxs: List<SystemVerilogParser.PackedDimensionContext>,
         isSigned: Boolean,
         castContext: CastContext
-    ): SvDescriptor? {
+    ): EDescriptor? {
         if (ctxs.isEmpty()) {
-            return SvSimpleDescriptor(location, Core.C_Boolean.toType())
+            return ESimpleDescriptor(location, Core.C_Boolean.toType())
         }
         val packedDimensionRanges = ctxs.map {
             if (it is SystemVerilogParser.PackedDimensionRangeContext) it
             else return null
         }
-        val initialDescriptor: SvDescriptor = SvBitDescriptor(
+        val baseDescriptor: EDescriptor = EBitDescriptor(
             location,
             Type.unresolved(),
             castContext.castExpression(packedDimensionRanges[0].constantRange().constantExpression()[0]),
             castContext.castExpression(packedDimensionRanges[0].constantRange().constantExpression()[1]),
             isSigned
         )
-        return packedDimensionRanges
-            .drop(1)
-            .fold(initialDescriptor) { descriptor, packedDimensionRange ->
-                SvPackedDescriptor(
-                    castContext.getLocation(packedDimensionRange),
-                    Type.unresolved(),
-                    descriptor,
-                    castContext.castExpression(packedDimensionRange.constantRange().constantExpression(0)),
-                    castContext.castExpression(packedDimensionRange.constantRange().constantExpression(1))
-                )
-            }
+        val packedDescriptors = packedDimensionRanges.drop(1).map {
+            val packedDescriptorLocation = castContext.getLocation(it)
+            EPackedDescriptor(
+                packedDescriptorLocation,
+                Type.unresolved(),
+                ESimpleDescriptor(packedDescriptorLocation, Core.C_Boolean.toType()),
+                castContext.castExpression(it.constantRange().constantExpression(0)),
+                castContext.castExpression(it.constantRange().constantExpression(1))
+            )
+        }
+        return packedDescriptors.fold(baseDescriptor) { accumulatedDescriptor, descriptor ->
+            accumulatedDescriptor.wrap(descriptor)
+        }
     }
 }

@@ -31,7 +31,7 @@ internal class ValueParameterCasterTest : BaseTest() {
                 function void f(int x);
                 endfunction
             """.trimIndent(),
-            "ValueParameter(x, SimpleDescriptor(Int))"
+            "SvValueParameter(x, SimpleDescriptor(Int), 0)"
         ) { it.findDeclaration("x") }
     }
 
@@ -41,14 +41,14 @@ internal class ValueParameterCasterTest : BaseTest() {
             SystemVerilogParser.TfPortDeclarationContext::class,
             """
                 function void f;
-                    input x, y;
+                    input x, y = 1'b1;
                 endfunction
             """.trimIndent(),
             """
-                Function(
+                SvFunction(
                     f, [
-                        ValueParameter(x, SimpleDescriptor(Boolean)),
-                        ValueParameter(y, SimpleDescriptor(Boolean))
+                        SvValueParameter(x, SimpleDescriptor(Boolean), 0),
+                        SvValueParameter(y, SimpleDescriptor(Boolean), 1)
                     ], SimpleDescriptor(Unit)
                 )
             """.trimIndent()

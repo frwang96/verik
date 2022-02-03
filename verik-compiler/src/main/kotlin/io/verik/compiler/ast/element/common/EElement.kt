@@ -16,8 +16,11 @@
 
 package io.verik.compiler.ast.element.common
 
-import io.verik.compiler.ast.interfaces.DeclarationContainer
-import io.verik.compiler.ast.interfaces.ExpressionContainer
+import io.verik.compiler.ast.common.DeclarationContainer
+import io.verik.compiler.ast.common.ExpressionContainer
+import io.verik.compiler.ast.element.declaration.common.EDeclaration
+import io.verik.compiler.ast.element.declaration.common.EPackage
+import io.verik.compiler.ast.element.expression.common.EExpression
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.Messages

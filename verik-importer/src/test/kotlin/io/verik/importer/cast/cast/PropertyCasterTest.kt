@@ -42,7 +42,7 @@ internal class PropertyCasterTest : BaseTest() {
                 logic x, y;
             """.trimIndent(),
             """
-                CompilationUnit([
+                Project([
                     Property(x, SimpleDescriptor(Boolean)),
                     Property(y, SimpleDescriptor(Boolean))
                 ])

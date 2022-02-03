@@ -16,27 +16,27 @@
 
 package io.verik.compiler.cast
 
-import io.verik.compiler.ast.element.common.EBlockExpression
-import io.verik.compiler.ast.element.common.ECallExpression
-import io.verik.compiler.ast.element.common.EConstantExpression
-import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.element.common.EIfExpression
-import io.verik.compiler.ast.element.common.ENullExpression
-import io.verik.compiler.ast.element.common.EProperty
-import io.verik.compiler.ast.element.common.EReferenceExpression
-import io.verik.compiler.ast.element.common.EReturnStatement
-import io.verik.compiler.ast.element.common.ESuperExpression
-import io.verik.compiler.ast.element.common.EThisExpression
-import io.verik.compiler.ast.element.common.EWhileStatement
-import io.verik.compiler.ast.element.kt.EAsExpression
-import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
-import io.verik.compiler.ast.element.kt.EIsExpression
-import io.verik.compiler.ast.element.kt.EKtArrayAccessExpression
-import io.verik.compiler.ast.element.kt.EKtBinaryExpression
-import io.verik.compiler.ast.element.kt.EKtForStatement
-import io.verik.compiler.ast.element.kt.EKtUnaryExpression
-import io.verik.compiler.ast.element.kt.EKtValueParameter
-import io.verik.compiler.ast.interfaces.cast
+import io.verik.compiler.ast.common.cast
+import io.verik.compiler.ast.element.declaration.common.EProperty
+import io.verik.compiler.ast.element.declaration.kt.EKtValueParameter
+import io.verik.compiler.ast.element.expression.common.EBlockExpression
+import io.verik.compiler.ast.element.expression.common.ECallExpression
+import io.verik.compiler.ast.element.expression.common.EConstantExpression
+import io.verik.compiler.ast.element.expression.common.EExpression
+import io.verik.compiler.ast.element.expression.common.EIfExpression
+import io.verik.compiler.ast.element.expression.common.ENullExpression
+import io.verik.compiler.ast.element.expression.common.EReferenceExpression
+import io.verik.compiler.ast.element.expression.common.EReturnStatement
+import io.verik.compiler.ast.element.expression.common.ESuperExpression
+import io.verik.compiler.ast.element.expression.common.EThisExpression
+import io.verik.compiler.ast.element.expression.common.EWhileStatement
+import io.verik.compiler.ast.element.expression.kt.EAsExpression
+import io.verik.compiler.ast.element.expression.kt.EFunctionLiteralExpression
+import io.verik.compiler.ast.element.expression.kt.EIsExpression
+import io.verik.compiler.ast.element.expression.kt.EKtArrayAccessExpression
+import io.verik.compiler.ast.element.expression.kt.EKtBinaryExpression
+import io.verik.compiler.ast.element.expression.kt.EKtForStatement
+import io.verik.compiler.ast.element.expression.kt.EKtUnaryExpression
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
 import io.verik.compiler.ast.property.KtUnaryOperatorKind
 import io.verik.compiler.common.endLocation
@@ -68,7 +68,7 @@ import org.jetbrains.kotlin.resolve.lazy.descriptors.LazyClassDescriptor
 
 object ExpressionCaster {
 
-    fun castKtBlockExpression(expression: KtBlockExpression, castContext: CastContext): EBlockExpression {
+    fun castBlockExpression(expression: KtBlockExpression, castContext: CastContext): EBlockExpression {
         val location = expression.location()
         val endLocation = expression.endLocation()
         val type = if (expression.parent is KtContainerNodeForControlStructureBody &&
@@ -82,7 +82,7 @@ object ExpressionCaster {
         return EBlockExpression(location, endLocation, type, ArrayList(statements))
     }
 
-    fun castKtUnaryExpressionPrefix(expression: KtPrefixExpression, castContext: CastContext): EKtUnaryExpression {
+    fun castUnaryExpressionPrefix(expression: KtPrefixExpression, castContext: CastContext): EKtUnaryExpression {
         val location = expression.location()
         val type = castContext.castType(expression)
         val kind = KtUnaryOperatorKind.getKindPrefix(expression.operationToken, location)
@@ -90,7 +90,7 @@ object ExpressionCaster {
         return EKtUnaryExpression(location, type, childExpression, kind)
     }
 
-    fun castKtUnaryExpressionPostfix(expression: KtPostfixExpression, castContext: CastContext): EKtUnaryExpression {
+    fun castUnaryExpressionPostfix(expression: KtPostfixExpression, castContext: CastContext): EKtUnaryExpression {
         val location = expression.location()
         val type = castContext.castType(expression)
         val kind = KtUnaryOperatorKind.getKindPostfix(expression.operationToken, location)
@@ -98,7 +98,7 @@ object ExpressionCaster {
         return EKtUnaryExpression(location, type, childExpression, kind)
     }
 
-    fun castKtBinaryExpressionOrCallExpression(
+    fun castBinaryExpressionOrCallExpression(
         expression: KtBinaryExpression,
         castContext: CastContext
     ): EExpression {
@@ -249,7 +249,7 @@ object ExpressionCaster {
         return EFunctionLiteralExpression(location, ArrayList(valueParameters), body)
     }
 
-    fun castKtArrayAccessExpression(
+    fun castArrayAccessExpression(
         expression: KtArrayAccessExpression,
         castContext: CastContext
     ): EKtArrayAccessExpression {
@@ -330,7 +330,7 @@ object ExpressionCaster {
         )
     }
 
-    fun castKtForStatement(expression: KtForExpression, castContext: CastContext): EKtForStatement? {
+    fun castForStatement(expression: KtForExpression, castContext: CastContext): EKtForStatement? {
         val location = expression.location()
         val valueParameter = castContext.castValueParameter(expression.loopParameter!!)
             ?: return null

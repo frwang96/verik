@@ -16,17 +16,17 @@
 
 package io.verik.compiler.resolve
 
-import io.verik.compiler.ast.element.common.ECallExpression
-import io.verik.compiler.ast.element.common.EDeclaration
-import io.verik.compiler.ast.element.common.EEnumEntry
-import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.element.common.EFile
-import io.verik.compiler.ast.element.common.EReceiverExpression
-import io.verik.compiler.ast.element.kt.EKtAbstractFunction
-import io.verik.compiler.ast.element.kt.EKtClass
-import io.verik.compiler.ast.element.kt.EKtFunction
-import io.verik.compiler.ast.element.kt.EPrimaryConstructor
-import io.verik.compiler.ast.property.Type
+import io.verik.compiler.ast.common.Type
+import io.verik.compiler.ast.element.declaration.common.EDeclaration
+import io.verik.compiler.ast.element.declaration.common.EEnumEntry
+import io.verik.compiler.ast.element.declaration.common.EFile
+import io.verik.compiler.ast.element.declaration.kt.EKtAbstractFunction
+import io.verik.compiler.ast.element.declaration.kt.EKtClass
+import io.verik.compiler.ast.element.declaration.kt.EKtFunction
+import io.verik.compiler.ast.element.declaration.kt.EPrimaryConstructor
+import io.verik.compiler.ast.element.expression.common.ECallExpression
+import io.verik.compiler.ast.element.expression.common.EExpression
+import io.verik.compiler.ast.element.expression.common.EReceiverExpression
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.specialize.SpecializeContext

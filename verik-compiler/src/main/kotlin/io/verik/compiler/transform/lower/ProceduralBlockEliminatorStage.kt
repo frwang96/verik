@@ -16,8 +16,8 @@
 
 package io.verik.compiler.transform.lower
 
-import io.verik.compiler.ast.element.sv.EAbstractContainerComponent
-import io.verik.compiler.ast.element.sv.EAbstractProceduralBlock
+import io.verik.compiler.ast.element.declaration.sv.EAbstractContainerComponent
+import io.verik.compiler.ast.element.declaration.sv.EAbstractProceduralBlock
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage

@@ -16,8 +16,8 @@
 
 package io.verik.compiler.resolve
 
-import io.verik.compiler.ast.element.common.EReceiverExpression
-import io.verik.compiler.ast.property.Type
+import io.verik.compiler.ast.common.Type
+import io.verik.compiler.ast.element.expression.common.EReceiverExpression
 
 data class ExpressionReferenceForwarderEntry(
     val receiverExpression: EReceiverExpression,

@@ -16,7 +16,7 @@
 
 package io.verik.compiler.specialize
 
-import io.verik.compiler.ast.element.common.EDeclaration
+import io.verik.compiler.ast.element.declaration.common.EDeclaration
 
 abstract class SpecializerSubstage {
 

@@ -17,9 +17,9 @@
 package io.verik.importer.cast.cast
 
 import io.verik.importer.antlr.SystemVerilogParser
-import io.verik.importer.ast.sv.element.declaration.SvDeclaration
-import io.verik.importer.ast.sv.element.declaration.SvModule
-import io.verik.importer.ast.sv.element.declaration.SvPort
+import io.verik.importer.ast.element.declaration.EDeclaration
+import io.verik.importer.ast.element.declaration.EModule
+import io.verik.importer.ast.element.declaration.EPort
 import io.verik.importer.cast.common.CastContext
 import io.verik.importer.cast.common.SignatureBuilder
 import io.verik.importer.message.Messages
@@ -29,13 +29,16 @@ object ModuleCaster {
     fun castModuleFromModuleDeclarationNonAnsi(
         ctx: SystemVerilogParser.ModuleDeclarationNonAnsiContext,
         castContext: CastContext
-    ): SvModule? {
+    ): EModule? {
         val identifier = ctx.moduleNonAnsiHeader().moduleIdentifier()
         val location = castContext.getLocation(identifier)
         val name = identifier.text
         val signature = SignatureBuilder.buildSignature(ctx, name)
-        val declarations = ArrayList<SvDeclaration>()
-        val ports = ArrayList<SvPort>()
+        val declarations = ArrayList<EDeclaration>()
+        val typeParameters = ctx.moduleNonAnsiHeader().parameterPortList()
+            ?.let { castContext.castTypeParameters(it) }
+            ?: listOf()
+        val ports = ArrayList<EPort>()
         ctx.moduleItem().forEach {
             if (it is SystemVerilogParser.ModuleItemPortDeclarationContext) {
                 val port = castContext.castPort(it)
@@ -48,11 +51,12 @@ object ModuleCaster {
                 declarations.addAll(castContext.castDeclarations(it))
             }
         }
-        return SvModule(
+        return EModule(
             location,
             name,
             signature,
             declarations,
+            typeParameters,
             ports
         )
     }
@@ -60,21 +64,25 @@ object ModuleCaster {
     fun castModuleFromModuleDeclarationAnsi(
         ctx: SystemVerilogParser.ModuleDeclarationAnsiContext,
         castContext: CastContext
-    ): SvModule? {
+    ): EModule? {
         val moduleAnsiHeader = ctx.moduleAnsiHeader()
         val identifier = moduleAnsiHeader.moduleIdentifier()
         val location = castContext.getLocation(identifier)
         val name = identifier.text
         val signature = SignatureBuilder.buildSignature(ctx, name)
         val declarations = ctx.nonPortModuleItem().flatMap { castContext.castDeclarations(it) }
+        val typeParameters = ctx.moduleAnsiHeader().parameterPortList()
+            ?.let { castContext.castTypeParameters(it) }
+            ?: listOf()
         val ports = moduleAnsiHeader.listOfPortDeclarations()?.ansiPortDeclaration()?.map {
             castContext.castPort(it) ?: return null
         } ?: listOf()
-        return SvModule(
+        return EModule(
             location,
             name,
             signature,
             ArrayList(declarations),
+            typeParameters,
             ArrayList(ports)
         )
     }

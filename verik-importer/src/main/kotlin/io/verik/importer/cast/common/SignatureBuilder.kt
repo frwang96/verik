@@ -145,6 +145,7 @@ class SignatureBuilder private constructor(private val name: String) {
             lastKind == SignatureFragmentKind.NAME && kind == SignatureFragmentKind.LPAREN -> false
             lastKind == SignatureFragmentKind.NAME && kind == SignatureFragmentKind.LPAREN_BREAK -> false
             lastKind == SignatureFragmentKind.RBRACK && kind == SignatureFragmentKind.LBRACK -> false
+            lastKind == SignatureFragmentKind.RPAREN_BREAK && kind == SignatureFragmentKind.LPAREN_BREAK -> false
             else -> true
         }
     }

@@ -22,23 +22,23 @@ import org.junit.jupiter.api.Test
 internal class CasterStageTest : BaseTest() {
 
     @Test
-    fun `cast compilationUnit `() {
+    fun `cast project `() {
         driveElementTest(
             "",
             CasterStage::class,
-            "CompilationUnit([])"
+            "Project([])"
         ) { it }
     }
 
     @Test
-    fun `cast compilationUnit with module`() {
+    fun `cast project with module`() {
         driveElementTest(
             """
                 module m;
                 endmodule
             """.trimIndent(),
             CasterStage::class,
-            "CompilationUnit([Module(m, [], [])])"
+            "Project([Module(m, [], [], [])])"
         ) { it }
     }
 }

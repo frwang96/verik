@@ -16,12 +16,12 @@
 
 package io.verik.compiler.transform.pre
 
-import io.verik.compiler.ast.element.common.ECallExpression
-import io.verik.compiler.ast.element.kt.EKtArrayAccessExpression
-import io.verik.compiler.ast.element.kt.EKtBinaryExpression
-import io.verik.compiler.ast.interfaces.Declaration
+import io.verik.compiler.ast.common.Declaration
+import io.verik.compiler.ast.common.Type
+import io.verik.compiler.ast.element.expression.common.ECallExpression
+import io.verik.compiler.ast.element.expression.kt.EKtArrayAccessExpression
+import io.verik.compiler.ast.element.expression.kt.EKtBinaryExpression
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
-import io.verik.compiler.ast.property.Type
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Cardinal
 import io.verik.compiler.core.common.Core

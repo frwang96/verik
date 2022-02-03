@@ -16,28 +16,28 @@
 
 package io.verik.compiler.cast
 
-import io.verik.compiler.ast.element.common.EBlockExpression
-import io.verik.compiler.ast.element.common.ECallExpression
 import io.verik.compiler.ast.element.common.EElement
-import io.verik.compiler.ast.element.common.EEnumEntry
-import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.element.common.EIfExpression
-import io.verik.compiler.ast.element.common.EProperty
-import io.verik.compiler.ast.element.common.EReferenceExpression
-import io.verik.compiler.ast.element.common.EReturnStatement
-import io.verik.compiler.ast.element.common.ETypeParameter
-import io.verik.compiler.ast.element.common.EWhileStatement
-import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
-import io.verik.compiler.ast.element.kt.EKtArrayAccessExpression
-import io.verik.compiler.ast.element.kt.EKtClass
-import io.verik.compiler.ast.element.kt.EKtForStatement
-import io.verik.compiler.ast.element.kt.EKtFunction
-import io.verik.compiler.ast.element.kt.EKtUnaryExpression
-import io.verik.compiler.ast.element.kt.EKtValueParameter
-import io.verik.compiler.ast.element.kt.EPrimaryConstructor
-import io.verik.compiler.ast.element.kt.EStringTemplateExpression
-import io.verik.compiler.ast.element.kt.ETypeAlias
-import io.verik.compiler.ast.element.kt.EWhenExpression
+import io.verik.compiler.ast.element.declaration.common.EEnumEntry
+import io.verik.compiler.ast.element.declaration.common.EProperty
+import io.verik.compiler.ast.element.declaration.common.ETypeParameter
+import io.verik.compiler.ast.element.declaration.kt.EKtClass
+import io.verik.compiler.ast.element.declaration.kt.EKtFunction
+import io.verik.compiler.ast.element.declaration.kt.EKtValueParameter
+import io.verik.compiler.ast.element.declaration.kt.EPrimaryConstructor
+import io.verik.compiler.ast.element.declaration.kt.ETypeAlias
+import io.verik.compiler.ast.element.expression.common.EBlockExpression
+import io.verik.compiler.ast.element.expression.common.ECallExpression
+import io.verik.compiler.ast.element.expression.common.EExpression
+import io.verik.compiler.ast.element.expression.common.EIfExpression
+import io.verik.compiler.ast.element.expression.common.EReferenceExpression
+import io.verik.compiler.ast.element.expression.common.EReturnStatement
+import io.verik.compiler.ast.element.expression.common.EWhileStatement
+import io.verik.compiler.ast.element.expression.kt.EFunctionLiteralExpression
+import io.verik.compiler.ast.element.expression.kt.EKtArrayAccessExpression
+import io.verik.compiler.ast.element.expression.kt.EKtForStatement
+import io.verik.compiler.ast.element.expression.kt.EKtUnaryExpression
+import io.verik.compiler.ast.element.expression.kt.EStringTemplateExpression
+import io.verik.compiler.ast.element.expression.kt.EWhenExpression
 import io.verik.compiler.message.Messages
 import org.jetbrains.kotlin.psi.KtAnnotatedExpression
 import org.jetbrains.kotlin.psi.KtArrayAccessExpression
@@ -96,7 +96,7 @@ class CasterVisitor(private val castContext: CastContext) : KtVisitor<EElement, 
     }
 
     override fun visitClassOrObject(classOrObject: KtClassOrObject, data: Unit?): EKtClass {
-        return DeclarationCaster.castKtClass(classOrObject, castContext)
+        return DeclarationCaster.castClass(classOrObject, castContext)
     }
 
     override fun visitPrimaryConstructor(constructor: KtPrimaryConstructor, data: Unit?): EPrimaryConstructor {
@@ -104,7 +104,7 @@ class CasterVisitor(private val castContext: CastContext) : KtVisitor<EElement, 
     }
 
     override fun visitNamedFunction(function: KtNamedFunction, data: Unit?): EKtFunction {
-        return DeclarationCaster.castKtFunction(function, castContext)
+        return DeclarationCaster.castFunction(function, castContext)
     }
 
     override fun visitProperty(property: KtProperty, data: Unit?): EProperty {
@@ -128,19 +128,19 @@ class CasterVisitor(private val castContext: CastContext) : KtVisitor<EElement, 
     }
 
     override fun visitBlockExpression(expression: KtBlockExpression, data: Unit?): EBlockExpression {
-        return ExpressionCaster.castKtBlockExpression(expression, castContext)
+        return ExpressionCaster.castBlockExpression(expression, castContext)
     }
 
     override fun visitPrefixExpression(expression: KtPrefixExpression, data: Unit?): EKtUnaryExpression {
-        return ExpressionCaster.castKtUnaryExpressionPrefix(expression, castContext)
+        return ExpressionCaster.castUnaryExpressionPrefix(expression, castContext)
     }
 
     override fun visitPostfixExpression(expression: KtPostfixExpression, data: Unit?): EKtUnaryExpression {
-        return ExpressionCaster.castKtUnaryExpressionPostfix(expression, castContext)
+        return ExpressionCaster.castUnaryExpressionPostfix(expression, castContext)
     }
 
     override fun visitBinaryExpression(expression: KtBinaryExpression, data: Unit?): EExpression {
-        return ExpressionCaster.castKtBinaryExpressionOrCallExpression(expression, castContext)
+        return ExpressionCaster.castBinaryExpressionOrCallExpression(expression, castContext)
     }
 
     override fun visitSimpleNameExpression(expression: KtSimpleNameExpression, data: Unit?): EReferenceExpression {
@@ -186,7 +186,7 @@ class CasterVisitor(private val castContext: CastContext) : KtVisitor<EElement, 
         expression: KtArrayAccessExpression,
         data: Unit?
     ): EKtArrayAccessExpression {
-        return ExpressionCaster.castKtArrayAccessExpression(expression, castContext)
+        return ExpressionCaster.castArrayAccessExpression(expression, castContext)
     }
 
     override fun visitIsExpression(expression: KtIsExpression, data: Unit?): EElement {
@@ -214,6 +214,6 @@ class CasterVisitor(private val castContext: CastContext) : KtVisitor<EElement, 
     }
 
     override fun visitForExpression(expression: KtForExpression, data: Unit?): EKtForStatement? {
-        return ExpressionCaster.castKtForStatement(expression, castContext)
+        return ExpressionCaster.castForStatement(expression, castContext)
     }
 }

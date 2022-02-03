@@ -32,7 +32,7 @@ internal class ModuleCasterTest : BaseTest() {
                     input x;
                 endmodule
             """.trimIndent(),
-            "Module(m, [], [Port(x, SimpleDescriptor(Boolean), INPUT)])"
+            "Module(m, [], [], [Port(x, SimpleDescriptor(Boolean), INPUT)])"
         ) { it.findDeclaration("m") }
     }
 
@@ -44,7 +44,7 @@ internal class ModuleCasterTest : BaseTest() {
                 module m;
                 endmodule
             """.trimIndent(),
-            "Module(m, [], [])"
+            "Module(m, [], [], [])"
         ) { it.findDeclaration("m") }
     }
 }

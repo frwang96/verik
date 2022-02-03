@@ -16,27 +16,36 @@
 
 package io.verik.importer.serialize.source
 
-import io.verik.importer.ast.kt.element.KtClass
-import io.verik.importer.ast.kt.element.KtConstructor
-import io.verik.importer.ast.kt.element.KtDeclaration
-import io.verik.importer.ast.kt.element.KtEnum
-import io.verik.importer.ast.kt.element.KtEnumEntry
-import io.verik.importer.ast.kt.element.KtFunction
-import io.verik.importer.ast.kt.element.KtProperty
-import io.verik.importer.ast.kt.element.KtTypeAlias
-import io.verik.importer.ast.kt.element.KtValueParameter
-import io.verik.importer.common.Type
+import io.verik.importer.ast.element.declaration.EDeclaration
+import io.verik.importer.ast.element.declaration.EEnum
+import io.verik.importer.ast.element.declaration.EEnumEntry
+import io.verik.importer.ast.element.declaration.EKtClass
+import io.verik.importer.ast.element.declaration.EKtConstructor
+import io.verik.importer.ast.element.declaration.EKtFunction
+import io.verik.importer.ast.element.declaration.EKtValueParameter
+import io.verik.importer.ast.element.declaration.EProperty
+import io.verik.importer.ast.element.declaration.ETypeAlias
+import io.verik.importer.ast.element.declaration.ETypeParameter
+import io.verik.importer.ast.element.descriptor.EDescriptor
 import io.verik.importer.core.Core
 
 object DeclarationSerializer {
 
-    fun serializeClass(`class`: KtClass, serializeContext: SerializeContext) {
+    fun serializeClass(`class`: EKtClass, serializeContext: SerializeContext) {
         serializeContext.appendLine()
         serializeDocs(`class`, serializeContext)
         if (`class`.isOpen) {
             serializeContext.append("open ")
         }
-        serializeContext.append("class ${`class`.name}")
+        serializeContext.append("class ")
+        serializeContext.serializeName(`class`)
+        if (`class`.typeParameters.isNotEmpty()) {
+            serializeContext.appendLine("<")
+            serializeContext.indent {
+                serializeContext.serializeJoinAppendLine(`class`.typeParameters)
+            }
+            serializeContext.append(">")
+        }
         if (`class`.valueParameters.isNotEmpty()) {
             serializeContext.appendLine("(")
             serializeContext.indent {
@@ -44,10 +53,10 @@ object DeclarationSerializer {
             }
             serializeContext.append(")")
         }
-        if (`class`.superType.reference != Core.C_Any) {
-            serializeContext.append(" : ${`class`.superType}")
+        if (`class`.superDescriptor.type.reference != Core.C_Any) {
+            serializeContext.append(" : ${`class`.superDescriptor.type}")
             if (`class`.getConstructor() == null) {
-                serializeSuperConstructorCall(`class`.superType, serializeContext)
+                serializeSuperConstructorCall(`class`.superDescriptor, serializeContext)
             }
         }
         if (`class`.declarations.isNotEmpty()) {
@@ -61,10 +70,11 @@ object DeclarationSerializer {
         }
     }
 
-    fun serializeEnum(enum: KtEnum, serializeContext: SerializeContext) {
+    fun serializeEnum(enum: EEnum, serializeContext: SerializeContext) {
         serializeContext.appendLine()
         serializeDocs(enum, serializeContext)
-        serializeContext.append("enum class ${enum.name}")
+        serializeContext.append("enum class ")
+        serializeContext.serializeName(enum)
         if (enum.entries.isNotEmpty()) {
             serializeContext.appendLine(" {")
             serializeContext.indent {
@@ -76,22 +86,33 @@ object DeclarationSerializer {
         }
     }
 
-    fun serializeTypeAlias(typeAlias: KtTypeAlias, serializeContext: SerializeContext) {
+    fun serializeTypeAlias(typeAlias: ETypeAlias, serializeContext: SerializeContext) {
         serializeContext.appendLine()
         serializeDocs(typeAlias, serializeContext)
-        serializeContext.appendLine("typealias ${typeAlias.name} = ${typeAlias.type}")
+        serializeContext.append("typealias ")
+        serializeContext.serializeName(typeAlias)
+        serializeContext.appendLine(" = ${typeAlias.descriptor.type}")
     }
 
-    fun serializeFunction(function: KtFunction, serializeContext: SerializeContext) {
+    fun serializeTypeParameter(typeParameter: ETypeParameter, serializeContext: SerializeContext) {
+        serializeContext.serializeName(typeParameter)
+        if (typeParameter.isCardinal) {
+            serializeContext.append(" : `*`")
+        }
+    }
+
+    fun serializeFunction(function: EKtFunction, serializeContext: SerializeContext) {
         serializeContext.appendLine()
         serializeDocs(function, serializeContext)
         function.annotationEntries.forEach {
             serializeContext.appendLine("@${it.name}")
         }
-        if (function.isOpen) {
-            serializeContext.append("open ")
+        when {
+            function.isOverride -> serializeContext.append("override ")
+            function.isOpen -> serializeContext.append("open ")
         }
-        serializeContext.append("fun ${function.name}")
+        serializeContext.append("fun ")
+        serializeContext.serializeName(function)
         if (function.valueParameters.isNotEmpty()) {
             serializeContext.appendLine("(")
             serializeContext.indent {
@@ -101,10 +122,10 @@ object DeclarationSerializer {
         } else {
             serializeContext.append("()")
         }
-        serializeContext.appendLine(": ${function.type} = imported()")
+        serializeContext.appendLine(": ${function.descriptor.type} = imported()")
     }
 
-    fun serializeConstructor(constructor: KtConstructor, serializeContext: SerializeContext) {
+    fun serializeConstructor(constructor: EKtConstructor, serializeContext: SerializeContext) {
         serializeContext.appendLine()
         serializeDocs(constructor, serializeContext)
         serializeContext.append("constructor")
@@ -117,15 +138,15 @@ object DeclarationSerializer {
         } else {
             serializeContext.append("()")
         }
-        val `class` = constructor.parentNotNull().cast<KtClass>()
-        if (`class`.superType.reference != Core.C_Any) {
+        val `class` = constructor.parentNotNull().cast<EKtClass>()
+        if (`class`.superDescriptor.type.reference != Core.C_Any) {
             serializeContext.append(" : super")
-            serializeSuperConstructorCall(`class`.superType, serializeContext)
+            serializeSuperConstructorCall(`class`.superDescriptor, serializeContext)
         }
         serializeContext.appendLine()
     }
 
-    fun serializeProperty(property: KtProperty, serializeContext: SerializeContext) {
+    fun serializeProperty(property: EProperty, serializeContext: SerializeContext) {
         serializeContext.appendLine()
         serializeDocs(property, serializeContext)
         if (property.isMutable) {
@@ -133,10 +154,11 @@ object DeclarationSerializer {
         } else {
             serializeContext.append("val ")
         }
-        serializeContext.appendLine("${property.name}: ${property.type} = imported()")
+        serializeContext.serializeName(property)
+        serializeContext.appendLine(": ${property.descriptor.type} = imported()")
     }
 
-    fun serializeValueParameter(valueParameter: KtValueParameter, serializeContext: SerializeContext) {
+    fun serializeValueParameter(valueParameter: EKtValueParameter, serializeContext: SerializeContext) {
         valueParameter.annotationEntries.forEach {
             serializeContext.append("@${it.name} ")
         }
@@ -144,16 +166,20 @@ object DeclarationSerializer {
             true -> serializeContext.append("var ")
             false -> serializeContext.append("val ")
         }
-        serializeContext.append("${valueParameter.name}: ${valueParameter.type}")
+        serializeContext.serializeName(valueParameter)
+        serializeContext.append(": ${valueParameter.descriptor.type}")
+        if (valueParameter.hasDefault) {
+            serializeContext.append(" = imported()")
+        }
     }
 
-    fun serializeEnumEntry(enumEntry: KtEnumEntry, serializeContext: SerializeContext) {
-        serializeContext.append(enumEntry.name)
+    fun serializeEnumEntry(enumEntry: EEnumEntry, serializeContext: SerializeContext) {
+        serializeContext.serializeName(enumEntry)
     }
 
-    private fun serializeSuperConstructorCall(type: Type, serializeContext: SerializeContext) {
-        val declaration = type.reference
-        val constructor = if (declaration is KtClass) declaration.getConstructor() else null
+    private fun serializeSuperConstructorCall(descriptor: EDescriptor, serializeContext: SerializeContext) {
+        val declaration = descriptor.type.reference
+        val constructor = if (declaration is EKtClass) declaration.getConstructor() else null
         if (constructor != null) {
             val parameterCount = constructor.valueParameters.size
             if (parameterCount != 0) {
@@ -176,7 +202,7 @@ object DeclarationSerializer {
         }
     }
 
-    private fun serializeDocs(declaration: KtDeclaration, serializeContext: SerializeContext) {
+    private fun serializeDocs(declaration: EDeclaration, serializeContext: SerializeContext) {
         serializeContext.appendLine("/**")
         val locationLine = declaration.location.line
         val locationStringShort = "${declaration.location.path.fileName}:$locationLine"

@@ -16,8 +16,8 @@
 
 package io.verik.compiler.message
 
+import io.verik.compiler.ast.common.Type
 import io.verik.compiler.ast.property.AnnotationEntry
-import io.verik.compiler.ast.property.Type
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.reorder.Dependency
 import org.jetbrains.kotlin.lexer.KtToken

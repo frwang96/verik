@@ -11,6 +11,8 @@
 - Import tasks and functions.
 - Import enum and struct typedefs.
 - Import extern tasks and functions.
+- Eliminate local type aliases.
+- Support type parameters.
 
 ### Compiler
 - Replace slice function with array indexing notation.

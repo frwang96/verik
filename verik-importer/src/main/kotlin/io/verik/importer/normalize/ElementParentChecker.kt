@@ -16,12 +16,9 @@
 
 package io.verik.importer.normalize
 
-import io.verik.importer.ast.kt.element.KtElement
-import io.verik.importer.ast.kt.element.KtProject
-import io.verik.importer.ast.sv.element.common.SvCompilationUnit
-import io.verik.importer.ast.sv.element.common.SvElement
-import io.verik.importer.common.KtTreeVisitor
-import io.verik.importer.common.SvTreeVisitor
+import io.verik.importer.ast.element.common.EElement
+import io.verik.importer.ast.element.common.EProject
+import io.verik.importer.common.TreeVisitor
 import io.verik.importer.main.ProjectContext
 import io.verik.importer.main.ProjectStage
 import io.verik.importer.message.Messages
@@ -29,20 +26,18 @@ import io.verik.importer.message.Messages
 object ElementParentChecker : NormalizationChecker {
 
     override fun check(projectContext: ProjectContext, projectStage: ProjectStage) {
-        val svElementParentVisitor = SvElementParentVisitor(projectStage)
-        projectContext.compilationUnit.accept(svElementParentVisitor)
-        val ktElementParentVisitor = KtElementParentVisitor(projectStage)
-        projectContext.project.accept(ktElementParentVisitor)
+        val elementParentVisitor = ElementParentVisitor(projectStage)
+        projectContext.project.accept(elementParentVisitor)
     }
 
-    private class SvElementParentVisitor(
+    private class ElementParentVisitor(
         private val projectStage: ProjectStage
-    ) : SvTreeVisitor() {
+    ) : TreeVisitor() {
 
-        private val parentStack = ArrayDeque<SvElement>()
+        private val parentStack = ArrayDeque<EElement>()
 
         @Suppress("DuplicatedCode")
-        override fun visitElement(element: SvElement) {
+        override fun visitElement(element: EElement) {
             val parent = element.parentNotNull()
             val expectedParent = parentStack.last()
             if (parent != expectedParent) {
@@ -57,39 +52,7 @@ object ElementParentChecker : NormalizationChecker {
             parentStack.removeLast()
         }
 
-        override fun visitCompilationUnit(compilationUnit: SvCompilationUnit) {
-            if (compilationUnit.parent != null) {
-                Messages.NORMALIZATION_ERROR.on(compilationUnit, projectStage, "Parent element should be null")
-            }
-            parentStack.addLast(compilationUnit)
-            compilationUnit.acceptChildren(this)
-            parentStack.removeLast()
-        }
-    }
-
-    private class KtElementParentVisitor(
-        private val projectStage: ProjectStage
-    ) : KtTreeVisitor() {
-
-        private val parentStack = ArrayDeque<KtElement>()
-
-        @Suppress("DuplicatedCode")
-        override fun visitElement(element: KtElement) {
-            val parent = element.parentNotNull()
-            val expectedParent = parentStack.last()
-            if (parent != expectedParent) {
-                Messages.NORMALIZATION_ERROR.on(
-                    element,
-                    projectStage,
-                    "Mismatch in parent element of $element: Expected $expectedParent but was $parent"
-                )
-            }
-            parentStack.addLast(element)
-            super.visitElement(element)
-            parentStack.removeLast()
-        }
-
-        override fun visitProject(project: KtProject) {
+        override fun visitProject(project: EProject) {
             if (project.parent != null) {
                 Messages.NORMALIZATION_ERROR.on(project, projectStage, "Parent element should be null")
             }

@@ -16,17 +16,17 @@
 
 package io.verik.compiler.check.post
 
-import io.verik.compiler.ast.element.kt.EAsExpression
-import io.verik.compiler.ast.element.kt.EIsExpression
-import io.verik.compiler.ast.element.kt.EKtArrayAccessExpression
-import io.verik.compiler.ast.element.kt.EKtBinaryExpression
-import io.verik.compiler.ast.element.kt.EKtClass
-import io.verik.compiler.ast.element.kt.EKtForStatement
-import io.verik.compiler.ast.element.kt.EKtFunction
-import io.verik.compiler.ast.element.kt.EKtUnaryExpression
-import io.verik.compiler.ast.element.kt.EKtValueParameter
-import io.verik.compiler.ast.element.kt.EStringTemplateExpression
-import io.verik.compiler.ast.element.kt.EWhenExpression
+import io.verik.compiler.ast.element.declaration.kt.EKtClass
+import io.verik.compiler.ast.element.declaration.kt.EKtFunction
+import io.verik.compiler.ast.element.declaration.kt.EKtValueParameter
+import io.verik.compiler.ast.element.expression.kt.EAsExpression
+import io.verik.compiler.ast.element.expression.kt.EIsExpression
+import io.verik.compiler.ast.element.expression.kt.EKtArrayAccessExpression
+import io.verik.compiler.ast.element.expression.kt.EKtBinaryExpression
+import io.verik.compiler.ast.element.expression.kt.EKtForStatement
+import io.verik.compiler.ast.element.expression.kt.EKtUnaryExpression
+import io.verik.compiler.ast.element.expression.kt.EStringTemplateExpression
+import io.verik.compiler.ast.element.expression.kt.EWhenExpression
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage

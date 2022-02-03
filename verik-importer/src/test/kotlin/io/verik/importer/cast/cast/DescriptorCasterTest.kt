@@ -88,4 +88,15 @@ internal class DescriptorCasterTest : BaseTest() {
             "Property(x, PackedDescriptor(Nothing, BitDescriptor(*), LiteralExpression(1), LiteralExpression(0)))"
         ) { it.findDeclaration("x") }
     }
+
+    @Test
+    fun `cast descriptor from queueDimension`() {
+        driveCasterTest(
+            SystemVerilogParser.QueueDimensionContext::class,
+            """
+                logic x [$];
+            """.trimIndent(),
+            "Property(x, QueueDescriptor(Nothing, SimpleDescriptor(*)))"
+        ) { it.findDeclaration("x") }
+    }
 }

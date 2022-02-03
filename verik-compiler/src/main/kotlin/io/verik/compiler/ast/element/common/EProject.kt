@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,10 +16,10 @@
 
 package io.verik.compiler.ast.element.common
 
-import io.verik.compiler.ast.property.AnnotationEntry
+import io.verik.compiler.ast.element.declaration.common.EFile
+import io.verik.compiler.ast.element.declaration.common.EPackage
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
-import io.verik.compiler.core.common.Core
 import io.verik.compiler.message.SourceLocation
 
 class EProject(
@@ -28,13 +28,7 @@ class EProject(
     val nativeRootPackage: EPackage,
     val importedRegularPackages: ArrayList<EPackage>,
     val importedRootPackage: EPackage
-) : EDeclaration() {
-
-    override var name = "<project>"
-
-    override var type = Core.Kt.C_Unit.toType()
-    override var annotationEntries: List<AnnotationEntry> = listOf()
-    override var documentationLines: List<String>? = null
+) : EElement() {
 
     init {
         nativeRegularPackages.forEach { it.parent = this }

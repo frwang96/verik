@@ -16,55 +16,60 @@
 
 package io.verik.importer.serialize.source
 
-import io.verik.importer.ast.kt.element.KtClass
-import io.verik.importer.ast.kt.element.KtConstructor
-import io.verik.importer.ast.kt.element.KtElement
-import io.verik.importer.ast.kt.element.KtEnum
-import io.verik.importer.ast.kt.element.KtEnumEntry
-import io.verik.importer.ast.kt.element.KtFunction
-import io.verik.importer.ast.kt.element.KtProperty
-import io.verik.importer.ast.kt.element.KtTypeAlias
-import io.verik.importer.ast.kt.element.KtValueParameter
-import io.verik.importer.common.KtVisitor
+import io.verik.importer.ast.element.common.EElement
+import io.verik.importer.ast.element.declaration.EEnum
+import io.verik.importer.ast.element.declaration.EEnumEntry
+import io.verik.importer.ast.element.declaration.EKtClass
+import io.verik.importer.ast.element.declaration.EKtConstructor
+import io.verik.importer.ast.element.declaration.EKtFunction
+import io.verik.importer.ast.element.declaration.EKtValueParameter
+import io.verik.importer.ast.element.declaration.EProperty
+import io.verik.importer.ast.element.declaration.ETypeAlias
+import io.verik.importer.ast.element.declaration.ETypeParameter
+import io.verik.importer.common.Visitor
 import io.verik.importer.message.Messages
 
 class SourceSerializerVisitor(
     private val serializeContext: SerializeContext
-) : KtVisitor() {
+) : Visitor() {
 
-    override fun visitElement(element: KtElement) {
+    override fun visitElement(element: EElement) {
         Messages.INTERNAL_ERROR.on(element, "Unable to serialize element: $element")
     }
 
-    override fun visitClass(`class`: KtClass) {
+    override fun visitKtClass(`class`: EKtClass) {
         DeclarationSerializer.serializeClass(`class`, serializeContext)
     }
 
-    override fun visitEnum(enum: KtEnum) {
+    override fun visitEnum(enum: EEnum) {
         DeclarationSerializer.serializeEnum(enum, serializeContext)
     }
 
-    override fun visitTypeAlias(typeAlias: KtTypeAlias) {
+    override fun visitTypeAlias(typeAlias: ETypeAlias) {
         DeclarationSerializer.serializeTypeAlias(typeAlias, serializeContext)
     }
 
-    override fun visitFunction(function: KtFunction) {
+    override fun visitTypeParameter(typeParameter: ETypeParameter) {
+        DeclarationSerializer.serializeTypeParameter(typeParameter, serializeContext)
+    }
+
+    override fun visitKtFunction(function: EKtFunction) {
         DeclarationSerializer.serializeFunction(function, serializeContext)
     }
 
-    override fun visitConstructor(constructor: KtConstructor) {
+    override fun visitKtConstructor(constructor: EKtConstructor) {
         DeclarationSerializer.serializeConstructor(constructor, serializeContext)
     }
 
-    override fun visitProperty(property: KtProperty) {
+    override fun visitProperty(property: EProperty) {
         DeclarationSerializer.serializeProperty(property, serializeContext)
     }
 
-    override fun visitValueParameter(valueParameter: KtValueParameter) {
+    override fun visitKtValueParameter(valueParameter: EKtValueParameter) {
         DeclarationSerializer.serializeValueParameter(valueParameter, serializeContext)
     }
 
-    override fun visitEnumEntry(enumEntry: KtEnumEntry) {
+    override fun visitEnumEntry(enumEntry: EEnumEntry) {
         DeclarationSerializer.serializeEnumEntry(enumEntry, serializeContext)
     }
 }

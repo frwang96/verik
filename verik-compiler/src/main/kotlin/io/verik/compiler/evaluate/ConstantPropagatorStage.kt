@@ -16,8 +16,8 @@
 
 package io.verik.compiler.evaluate
 
-import io.verik.compiler.ast.element.common.EProperty
-import io.verik.compiler.ast.element.common.EReferenceExpression
+import io.verik.compiler.ast.element.declaration.common.EProperty
+import io.verik.compiler.ast.element.expression.common.EReferenceExpression
 import io.verik.compiler.common.ExpressionCopier
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext

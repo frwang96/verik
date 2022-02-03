@@ -16,13 +16,13 @@
 
 package io.verik.compiler.core.declaration.vk
 
-import io.verik.compiler.ast.element.common.ECallExpression
-import io.verik.compiler.ast.element.common.EConstantExpression
-import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.element.kt.EKtBinaryExpression
-import io.verik.compiler.ast.element.sv.EConcatenationExpression
-import io.verik.compiler.ast.element.sv.EInlineIfExpression
-import io.verik.compiler.ast.element.sv.EReplicationExpression
+import io.verik.compiler.ast.element.expression.common.ECallExpression
+import io.verik.compiler.ast.element.expression.common.EConstantExpression
+import io.verik.compiler.ast.element.expression.common.EExpression
+import io.verik.compiler.ast.element.expression.kt.EKtBinaryExpression
+import io.verik.compiler.ast.element.expression.sv.EConcatenationExpression
+import io.verik.compiler.ast.element.expression.sv.EInlineIfExpression
+import io.verik.compiler.ast.element.expression.sv.EReplicationExpression
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
 import io.verik.compiler.common.ExpressionCopier
 import io.verik.compiler.core.common.BasicCoreFunctionDeclaration

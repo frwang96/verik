@@ -16,10 +16,10 @@
 
 package io.verik.compiler.interpret
 
-import io.verik.compiler.ast.element.common.EEnumEntry
-import io.verik.compiler.ast.element.kt.EKtClass
-import io.verik.compiler.ast.element.sv.EEnum
-import io.verik.compiler.ast.interfaces.ResizableDeclarationContainer
+import io.verik.compiler.ast.common.ResizableDeclarationContainer
+import io.verik.compiler.ast.element.declaration.common.EEnumEntry
+import io.verik.compiler.ast.element.declaration.kt.EKtClass
+import io.verik.compiler.ast.element.declaration.sv.EEnum
 import io.verik.compiler.common.ReferenceUpdater
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext

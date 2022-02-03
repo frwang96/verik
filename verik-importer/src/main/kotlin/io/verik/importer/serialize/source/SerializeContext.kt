@@ -16,7 +16,8 @@
 
 package io.verik.importer.serialize.source
 
-import io.verik.importer.ast.kt.element.KtElement
+import io.verik.importer.ast.element.common.EElement
+import io.verik.importer.ast.element.declaration.EDeclaration
 import io.verik.importer.common.TextFile
 import io.verik.importer.main.ProjectContext
 import java.nio.file.Path
@@ -30,11 +31,15 @@ class SerializeContext(
     private val sourceSerializerVisitor = SourceSerializerVisitor(this)
     private val sourceBuilder = SourceBuilder(projectContext, packageName, outputPath)
 
-    fun serialize(element: KtElement) {
+    fun serialize(element: EElement) {
         element.accept(sourceSerializerVisitor)
     }
 
-    fun <E : KtElement> serializeJoinAppendLine(entries: List<E>) {
+    fun serializeName(declaration: EDeclaration) {
+        NameSerializer.serializeName(declaration, this)
+    }
+
+    fun <E : EElement> serializeJoinAppendLine(entries: List<E>) {
         if (entries.isNotEmpty()) {
             serialize(entries[0])
             entries.drop(1).forEach {

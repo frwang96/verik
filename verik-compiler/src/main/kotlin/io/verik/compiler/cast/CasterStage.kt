@@ -16,9 +16,9 @@
 
 package io.verik.compiler.cast
 
-import io.verik.compiler.ast.element.common.EFile
-import io.verik.compiler.ast.element.common.EPackage
 import io.verik.compiler.ast.element.common.EProject
+import io.verik.compiler.ast.element.declaration.common.EFile
+import io.verik.compiler.ast.element.declaration.common.EPackage
 import io.verik.compiler.ast.property.PackageType
 import io.verik.compiler.common.location
 import io.verik.compiler.main.Platform

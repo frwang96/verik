@@ -16,15 +16,15 @@
 
 package io.verik.compiler.core.declaration.vk
 
-import io.verik.compiler.ast.element.common.ECallExpression
-import io.verik.compiler.ast.element.common.EExpression
-import io.verik.compiler.ast.element.kt.EFunctionLiteralExpression
-import io.verik.compiler.ast.element.sv.EDelayExpression
-import io.verik.compiler.ast.element.sv.EEventControlExpression
-import io.verik.compiler.ast.element.sv.EEventExpression
-import io.verik.compiler.ast.element.sv.EForeverStatement
-import io.verik.compiler.ast.element.sv.EForkStatement
-import io.verik.compiler.ast.element.sv.EWaitForkStatement
+import io.verik.compiler.ast.element.expression.common.ECallExpression
+import io.verik.compiler.ast.element.expression.common.EExpression
+import io.verik.compiler.ast.element.expression.kt.EFunctionLiteralExpression
+import io.verik.compiler.ast.element.expression.sv.EDelayExpression
+import io.verik.compiler.ast.element.expression.sv.EEventControlExpression
+import io.verik.compiler.ast.element.expression.sv.EEventExpression
+import io.verik.compiler.ast.element.expression.sv.EForeverStatement
+import io.verik.compiler.ast.element.expression.sv.EForkStatement
+import io.verik.compiler.ast.element.expression.sv.EWaitForkStatement
 import io.verik.compiler.ast.property.EdgeType
 import io.verik.compiler.core.common.BasicCoreFunctionDeclaration
 import io.verik.compiler.core.common.CorePackage

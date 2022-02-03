@@ -16,23 +16,23 @@
 
 package io.verik.compiler.reorder
 
-import io.verik.compiler.ast.element.common.EDeclaration
+import io.verik.compiler.ast.element.common.EElement
 
 class DependencyRegistry {
 
-    private val dependencyRegistry = HashMap<EDeclaration, HashSet<Dependency>>()
+    private val dependencyRegistry = HashMap<EElement, HashSet<Dependency>>()
 
-    fun add(parent: EDeclaration, dependency: Dependency) {
-        val dependencySet = dependencyRegistry[parent]
+    fun add(element: EElement, dependency: Dependency) {
+        val dependencySet = dependencyRegistry[element]
         if (dependencySet != null) {
             dependencySet.add(dependency)
         } else {
-            dependencyRegistry[parent] = hashSetOf(dependency)
+            dependencyRegistry[element] = hashSetOf(dependency)
         }
     }
 
-    fun getDependencies(parent: EDeclaration): List<Dependency> {
-        val dependencySet = dependencyRegistry[parent]
+    fun getDependencies(element: EElement): List<Dependency> {
+        val dependencySet = dependencyRegistry[element]
         return dependencySet?.toList() ?: listOf()
     }
 }

@@ -17,9 +17,9 @@
 package io.verik.compiler.serialize.source
 
 import io.verik.compiler.ast.element.common.EElement
-import io.verik.compiler.ast.element.common.EEnumEntry
-import io.verik.compiler.ast.element.sv.EClockingBlock
-import io.verik.compiler.ast.element.sv.EModulePort
+import io.verik.compiler.ast.element.declaration.common.EEnumEntry
+import io.verik.compiler.ast.element.declaration.sv.EClockingBlock
+import io.verik.compiler.ast.element.declaration.sv.EModulePort
 
 object SerializerUtil {
 

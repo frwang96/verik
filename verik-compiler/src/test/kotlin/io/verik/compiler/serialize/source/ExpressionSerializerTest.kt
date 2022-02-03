@@ -110,7 +110,7 @@ internal class ExpressionSerializerTest : BaseTest() {
                 var a = ArrayList<Boolean>()
             """.trimIndent(),
             """
-                verik_pkg::ArrayList#(logic) a = verik_pkg::ArrayList#(logic)::_${'$'}new();
+                verik_pkg::ArrayList#(logic) a = verik_pkg::ArrayList#(logic)::__new();
             """.trimIndent()
         ) { it.regularPackageTextFiles[0] }
     }

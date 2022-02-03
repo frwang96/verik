@@ -32,7 +32,7 @@ internal class ConstructorCasterTest : BaseTest() {
                     extern function new(logic x);
                 endclass
             """.trimIndent(),
-            "Constructor([ValueParameter(x, SimpleDescriptor(Boolean))])"
+            "SvConstructor([SvValueParameter(x, SimpleDescriptor(Boolean), 0)])"
         ) { it.findDeclaration("new") }
     }
 
@@ -46,7 +46,7 @@ internal class ConstructorCasterTest : BaseTest() {
                     endfunction
                 endclass
             """.trimIndent(),
-            "Constructor([ValueParameter(x, SimpleDescriptor(Boolean))])"
+            "SvConstructor([SvValueParameter(x, SimpleDescriptor(Boolean), 0)])"
         ) { it.findDeclaration("new") }
     }
 }

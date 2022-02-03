@@ -16,40 +16,40 @@
 
 package io.verik.importer.normalize
 
-import io.verik.importer.ast.kt.element.KtClass
-import io.verik.importer.ast.kt.element.KtDeclaration
-import io.verik.importer.ast.kt.element.KtElement
-import io.verik.importer.ast.sv.element.common.SvElement
-import io.verik.importer.ast.sv.element.descriptor.SvDescriptor
-import io.verik.importer.common.KtTreeVisitor
-import io.verik.importer.common.SvTreeVisitor
-import io.verik.importer.common.Type
+import io.verik.importer.ast.common.Type
+import io.verik.importer.ast.element.common.EElement
+import io.verik.importer.ast.element.descriptor.EDescriptor
+import io.verik.importer.common.TreeVisitor
 import io.verik.importer.main.ProjectContext
 import io.verik.importer.main.ProjectStage
 import io.verik.importer.message.Messages
-import io.verik.importer.message.SourceLocation
 
 object TypeAliasChecker : NormalizationChecker {
 
     override fun check(projectContext: ProjectContext, projectStage: ProjectStage) {
-        val typeSet = TypeSet(projectStage)
-        val svTypeIndexerVisitor = SvTypeIndexerVisitor(typeSet)
-        projectContext.compilationUnit.accept(svTypeIndexerVisitor)
-        val ktTypeIndexerVisitor = KtTypeIndexerVisitor(typeSet)
-        projectContext.project.accept(ktTypeIndexerVisitor)
+        val typeIndexerVisitor = TypeIndexerVisitor(projectStage)
+        projectContext.project.accept(typeIndexerVisitor)
     }
 
-    private class TypeSet(
+    private class TypeIndexerVisitor(
         private val projectStage: ProjectStage
-    ) {
+    ) : TreeVisitor() {
 
         private val typeMap = HashMap<Int, ArrayList<Type>>()
 
-        fun addType(type: Type, element: Any) {
+        fun addType(type: Type, element: EElement) {
             val hashCode = System.identityHashCode(type)
             val types = typeMap[hashCode]
             if (types != null) {
-                checkType(type, types, element)
+                types.forEach {
+                    if (type === it) {
+                        Messages.NORMALIZATION_ERROR.on(
+                            element,
+                            projectStage,
+                            "Unexpected type aliasing: $type in $element"
+                        )
+                    }
+                }
                 types.add(type)
             } else {
                 typeMap[hashCode] = arrayListOf(type)
@@ -57,58 +57,9 @@ object TypeAliasChecker : NormalizationChecker {
             type.arguments.forEach { addType(it, element) }
         }
 
-        private fun checkType(type: Type, types: List<Type>, element: Any) {
-            types.forEach {
-                if (type === it) {
-                    when (element) {
-                        is SvElement -> {
-                            Messages.NORMALIZATION_ERROR.on(
-                                element,
-                                projectStage,
-                                "Unexpected type aliasing: $type in $element"
-                            )
-                        }
-                        is KtElement -> {
-                            Messages.NORMALIZATION_ERROR.on(
-                                element,
-                                projectStage,
-                                "Unexpected type aliasing: $type in $element"
-                            )
-                        }
-                        else -> {
-                            Messages.INTERNAL_ERROR.on(
-                                SourceLocation.NULL,
-                                "Unexpected element type: ${element::class.simpleName}"
-                            )
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    private class SvTypeIndexerVisitor(
-        private val typeSet: TypeSet
-    ) : SvTreeVisitor() {
-
-        override fun visitDescriptor(descriptor: SvDescriptor) {
+        override fun visitDescriptor(descriptor: EDescriptor) {
             super.visitDescriptor(descriptor)
-            typeSet.addType(descriptor.type, descriptor)
-        }
-    }
-
-    private class KtTypeIndexerVisitor(
-        private val typeSet: TypeSet
-    ) : KtTreeVisitor() {
-
-        override fun visitElement(element: KtElement) {
-            super.visitElement(element)
-            if (element is KtDeclaration) {
-                typeSet.addType(element.type, element)
-            }
-            if (element is KtClass) {
-                typeSet.addType(element.superType, element)
-            }
+            addType(descriptor.type, descriptor)
         }
     }
 }

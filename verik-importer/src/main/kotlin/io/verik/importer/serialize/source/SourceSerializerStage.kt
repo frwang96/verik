@@ -16,7 +16,7 @@
 
 package io.verik.importer.serialize.source
 
-import io.verik.importer.ast.kt.element.KtPackage
+import io.verik.importer.ast.element.declaration.EKtPackage
 import io.verik.importer.common.TextFile
 import io.verik.importer.main.ProjectContext
 import io.verik.importer.main.ProjectStage
@@ -25,17 +25,14 @@ object SourceSerializerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
         val sourceTextFiles = ArrayList<TextFile>()
-        projectContext.project.packages.forEach {
-            sourceTextFiles.addAll(serialize(it, projectContext))
+        val packages = projectContext.project.declarations.filterIsInstance<EKtPackage>()
+        packages.forEach { `package` ->
+            `package`.files.forEach { file ->
+                val serializeContext = SerializeContext(projectContext, `package`.name, file.outputPath)
+                file.declarations.forEach { serializeContext.serialize(it) }
+                sourceTextFiles.add(serializeContext.getTextFile())
+            }
         }
         projectContext.outputContext.sourceTextFiles = sourceTextFiles
-    }
-
-    private fun serialize(`package`: KtPackage, projectContext: ProjectContext): List<TextFile> {
-        return `package`.files.map { file ->
-            val serializeContext = SerializeContext(projectContext, `package`.name, file.outputPath)
-            file.declarations.forEach { serializeContext.serialize(it) }
-            serializeContext.getTextFile()
-        }
     }
 }

@@ -17,16 +17,22 @@
 package io.verik.importer.main
 
 import io.verik.importer.cast.common.CasterStage
-import io.verik.importer.interpret.InterpreterStage
+import io.verik.importer.check.UninterpretedDeclarationCheckerStage
+import io.verik.importer.interpret.ClassInterpreterStage
+import io.verik.importer.interpret.FunctionInterpreterStage
+import io.verik.importer.interpret.PackageInterpreterStage
 import io.verik.importer.parse.ParserStage
 import io.verik.importer.preprocess.PreprocessorFilterStage
 import io.verik.importer.preprocess.PreprocessorSerializerStage
 import io.verik.importer.preprocess.PreprocessorStage
-import io.verik.importer.resolve.DeclarationResolvedCheckerStage
-import io.verik.importer.resolve.DescriptorResolverStage
-import io.verik.importer.resolve.ReferenceResolverStage
 import io.verik.importer.serialize.general.ConfigFileSerializerStage
 import io.verik.importer.serialize.source.SourceSerializerStage
+import io.verik.importer.transform.post.FunctionOverrideTransformerStage
+import io.verik.importer.transform.post.PropertyOverrideTransformerStage
+import io.verik.importer.transform.post.UnresolvedDeclarationEliminatorStage
+import io.verik.importer.transform.pre.DescriptorResolverStage
+import io.verik.importer.transform.pre.LocalTypeAliasEliminatorStage
+import io.verik.importer.transform.pre.ReferenceResolverStage
 
 object StageSequencer {
 
@@ -41,11 +47,19 @@ object StageSequencer {
 
         stageSequence.add(StageType.CAST, CasterStage)
 
-        stageSequence.add(StageType.RESOLVE, ReferenceResolverStage)
-        stageSequence.add(StageType.RESOLVE, DescriptorResolverStage)
-        stageSequence.add(StageType.RESOLVE, DeclarationResolvedCheckerStage)
+        stageSequence.add(StageType.PRE_TRANSFORM, ReferenceResolverStage)
+        stageSequence.add(StageType.PRE_TRANSFORM, LocalTypeAliasEliminatorStage)
+        stageSequence.add(StageType.PRE_TRANSFORM, DescriptorResolverStage)
 
-        stageSequence.add(StageType.INTERPRET, InterpreterStage)
+        stageSequence.add(StageType.INTERPRET, PackageInterpreterStage)
+        stageSequence.add(StageType.INTERPRET, ClassInterpreterStage)
+        stageSequence.add(StageType.INTERPRET, FunctionInterpreterStage)
+
+        stageSequence.add(StageType.POST_TRANSFORM, UnresolvedDeclarationEliminatorStage)
+        stageSequence.add(StageType.POST_TRANSFORM, FunctionOverrideTransformerStage)
+        stageSequence.add(StageType.POST_TRANSFORM, PropertyOverrideTransformerStage)
+
+        stageSequence.add(StageType.CHECK, UninterpretedDeclarationCheckerStage)
 
         stageSequence.add(StageType.SERIALIZE, ConfigFileSerializerStage)
         stageSequence.add(StageType.SERIALIZE, SourceSerializerStage)

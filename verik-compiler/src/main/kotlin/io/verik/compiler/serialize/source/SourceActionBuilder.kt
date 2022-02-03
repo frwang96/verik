@@ -16,7 +16,7 @@
 
 package io.verik.compiler.serialize.source
 
-import io.verik.compiler.ast.element.common.EFile
+import io.verik.compiler.ast.element.declaration.common.EFile
 import io.verik.compiler.message.Messages
 import io.verik.compiler.message.SourceLocation
 import org.jetbrains.kotlin.backend.common.peek

@@ -16,12 +16,12 @@
 
 package io.verik.compiler.test
 
-import io.verik.compiler.ast.element.common.EAbstractContainerClass
-import io.verik.compiler.ast.element.common.EAbstractProperty
-import io.verik.compiler.ast.element.common.EDeclaration
-import io.verik.compiler.ast.element.common.EFile
-import io.verik.compiler.ast.element.common.EReceiverExpression
-import io.verik.compiler.ast.element.sv.EAbstractContainerComponent
+import io.verik.compiler.ast.element.declaration.common.EAbstractContainerClass
+import io.verik.compiler.ast.element.declaration.common.EAbstractProperty
+import io.verik.compiler.ast.element.declaration.common.EDeclaration
+import io.verik.compiler.ast.element.declaration.common.EFile
+import io.verik.compiler.ast.element.declaration.sv.EAbstractContainerComponent
+import io.verik.compiler.ast.element.expression.common.EReceiverExpression
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.CoreDeclaration
 import io.verik.compiler.main.ProjectContext

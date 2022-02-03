@@ -16,11 +16,11 @@
 
 package io.verik.compiler.check.mid
 
-import io.verik.compiler.ast.element.common.ECallExpression
+import io.verik.compiler.ast.common.Type
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.ETypedElement
-import io.verik.compiler.ast.element.kt.ETypeAlias
-import io.verik.compiler.ast.property.Type
+import io.verik.compiler.ast.element.declaration.kt.ETypeAlias
+import io.verik.compiler.ast.element.expression.common.ECallExpression
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.CoreCardinalFunctionDeclaration
 import io.verik.compiler.main.ProjectContext

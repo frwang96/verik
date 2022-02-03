@@ -16,7 +16,7 @@
 
 package io.verik.compiler.core.common
 
-import io.verik.compiler.ast.interfaces.Declaration
+import io.verik.compiler.ast.common.Declaration
 import org.jetbrains.kotlin.descriptors.DeclarationDescriptor
 import org.jetbrains.kotlin.descriptors.impl.AbstractTypeAliasDescriptor
 import kotlin.reflect.KClass

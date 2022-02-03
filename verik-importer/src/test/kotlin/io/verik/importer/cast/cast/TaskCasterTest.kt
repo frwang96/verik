@@ -32,7 +32,7 @@ internal class TaskCasterTest : BaseTest() {
                     input x;
                 endtask
             """.trimIndent(),
-            "Task(t, [ValueParameter(x, SimpleDescriptor(Boolean))])"
+            "Task(t, [SvValueParameter(x, SimpleDescriptor(Boolean), 0)])"
         ) { it.findDeclaration("t") }
     }
 
@@ -44,7 +44,7 @@ internal class TaskCasterTest : BaseTest() {
                 task t(logic x);
                 endtask
             """.trimIndent(),
-            "Task(t, [ValueParameter(x, SimpleDescriptor(Boolean))])"
+            "Task(t, [SvValueParameter(x, SimpleDescriptor(Boolean), 0)])"
         ) { it.findDeclaration("t") }
     }
 
@@ -57,7 +57,7 @@ internal class TaskCasterTest : BaseTest() {
                     extern task t(logic x);
                 endclass
             """.trimIndent(),
-            "Task(t, [ValueParameter(x, SimpleDescriptor(Boolean))])"
+            "Task(t, [SvValueParameter(x, SimpleDescriptor(Boolean), 0)])"
         ) { it.findDeclaration("t") }
     }
 }

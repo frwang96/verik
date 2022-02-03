@@ -16,132 +16,202 @@
 
 package io.verik.importer.common
 
-import io.verik.importer.ast.sv.element.common.SvCompilationUnit
-import io.verik.importer.ast.sv.element.common.SvElement
-import io.verik.importer.ast.sv.element.declaration.SvClass
-import io.verik.importer.ast.sv.element.declaration.SvConstructor
-import io.verik.importer.ast.sv.element.declaration.SvEnum
-import io.verik.importer.ast.sv.element.declaration.SvEnumEntry
-import io.verik.importer.ast.sv.element.declaration.SvFunction
-import io.verik.importer.ast.sv.element.declaration.SvModule
-import io.verik.importer.ast.sv.element.declaration.SvPackage
-import io.verik.importer.ast.sv.element.declaration.SvPort
-import io.verik.importer.ast.sv.element.declaration.SvProperty
-import io.verik.importer.ast.sv.element.declaration.SvStruct
-import io.verik.importer.ast.sv.element.declaration.SvStructEntry
-import io.verik.importer.ast.sv.element.declaration.SvTask
-import io.verik.importer.ast.sv.element.declaration.SvTypeAlias
-import io.verik.importer.ast.sv.element.declaration.SvValueParameter
-import io.verik.importer.ast.sv.element.descriptor.SvBitDescriptor
-import io.verik.importer.ast.sv.element.descriptor.SvPackedDescriptor
-import io.verik.importer.ast.sv.element.descriptor.SvReferenceDescriptor
-import io.verik.importer.ast.sv.element.descriptor.SvSimpleDescriptor
-import io.verik.importer.ast.sv.element.expression.SvLiteralExpression
-import io.verik.importer.ast.sv.element.expression.SvNothingExpression
-import io.verik.importer.ast.sv.element.expression.SvReferenceExpression
+import io.verik.importer.ast.element.common.EElement
+import io.verik.importer.ast.element.common.EProject
+import io.verik.importer.ast.element.declaration.EEnum
+import io.verik.importer.ast.element.declaration.EEnumEntry
+import io.verik.importer.ast.element.declaration.EKtClass
+import io.verik.importer.ast.element.declaration.EKtConstructor
+import io.verik.importer.ast.element.declaration.EKtFile
+import io.verik.importer.ast.element.declaration.EKtFunction
+import io.verik.importer.ast.element.declaration.EKtPackage
+import io.verik.importer.ast.element.declaration.EKtValueParameter
+import io.verik.importer.ast.element.declaration.EModule
+import io.verik.importer.ast.element.declaration.EPort
+import io.verik.importer.ast.element.declaration.EProperty
+import io.verik.importer.ast.element.declaration.EStruct
+import io.verik.importer.ast.element.declaration.EStructEntry
+import io.verik.importer.ast.element.declaration.ESvClass
+import io.verik.importer.ast.element.declaration.ESvConstructor
+import io.verik.importer.ast.element.declaration.ESvFunction
+import io.verik.importer.ast.element.declaration.ESvPackage
+import io.verik.importer.ast.element.declaration.ESvValueParameter
+import io.verik.importer.ast.element.declaration.ETask
+import io.verik.importer.ast.element.declaration.ETypeAlias
+import io.verik.importer.ast.element.declaration.ETypeParameter
+import io.verik.importer.ast.element.descriptor.EBitDescriptor
+import io.verik.importer.ast.element.descriptor.EPackedDescriptor
+import io.verik.importer.ast.element.descriptor.EQueueDescriptor
+import io.verik.importer.ast.element.descriptor.EReferenceDescriptor
+import io.verik.importer.ast.element.descriptor.ESimpleDescriptor
+import io.verik.importer.ast.element.expression.ELiteralExpression
+import io.verik.importer.ast.element.expression.ENothingExpression
+import io.verik.importer.ast.element.expression.EReferenceExpression
 import io.verik.importer.message.Messages
 
-class ElementPrinter : SvVisitor() {
+class ElementPrinter : Visitor() {
 
     private val builder = StringBuilder()
     private var first = true
 
-    override fun visitElement(element: SvElement) {
+    override fun visitElement(element: EElement) {
         Messages.INTERNAL_ERROR.on(element, "Unable to print element: $element")
     }
 
-    override fun visitCompilationUnit(compilationUnit: SvCompilationUnit) {
-        build("CompilationUnit") {
-            build(compilationUnit.declarations)
+    override fun visitProject(project: EProject) {
+        build("Project") {
+            build(project.declarations)
         }
     }
 
-    override fun visitPackage(`package`: SvPackage) {
-        build("Package") {
+    override fun visitSvPackage(`package`: ESvPackage) {
+        build("SvPackage") {
             build(`package`.name)
             build(`package`.declarations)
         }
     }
 
+    override fun visitKtPackage(`package`: EKtPackage) {
+        build("KtPackage") {
+            build(`package`.name)
+            build(`package`.files)
+        }
+    }
+
+    override fun visitKtFile(file: EKtFile) {
+        build("KtFile") {
+            build(file.name)
+            build(file.declarations)
+        }
+    }
+
 // Class Like //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    override fun visitClass(`class`: SvClass) {
-        build("Class") {
+    override fun visitSvClass(`class`: ESvClass) {
+        build("SvClass") {
             build(`class`.name)
             build(`class`.declarations)
+            build(`class`.typeParameters)
             build(`class`.superDescriptor)
         }
     }
 
-    override fun visitModule(module: SvModule) {
+    override fun visitKtClass(`class`: EKtClass) {
+        build("KtClass") {
+            build(`class`.name)
+            build(`class`.declarations)
+            build(`class`.typeParameters)
+            build(`class`.valueParameters)
+            build(`class`.superDescriptor)
+            build(`class`.isOpen)
+        }
+    }
+
+    override fun visitModule(module: EModule) {
         build("Module") {
             build(module.name)
             build(module.declarations)
+            build(module.typeParameters)
             build(module.ports)
         }
     }
 
-    override fun visitStruct(struct: SvStruct) {
+    override fun visitStruct(struct: EStruct) {
         build("Struct") {
             build(struct.name)
             build(struct.entries)
         }
     }
 
-    override fun visitEnum(enum: SvEnum) {
+    override fun visitEnum(enum: EEnum) {
         build("Enum") {
             build(enum.name)
             build(enum.entries)
         }
     }
 
-    override fun visitTypeAlias(typeAlias: SvTypeAlias) {
+    override fun visitTypeAlias(typeAlias: ETypeAlias) {
         build("TypeAlias") {
             build(typeAlias.name)
             build(typeAlias.descriptor)
         }
     }
 
+    override fun visitTypeParameter(typeParameter: ETypeParameter) {
+        build("TypeParameter") {
+            build(typeParameter.name)
+            build(typeParameter.isCardinal)
+        }
+    }
+
 // Function Like ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    override fun visitFunction(function: SvFunction) {
-        build("Function") {
+    override fun visitSvFunction(function: ESvFunction) {
+        build("SvFunction") {
             build(function.name)
             build(function.valueParameters)
             build(function.descriptor)
         }
     }
 
-    override fun visitTask(task: SvTask) {
+    override fun visitTask(task: ETask) {
         build("Task") {
             build(task.name)
             build(task.valueParameters)
         }
     }
 
-    override fun visitConstructor(constructor: SvConstructor) {
-        build("Constructor") {
+    override fun visitSvConstructor(constructor: ESvConstructor) {
+        build("SvConstructor") {
+            build(constructor.valueParameters)
+        }
+    }
+
+    override fun visitKtFunction(function: EKtFunction) {
+        build("KtFunction") {
+            build(function.name)
+            build(function.valueParameters)
+            build(function.descriptor)
+            build(function.annotationEntries.map { it.name })
+            build(function.isOpen)
+            build(function.isOverride)
+        }
+    }
+
+    override fun visitKtConstructor(constructor: EKtConstructor) {
+        build("KtConstructor") {
             build(constructor.valueParameters)
         }
     }
 
 // Property Like ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    override fun visitProperty(property: SvProperty) {
+    override fun visitProperty(property: EProperty) {
         build("Property") {
             build(property.name)
             build(property.descriptor)
         }
     }
 
-    override fun visitValueParameter(valueParameter: SvValueParameter) {
-        build("ValueParameter") {
+    override fun visitSvValueParameter(valueParameter: ESvValueParameter) {
+        build("SvValueParameter") {
             build(valueParameter.name)
             build(valueParameter.descriptor)
+            build(valueParameter.hasDefault)
         }
     }
 
-    override fun visitPort(port: SvPort) {
+    override fun visitKtValueParameter(valueParameter: EKtValueParameter) {
+        build("KtValueParameter") {
+            build(valueParameter.name)
+            build(valueParameter.descriptor)
+            build(valueParameter.annotationEntries.map { it.name })
+            build(valueParameter.isMutable)
+            build(valueParameter.hasDefault)
+        }
+    }
+
+    override fun visitPort(port: EPort) {
         build("Port") {
             build(port.name)
             build(port.descriptor)
@@ -149,14 +219,14 @@ class ElementPrinter : SvVisitor() {
         }
     }
 
-    override fun visitStructEntry(structEntry: SvStructEntry) {
+    override fun visitStructEntry(structEntry: EStructEntry) {
         build("StructEntry") {
             build(structEntry.name)
             build(structEntry.descriptor)
         }
     }
 
-    override fun visitEnumEntry(enumEntry: SvEnumEntry) {
+    override fun visitEnumEntry(enumEntry: EEnumEntry) {
         build("EnumEntry") {
             build(enumEntry.name)
         }
@@ -164,13 +234,13 @@ class ElementPrinter : SvVisitor() {
 
 // Descriptor Like /////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    override fun visitSimpleDescriptor(simpleDescriptor: SvSimpleDescriptor) {
+    override fun visitSimpleDescriptor(simpleDescriptor: ESimpleDescriptor) {
         build("SimpleDescriptor") {
             build(simpleDescriptor.type.toString())
         }
     }
 
-    override fun visitBitDescriptor(bitDescriptor: SvBitDescriptor) {
+    override fun visitBitDescriptor(bitDescriptor: EBitDescriptor) {
         build("BitDescriptor") {
             build(bitDescriptor.type.toString())
             build(bitDescriptor.left)
@@ -179,7 +249,14 @@ class ElementPrinter : SvVisitor() {
         }
     }
 
-    override fun visitPackedDescriptor(packedDescriptor: SvPackedDescriptor) {
+    override fun visitReferenceDescriptor(referenceDescriptor: EReferenceDescriptor) {
+        build("ReferenceDescriptor") {
+            build(referenceDescriptor.type.toString())
+            build(referenceDescriptor.name)
+        }
+    }
+
+    override fun visitPackedDescriptor(packedDescriptor: EPackedDescriptor) {
         build("PackedDescriptor") {
             build(packedDescriptor.type.toString())
             build(packedDescriptor.descriptor)
@@ -188,35 +265,39 @@ class ElementPrinter : SvVisitor() {
         }
     }
 
-    override fun visitReferenceDescriptor(referenceDescriptor: SvReferenceDescriptor) {
-        build("ReferenceDescriptor") {
-            build(referenceDescriptor.type.toString())
-            build(referenceDescriptor.name)
+    override fun visitQueueDescriptor(queueDescriptor: EQueueDescriptor) {
+        build("QueueDescriptor") {
+            build(queueDescriptor.type.toString())
+            build(queueDescriptor.descriptor)
         }
     }
 
 // Expression Like /////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    override fun visitNothingExpression(nothingExpression: SvNothingExpression) {
+    override fun visitNothingExpression(nothingExpression: ENothingExpression) {
         build("NothingExpression") {}
     }
 
-    override fun visitLiteralExpression(literalExpression: SvLiteralExpression) {
+    override fun visitLiteralExpression(literalExpression: ELiteralExpression) {
         build("LiteralExpression") {
             build(literalExpression.value)
         }
     }
 
-    override fun visitReferenceExpression(referenceExpression: SvReferenceExpression) {
+    override fun visitReferenceExpression(referenceExpression: EReferenceExpression) {
         build("ReferenceExpression") {
             build(referenceExpression.name)
             build(referenceExpression.reference.name)
         }
     }
 
-    private fun build(content: Boolean) {
+    private fun build(content: Boolean?) {
         if (!first) builder.append(", ")
-        builder.append(if (content) "1" else "0")
+        when (content) {
+            null -> builder.append("null")
+            true -> builder.append("1")
+            false -> builder.append("0")
+        }
         first = false
     }
 
@@ -226,7 +307,7 @@ class ElementPrinter : SvVisitor() {
         first = false
     }
 
-    private fun build(element: SvElement?) {
+    private fun build(element: EElement?) {
         if (element != null) {
             element.accept(this)
         } else {
@@ -245,18 +326,23 @@ class ElementPrinter : SvVisitor() {
         first = false
     }
 
-    private fun build(elements: List<SvElement>) {
+    private fun build(elements: List<Any>) {
         if (!first) builder.append(", ")
         builder.append("[")
         first = true
-        elements.forEach { it.accept(this) }
+        elements.forEach {
+            when (it) {
+                is EElement -> it.accept(this)
+                else -> build(it.toString())
+            }
+        }
         builder.append("]")
         first = false
     }
 
     companion object {
 
-        fun dump(element: SvElement): String {
+        fun dump(element: EElement): String {
             val elementPrinter = ElementPrinter()
             element.accept(elementPrinter)
             return elementPrinter.builder.toString()

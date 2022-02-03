@@ -16,8 +16,7 @@
 
 package io.verik.importer.message
 
-import io.verik.importer.ast.kt.element.KtElement
-import io.verik.importer.ast.sv.element.common.SvElement
+import io.verik.importer.ast.element.common.EElement
 import org.antlr.v4.runtime.tree.TerminalNode
 
 class WarningMessageTemplate1<A>(
@@ -28,7 +27,7 @@ class WarningMessageTemplate1<A>(
         MessageCollector.messageCollector.warning(name, format(a), location)
     }
 
-    fun on(element: SvElement, a: A) {
+    fun on(element: EElement, a: A) {
         MessageCollector.messageCollector.warning(name, format(a), element.location)
     }
 }
@@ -72,11 +71,7 @@ class FatalMessageTemplate1<A>(
         MessageCollector.messageCollector.fatal(format(a), location)
     }
 
-    fun on(element: SvElement, a: A): Nothing {
-        MessageCollector.messageCollector.fatal(format(a), element.location)
-    }
-
-    fun on(element: KtElement, a: A): Nothing {
+    fun on(element: EElement, a: A): Nothing {
         MessageCollector.messageCollector.fatal(format(a), element.location)
     }
 }
@@ -85,11 +80,7 @@ class FatalMessageTemplate2<A, B>(
     override val template: String
 ) : AbstractMessageTemplate() {
 
-    fun on(element: SvElement, a: A, b: B): Nothing {
-        MessageCollector.messageCollector.fatal(format(a, b), element.location)
-    }
-
-    fun on(element: KtElement, a: A, b: B): Nothing {
+    fun on(element: EElement, a: A, b: B): Nothing {
         MessageCollector.messageCollector.fatal(format(a, b), element.location)
     }
 }
