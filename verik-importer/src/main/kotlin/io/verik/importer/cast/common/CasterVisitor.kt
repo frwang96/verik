@@ -29,6 +29,7 @@ import io.verik.importer.cast.cast.PackageCaster
 import io.verik.importer.cast.cast.PortCaster
 import io.verik.importer.cast.cast.PropertyCaster
 import io.verik.importer.cast.cast.TaskCaster
+import io.verik.importer.cast.cast.TypeArgumentCaster
 import io.verik.importer.cast.cast.TypeDeclarationCaster
 import io.verik.importer.cast.cast.TypeParameterCaster
 import io.verik.importer.cast.cast.ValueParameterCaster
@@ -262,6 +263,14 @@ class CasterVisitor(
         return TaskCaster.castTaskFromTaskPrototype(ctx!!, castContext)
     }
 
+// A.4.1.1 Module Instantiations ///////////////////////////////////////////////////////////////////////////////////////
+
+    override fun visitListOfParameterAssignmentsOrdered(
+        ctx: SystemVerilogParser.ListOfParameterAssignmentsOrderedContext?
+    ): EElement? {
+        return TypeArgumentCaster.castTypeArgumentsFromListOfParameterAssignmentsOrdered(ctx!!, castContext)
+    }
+
 // A.6.2 Procedural Blocks and Assignments /////////////////////////////////////////////////////////////////////////////
 
     override fun visitInitialConstruct(ctx: SystemVerilogParser.InitialConstructContext?): EElement? {
@@ -270,6 +279,12 @@ class CasterVisitor(
 
     override fun visitAlwaysConstruct(ctx: SystemVerilogParser.AlwaysConstructContext?): EElement? {
         return null
+    }
+
+// A.8.3 Expressions ///////////////////////////////////////////////////////////////////////////////////////////////////
+
+    override fun visitParamExpression(ctx: SystemVerilogParser.ParamExpressionContext?): EElement? {
+        return TypeArgumentCaster.castTypeArgumentFromParamExpression(ctx!!, castContext)
     }
 
 // A.8.4 Primaries /////////////////////////////////////////////////////////////////////////////////////////////////////

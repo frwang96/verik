@@ -23,6 +23,7 @@ import io.verik.importer.ast.element.declaration.EPort
 import io.verik.importer.ast.element.declaration.ESvValueParameter
 import io.verik.importer.ast.element.declaration.ETypeParameter
 import io.verik.importer.ast.element.descriptor.EDescriptor
+import io.verik.importer.ast.element.descriptor.ETypeArgument
 import io.verik.importer.ast.element.expression.EExpression
 import io.verik.importer.ast.element.expression.ENothingExpression
 import io.verik.importer.message.Messages
@@ -59,19 +60,15 @@ class CastContext(
     }
 
     fun castDeclarations(ctx: RuleContext): List<EDeclaration> {
-        return when (val element = casterVisitor.getElement<EElement>(ctx)) {
-            null -> listOf()
-            is EContainerElement -> element.elements.map { it.cast() }
-            else -> listOf(element.cast())
-        }
+        return castElements(ctx).map { it.cast() }
     }
 
     fun castTypeParameters(ctx: RuleContext): List<ETypeParameter> {
-        return castDeclarations(ctx).map { it.cast() }
+        return castElements(ctx).map { it.cast() }
     }
 
     fun castValueParameters(ctx: RuleContext): List<ESvValueParameter> {
-        return castDeclarations(ctx).map { it.cast() }
+        return castElements(ctx).map { it.cast() }
     }
 
     fun castPort(ctx: RuleContext): EPort? {
@@ -82,6 +79,14 @@ class CastContext(
         return casterVisitor.getElement(ctx)
     }
 
+    fun castTypeArgument(ctx: RuleContext): ETypeArgument? {
+        return casterVisitor.getElement(ctx)
+    }
+
+    fun castTypeArguments(ctx: RuleContext): List<ETypeArgument> {
+        return castElements(ctx).map { it.cast() }
+    }
+
     fun castExpression(ctx: RuleContext): EExpression {
         val element = casterVisitor.getElement<EExpression>(ctx)
         return if (element != null) {
@@ -90,6 +95,14 @@ class CastContext(
             val location = getLocation(ctx)
             Messages.UNABLE_TO_CAST.on(location, "expression")
             ENothingExpression(location)
+        }
+    }
+
+    private fun castElements(ctx: RuleContext): List<EElement> {
+        return when (val element = casterVisitor.getElement<EElement>(ctx)) {
+            null -> listOf()
+            is EContainerElement -> element.elements
+            else -> listOf(element)
         }
     }
 }

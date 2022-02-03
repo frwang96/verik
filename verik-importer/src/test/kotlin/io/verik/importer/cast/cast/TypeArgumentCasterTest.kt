@@ -21,37 +21,20 @@ import io.verik.importer.test.BaseTest
 import io.verik.importer.test.findDeclaration
 import org.junit.jupiter.api.Test
 
-internal class ValueParameterCasterTest : BaseTest() {
+internal class TypeArgumentCasterTest : BaseTest() {
 
     @Test
-    fun `cast value parameter from tfPortItem`() {
+    fun `cast type argument from paramExpression`() {
         driveCasterTest(
-            SystemVerilogParser.TfPortItemContext::class,
+            SystemVerilogParser.ParamExpressionContext::class,
             """
-                function void f(int x);
-                endfunction
-            """.trimIndent(),
-            "SvValueParameter(x, SimpleDescriptor(Int), 0)"
-        ) { it.findDeclaration("x") }
-    }
-
-    @Test
-    fun `cast value parameter from tfPortDeclaration multiple`() {
-        driveCasterTest(
-            SystemVerilogParser.TfPortDeclarationContext::class,
-            """
-                function void f;
-                    input x, y = 1'b1;
-                endfunction
+                c#(int) x;
             """.trimIndent(),
             """
-                SvFunction(
-                    f, [
-                        SvValueParameter(x, SimpleDescriptor(Boolean), 0),
-                        SvValueParameter(y, SimpleDescriptor(Boolean), 1)
-                    ], SimpleDescriptor(Unit)
+                Property(
+                    x, ReferenceDescriptor(Nothing, c, Nothing, [DescriptorTypeArgument(null, SimpleDescriptor(Int))])
                 )
             """.trimIndent()
-        ) { it.findDeclaration("f") }
+        ) { it.findDeclaration("x") }
     }
 }

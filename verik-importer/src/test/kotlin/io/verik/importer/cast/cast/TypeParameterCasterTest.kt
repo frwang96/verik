@@ -24,7 +24,7 @@ import org.junit.jupiter.api.Test
 internal class TypeParameterCasterTest : BaseTest() {
 
     @Test
-    fun `cast typeParameter from parameterPortDeclarationDataType`() {
+    fun `cast type parameter from parameterPortDeclarationDataType`() {
         driveCasterTest(
             SystemVerilogParser.ParameterPortDeclarationDataTypeContext::class,
             """
@@ -36,7 +36,7 @@ internal class TypeParameterCasterTest : BaseTest() {
     }
 
     @Test
-    fun `cast typeParameter from parameterPortDeclarationType`() {
+    fun `cast type parameter from parameterPortDeclarationType`() {
         driveCasterTest(
             SystemVerilogParser.ParameterPortDeclarationTypeContext::class,
             """
@@ -48,7 +48,7 @@ internal class TypeParameterCasterTest : BaseTest() {
     }
 
     @Test
-    fun `cast typeParameter from parameterPortDeclarationType multiple`() {
+    fun `cast type parameter from parameterPortDeclarationType multiple`() {
         driveCasterTest(
             SystemVerilogParser.ParameterPortDeclarationTypeContext::class,
             """

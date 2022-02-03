@@ -19,7 +19,6 @@ package io.verik.importer.cast.cast
 import io.verik.importer.antlr.SystemVerilogParser
 import io.verik.importer.test.BaseTest
 import io.verik.importer.test.findDeclaration
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 internal class DescriptorCasterTest : BaseTest() {
@@ -63,18 +62,6 @@ internal class DescriptorCasterTest : BaseTest() {
             SystemVerilogParser.ImplicitDataTypeContext::class,
             """
                 x;
-            """.trimIndent(),
-            "Property(x, SimpleDescriptor(Boolean))"
-        ) { it.findDeclaration("x") }
-    }
-
-    @Test
-    @Disabled
-    fun `cast descriptor from classType`() {
-        driveCasterTest(
-            SystemVerilogParser.ClassTypeContext::class,
-            """
-                c#(int) x;
             """.trimIndent(),
             "Property(x, SimpleDescriptor(Boolean))"
         ) { it.findDeclaration("x") }

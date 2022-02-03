@@ -16,7 +16,9 @@
 
 package io.verik.importer.transform.pre
 
+import io.verik.importer.ast.common.Type
 import io.verik.importer.ast.element.descriptor.EBitDescriptor
+import io.verik.importer.ast.element.descriptor.EDescriptorTypeArgument
 import io.verik.importer.ast.element.descriptor.EPackedDescriptor
 import io.verik.importer.ast.element.descriptor.EQueueDescriptor
 import io.verik.importer.ast.element.descriptor.EReferenceDescriptor
@@ -52,7 +54,12 @@ object DescriptorResolverStage : ProjectStage() {
 
         override fun visitReferenceDescriptor(referenceDescriptor: EReferenceDescriptor) {
             super.visitReferenceDescriptor(referenceDescriptor)
-            referenceDescriptor.type = referenceDescriptor.reference.toType()
+            val typeArguments = referenceDescriptor.typeArguments.map {
+                if (it is EDescriptorTypeArgument) {
+                    it.descriptor.type.copy()
+                } else Type.unresolved()
+            }
+            referenceDescriptor.type = referenceDescriptor.reference.toType(typeArguments)
         }
 
         override fun visitPackedDescriptor(packedDescriptor: EPackedDescriptor) {

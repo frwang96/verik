@@ -104,7 +104,10 @@ object DescriptorCaster {
         val location = castContext.getLocation(ctx)
         val identifier = ctx.psClassIdentifier().classIdentifier()
         val name = identifier.text
-        return EReferenceDescriptor(location, Type.unresolved(), name, Core.C_Nothing, listOf())
+        val typeArguments = if (ctx.parameterValueAssignment().isNotEmpty()) {
+            castContext.castTypeArguments(ctx.parameterValueAssignment(0))
+        } else listOf()
+        return EReferenceDescriptor(location, Type.unresolved(), name, Core.C_Nothing, typeArguments)
     }
 
     fun castDescriptorFromDataTypeOrVoid(

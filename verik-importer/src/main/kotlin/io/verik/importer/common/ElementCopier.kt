@@ -18,6 +18,7 @@ package io.verik.importer.common
 
 import io.verik.importer.ast.element.common.EElement
 import io.verik.importer.ast.element.descriptor.EBitDescriptor
+import io.verik.importer.ast.element.descriptor.EDescriptorTypeArgument
 import io.verik.importer.ast.element.descriptor.EPackedDescriptor
 import io.verik.importer.ast.element.descriptor.EQueueDescriptor
 import io.verik.importer.ast.element.descriptor.EReferenceDescriptor
@@ -40,6 +41,7 @@ object ElementCopier {
             is EReferenceDescriptor -> copyReferenceDescriptor(element, location)
             is EPackedDescriptor -> copyPackedDescriptor(element, location)
             is EQueueDescriptor -> copyQueueDescriptor(element, location)
+            is EDescriptorTypeArgument -> copyDescriptorTypeArgument(element, location)
             is ELiteralExpression -> copyLiteralExpression(element, location)
             is EReferenceExpression -> copyReferenceExpression(element, location)
             else -> Messages.INTERNAL_ERROR.on(element, "Unable to copy element: $element")
@@ -80,13 +82,13 @@ object ElementCopier {
         location: SourceLocation?,
     ): EReferenceDescriptor {
         val type = referenceDescriptor.type.copy()
-        val argumentDescriptors = referenceDescriptor.argumentDescriptors.map { copy(it, location) }
+        val typeArguments = referenceDescriptor.typeArguments.map { copy(it, location) }
         return EReferenceDescriptor(
             location ?: referenceDescriptor.location,
             type,
             referenceDescriptor.name,
             referenceDescriptor.reference,
-            argumentDescriptors
+            typeArguments
         )
     }
 
@@ -116,6 +118,18 @@ object ElementCopier {
         return EQueueDescriptor(
             location ?: queueDescriptor.location,
             type,
+            descriptor
+        )
+    }
+
+    private fun copyDescriptorTypeArgument(
+        descriptorTypeArgument: EDescriptorTypeArgument,
+        location: SourceLocation?
+    ): EDescriptorTypeArgument {
+        val descriptor = copy(descriptorTypeArgument.descriptor, location)
+        return EDescriptorTypeArgument(
+            location ?: descriptorTypeArgument.location,
+            descriptorTypeArgument.name,
             descriptor
         )
     }

@@ -24,7 +24,7 @@ import org.junit.jupiter.api.Test
 internal class TypeDeclarationCasterTest : BaseTest() {
 
     @Test
-    fun `cast typeAlias from dataTypeVector`() {
+    fun `cast type alias from dataTypeVector`() {
         driveCasterTest(
             SystemVerilogParser.DataTypeVectorContext::class,
             """
