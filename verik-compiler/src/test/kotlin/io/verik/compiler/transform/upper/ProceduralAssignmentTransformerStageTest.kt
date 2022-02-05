@@ -63,7 +63,7 @@ internal class ProceduralAssignmentTransformerStageTest : BaseTest() {
             """
                 class M : Module() {
                     @Seq
-                    var x = onr(posedge(false)) { false }
+                    var x = oni(posedge(false)) { false }
                 }
             """.trimIndent(),
             """

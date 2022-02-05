@@ -43,7 +43,7 @@ object M : Module() {
     }
 
     @Seq
-    var x5 = onr(posedge(x0)) { x1 }
+    var x5 = oni(posedge(x0)) { x1 }
 
     @Seq
     fun f2() {

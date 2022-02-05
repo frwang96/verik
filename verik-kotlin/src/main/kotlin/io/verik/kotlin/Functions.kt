@@ -27,15 +27,15 @@ fun repeat(times: Int, action: (Int) -> Unit) {
 }
 
 /**
- * Raises an assertion error if [value] is false.
+ * Asserts that [value] is true. Raises an error otherwise.
  */
 fun assert(value: Boolean) {
     throw IllegalArgumentException()
 }
 
 /**
- * Raises an assertion error with [message] if [value] is false.
+ * Asserts that [value] is true. Executes [action] otherwise.
  */
-fun assert(value: Boolean, message: () -> Any) {
+fun assert(value: Boolean, action: () -> Any) {
     throw IllegalArgumentException()
 }

@@ -199,7 +199,7 @@ object Core {
         val F_posedge_Boolean = CoreVkControl.F_posedge_Boolean
         val F_negedge_Boolean = CoreVkControl.F_negedge_Boolean
         val F_on_Event_Event_Function = CoreVkControl.F_on_Event_Event_Function
-        val F_onr_Event_Event_Function = CoreVkControl.F_onr_Event_Event_Function
+        val F_oni_Event_Event_Function = CoreVkControl.F_oni_Event_Event_Function
         val F_forever_Function = CoreVkControl.F_forever_Function
         val F_delay_Int = CoreVkControl.F_delay_Int
         val F_wait_Boolean = CoreVkControl.F_wait_Boolean

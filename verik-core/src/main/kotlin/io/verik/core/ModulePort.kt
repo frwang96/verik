@@ -27,7 +27,7 @@ package io.verik.core
  *
  *  class MI : ModuleInterface() {
  *
- *      var x: Boolean = x()
+ *      var x: Boolean = nc()
  *
  *      @Make
  *      val mp = MP(x)
