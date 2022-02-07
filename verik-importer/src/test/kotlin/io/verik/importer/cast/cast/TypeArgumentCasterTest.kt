@@ -47,7 +47,7 @@ internal class TypeArgumentCasterTest : BaseTest() {
             """.trimIndent(),
             """
                 Property(
-                    x, ReferenceDescriptor(Nothing, c, Nothing, [ExpressionTypeArgument(null, LiteralExpression(1))])
+                    x, ReferenceDescriptor(Nothing, c, Nothing, [ExpressionTypeArgument(null, LiteralExpression(*))])
                 )
             """.trimIndent()
         ) { it.findDeclaration("x") }

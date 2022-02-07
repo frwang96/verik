@@ -23,7 +23,7 @@ import org.junit.jupiter.api.Test
 internal class FunctionOverrideTransformerStageTest : BaseTest() {
 
     @Test
-    fun `resolve bitDescriptor`() {
+    fun `override function`() {
         driveElementTest(
             """
                 class c;
@@ -38,6 +38,33 @@ internal class FunctionOverrideTransformerStageTest : BaseTest() {
             """.trimIndent(),
             FunctionOverrideTransformerStage::class,
             "KtClass(d, [KtFunction(f, [], SimpleDescriptor(Unit), [], 1, 1)], [], [], ReferenceDescriptor(*), 1)"
+        ) { it.findDeclaration("d") }
+    }
+
+    @Test
+    fun `override function remove default`() {
+        driveElementTest(
+            """
+                class c;
+                    function void f(int x = 0);
+                    endfunction
+                endclass
+
+                class d extends c;
+                    function void f(int x = 0);
+                    endfunction
+                endclass
+            """.trimIndent(),
+            FunctionOverrideTransformerStage::class,
+            """
+                KtClass(
+                    d, [
+                        KtFunction(f, [KtValueParameter(x, SimpleDescriptor(Int), [], null, 0)],
+                        SimpleDescriptor(Unit), [], 1, 1)
+                    ],
+                    [], [], ReferenceDescriptor(c, c, c, []), 1
+                )
+            """.trimIndent()
         ) { it.findDeclaration("d") }
     }
 }

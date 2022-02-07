@@ -298,12 +298,14 @@ class ElementPrinter : Visitor() {
 
     override fun visitLiteralExpression(literalExpression: ELiteralExpression) {
         build("LiteralExpression") {
+            build(literalExpression.type.toString())
             build(literalExpression.value)
         }
     }
 
     override fun visitReferenceExpression(referenceExpression: EReferenceExpression) {
         build("ReferenceExpression") {
+            build(referenceExpression.type.toString())
             build(referenceExpression.name)
             build(referenceExpression.reference.name)
         }

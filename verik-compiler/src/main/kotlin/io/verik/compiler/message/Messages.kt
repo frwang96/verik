@@ -76,10 +76,6 @@ object Messages {
         "Illegal name: $0"
     )
 
-    val RESERVED_NAME = ErrorMessageTemplate1<String>(
-        "Reserved name: $0"
-    )
-
 //  COMPILE  ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     val KOTLIN_COMPILE_WARNING = WarningMessageTemplate1<String>(

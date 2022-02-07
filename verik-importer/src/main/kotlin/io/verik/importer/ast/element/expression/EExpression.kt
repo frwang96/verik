@@ -16,6 +16,10 @@
 
 package io.verik.importer.ast.element.expression
 
+import io.verik.importer.ast.common.Type
 import io.verik.importer.ast.element.common.EElement
 
-abstract class EExpression : EElement()
+abstract class EExpression : EElement() {
+
+    abstract var type: Type
+}

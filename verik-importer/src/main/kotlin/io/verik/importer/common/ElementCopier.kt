@@ -152,8 +152,10 @@ object ElementCopier {
         literalExpression: ELiteralExpression,
         location: SourceLocation?
     ): ELiteralExpression {
+        val type = literalExpression.type.copy()
         return ELiteralExpression(
             location ?: literalExpression.location,
+            type,
             literalExpression.value
         )
     }
@@ -162,8 +164,10 @@ object ElementCopier {
         referenceExpression: EReferenceExpression,
         location: SourceLocation?,
     ): EElement {
+        val type = referenceExpression.type.copy()
         return EReferenceExpression(
             location ?: referenceExpression.location,
+            type,
             referenceExpression.name,
             referenceExpression.reference
         )

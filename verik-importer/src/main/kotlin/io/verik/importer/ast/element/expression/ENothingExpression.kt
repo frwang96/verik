@@ -16,12 +16,15 @@
 
 package io.verik.importer.ast.element.expression
 
+import io.verik.importer.ast.common.Type
 import io.verik.importer.common.Visitor
 import io.verik.importer.message.SourceLocation
 
 class ENothingExpression(
     override val location: SourceLocation
 ) : EExpression() {
+
+    override var type = Type.unresolved()
 
     override fun accept(visitor: Visitor) {
         visitor.visitNothingExpression(this)

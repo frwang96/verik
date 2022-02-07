@@ -1,6 +1,11 @@
 # Changelog
 
 ## [Unreleased]
+### Importer
+- Fix function override bugs.
+
+### Compiler
+- Rename `onr` to `oni`.
 
 ## [0.1.13]
 ### Importer

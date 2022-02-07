@@ -14,21 +14,12 @@
  * limitations under the License.
  */
 
-package io.verik.importer.ast.element.expression
+package io.verik.importer.transform.pre
 
-import io.verik.importer.ast.common.Type
-import io.verik.importer.common.Visitor
-import io.verik.importer.message.SourceLocation
+import io.verik.importer.main.ProjectContext
+import io.verik.importer.main.ProjectStage
 
-class ELiteralExpression(
-    override val location: SourceLocation,
-    override var type: Type,
-    val value: String
-) : EExpression() {
+object ExpressionResolverStage : ProjectStage() {
 
-    override fun accept(visitor: Visitor) {
-        visitor.visitLiteralExpression(this)
-    }
-
-    override fun acceptChildren(visitor: Visitor) {}
+    override fun process(projectContext: ProjectContext) {}
 }

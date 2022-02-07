@@ -17,11 +17,13 @@
 package io.verik.importer.ast.element.expression
 
 import io.verik.importer.ast.common.Declaration
+import io.verik.importer.ast.common.Type
 import io.verik.importer.common.Visitor
 import io.verik.importer.message.SourceLocation
 
 class EReferenceExpression(
     override val location: SourceLocation,
+    override var type: Type,
     val name: String,
     var reference: Declaration
 ) : EExpression() {

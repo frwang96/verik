@@ -17,6 +17,7 @@
 package io.verik.importer.cast.cast
 
 import io.verik.importer.antlr.SystemVerilogParser
+import io.verik.importer.ast.common.Type
 import io.verik.importer.ast.element.expression.EExpression
 import io.verik.importer.ast.element.expression.ELiteralExpression
 import io.verik.importer.ast.element.expression.EReferenceExpression
@@ -32,7 +33,7 @@ object ExpressionCaster {
         val identifier = ctx.psParameterIdentifier().parameterIdentifier()
         val location = castContext.getLocation(identifier)
         val name = identifier.text
-        return EReferenceExpression(location, name, Core.C_Nothing)
+        return EReferenceExpression(location, Type.unresolved(), name, Core.C_Nothing)
     }
 
     fun castExpressionFromPrimaryLiteral(
@@ -40,7 +41,7 @@ object ExpressionCaster {
         castContext: CastContext
     ): EExpression {
         val location = castContext.getLocation(ctx)
-        return ELiteralExpression(location, ctx.text)
+        return ELiteralExpression(location, Type.unresolved(), ctx.text)
     }
 
     fun castExpressionFromPrimaryHierarchical(
@@ -50,6 +51,6 @@ object ExpressionCaster {
         val identifier = ctx.hierarchicalIdentifier()
         val location = castContext.getLocation(identifier)
         val name = identifier.text
-        return EReferenceExpression(location, name, Core.C_Nothing)
+        return EReferenceExpression(location, Type.unresolved(), name, Core.C_Nothing)
     }
 }

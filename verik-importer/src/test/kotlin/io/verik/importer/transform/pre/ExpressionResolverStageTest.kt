@@ -14,21 +14,24 @@
  * limitations under the License.
  */
 
-package io.verik.importer.ast.element.expression
+package io.verik.importer.transform.pre
 
-import io.verik.importer.ast.common.Type
-import io.verik.importer.common.Visitor
-import io.verik.importer.message.SourceLocation
+import io.verik.importer.test.BaseTest
+import io.verik.importer.test.findDeclaration
+import org.junit.jupiter.api.Disabled
+import org.junit.jupiter.api.Test
 
-class ELiteralExpression(
-    override val location: SourceLocation,
-    override var type: Type,
-    val value: String
-) : EExpression() {
+internal class ExpressionResolverStageTest : BaseTest() {
 
-    override fun accept(visitor: Visitor) {
-        visitor.visitLiteralExpression(this)
+    @Test
+    @Disabled
+    fun `resolve literalExpression`() {
+        driveElementTest(
+            """
+                logic [1:0] x;
+            """.trimIndent(),
+            ExpressionResolverStage::class,
+            "Property(x, BitDescriptor(Nothing, LiteralExpression(`1`, 1), LiteralExpression(*), 0))"
+        ) { it.findDeclaration("x") }
     }
-
-    override fun acceptChildren(visitor: Visitor) {}
 }
