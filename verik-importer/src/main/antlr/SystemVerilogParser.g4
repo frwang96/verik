@@ -1333,9 +1333,9 @@ constantParamExpression
     ;
 
 paramExpression
-    : minTypMaxExpression
-    | dataType
-    | DOLLAR
+    : minTypMaxExpression # paramExpressionExpression
+    | dataType            # paramExpressionDataType
+    | DOLLAR              # paramExpressionDollar
     ;
 
 constantPartSelectRange

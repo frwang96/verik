@@ -19,6 +19,7 @@ package io.verik.importer.common
 import io.verik.importer.ast.element.common.EElement
 import io.verik.importer.ast.element.descriptor.EBitDescriptor
 import io.verik.importer.ast.element.descriptor.EDescriptorTypeArgument
+import io.verik.importer.ast.element.descriptor.EExpressionTypeArgument
 import io.verik.importer.ast.element.descriptor.EPackedDescriptor
 import io.verik.importer.ast.element.descriptor.EQueueDescriptor
 import io.verik.importer.ast.element.descriptor.EReferenceDescriptor
@@ -42,6 +43,7 @@ object ElementCopier {
             is EPackedDescriptor -> copyPackedDescriptor(element, location)
             is EQueueDescriptor -> copyQueueDescriptor(element, location)
             is EDescriptorTypeArgument -> copyDescriptorTypeArgument(element, location)
+            is EExpressionTypeArgument -> copyExpressionTypeArgument(element, location)
             is ELiteralExpression -> copyLiteralExpression(element, location)
             is EReferenceExpression -> copyReferenceExpression(element, location)
             else -> Messages.INTERNAL_ERROR.on(element, "Unable to copy element: $element")
@@ -131,6 +133,18 @@ object ElementCopier {
             location ?: descriptorTypeArgument.location,
             descriptorTypeArgument.name,
             descriptor
+        )
+    }
+
+    private fun copyExpressionTypeArgument(
+        expressionTypeArgument: EExpressionTypeArgument,
+        location: SourceLocation?
+    ): EExpressionTypeArgument {
+        val expression = copy(expressionTypeArgument.expression, location)
+        return EExpressionTypeArgument(
+            location ?: expressionTypeArgument.location,
+            expressionTypeArgument.name,
+            expression
         )
     }
 

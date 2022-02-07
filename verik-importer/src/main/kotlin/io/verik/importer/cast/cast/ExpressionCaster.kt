@@ -17,6 +17,7 @@
 package io.verik.importer.cast.cast
 
 import io.verik.importer.antlr.SystemVerilogParser
+import io.verik.importer.ast.element.expression.EExpression
 import io.verik.importer.ast.element.expression.ELiteralExpression
 import io.verik.importer.ast.element.expression.EReferenceExpression
 import io.verik.importer.cast.common.CastContext
@@ -24,20 +25,30 @@ import io.verik.importer.core.Core
 
 object ExpressionCaster {
 
-    fun castLiteralExpressionFromConstantPrimaryLiteral(
-        ctx: SystemVerilogParser.ConstantPrimaryLiteralContext,
+    fun castExpressionFromConstantPrimaryParameter(
+        ctx: SystemVerilogParser.ConstantPrimaryParameterContext,
         castContext: CastContext
-    ): ELiteralExpression {
+    ): EExpression {
+        val identifier = ctx.psParameterIdentifier().parameterIdentifier()
+        val location = castContext.getLocation(identifier)
+        val name = identifier.text
+        return EReferenceExpression(location, name, Core.C_Nothing)
+    }
+
+    fun castExpressionFromPrimaryLiteral(
+        ctx: SystemVerilogParser.PrimaryLiteralContext,
+        castContext: CastContext
+    ): EExpression {
         val location = castContext.getLocation(ctx)
         return ELiteralExpression(location, ctx.text)
     }
 
-    fun castReferenceExpressionFromConstantPrimaryParameter(
-        ctx: SystemVerilogParser.ConstantPrimaryParameterContext,
+    fun castExpressionFromPrimaryHierarchical(
+        ctx: SystemVerilogParser.PrimaryHierarchicalContext,
         castContext: CastContext
-    ): EReferenceExpression {
-        val location = castContext.getLocation(ctx)
-        val identifier = ctx.psParameterIdentifier().parameterIdentifier()
+    ): EExpression {
+        val identifier = ctx.hierarchicalIdentifier()
+        val location = castContext.getLocation(identifier)
         val name = identifier.text
         return EReferenceExpression(location, name, Core.C_Nothing)
     }

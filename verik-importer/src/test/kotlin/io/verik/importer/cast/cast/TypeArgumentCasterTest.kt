@@ -24,15 +24,30 @@ import org.junit.jupiter.api.Test
 internal class TypeArgumentCasterTest : BaseTest() {
 
     @Test
-    fun `cast type argument from paramExpression`() {
+    fun `cast type argument from paramExpressionDataType`() {
         driveCasterTest(
-            SystemVerilogParser.ParamExpressionContext::class,
+            SystemVerilogParser.ParamExpressionDataTypeContext::class,
             """
                 c#(int) x;
             """.trimIndent(),
             """
                 Property(
                     x, ReferenceDescriptor(Nothing, c, Nothing, [DescriptorTypeArgument(null, SimpleDescriptor(Int))])
+                )
+            """.trimIndent()
+        ) { it.findDeclaration("x") }
+    }
+
+    @Test
+    fun `cast type argument from paramExpressionExpression`() {
+        driveCasterTest(
+            SystemVerilogParser.ParamExpressionExpressionContext::class,
+            """
+                c#(1) x;
+            """.trimIndent(),
+            """
+                Property(
+                    x, ReferenceDescriptor(Nothing, c, Nothing, [ExpressionTypeArgument(null, LiteralExpression(1))])
                 )
             """.trimIndent()
         ) { it.findDeclaration("x") }

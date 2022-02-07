@@ -24,13 +24,29 @@ import org.junit.jupiter.api.Test
 internal class ExpressionCasterTest : BaseTest() {
 
     @Test
-    fun `cast referenceExpression from constantPrimaryParameter`() {
+    fun `cast expression from constantPrimaryParameter`() {
         driveCasterTest(
-            SystemVerilogParser.PackedDimensionRangeContext::class,
+            SystemVerilogParser.ConstantPrimaryParameterContext::class,
             """
                 logic [N:0] x;
             """.trimIndent(),
             "Property(x, BitDescriptor(Nothing, ReferenceExpression(N, Nothing), LiteralExpression(0), 0))"
+        ) { it.findDeclaration("x") }
+    }
+
+    @Test
+    fun `cast expression from primaryHierarchical`() {
+        driveCasterTest(
+            SystemVerilogParser.PrimaryHierarchicalContext::class,
+            """
+                c#(d) x;
+            """.trimIndent(),
+            """
+                Property(
+                    x, ReferenceDescriptor(Nothing, c, Nothing,
+                    [ExpressionTypeArgument(null, ReferenceExpression(d, Nothing))])
+                )
+            """.trimIndent()
         ) { it.findDeclaration("x") }
     }
 }

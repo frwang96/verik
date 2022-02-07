@@ -283,17 +283,25 @@ class CasterVisitor(
 
 // A.8.3 Expressions ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-    override fun visitParamExpression(ctx: SystemVerilogParser.ParamExpressionContext?): EElement? {
-        return TypeArgumentCaster.castTypeArgumentFromParamExpression(ctx!!, castContext)
+    override fun visitParamExpressionDataType(ctx: SystemVerilogParser.ParamExpressionDataTypeContext?): EElement? {
+        return TypeArgumentCaster.castTypeArgumentFromParamExpressionDataType(ctx!!, castContext)
+    }
+
+    override fun visitParamExpressionExpression(ctx: SystemVerilogParser.ParamExpressionExpressionContext?): EElement {
+        return TypeArgumentCaster.castTypeArgumentFromParamExpressionExpression(ctx!!, castContext)
     }
 
 // A.8.4 Primaries /////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    override fun visitConstantPrimaryLiteral(ctx: SystemVerilogParser.ConstantPrimaryLiteralContext?): EElement {
-        return ExpressionCaster.castLiteralExpressionFromConstantPrimaryLiteral(ctx!!, castContext)
+    override fun visitConstantPrimaryParameter(ctx: SystemVerilogParser.ConstantPrimaryParameterContext?): EElement {
+        return ExpressionCaster.castExpressionFromConstantPrimaryParameter(ctx!!, castContext)
     }
 
-    override fun visitConstantPrimaryParameter(ctx: SystemVerilogParser.ConstantPrimaryParameterContext?): EElement {
-        return ExpressionCaster.castReferenceExpressionFromConstantPrimaryParameter(ctx!!, castContext)
+    override fun visitPrimaryLiteral(ctx: SystemVerilogParser.PrimaryLiteralContext?): EElement {
+        return ExpressionCaster.castExpressionFromPrimaryLiteral(ctx!!, castContext)
+    }
+
+    override fun visitPrimaryHierarchical(ctx: SystemVerilogParser.PrimaryHierarchicalContext?): EElement {
+        return ExpressionCaster.castExpressionFromPrimaryHierarchical(ctx!!, castContext)
     }
 }

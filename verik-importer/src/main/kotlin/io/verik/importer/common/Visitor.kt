@@ -48,6 +48,7 @@ import io.verik.importer.ast.element.descriptor.EBitDescriptor
 import io.verik.importer.ast.element.descriptor.EContainerDescriptor
 import io.verik.importer.ast.element.descriptor.EDescriptor
 import io.verik.importer.ast.element.descriptor.EDescriptorTypeArgument
+import io.verik.importer.ast.element.descriptor.EExpressionTypeArgument
 import io.verik.importer.ast.element.descriptor.EPackedDescriptor
 import io.verik.importer.ast.element.descriptor.EQueueDescriptor
 import io.verik.importer.ast.element.descriptor.EReferenceDescriptor
@@ -212,6 +213,10 @@ abstract class Visitor {
 
     open fun visitDescriptorTypeArgument(descriptorTypeArgument: EDescriptorTypeArgument) {
         visitTypeArgument(descriptorTypeArgument)
+    }
+
+    open fun visitExpressionTypeArgument(expressionTypeArgument: EExpressionTypeArgument) {
+        visitTypeArgument(expressionTypeArgument)
     }
 
 // Expression Like /////////////////////////////////////////////////////////////////////////////////////////////////////

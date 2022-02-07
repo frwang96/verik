@@ -19,6 +19,7 @@ package io.verik.importer.cast.cast
 import io.verik.importer.antlr.SystemVerilogParser
 import io.verik.importer.ast.element.common.EContainerElement
 import io.verik.importer.ast.element.descriptor.EDescriptorTypeArgument
+import io.verik.importer.ast.element.descriptor.EExpressionTypeArgument
 import io.verik.importer.ast.element.descriptor.ETypeArgument
 import io.verik.importer.cast.common.CastContext
 
@@ -35,18 +36,27 @@ object TypeArgumentCaster {
         )
     }
 
-    fun castTypeArgumentFromParamExpression(
-        ctx: SystemVerilogParser.ParamExpressionContext,
+    fun castTypeArgumentFromParamExpressionDataType(
+        ctx: SystemVerilogParser.ParamExpressionDataTypeContext,
         castContext: CastContext
     ): ETypeArgument? {
-        val dataType = ctx.dataType()
-        return if (dataType != null) {
-            val descriptor = castContext.castDescriptor(dataType) ?: return null
-            EDescriptorTypeArgument(
-                descriptor.location,
-                null,
-                descriptor
-            )
-        } else null
+        val descriptor = castContext.castDescriptor(ctx.dataType()) ?: return null
+        return EDescriptorTypeArgument(
+            descriptor.location,
+            null,
+            descriptor
+        )
+    }
+
+    fun castTypeArgumentFromParamExpressionExpression(
+        ctx: SystemVerilogParser.ParamExpressionExpressionContext,
+        castContext: CastContext
+    ): ETypeArgument {
+        val expression = castContext.castExpression(ctx.minTypMaxExpression())
+        return EExpressionTypeArgument(
+            expression.location,
+            null,
+            expression
+        )
     }
 }

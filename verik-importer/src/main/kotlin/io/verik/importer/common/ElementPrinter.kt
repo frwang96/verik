@@ -41,6 +41,7 @@ import io.verik.importer.ast.element.declaration.ETypeAlias
 import io.verik.importer.ast.element.declaration.ETypeParameter
 import io.verik.importer.ast.element.descriptor.EBitDescriptor
 import io.verik.importer.ast.element.descriptor.EDescriptorTypeArgument
+import io.verik.importer.ast.element.descriptor.EExpressionTypeArgument
 import io.verik.importer.ast.element.descriptor.EPackedDescriptor
 import io.verik.importer.ast.element.descriptor.EQueueDescriptor
 import io.verik.importer.ast.element.descriptor.EReferenceDescriptor
@@ -279,6 +280,13 @@ class ElementPrinter : Visitor() {
         build("DescriptorTypeArgument") {
             build(descriptorTypeArgument.name)
             build(descriptorTypeArgument.descriptor)
+        }
+    }
+
+    override fun visitExpressionTypeArgument(expressionTypeArgument: EExpressionTypeArgument) {
+        build("ExpressionTypeArgument") {
+            build(expressionTypeArgument.name)
+            build(expressionTypeArgument.expression)
         }
     }
 
