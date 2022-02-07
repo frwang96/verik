@@ -23,13 +23,32 @@ import org.junit.jupiter.api.Test
 internal class ExpressionResolverStageTest : BaseTest() {
 
     @Test
-    fun `resolve literalExpression`() {
+    fun `resolve literal expression`() {
         driveElementTest(
             """
                 logic [1:0] x;
             """.trimIndent(),
             ExpressionResolverStage::class,
             "Property(x, BitDescriptor(Nothing, LiteralExpression(`1`, 1), LiteralExpression(*), 0))"
+        ) { it.findDeclaration("x") }
+    }
+
+    @Test
+    fun `resolve reference expression`() {
+        driveElementTest(
+            """
+                class c #(type t);
+                endclass
+                class d;
+                endclass
+                c #(d) x;
+            """.trimIndent(),
+            ExpressionResolverStage::class,
+            """
+                Property(
+                    x, ReferenceDescriptor(Nothing, c, c, [ExpressionTypeArgument(null, ReferenceExpression(d, d, d))])
+                )
+            """.trimIndent()
         ) { it.findDeclaration("x") }
     }
 }

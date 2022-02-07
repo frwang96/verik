@@ -16,9 +16,9 @@
 
 package io.verik.importer.transform.pre
 
-import io.verik.importer.ast.common.Type
 import io.verik.importer.ast.element.descriptor.EBitDescriptor
 import io.verik.importer.ast.element.descriptor.EDescriptorTypeArgument
+import io.verik.importer.ast.element.descriptor.EExpressionTypeArgument
 import io.verik.importer.ast.element.descriptor.EPackedDescriptor
 import io.verik.importer.ast.element.descriptor.EQueueDescriptor
 import io.verik.importer.ast.element.descriptor.EReferenceDescriptor
@@ -27,6 +27,7 @@ import io.verik.importer.core.Cardinal
 import io.verik.importer.core.Core
 import io.verik.importer.main.ProjectContext
 import io.verik.importer.main.ProjectStage
+import io.verik.importer.message.Messages
 
 object DescriptorResolverStage : ProjectStage() {
 
@@ -52,9 +53,11 @@ object DescriptorResolverStage : ProjectStage() {
         override fun visitReferenceDescriptor(referenceDescriptor: EReferenceDescriptor) {
             super.visitReferenceDescriptor(referenceDescriptor)
             val typeArguments = referenceDescriptor.typeArguments.map {
-                if (it is EDescriptorTypeArgument) {
-                    it.descriptor.type.copy()
-                } else Type.unresolved()
+                when (it) {
+                    is EDescriptorTypeArgument -> it.descriptor.type.copy()
+                    is EExpressionTypeArgument -> it.expression.type.copy()
+                    else -> Messages.INTERNAL_ERROR.on(referenceDescriptor, "Unexpected type argument")
+                }
             }
             referenceDescriptor.type = referenceDescriptor.reference.toType(typeArguments)
         }

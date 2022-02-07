@@ -84,7 +84,7 @@ abstract class Visitor {
     }
 
     open fun visitKtFile(file: EKtFile) {
-        visitDeclaration(file)
+        visitContainerDeclaration(file)
     }
 
 // Class Like //////////////////////////////////////////////////////////////////////////////////////////////////////////

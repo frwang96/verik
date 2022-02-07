@@ -17,6 +17,7 @@
 package io.verik.importer.transform.pre
 
 import io.verik.importer.ast.element.expression.ELiteralExpression
+import io.verik.importer.ast.element.expression.EReferenceExpression
 import io.verik.importer.common.TreeVisitor
 import io.verik.importer.core.Cardinal
 import io.verik.importer.main.ProjectContext
@@ -38,6 +39,10 @@ object ExpressionResolverStage : ProjectStage() {
             } else {
                 Messages.INTERNAL_ERROR.on(literalExpression, "Unable to parse literal: ${literalExpression.value}")
             }
+        }
+
+        override fun visitReferenceExpression(referenceExpression: EReferenceExpression) {
+            referenceExpression.type = referenceExpression.reference.toType()
         }
     }
 }
