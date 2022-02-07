@@ -16,6 +16,7 @@
 
 package io.verik.importer.ast.common
 
+import io.verik.importer.core.CardinalConstantDeclaration
 import io.verik.importer.core.Core
 
 class Type(
@@ -34,6 +35,12 @@ class Type(
         } else {
             reference != Core.C_Nothing
         }
+    }
+
+    fun asCardinalValueOrNull(): Int? {
+        val reference = reference
+        return if (reference is CardinalConstantDeclaration) reference.value
+        else null
     }
 
     override fun toString(): String {

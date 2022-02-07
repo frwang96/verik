@@ -18,13 +18,11 @@ package io.verik.importer.transform.pre
 
 import io.verik.importer.test.BaseTest
 import io.verik.importer.test.findDeclaration
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 internal class ExpressionResolverStageTest : BaseTest() {
 
     @Test
-    @Disabled
     fun `resolve literalExpression`() {
         driveElementTest(
             """

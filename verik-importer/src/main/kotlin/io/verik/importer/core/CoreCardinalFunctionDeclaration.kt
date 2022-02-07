@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,22 +14,8 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.check.pre
+package io.verik.importer.core
 
-import io.verik.compiler.test.BaseTest
-import org.junit.jupiter.api.Test
-
-internal class PreNameCheckerStageTest : BaseTest() {
-
-    @Test
-    fun `illegal name`() {
-        driveMessageTest(
-            """
-                @Suppress("ObjectPropertyName")
-                const val `???` = 0
-            """.trimIndent(),
-            true,
-            "Illegal name: ???"
-        )
-    }
-}
+class CoreCardinalFunctionDeclaration(
+    override val name: String
+) : CoreDeclaration, CardinalDeclaration

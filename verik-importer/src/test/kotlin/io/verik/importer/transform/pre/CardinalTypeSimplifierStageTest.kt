@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,22 +14,22 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.check.pre
+package io.verik.importer.transform.pre
 
-import io.verik.compiler.test.BaseTest
+import io.verik.importer.test.BaseTest
+import io.verik.importer.test.findDeclaration
 import org.junit.jupiter.api.Test
 
-internal class PreNameCheckerStageTest : BaseTest() {
+internal class CardinalTypeSimplifierStageTest : BaseTest() {
 
     @Test
-    fun `illegal name`() {
-        driveMessageTest(
+    fun `resolve bitDescriptor`() {
+        driveElementTest(
             """
-                @Suppress("ObjectPropertyName")
-                const val `???` = 0
+                logic [1:0] x;
             """.trimIndent(),
-            true,
-            "Illegal name: ???"
-        )
+            CardinalTypeSimplifierStage::class,
+            "Property(x, BitDescriptor(Ubit<`2`>, *, *, *))"
+        ) { it.findDeclaration("x") }
     }
 }

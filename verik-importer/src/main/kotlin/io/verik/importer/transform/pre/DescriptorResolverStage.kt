@@ -22,13 +22,11 @@ import io.verik.importer.ast.element.descriptor.EDescriptorTypeArgument
 import io.verik.importer.ast.element.descriptor.EPackedDescriptor
 import io.verik.importer.ast.element.descriptor.EQueueDescriptor
 import io.verik.importer.ast.element.descriptor.EReferenceDescriptor
-import io.verik.importer.common.ExpressionEvaluator
 import io.verik.importer.common.TreeVisitor
 import io.verik.importer.core.Cardinal
 import io.verik.importer.core.Core
 import io.verik.importer.main.ProjectContext
 import io.verik.importer.main.ProjectStage
-import kotlin.math.abs
 
 object DescriptorResolverStage : ProjectStage() {
 
@@ -40,15 +38,14 @@ object DescriptorResolverStage : ProjectStage() {
 
         override fun visitBitDescriptor(bitDescriptor: EBitDescriptor) {
             super.visitBitDescriptor(bitDescriptor)
-            val leftValue = ExpressionEvaluator.evaluate(bitDescriptor.left)
-            val rightValue = ExpressionEvaluator.evaluate(bitDescriptor.right)
-            if (leftValue != null && rightValue != null) {
-                val width = abs(leftValue - rightValue) + 1
-                bitDescriptor.type = if (bitDescriptor.isSigned) {
-                    Core.C_Sbit.toType(Cardinal.of(width).toType())
-                } else {
-                    Core.C_Ubit.toType(Cardinal.of(width).toType())
-                }
+            val type = Core.T_ADD.toType(
+                Core.T_SUB.toType(bitDescriptor.left.type, bitDescriptor.right.type),
+                Cardinal.of(1).toType()
+            )
+            bitDescriptor.type = if (bitDescriptor.isSigned) {
+                Core.C_Sbit.toType(type)
+            } else {
+                Core.C_Ubit.toType(type)
             }
         }
 
@@ -64,15 +61,14 @@ object DescriptorResolverStage : ProjectStage() {
 
         override fun visitPackedDescriptor(packedDescriptor: EPackedDescriptor) {
             super.visitPackedDescriptor(packedDescriptor)
-            val leftValue = ExpressionEvaluator.evaluate(packedDescriptor.left)
-            val rightValue = ExpressionEvaluator.evaluate(packedDescriptor.right)
-            if (leftValue != null && rightValue != null) {
-                val width = abs(leftValue - rightValue) + 1
-                packedDescriptor.type = Core.C_Packed.toType(
-                    Cardinal.of(width).toType(),
-                    packedDescriptor.descriptor.type.copy()
-                )
-            }
+            val type = Core.T_ADD.toType(
+                Core.T_SUB.toType(packedDescriptor.left.type, packedDescriptor.right.type),
+                Cardinal.of(1).toType()
+            )
+            packedDescriptor.type = Core.C_Packed.toType(
+                type,
+                packedDescriptor.descriptor.type.copy()
+            )
         }
 
         override fun visitQueueDescriptor(queueDescriptor: EQueueDescriptor) {
