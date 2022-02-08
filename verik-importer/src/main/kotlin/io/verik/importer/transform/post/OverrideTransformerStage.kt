@@ -21,6 +21,7 @@ import io.verik.importer.ast.element.declaration.EKtClass
 import io.verik.importer.ast.element.declaration.EKtFunction
 import io.verik.importer.ast.element.declaration.EProperty
 import io.verik.importer.ast.element.declaration.ETypeAlias
+import io.verik.importer.ast.element.declaration.ETypeParameter
 import io.verik.importer.ast.element.descriptor.EDescriptor
 import io.verik.importer.common.TreeVisitor
 import io.verik.importer.main.ProjectContext
@@ -42,17 +43,33 @@ object OverrideTransformerStage : ProjectStage() {
             }
         }
 
-        private fun isOverride(declaration: EDeclaration, superClass: EKtClass): Boolean {
+        private fun isOverride(property: EProperty, superClass: EKtClass): Boolean {
             val superSuperClass = getSuperClass(superClass.superDescriptor)
-            if (superSuperClass != null && isOverride(declaration, superSuperClass)) {
+            if (superSuperClass != null && isOverride(property, superSuperClass)) {
                 return true
             }
             superClass.declarations.forEach {
-                if (it.name == declaration.name) {
-                    when {
-                        it is EProperty && declaration is EProperty -> return true
-                        it is EKtFunction && declaration is EKtFunction -> return true
+                if (it is EProperty && it.name == property.name) return true
+            }
+            return false
+        }
+
+        private fun isOverride(function: EKtFunction, superClass: EKtClass): Boolean {
+            val superSuperClass = getSuperClass(superClass.superDescriptor)
+            if (superSuperClass != null && isOverride(function, superSuperClass)) {
+                return true
+            }
+            for (superClassFunction in superClass.declarations) {
+                if (superClassFunction is EKtFunction && superClassFunction.name == function.name) {
+                    if (superClassFunction.valueParameters.size != function.valueParameters.size) continue
+                    val isOverride = superClassFunction.valueParameters.zip(function.valueParameters).all {
+                        val superClassValueParameterReference = it.first.descriptor.type.reference
+                        val valueParameterReference = it.second.descriptor.type.reference
+                        superClassValueParameterReference is ETypeParameter ||
+                            valueParameterReference is ETypeParameter ||
+                            superClassValueParameterReference == valueParameterReference
                     }
+                    if (isOverride) return true
                 }
             }
             return false

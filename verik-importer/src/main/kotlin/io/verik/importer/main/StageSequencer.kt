@@ -29,6 +29,7 @@ import io.verik.importer.preprocess.PreprocessorStage
 import io.verik.importer.serialize.general.ConfigFileSerializerStage
 import io.verik.importer.serialize.source.SourceSerializerStage
 import io.verik.importer.transform.post.OverrideTransformerStage
+import io.verik.importer.transform.post.SuperDescriptorTransformerStage
 import io.verik.importer.transform.post.UnresolvedDeclarationEliminatorStage
 import io.verik.importer.transform.pre.CardinalTypeSimplifierStage
 import io.verik.importer.transform.pre.DescriptorResolverStage
@@ -59,6 +60,7 @@ object StageSequencer {
         stageSequence.add(StageType.INTERPRET, FunctionInterpreterStage)
 
         stageSequence.add(StageType.POST_TRANSFORM, UnresolvedDeclarationEliminatorStage)
+        stageSequence.add(StageType.POST_TRANSFORM, SuperDescriptorTransformerStage)
         stageSequence.add(StageType.POST_TRANSFORM, OverrideTransformerStage)
 
         stageSequence.add(StageType.CHECK, UninterpretedDeclarationCheckerStage)

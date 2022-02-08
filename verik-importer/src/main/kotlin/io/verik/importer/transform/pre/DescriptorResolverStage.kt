@@ -16,7 +16,9 @@
 
 package io.verik.importer.transform.pre
 
+import io.verik.importer.ast.common.Type
 import io.verik.importer.ast.common.TypeParameterized
+import io.verik.importer.ast.element.declaration.ETypeParameter
 import io.verik.importer.ast.element.descriptor.EArrayDimensionDescriptor
 import io.verik.importer.ast.element.descriptor.EBitDescriptor
 import io.verik.importer.ast.element.descriptor.EIndexDimensionDescriptor
@@ -67,9 +69,7 @@ object DescriptorResolverStage : ProjectStage() {
                     it.descriptor.type.copy()
                 }
                 val defaultTypeArguments = reference.typeParameters.drop(typeArguments.size).map {
-                    if (it.descriptor != null) {
-                        it.descriptor.type.copy()
-                    } else Core.C_Nothing.toType()
+                    getTypeFromTypeParameter(it)
                 }
                 referenceDescriptor.type = referenceDescriptor.reference.toType(typeArguments + defaultTypeArguments)
             } else {
@@ -105,6 +105,14 @@ object DescriptorResolverStage : ProjectStage() {
                 widthType,
                 rangeDimensionDescriptor.descriptor.type.copy()
             )
+        }
+
+        private fun getTypeFromTypeParameter(typeParameter: ETypeParameter): Type {
+            return if (typeParameter.descriptor != null) {
+                val reference = typeParameter.descriptor.type.reference
+                if (reference is ETypeParameter) getTypeFromTypeParameter(reference)
+                else typeParameter.descriptor.type.copy()
+            } else Core.C_Nothing.toType()
         }
     }
 }

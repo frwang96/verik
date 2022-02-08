@@ -65,13 +65,13 @@ internal class DescriptorResolverStageTest : BaseTest() {
     fun `resolve reference descriptor default arguments`() {
         driveElementTest(
             """
-                class c #(type T = int);
+                class c #(type T = int, type U = T);
                 endclass
                 c x;
             """.trimIndent(),
             DescriptorResolverStage::class,
             """
-                Property(x, ReferenceDescriptor(c<Int>, c, c, []))
+                Property(x, ReferenceDescriptor(c<Int, Int>, c, c, []))
             """.trimIndent()
         ) { it.findDeclaration("x") }
     }

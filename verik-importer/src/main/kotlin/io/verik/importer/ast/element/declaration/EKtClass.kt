@@ -28,7 +28,7 @@ class EKtClass(
     override var declarations: ArrayList<EDeclaration>,
     override val typeParameters: List<ETypeParameter>,
     val valueParameters: List<EKtValueParameter>,
-    val superDescriptor: EDescriptor,
+    var superDescriptor: EDescriptor,
     val isOpen: Boolean
 ) : EContainerDeclaration(), TypeParameterized {
 
