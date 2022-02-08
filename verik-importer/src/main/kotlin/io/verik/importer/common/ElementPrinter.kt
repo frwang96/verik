@@ -153,6 +153,7 @@ class ElementPrinter : Visitor() {
             build(function.name)
             build(function.valueParameters)
             build(function.descriptor)
+            build(function.isStatic)
         }
     }
 
@@ -160,6 +161,7 @@ class ElementPrinter : Visitor() {
         build("Task") {
             build(task.name)
             build(task.valueParameters)
+            build(task.isStatic)
         }
     }
 

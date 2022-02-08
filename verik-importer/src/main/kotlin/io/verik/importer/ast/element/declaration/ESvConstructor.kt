@@ -25,7 +25,8 @@ class ESvConstructor(
     override val valueParameters: List<ESvValueParameter>
 ) : ESvAbstractFunction() {
 
-    override val name: String = "new"
+    override val name = "new"
+    override var isStatic = true
 
     init {
         valueParameters.forEach { it.parent = this }

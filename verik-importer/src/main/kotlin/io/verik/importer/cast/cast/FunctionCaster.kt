@@ -19,6 +19,7 @@ package io.verik.importer.cast.cast
 import io.verik.importer.antlr.SystemVerilogParser
 import io.verik.importer.ast.element.declaration.EDeclaration
 import io.verik.importer.ast.element.declaration.ESvFunction
+import io.verik.importer.ast.element.declaration.ETask
 import io.verik.importer.cast.common.CastContext
 import io.verik.importer.cast.common.SignatureBuilder
 
@@ -27,11 +28,13 @@ object FunctionCaster {
     fun castFunctionFromClassMethodFunction(
         ctx: SystemVerilogParser.ClassMethodFunctionContext,
         castContext: CastContext
-    ): EDeclaration? {
-        val declaration = castContext.castDeclaration(ctx.functionDeclaration()) ?: return null
-        val signature = SignatureBuilder.buildSignature(ctx, declaration.name)
-        declaration.signature = signature
-        return declaration
+    ): ESvFunction? {
+        val function = castContext.castDeclaration(ctx.functionDeclaration())?.cast<ESvFunction>() ?: return null
+        val signature = SignatureBuilder.buildSignature(ctx, function.name)
+        val isStatic = ctx.methodQualifier().any { it.text == "static" }
+        function.signature = signature
+        function.isStatic = isStatic
+        return function
     }
 
     fun castFunctionFromClassMethodExternMethod(
@@ -40,7 +43,12 @@ object FunctionCaster {
     ): EDeclaration? {
         val declaration = castContext.castDeclaration(ctx.methodPrototype()) ?: return null
         val signature = SignatureBuilder.buildSignature(ctx, declaration.name)
+        val isStatic = ctx.methodQualifier().any { it.text == "static" }
         declaration.signature = signature
+        when (declaration) {
+            is ESvFunction -> declaration.isStatic = isStatic
+            is ETask -> declaration.isStatic = isStatic
+        }
         return declaration
     }
 
@@ -71,6 +79,7 @@ object FunctionCaster {
             name,
             null,
             valueParameters,
+            false,
             descriptor
         )
     }
@@ -92,6 +101,7 @@ object FunctionCaster {
             name,
             null,
             valueParameters,
+            false,
             descriptor
         )
     }
@@ -112,6 +122,7 @@ object FunctionCaster {
             name,
             signature,
             valueParameters,
+            false,
             descriptor
         )
     }

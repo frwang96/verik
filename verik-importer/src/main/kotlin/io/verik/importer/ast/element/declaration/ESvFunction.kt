@@ -26,6 +26,7 @@ class ESvFunction(
     override val name: String,
     override var signature: String?,
     override val valueParameters: List<ESvValueParameter>,
+    override var isStatic: Boolean,
     var descriptor: EDescriptor
 ) : ESvAbstractFunction(), DescriptorContainer {
 

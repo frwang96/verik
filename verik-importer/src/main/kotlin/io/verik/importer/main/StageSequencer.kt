@@ -20,6 +20,7 @@ import io.verik.importer.cast.common.CasterStage
 import io.verik.importer.check.UninterpretedDeclarationCheckerStage
 import io.verik.importer.interpret.ClassInterpreterStage
 import io.verik.importer.interpret.FunctionInterpreterStage
+import io.verik.importer.interpret.ObjectInterpreterStage
 import io.verik.importer.interpret.PackageInterpreterStage
 import io.verik.importer.parse.ParserStage
 import io.verik.importer.preprocess.PreprocessorFilterStage
@@ -27,8 +28,7 @@ import io.verik.importer.preprocess.PreprocessorSerializerStage
 import io.verik.importer.preprocess.PreprocessorStage
 import io.verik.importer.serialize.general.ConfigFileSerializerStage
 import io.verik.importer.serialize.source.SourceSerializerStage
-import io.verik.importer.transform.post.FunctionOverrideTransformerStage
-import io.verik.importer.transform.post.PropertyOverrideTransformerStage
+import io.verik.importer.transform.post.OverrideTransformerStage
 import io.verik.importer.transform.post.UnresolvedDeclarationEliminatorStage
 import io.verik.importer.transform.pre.CardinalTypeSimplifierStage
 import io.verik.importer.transform.pre.DescriptorResolverStage
@@ -55,11 +55,11 @@ object StageSequencer {
 
         stageSequence.add(StageType.INTERPRET, PackageInterpreterStage)
         stageSequence.add(StageType.INTERPRET, ClassInterpreterStage)
+        stageSequence.add(StageType.INTERPRET, ObjectInterpreterStage)
         stageSequence.add(StageType.INTERPRET, FunctionInterpreterStage)
 
         stageSequence.add(StageType.POST_TRANSFORM, UnresolvedDeclarationEliminatorStage)
-        stageSequence.add(StageType.POST_TRANSFORM, FunctionOverrideTransformerStage)
-        stageSequence.add(StageType.POST_TRANSFORM, PropertyOverrideTransformerStage)
+        stageSequence.add(StageType.POST_TRANSFORM, OverrideTransformerStage)
 
         stageSequence.add(StageType.CHECK, UninterpretedDeclarationCheckerStage)
 

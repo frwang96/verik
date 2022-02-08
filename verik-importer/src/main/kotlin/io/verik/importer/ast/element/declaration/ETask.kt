@@ -23,7 +23,8 @@ class ETask(
     override val location: SourceLocation,
     override val name: String,
     override var signature: String?,
-    override val valueParameters: List<ESvValueParameter>
+    override val valueParameters: List<ESvValueParameter>,
+    override var isStatic: Boolean
 ) : ESvAbstractFunction() {
 
     init {

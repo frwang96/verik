@@ -21,6 +21,7 @@ import io.verik.importer.common.Visitor
 abstract class ESvAbstractFunction : EDeclaration() {
 
     abstract val valueParameters: List<ESvValueParameter>
+    abstract var isStatic: Boolean
 
     override fun acceptChildren(visitor: Visitor) {
         valueParameters.forEach { it.accept(visitor) }
