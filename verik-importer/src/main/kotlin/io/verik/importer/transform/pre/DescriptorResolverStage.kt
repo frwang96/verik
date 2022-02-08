@@ -16,6 +16,7 @@
 
 package io.verik.importer.transform.pre
 
+import io.verik.importer.ast.common.TypeParameterized
 import io.verik.importer.ast.element.descriptor.EArrayDimensionDescriptor
 import io.verik.importer.ast.element.descriptor.EBitDescriptor
 import io.verik.importer.ast.element.descriptor.EIndexDimensionDescriptor
@@ -60,10 +61,20 @@ object DescriptorResolverStage : ProjectStage() {
 
         override fun visitReferenceDescriptor(referenceDescriptor: EReferenceDescriptor) {
             super.visitReferenceDescriptor(referenceDescriptor)
-            val typeArguments = referenceDescriptor.typeArguments.map {
-                it.descriptor.type.copy()
+            val reference = referenceDescriptor.reference
+            if (reference is TypeParameterized) {
+                val typeArguments = referenceDescriptor.typeArguments.map {
+                    it.descriptor.type.copy()
+                }
+                val defaultTypeArguments = reference.typeParameters.drop(typeArguments.size).map {
+                    if (it.descriptor != null) {
+                        it.descriptor.type.copy()
+                    } else Core.C_Nothing.toType()
+                }
+                referenceDescriptor.type = referenceDescriptor.reference.toType(typeArguments + defaultTypeArguments)
+            } else {
+                referenceDescriptor.type = reference.toType()
             }
-            referenceDescriptor.type = referenceDescriptor.reference.toType(typeArguments)
         }
 
         override fun visitArrayDimensionDescriptor(arrayDimensionDescriptor: EArrayDimensionDescriptor) {

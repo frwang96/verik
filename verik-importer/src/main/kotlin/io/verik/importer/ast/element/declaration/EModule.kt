@@ -16,6 +16,7 @@
 
 package io.verik.importer.ast.element.declaration
 
+import io.verik.importer.ast.common.TypeParameterized
 import io.verik.importer.common.Visitor
 import io.verik.importer.message.SourceLocation
 
@@ -24,9 +25,9 @@ class EModule(
     override val name: String,
     override var signature: String?,
     override var declarations: ArrayList<EDeclaration>,
-    val typeParameters: List<ETypeParameter>,
+    override val typeParameters: List<ETypeParameter>,
     val ports: ArrayList<EPort>,
-) : EContainerDeclaration() {
+) : EContainerDeclaration(), TypeParameterized {
 
     init {
         declarations.forEach { it.parent = this }

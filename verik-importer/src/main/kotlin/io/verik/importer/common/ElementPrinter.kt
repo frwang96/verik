@@ -141,6 +141,7 @@ class ElementPrinter : Visitor() {
     override fun visitTypeParameter(typeParameter: ETypeParameter) {
         build("TypeParameter") {
             build(typeParameter.name)
+            build(typeParameter.descriptor)
             build(typeParameter.isCardinal)
         }
     }

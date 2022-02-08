@@ -62,6 +62,21 @@ internal class DescriptorResolverStageTest : BaseTest() {
     }
 
     @Test
+    fun `resolve reference descriptor default arguments`() {
+        driveElementTest(
+            """
+                class c #(type T = int);
+                endclass
+                c x;
+            """.trimIndent(),
+            DescriptorResolverStage::class,
+            """
+                Property(x, ReferenceDescriptor(c<Int>, c, c, []))
+            """.trimIndent()
+        ) { it.findDeclaration("x") }
+    }
+
+    @Test
     fun `resolve array dimension descriptor`() {
         driveElementTest(
             """
