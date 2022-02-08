@@ -33,7 +33,7 @@ object TypeDeclarationCaster {
     fun castTypeDeclarationFromTypeDeclarationData(
         ctx: SystemVerilogParser.TypeDeclarationDataContext,
         castContext: CastContext
-    ): ETypeDeclaration? {
+    ): ETypeDeclaration {
         val identifier = ctx.typeIdentifier()
         val location = castContext.getLocation(identifier)
         val name = identifier.text
@@ -44,8 +44,8 @@ object TypeDeclarationCaster {
             is SystemVerilogParser.DataTypeStructContext ->
                 castStructFromDataTypeStruct(location, name, signature, dataType, castContext)
             else -> {
-                val baseDescriptor = castContext.castDescriptor(dataType) ?: return null
-                val descriptors = ctx.variableDimension().map { castContext.castDescriptor(it) ?: return null }
+                val baseDescriptor = castContext.castDescriptor(dataType)
+                val descriptors = ctx.variableDimension().map { castContext.castDescriptor(it) }
                 val descriptor = descriptors.fold(baseDescriptor) { accumulatedDescriptor, descriptor ->
                     accumulatedDescriptor.wrap(descriptor)
                 }
@@ -99,7 +99,7 @@ object TypeDeclarationCaster {
         ctx: SystemVerilogParser.StructUnionMemberContext,
         castContext: CastContext
     ): List<EStructEntry> {
-        val descriptor = castContext.castDescriptor(ctx.dataTypeOrVoid()) ?: return listOf()
+        val descriptor = castContext.castDescriptor(ctx.dataTypeOrVoid())
         val identifiers = ctx.listOfVariableDeclAssignments()
             .variableDeclAssignment()
             .filterIsInstance<SystemVerilogParser.VariableDeclAssignmentVariableContext>()

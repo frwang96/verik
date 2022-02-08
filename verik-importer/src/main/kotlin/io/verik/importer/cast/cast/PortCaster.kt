@@ -26,11 +26,11 @@ object PortCaster {
     fun castPortFromAnsiPortDeclaration(
         ctx: SystemVerilogParser.AnsiPortDeclarationContext,
         castContext: CastContext
-    ): EPort? {
+    ): EPort {
         val identifier = ctx.identifier()
         val location = castContext.getLocation(identifier)
         val name = identifier.text
-        val descriptor = castContext.castDescriptor(ctx.netPortHeader()) ?: return null
+        val descriptor = castContext.castDescriptor(ctx.netPortHeader())
         val portType = castPortType(ctx.netPortHeader())
         return EPort(
             location,
@@ -43,11 +43,11 @@ object PortCaster {
     fun castPortFromInputDeclarationNet(
         ctx: SystemVerilogParser.InputDeclarationNetContext,
         castContext: CastContext
-    ): EPort? {
+    ): EPort {
         val identifier = ctx.listOfPortIdentifiers().portIdentifier()[0]
         val location = castContext.getLocation(identifier)
         val name = identifier.text
-        val descriptor = castContext.castDescriptor(ctx.netPortType()) ?: return null
+        val descriptor = castContext.castDescriptor(ctx.netPortType())
         return EPort(
             location,
             name,
@@ -59,11 +59,11 @@ object PortCaster {
     fun castPortFromOutputDeclarationNet(
         ctx: SystemVerilogParser.OutputDeclarationNetContext,
         castContext: CastContext
-    ): EPort? {
+    ): EPort {
         val identifier = ctx.listOfPortIdentifiers().portIdentifier()[0]
         val location = castContext.getLocation(identifier)
         val name = identifier.text
-        val descriptor = castContext.castDescriptor(ctx.netPortType()) ?: return null
+        val descriptor = castContext.castDescriptor(ctx.netPortType())
         return EPort(
             location,
             name,

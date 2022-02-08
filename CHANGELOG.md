@@ -3,6 +3,7 @@
 ## [Unreleased]
 ### Importer
 - Fix function override bugs.
+- Merge expressions with descriptors.
 
 ### Compiler
 - Rename `onr` to `oni`.

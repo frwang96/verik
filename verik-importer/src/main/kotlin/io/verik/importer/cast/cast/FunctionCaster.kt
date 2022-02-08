@@ -65,7 +65,7 @@ object FunctionCaster {
         val name = identifier.text
         val tfPortDeclarations = ctx.tfItemDeclaration().mapNotNull { it.tfPortDeclaration() }
         val valueParameters = tfPortDeclarations.flatMap { castContext.castValueParameters(it) }
-        val descriptor = castContext.castDescriptor(ctx.functionDataTypeOrImplicit()) ?: return null
+        val descriptor = castContext.castDescriptor(ctx.functionDataTypeOrImplicit())
         return ESvFunction(
             location,
             name,
@@ -84,7 +84,7 @@ object FunctionCaster {
         val identifier = ctx.functionIdentifier()[0]
         val location = castContext.getLocation(identifier)
         val name = identifier.text
-        val descriptor = castContext.castDescriptor(ctx.functionDataTypeOrImplicit()) ?: return null
+        val descriptor = castContext.castDescriptor(ctx.functionDataTypeOrImplicit())
         val tfPortItems = ctx.tfPortList()?.tfPortItem() ?: listOf()
         val valueParameters = tfPortItems.flatMap { castContext.castValueParameters(it) }
         return ESvFunction(
@@ -99,12 +99,12 @@ object FunctionCaster {
     fun castFunctionFromFunctionPrototype(
         ctx: SystemVerilogParser.FunctionPrototypeContext,
         castContext: CastContext
-    ): ESvFunction? {
+    ): ESvFunction {
         val identifier = ctx.functionIdentifier()
         val location = castContext.getLocation(identifier)
         val name = identifier.text
         val signature = SignatureBuilder.buildSignature(ctx, name)
-        val descriptor = castContext.castDescriptor(ctx.dataTypeOrVoid()) ?: return null
+        val descriptor = castContext.castDescriptor(ctx.dataTypeOrVoid())
         val tfPortItems = ctx.tfPortList()?.tfPortItem() ?: listOf()
         val valueParameters = tfPortItems.flatMap { castContext.castValueParameters(it) }
         return ESvFunction(

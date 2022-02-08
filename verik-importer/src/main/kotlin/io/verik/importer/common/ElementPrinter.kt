@@ -42,6 +42,8 @@ import io.verik.importer.ast.element.declaration.ETypeParameter
 import io.verik.importer.ast.element.descriptor.EBitDescriptor
 import io.verik.importer.ast.element.descriptor.EDescriptorTypeArgument
 import io.verik.importer.ast.element.descriptor.EExpressionTypeArgument
+import io.verik.importer.ast.element.descriptor.ELiteralDescriptor
+import io.verik.importer.ast.element.descriptor.ENothingDescriptor
 import io.verik.importer.ast.element.descriptor.EPackedDescriptor
 import io.verik.importer.ast.element.descriptor.EQueueDescriptor
 import io.verik.importer.ast.element.descriptor.EReferenceDescriptor
@@ -236,9 +238,20 @@ class ElementPrinter : Visitor() {
 
 // Descriptor Like /////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    override fun visitNothingDescriptor(nothingDescriptor: ENothingDescriptor) {
+        build("NothingDescriptor") {}
+    }
+
     override fun visitSimpleDescriptor(simpleDescriptor: ESimpleDescriptor) {
         build("SimpleDescriptor") {
             build(simpleDescriptor.type.toString())
+        }
+    }
+
+    override fun visitLiteralDescriptor(literalDescriptor: ELiteralDescriptor) {
+        build("LiteralDescriptor") {
+            build(literalDescriptor.type.toString())
+            build(literalDescriptor.value)
         }
     }
 

@@ -49,6 +49,8 @@ import io.verik.importer.ast.element.descriptor.EContainerDescriptor
 import io.verik.importer.ast.element.descriptor.EDescriptor
 import io.verik.importer.ast.element.descriptor.EDescriptorTypeArgument
 import io.verik.importer.ast.element.descriptor.EExpressionTypeArgument
+import io.verik.importer.ast.element.descriptor.ELiteralDescriptor
+import io.verik.importer.ast.element.descriptor.ENothingDescriptor
 import io.verik.importer.ast.element.descriptor.EPackedDescriptor
 import io.verik.importer.ast.element.descriptor.EQueueDescriptor
 import io.verik.importer.ast.element.descriptor.EReferenceDescriptor
@@ -183,8 +185,16 @@ abstract class Visitor {
         visitElement(descriptor)
     }
 
+    open fun visitNothingDescriptor(nothingDescriptor: ENothingDescriptor) {
+        visitDescriptor(nothingDescriptor)
+    }
+
     open fun visitSimpleDescriptor(simpleDescriptor: ESimpleDescriptor) {
         visitDescriptor(simpleDescriptor)
+    }
+
+    open fun visitLiteralDescriptor(literalDescriptor: ELiteralDescriptor) {
+        visitDescriptor(literalDescriptor)
     }
 
     open fun visitBitDescriptor(bitDescriptor: EBitDescriptor) {

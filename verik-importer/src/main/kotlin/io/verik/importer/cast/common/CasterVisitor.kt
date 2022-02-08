@@ -57,7 +57,7 @@ class CasterVisitor(
         return ModuleCaster.castModuleFromModuleDeclarationAnsi(ctx!!, castContext)
     }
 
-    override fun visitClassDeclaration(ctx: SystemVerilogParser.ClassDeclarationContext?): EElement? {
+    override fun visitClassDeclaration(ctx: SystemVerilogParser.ClassDeclarationContext?): EElement {
         return ClassCaster.castClassFromClassDeclaration(ctx!!, castContext)
     }
 
@@ -85,7 +85,7 @@ class CasterVisitor(
         return TypeParameterCaster.castTypeParameterFromParameterPortDeclarationType(ctx!!, castContext)
     }
 
-    override fun visitAnsiPortDeclaration(ctx: SystemVerilogParser.AnsiPortDeclarationContext?): EElement? {
+    override fun visitAnsiPortDeclaration(ctx: SystemVerilogParser.AnsiPortDeclarationContext?): EElement {
         return PortCaster.castPortFromAnsiPortDeclaration(ctx!!, castContext)
     }
 
@@ -133,21 +133,21 @@ class CasterVisitor(
 
 // A.2.1.2 Port Declarations ///////////////////////////////////////////////////////////////////////////////////////////
 
-    override fun visitInputDeclarationNet(ctx: SystemVerilogParser.InputDeclarationNetContext?): EElement? {
+    override fun visitInputDeclarationNet(ctx: SystemVerilogParser.InputDeclarationNetContext?): EElement {
         return PortCaster.castPortFromInputDeclarationNet(ctx!!, castContext)
     }
 
-    override fun visitOutputDeclarationNet(ctx: SystemVerilogParser.OutputDeclarationNetContext?): EElement? {
+    override fun visitOutputDeclarationNet(ctx: SystemVerilogParser.OutputDeclarationNetContext?): EElement {
         return PortCaster.castPortFromOutputDeclarationNet(ctx!!, castContext)
     }
 
 // A.2.1.3 Type Declarations ///////////////////////////////////////////////////////////////////////////////////////////
 
-    override fun visitDataDeclarationData(ctx: SystemVerilogParser.DataDeclarationDataContext?): EElement? {
+    override fun visitDataDeclarationData(ctx: SystemVerilogParser.DataDeclarationDataContext?): EElement {
         return PropertyCaster.castPropertiesFromDataDeclarationData(ctx!!, castContext)
     }
 
-    override fun visitTypeDeclarationData(ctx: SystemVerilogParser.TypeDeclarationDataContext?): EElement? {
+    override fun visitTypeDeclarationData(ctx: SystemVerilogParser.TypeDeclarationDataContext?): EElement {
         return TypeDeclarationCaster.castTypeDeclarationFromTypeDeclarationData(ctx!!, castContext)
     }
 
@@ -229,7 +229,7 @@ class CasterVisitor(
         return FunctionCaster.castFunctionFromFunctionBodyDeclarationPortList(ctx!!, castContext)
     }
 
-    override fun visitFunctionPrototype(ctx: SystemVerilogParser.FunctionPrototypeContext?): EElement? {
+    override fun visitFunctionPrototype(ctx: SystemVerilogParser.FunctionPrototypeContext?): EElement {
         return FunctionCaster.castFunctionFromFunctionPrototype(ctx!!, castContext)
     }
 
@@ -251,11 +251,11 @@ class CasterVisitor(
         return TaskCaster.castTaskFromTaskBodyDeclarationPortList(ctx!!, castContext)
     }
 
-    override fun visitTfPortItem(ctx: SystemVerilogParser.TfPortItemContext?): EElement? {
+    override fun visitTfPortItem(ctx: SystemVerilogParser.TfPortItemContext?): EElement {
         return ValueParameterCaster.castValueParameterFromTfPortItem(ctx!!, castContext)
     }
 
-    override fun visitTfPortDeclaration(ctx: SystemVerilogParser.TfPortDeclarationContext?): EElement? {
+    override fun visitTfPortDeclaration(ctx: SystemVerilogParser.TfPortDeclarationContext?): EElement {
         return ValueParameterCaster.castValueParameterFromTfPortDeclaration(ctx!!, castContext)
     }
 
@@ -283,7 +283,7 @@ class CasterVisitor(
 
 // A.8.3 Expressions ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-    override fun visitParamExpressionDataType(ctx: SystemVerilogParser.ParamExpressionDataTypeContext?): EElement? {
+    override fun visitParamExpressionDataType(ctx: SystemVerilogParser.ParamExpressionDataTypeContext?): EElement {
         return TypeArgumentCaster.castTypeArgumentFromParamExpressionDataType(ctx!!, castContext)
     }
 

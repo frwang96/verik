@@ -28,9 +28,9 @@ object PropertyCaster {
     fun castPropertiesFromDataDeclarationData(
         ctx: SystemVerilogParser.DataDeclarationDataContext,
         castContext: CastContext
-    ): EContainerElement? {
+    ): EContainerElement {
         val isMutable = ctx.CONST() == null
-        val baseDescriptor = castContext.castDescriptor(ctx.dataTypeOrImplicit()) ?: return null
+        val baseDescriptor = castContext.castDescriptor(ctx.dataTypeOrImplicit())
         val variableDeclAssignmentVariables = ctx.listOfVariableDeclAssignments()
             .variableDeclAssignment()
             .filterIsInstance<SystemVerilogParser.VariableDeclAssignmentVariableContext>()
@@ -41,7 +41,7 @@ object PropertyCaster {
             val signature = SignatureBuilder.buildSignature(ctx, name)
             val baseDescriptorCopy = ElementCopier.deepCopy(baseDescriptor)
             val descriptors = variableDeclAssignmentVariable.variableDimension()
-                .map { castContext.castDescriptor(it) ?: return null }
+                .map { castContext.castDescriptor(it) }
             val descriptor = descriptors.fold(baseDescriptorCopy) { accumulatedDescriptor, descriptor ->
                 accumulatedDescriptor.wrap(descriptor)
             }

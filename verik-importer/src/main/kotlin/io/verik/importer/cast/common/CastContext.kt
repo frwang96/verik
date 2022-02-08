@@ -23,6 +23,7 @@ import io.verik.importer.ast.element.declaration.EPort
 import io.verik.importer.ast.element.declaration.ESvValueParameter
 import io.verik.importer.ast.element.declaration.ETypeParameter
 import io.verik.importer.ast.element.descriptor.EDescriptor
+import io.verik.importer.ast.element.descriptor.ENothingDescriptor
 import io.verik.importer.ast.element.descriptor.ETypeArgument
 import io.verik.importer.ast.element.expression.EExpression
 import io.verik.importer.ast.element.expression.ENothingExpression
@@ -75,8 +76,15 @@ class CastContext(
         return casterVisitor.getElement(ctx)
     }
 
-    fun castDescriptor(ctx: RuleContext): EDescriptor? {
-        return casterVisitor.getElement(ctx)
+    fun castDescriptor(ctx: RuleContext): EDescriptor {
+        val descriptor = casterVisitor.getElement<EDescriptor>(ctx)
+        return if (descriptor != null) {
+            descriptor
+        } else {
+            val location = getLocation(ctx)
+            Messages.UNABLE_TO_CAST.on(location, "type")
+            ENothingDescriptor(location)
+        }
     }
 
     fun castTypeArgument(ctx: RuleContext): ETypeArgument? {
@@ -88,9 +96,9 @@ class CastContext(
     }
 
     fun castExpression(ctx: RuleContext): EExpression {
-        val element = casterVisitor.getElement<EExpression>(ctx)
-        return if (element != null) {
-            element
+        val expression = casterVisitor.getElement<EExpression>(ctx)
+        return if (expression != null) {
+            expression
         } else {
             val location = getLocation(ctx)
             Messages.UNABLE_TO_CAST.on(location, "expression")

@@ -39,8 +39,8 @@ object TypeArgumentCaster {
     fun castTypeArgumentFromParamExpressionDataType(
         ctx: SystemVerilogParser.ParamExpressionDataTypeContext,
         castContext: CastContext
-    ): ETypeArgument? {
-        val descriptor = castContext.castDescriptor(ctx.dataType()) ?: return null
+    ): ETypeArgument {
+        val descriptor = castContext.castDescriptor(ctx.dataType())
         return EDescriptorTypeArgument(
             descriptor.location,
             null,

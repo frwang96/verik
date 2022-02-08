@@ -27,11 +27,11 @@ object ValueParameterCaster {
     fun castValueParameterFromTfPortItem(
         ctx: SystemVerilogParser.TfPortItemContext,
         castContext: CastContext
-    ): ESvValueParameter? {
+    ): ESvValueParameter {
         val identifier = ctx.portIdentifier()
         val location = castContext.getLocation(identifier)
         val name = identifier.text
-        val descriptor = castContext.castDescriptor(ctx.dataTypeOrImplicit()) ?: return null
+        val descriptor = castContext.castDescriptor(ctx.dataTypeOrImplicit())
         val hasDefault = ctx.expression() != null
         return ESvValueParameter(
             location,
@@ -44,8 +44,8 @@ object ValueParameterCaster {
     fun castValueParameterFromTfPortDeclaration(
         ctx: SystemVerilogParser.TfPortDeclarationContext,
         castContext: CastContext
-    ): EContainerElement? {
-        val descriptor = castContext.castDescriptor(ctx.dataTypeOrImplicit()) ?: return null
+    ): EContainerElement {
+        val descriptor = castContext.castDescriptor(ctx.dataTypeOrImplicit())
         val tfVariableIdentifiers = ctx.listOfTfVariableIdentifiers().tfVariableIdentifier()
         val valueParameters = tfVariableIdentifiers.map {
             val identifier = it.portIdentifier()
