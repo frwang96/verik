@@ -72,10 +72,10 @@ object CoreVkControl : CoreScope(CorePackage.VK) {
         }
     }
 
-    val F_onr_Event_Event_Function = object : TransformableCoreFunctionDeclaration(
+    val F_oni_Event_Event_Function = object : TransformableCoreFunctionDeclaration(
         parent,
-        "onr",
-        "fun onr(Event, vararg Event, Function)"
+        "oni",
+        "fun oni(Event, vararg Event, Function)"
     ) {
 
         override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {

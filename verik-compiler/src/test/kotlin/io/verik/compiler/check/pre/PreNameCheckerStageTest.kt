@@ -32,16 +32,4 @@ internal class PreNameCheckerStageTest : BaseTest() {
             "Illegal name: ???"
         )
     }
-
-    @Test
-    fun `reserved name`() {
-        driveMessageTest(
-            """
-                @Suppress("ObjectPropertyName")
-                const val __x = 0
-            """.trimIndent(),
-            true,
-            "Reserved name: __x"
-        )
-    }
 }

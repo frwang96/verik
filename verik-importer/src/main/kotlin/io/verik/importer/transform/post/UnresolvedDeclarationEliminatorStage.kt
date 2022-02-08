@@ -62,8 +62,7 @@ object UnresolvedDeclarationEliminatorStage : ProjectStage() {
         var isResolved = true
 
         override fun visitDescriptor(descriptor: EDescriptor) {
-            if (!isResolved)
-                return
+            if (!isResolved) return
             super.visitDescriptor(descriptor)
             if (!descriptor.type.isResolved() || descriptor.type.reference in unresolvedDeclarations) {
                 isResolved = false

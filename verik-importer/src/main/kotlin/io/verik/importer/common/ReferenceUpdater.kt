@@ -21,7 +21,7 @@ import io.verik.importer.ast.common.Type
 import io.verik.importer.ast.element.common.EElement
 import io.verik.importer.ast.element.declaration.EDeclaration
 import io.verik.importer.ast.element.descriptor.EDescriptor
-import io.verik.importer.ast.element.expression.EReferenceExpression
+import io.verik.importer.ast.element.descriptor.EReferenceDescriptor
 import io.verik.importer.main.ProjectContext
 
 class ReferenceUpdater(val projectContext: ProjectContext) {
@@ -62,7 +62,7 @@ class ReferenceUpdater(val projectContext: ProjectContext) {
             if (element is EDescriptor) {
                 updateTypeReferences(element.type)
             }
-            if (element is EReferenceExpression) {
+            if (element is EReferenceDescriptor) {
                 element.reference = updateReference(element.reference)
             }
         }

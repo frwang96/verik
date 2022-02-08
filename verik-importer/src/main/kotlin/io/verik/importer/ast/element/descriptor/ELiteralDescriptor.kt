@@ -16,33 +16,19 @@
 
 package io.verik.importer.ast.element.descriptor
 
-import io.verik.importer.ast.common.DescriptorContainer
+import io.verik.importer.ast.common.Type
 import io.verik.importer.common.Visitor
 import io.verik.importer.message.SourceLocation
 
-class EDescriptorTypeArgument(
+class ELiteralDescriptor(
     override val location: SourceLocation,
-    override val name: String?,
-    var descriptor: EDescriptor
-) : ETypeArgument(), DescriptorContainer {
-
-    init {
-        descriptor.parent = this
-    }
+    override var type: Type,
+    val value: String
+) : EDescriptor() {
 
     override fun accept(visitor: Visitor) {
-        visitor.visitDescriptorTypeArgument(this)
+        visitor.visitLiteralDescriptor(this)
     }
 
-    override fun acceptChildren(visitor: Visitor) {
-        descriptor.accept(visitor)
-    }
-
-    override fun replaceChild(oldDescriptor: EDescriptor, newDescriptor: EDescriptor): Boolean {
-        newDescriptor.parent = this
-        return if (descriptor == oldDescriptor) {
-            descriptor = newDescriptor
-            true
-        } else false
-    }
+    override fun acceptChildren(visitor: Visitor) {}
 }

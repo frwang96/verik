@@ -29,7 +29,7 @@ internal class CoreVkControlTest : CoreDeclarationTest() {
                 Core.Vk.F_posedge_Boolean,
                 Core.Vk.F_negedge_Boolean,
                 Core.Vk.F_on_Event_Event_Function,
-                Core.Vk.F_onr_Event_Event_Function
+                Core.Vk.F_oni_Event_Event_Function
             ),
             """
                 @Suppress("MemberVisibilityCanBePrivate")
@@ -41,7 +41,7 @@ internal class CoreVkControlTest : CoreDeclarationTest() {
                     @Seq
                     fun g() { on (posedge(x), negedge(x)) { y = !y } }
                     @Seq
-                    var z = onr(negedge(x)) { !y }
+                    var z = oni(negedge(x)) { !y }
                 }
             """.trimIndent(),
             """

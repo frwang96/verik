@@ -1,6 +1,12 @@
 # Changelog
 
 ## [Unreleased]
+### Importer
+- Fix function override bugs.
+- Merge expressions with descriptors.
+
+### Compiler
+- Rename `onr` to `oni`.
 
 ## [0.1.13]
 ### Importer

@@ -22,7 +22,6 @@ import io.verik.importer.ast.element.common.EElement
 import io.verik.importer.cast.cast.ClassCaster
 import io.verik.importer.cast.cast.ConstructorCaster
 import io.verik.importer.cast.cast.DescriptorCaster
-import io.verik.importer.cast.cast.ExpressionCaster
 import io.verik.importer.cast.cast.FunctionCaster
 import io.verik.importer.cast.cast.ModuleCaster
 import io.verik.importer.cast.cast.PackageCaster
@@ -57,7 +56,7 @@ class CasterVisitor(
         return ModuleCaster.castModuleFromModuleDeclarationAnsi(ctx!!, castContext)
     }
 
-    override fun visitClassDeclaration(ctx: SystemVerilogParser.ClassDeclarationContext?): EElement? {
+    override fun visitClassDeclaration(ctx: SystemVerilogParser.ClassDeclarationContext?): EElement {
         return ClassCaster.castClassFromClassDeclaration(ctx!!, castContext)
     }
 
@@ -85,7 +84,7 @@ class CasterVisitor(
         return TypeParameterCaster.castTypeParameterFromParameterPortDeclarationType(ctx!!, castContext)
     }
 
-    override fun visitAnsiPortDeclaration(ctx: SystemVerilogParser.AnsiPortDeclarationContext?): EElement? {
+    override fun visitAnsiPortDeclaration(ctx: SystemVerilogParser.AnsiPortDeclarationContext?): EElement {
         return PortCaster.castPortFromAnsiPortDeclaration(ctx!!, castContext)
     }
 
@@ -133,21 +132,21 @@ class CasterVisitor(
 
 // A.2.1.2 Port Declarations ///////////////////////////////////////////////////////////////////////////////////////////
 
-    override fun visitInputDeclarationNet(ctx: SystemVerilogParser.InputDeclarationNetContext?): EElement? {
+    override fun visitInputDeclarationNet(ctx: SystemVerilogParser.InputDeclarationNetContext?): EElement {
         return PortCaster.castPortFromInputDeclarationNet(ctx!!, castContext)
     }
 
-    override fun visitOutputDeclarationNet(ctx: SystemVerilogParser.OutputDeclarationNetContext?): EElement? {
+    override fun visitOutputDeclarationNet(ctx: SystemVerilogParser.OutputDeclarationNetContext?): EElement {
         return PortCaster.castPortFromOutputDeclarationNet(ctx!!, castContext)
     }
 
 // A.2.1.3 Type Declarations ///////////////////////////////////////////////////////////////////////////////////////////
 
-    override fun visitDataDeclarationData(ctx: SystemVerilogParser.DataDeclarationDataContext?): EElement? {
+    override fun visitDataDeclarationData(ctx: SystemVerilogParser.DataDeclarationDataContext?): EElement {
         return PropertyCaster.castPropertiesFromDataDeclarationData(ctx!!, castContext)
     }
 
-    override fun visitTypeDeclarationData(ctx: SystemVerilogParser.TypeDeclarationDataContext?): EElement? {
+    override fun visitTypeDeclarationData(ctx: SystemVerilogParser.TypeDeclarationDataContext?): EElement {
         return TypeDeclarationCaster.castTypeDeclarationFromTypeDeclarationData(ctx!!, castContext)
     }
 
@@ -181,7 +180,7 @@ class CasterVisitor(
         return DescriptorCaster.castDescriptorFromClassType(ctx!!, castContext)
     }
 
-    override fun visitDataTypeOrVoid(ctx: SystemVerilogParser.DataTypeOrVoidContext?): EElement? {
+    override fun visitDataTypeOrVoid(ctx: SystemVerilogParser.DataTypeOrVoidContext?): EElement {
         return DescriptorCaster.castDescriptorFromDataTypeOrVoid(ctx!!, castContext)
     }
 
@@ -229,7 +228,7 @@ class CasterVisitor(
         return FunctionCaster.castFunctionFromFunctionBodyDeclarationPortList(ctx!!, castContext)
     }
 
-    override fun visitFunctionPrototype(ctx: SystemVerilogParser.FunctionPrototypeContext?): EElement? {
+    override fun visitFunctionPrototype(ctx: SystemVerilogParser.FunctionPrototypeContext?): EElement {
         return FunctionCaster.castFunctionFromFunctionPrototype(ctx!!, castContext)
     }
 
@@ -251,11 +250,11 @@ class CasterVisitor(
         return TaskCaster.castTaskFromTaskBodyDeclarationPortList(ctx!!, castContext)
     }
 
-    override fun visitTfPortItem(ctx: SystemVerilogParser.TfPortItemContext?): EElement? {
+    override fun visitTfPortItem(ctx: SystemVerilogParser.TfPortItemContext?): EElement {
         return ValueParameterCaster.castValueParameterFromTfPortItem(ctx!!, castContext)
     }
 
-    override fun visitTfPortDeclaration(ctx: SystemVerilogParser.TfPortDeclarationContext?): EElement? {
+    override fun visitTfPortDeclaration(ctx: SystemVerilogParser.TfPortDeclarationContext?): EElement {
         return ValueParameterCaster.castValueParameterFromTfPortDeclaration(ctx!!, castContext)
     }
 
@@ -283,17 +282,25 @@ class CasterVisitor(
 
 // A.8.3 Expressions ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-    override fun visitParamExpression(ctx: SystemVerilogParser.ParamExpressionContext?): EElement? {
-        return TypeArgumentCaster.castTypeArgumentFromParamExpression(ctx!!, castContext)
+    override fun visitParamExpressionDataType(ctx: SystemVerilogParser.ParamExpressionDataTypeContext?): EElement {
+        return TypeArgumentCaster.castTypeArgumentFromParamExpressionDataType(ctx!!, castContext)
+    }
+
+    override fun visitParamExpressionExpression(ctx: SystemVerilogParser.ParamExpressionExpressionContext?): EElement {
+        return TypeArgumentCaster.castTypeArgumentFromParamExpressionExpression(ctx!!, castContext)
     }
 
 // A.8.4 Primaries /////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    override fun visitConstantPrimaryLiteral(ctx: SystemVerilogParser.ConstantPrimaryLiteralContext?): EElement {
-        return ExpressionCaster.castLiteralExpressionFromConstantPrimaryLiteral(ctx!!, castContext)
+    override fun visitConstantPrimaryParameter(ctx: SystemVerilogParser.ConstantPrimaryParameterContext?): EElement {
+        return DescriptorCaster.castDescriptorFromConstantPrimaryParameter(ctx!!, castContext)
     }
 
-    override fun visitConstantPrimaryParameter(ctx: SystemVerilogParser.ConstantPrimaryParameterContext?): EElement {
-        return ExpressionCaster.castReferenceExpressionFromConstantPrimaryParameter(ctx!!, castContext)
+    override fun visitPrimaryLiteral(ctx: SystemVerilogParser.PrimaryLiteralContext?): EElement {
+        return DescriptorCaster.castDescriptorFromPrimaryLiteral(ctx!!, castContext)
+    }
+
+    override fun visitPrimaryHierarchical(ctx: SystemVerilogParser.PrimaryHierarchicalContext?): EElement {
+        return DescriptorCaster.castDescriptorFromPrimaryHierarchical(ctx!!, castContext)
     }
 }

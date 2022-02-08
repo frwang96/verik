@@ -27,7 +27,7 @@ package io.verik.core
  *      @In var clk: Boolean
  *  ) : ModuleInterface() {
  *
- *      var x: Boolean = x()
+ *      var x: Boolean = nc()
  *  }
  *  ```
  */

@@ -28,14 +28,14 @@ object ClassCaster {
     fun castClassFromClassDeclaration(
         ctx: SystemVerilogParser.ClassDeclarationContext,
         castContext: CastContext
-    ): ESvClass? {
+    ): ESvClass {
         val location = castContext.getLocation(ctx.CLASS())
         val name = ctx.classIdentifier()[0].text
         val signature = SignatureBuilder.buildSignature(ctx, name)
         val declarations = ctx.classItem().flatMap { castContext.castDeclarations(it) }
         val typeParameters = ctx.parameterPortList()?.let { castContext.castTypeParameters(it) } ?: listOf()
         val superDescriptor = ctx.classType()
-            ?.let { castContext.castDescriptor(it) ?: return null }
+            ?.let { castContext.castDescriptor(it) }
             ?: ESimpleDescriptor(location, Core.C_Any.toType())
         return ESvClass(
             location,

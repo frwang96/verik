@@ -16,19 +16,17 @@
 
 package io.verik.importer.transform.pre
 
-import io.verik.importer.ast.common.Type
 import io.verik.importer.ast.element.descriptor.EBitDescriptor
-import io.verik.importer.ast.element.descriptor.EDescriptorTypeArgument
+import io.verik.importer.ast.element.descriptor.ELiteralDescriptor
 import io.verik.importer.ast.element.descriptor.EPackedDescriptor
 import io.verik.importer.ast.element.descriptor.EQueueDescriptor
 import io.verik.importer.ast.element.descriptor.EReferenceDescriptor
-import io.verik.importer.common.ExpressionEvaluator
 import io.verik.importer.common.TreeVisitor
 import io.verik.importer.core.Cardinal
 import io.verik.importer.core.Core
 import io.verik.importer.main.ProjectContext
 import io.verik.importer.main.ProjectStage
-import kotlin.math.abs
+import io.verik.importer.message.Messages
 
 object DescriptorResolverStage : ProjectStage() {
 
@@ -38,41 +36,46 @@ object DescriptorResolverStage : ProjectStage() {
 
     private object DescriptorResolverVisitor : TreeVisitor() {
 
+        override fun visitLiteralDescriptor(literalDescriptor: ELiteralDescriptor) {
+            val value = literalDescriptor.value.toIntOrNull()
+            if (value != null) {
+                literalDescriptor.type = Cardinal.of(value).toType()
+            } else {
+                Messages.INTERNAL_ERROR.on(literalDescriptor, "Unable to parse literal: ${literalDescriptor.value}")
+            }
+        }
+
         override fun visitBitDescriptor(bitDescriptor: EBitDescriptor) {
             super.visitBitDescriptor(bitDescriptor)
-            val leftValue = ExpressionEvaluator.evaluate(bitDescriptor.left)
-            val rightValue = ExpressionEvaluator.evaluate(bitDescriptor.right)
-            if (leftValue != null && rightValue != null) {
-                val width = abs(leftValue - rightValue) + 1
-                bitDescriptor.type = if (bitDescriptor.isSigned) {
-                    Core.C_Sbit.toType(Cardinal.of(width).toType())
-                } else {
-                    Core.C_Ubit.toType(Cardinal.of(width).toType())
-                }
+            val type = Core.T_ADD.toType(
+                Core.T_SUB.toType(bitDescriptor.left.type.copy(), bitDescriptor.right.type.copy()),
+                Cardinal.of(1).toType()
+            )
+            bitDescriptor.type = if (bitDescriptor.isSigned) {
+                Core.C_Sbit.toType(type)
+            } else {
+                Core.C_Ubit.toType(type)
             }
         }
 
         override fun visitReferenceDescriptor(referenceDescriptor: EReferenceDescriptor) {
             super.visitReferenceDescriptor(referenceDescriptor)
             val typeArguments = referenceDescriptor.typeArguments.map {
-                if (it is EDescriptorTypeArgument) {
-                    it.descriptor.type.copy()
-                } else Type.unresolved()
+                it.descriptor.type.copy()
             }
             referenceDescriptor.type = referenceDescriptor.reference.toType(typeArguments)
         }
 
         override fun visitPackedDescriptor(packedDescriptor: EPackedDescriptor) {
             super.visitPackedDescriptor(packedDescriptor)
-            val leftValue = ExpressionEvaluator.evaluate(packedDescriptor.left)
-            val rightValue = ExpressionEvaluator.evaluate(packedDescriptor.right)
-            if (leftValue != null && rightValue != null) {
-                val width = abs(leftValue - rightValue) + 1
-                packedDescriptor.type = Core.C_Packed.toType(
-                    Cardinal.of(width).toType(),
-                    packedDescriptor.descriptor.type.copy()
-                )
-            }
+            val type = Core.T_ADD.toType(
+                Core.T_SUB.toType(packedDescriptor.left.type.copy(), packedDescriptor.right.type.copy()),
+                Cardinal.of(1).toType()
+            )
+            packedDescriptor.type = Core.C_Packed.toType(
+                type,
+                packedDescriptor.descriptor.type.copy()
+            )
         }
 
         override fun visitQueueDescriptor(queueDescriptor: EQueueDescriptor) {

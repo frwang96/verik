@@ -47,16 +47,13 @@ import io.verik.importer.ast.element.declaration.ETypeParameter
 import io.verik.importer.ast.element.descriptor.EBitDescriptor
 import io.verik.importer.ast.element.descriptor.EContainerDescriptor
 import io.verik.importer.ast.element.descriptor.EDescriptor
-import io.verik.importer.ast.element.descriptor.EDescriptorTypeArgument
+import io.verik.importer.ast.element.descriptor.ELiteralDescriptor
+import io.verik.importer.ast.element.descriptor.ENothingDescriptor
 import io.verik.importer.ast.element.descriptor.EPackedDescriptor
 import io.verik.importer.ast.element.descriptor.EQueueDescriptor
 import io.verik.importer.ast.element.descriptor.EReferenceDescriptor
 import io.verik.importer.ast.element.descriptor.ESimpleDescriptor
 import io.verik.importer.ast.element.descriptor.ETypeArgument
-import io.verik.importer.ast.element.expression.EExpression
-import io.verik.importer.ast.element.expression.ELiteralExpression
-import io.verik.importer.ast.element.expression.ENothingExpression
-import io.verik.importer.ast.element.expression.EReferenceExpression
 
 abstract class Visitor {
 
@@ -83,7 +80,7 @@ abstract class Visitor {
     }
 
     open fun visitKtFile(file: EKtFile) {
-        visitDeclaration(file)
+        visitContainerDeclaration(file)
     }
 
 // Class Like //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -182,8 +179,16 @@ abstract class Visitor {
         visitElement(descriptor)
     }
 
+    open fun visitNothingDescriptor(nothingDescriptor: ENothingDescriptor) {
+        visitDescriptor(nothingDescriptor)
+    }
+
     open fun visitSimpleDescriptor(simpleDescriptor: ESimpleDescriptor) {
         visitDescriptor(simpleDescriptor)
+    }
+
+    open fun visitLiteralDescriptor(literalDescriptor: ELiteralDescriptor) {
+        visitDescriptor(literalDescriptor)
     }
 
     open fun visitBitDescriptor(bitDescriptor: EBitDescriptor) {
@@ -208,27 +213,5 @@ abstract class Visitor {
 
     open fun visitTypeArgument(typeArgument: ETypeArgument) {
         visitElement(typeArgument)
-    }
-
-    open fun visitDescriptorTypeArgument(descriptorTypeArgument: EDescriptorTypeArgument) {
-        visitTypeArgument(descriptorTypeArgument)
-    }
-
-// Expression Like /////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    open fun visitExpression(expression: EExpression) {
-        visitElement(expression)
-    }
-
-    open fun visitNothingExpression(nothingExpression: ENothingExpression) {
-        visitExpression(nothingExpression)
-    }
-
-    open fun visitLiteralExpression(literalExpression: ELiteralExpression) {
-        visitExpression(literalExpression)
-    }
-
-    open fun visitReferenceExpression(referenceExpression: EReferenceExpression) {
-        visitExpression(referenceExpression)
     }
 }

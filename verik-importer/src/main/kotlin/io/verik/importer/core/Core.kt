@@ -34,4 +34,7 @@ object Core {
     val C_Module = CoreClassDeclaration("Module")
 
     val C_ArrayList = CoreClassDeclaration("ArrayList")
+
+    val T_ADD = CoreCardinalFunctionDeclaration("ADD")
+    val T_SUB = CoreCardinalFunctionDeclaration("SUB")
 }

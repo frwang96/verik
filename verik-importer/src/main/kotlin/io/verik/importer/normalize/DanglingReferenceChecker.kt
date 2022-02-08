@@ -21,7 +21,7 @@ import io.verik.importer.ast.common.Type
 import io.verik.importer.ast.element.common.EElement
 import io.verik.importer.ast.element.declaration.EDeclaration
 import io.verik.importer.ast.element.descriptor.EDescriptor
-import io.verik.importer.ast.element.expression.EReferenceExpression
+import io.verik.importer.ast.element.descriptor.EReferenceDescriptor
 import io.verik.importer.common.TreeVisitor
 import io.verik.importer.main.ProjectContext
 import io.verik.importer.main.ProjectStage
@@ -74,7 +74,7 @@ object DanglingReferenceChecker : NormalizationChecker {
             if (element is EDescriptor) {
                 checkReference(element.type, element)
             }
-            if (element is EReferenceExpression) {
+            if (element is EReferenceDescriptor) {
                 checkReference(element.reference, element)
             }
         }

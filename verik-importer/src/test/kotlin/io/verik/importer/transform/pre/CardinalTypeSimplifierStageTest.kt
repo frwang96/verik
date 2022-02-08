@@ -14,18 +14,22 @@
  * limitations under the License.
  */
 
-package io.verik.importer.ast.element.expression
+package io.verik.importer.transform.pre
 
-import io.verik.importer.common.Visitor
-import io.verik.importer.message.SourceLocation
+import io.verik.importer.test.BaseTest
+import io.verik.importer.test.findDeclaration
+import org.junit.jupiter.api.Test
 
-class ENothingExpression(
-    override val location: SourceLocation
-) : EExpression() {
+internal class CardinalTypeSimplifierStageTest : BaseTest() {
 
-    override fun accept(visitor: Visitor) {
-        visitor.visitNothingExpression(this)
+    @Test
+    fun `resolve bitDescriptor`() {
+        driveElementTest(
+            """
+                logic [1:0] x;
+            """.trimIndent(),
+            CardinalTypeSimplifierStage::class,
+            "Property(x, BitDescriptor(Ubit<`2`>, *, *, *))"
+        ) { it.findDeclaration("x") }
     }
-
-    override fun acceptChildren(visitor: Visitor) {}
 }

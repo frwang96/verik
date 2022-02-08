@@ -17,7 +17,6 @@
 package io.verik.importer.ast.element.descriptor
 
 import io.verik.importer.ast.common.Type
-import io.verik.importer.ast.element.expression.EExpression
 import io.verik.importer.common.Visitor
 import io.verik.importer.message.SourceLocation
 
@@ -25,8 +24,8 @@ class EPackedDescriptor(
     override val location: SourceLocation,
     override var type: Type,
     override var descriptor: EDescriptor,
-    val left: EExpression,
-    val right: EExpression
+    val left: EDescriptor,
+    val right: EDescriptor
 ) : EContainerDescriptor() {
 
     init {

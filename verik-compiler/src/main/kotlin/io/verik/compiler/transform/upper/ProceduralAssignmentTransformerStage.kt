@@ -106,7 +106,7 @@ object ProceduralAssignmentTransformerStage : ProjectStage() {
 
         private fun splitAlwaysSeqBlock(property: EProperty): EAlwaysSeqBlock? {
             val initializer = property.initializer
-            return if (initializer is ECallExpression && initializer.reference == Core.Vk.F_onr_Event_Event_Function) {
+            return if (initializer is ECallExpression && initializer.reference == Core.Vk.F_oni_Event_Event_Function) {
                 property.initializer = null
                 val referenceExpression = EReferenceExpression(
                     property.location,

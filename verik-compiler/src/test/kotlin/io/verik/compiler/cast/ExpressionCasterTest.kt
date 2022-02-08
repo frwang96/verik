@@ -269,12 +269,12 @@ internal class ExpressionCasterTest : BaseTest() {
     fun `function literal expression with return`() {
         driveElementTest(
             """
-                val x = onr(posedge(false)) { false }
+                val x = oni(posedge(false)) { false }
             """.trimIndent(),
             CasterStage::class,
             """
                 CallExpression(
-                    Boolean, onr, null, [
+                    Boolean, oni, null, [
                         CallExpression(*),
                         FunctionLiteralExpression(Function, [], BlockExpression(Boolean, [*]))
                     ], [Boolean]

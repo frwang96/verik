@@ -49,15 +49,15 @@ fun on(event: Event, vararg additional_events: Event, block: () -> Unit) {
 }
 
 /**
- * Similar to [on] but with a return value. Trigger a [sequentially][Seq] assigned property on event [event] and
- * optionally [additional_events].
+ * Inline form of [on]. Trigger a [sequentially][Seq] assigned property on event [event] and optionally
+ * [additional_events].
  *
  *  ```
  *  @Seq
  *  var x = onr(posedge(clk)) { !y }
  *  ```
  */
-fun <T> onr(event: Event, vararg additional_events: Event, block: () -> T): T {
+fun <T> oni(event: Event, vararg additional_events: Event, block: () -> T): T {
     throw Exception()
 }
 

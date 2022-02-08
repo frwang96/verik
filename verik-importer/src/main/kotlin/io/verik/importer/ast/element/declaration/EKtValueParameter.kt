@@ -27,7 +27,7 @@ class EKtValueParameter(
     val descriptor: EDescriptor,
     val annotationEntries: List<AnnotationEntry>,
     val isMutable: Boolean?,
-    val hasDefault: Boolean
+    var hasDefault: Boolean
 ) : EDeclaration() {
 
     override var signature: String? = null

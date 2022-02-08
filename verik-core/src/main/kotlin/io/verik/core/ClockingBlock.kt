@@ -30,8 +30,8 @@ package io.verik.core
  *
  *  class M : Module() {
  *
- *      var clk: Boolean = x()
- *      var x: Boolean = x()
+ *      var clk: Boolean = nc()
+ *      var x: Boolean = nc()
  *
  *      @Make
  *      val cb = CB(posedge(clk), x)

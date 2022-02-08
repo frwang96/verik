@@ -74,7 +74,7 @@ internal class DescriptorCasterTest : BaseTest() {
             """
                 logic [1:0] x;
             """.trimIndent(),
-            "Property(x, BitDescriptor(Nothing, LiteralExpression(1), LiteralExpression(0), 0))"
+            "Property(x, BitDescriptor(Nothing, LiteralDescriptor(*), LiteralDescriptor(*), 0))"
         ) { it.findDeclaration("x") }
     }
 
@@ -85,7 +85,7 @@ internal class DescriptorCasterTest : BaseTest() {
             """
                 logic [1:0][1:0] x;
             """.trimIndent(),
-            "Property(x, PackedDescriptor(Nothing, BitDescriptor(*), LiteralExpression(1), LiteralExpression(0)))"
+            "Property(x, PackedDescriptor(Nothing, BitDescriptor(*), LiteralDescriptor(*), LiteralDescriptor(*)))"
         ) { it.findDeclaration("x") }
     }
 
@@ -97,6 +97,33 @@ internal class DescriptorCasterTest : BaseTest() {
                 logic x [$];
             """.trimIndent(),
             "Property(x, QueueDescriptor(Nothing, SimpleDescriptor(*)))"
+        ) { it.findDeclaration("x") }
+    }
+
+    @Test
+    fun `cast descriptor from constantPrimaryParameter`() {
+        driveCasterTest(
+            SystemVerilogParser.ConstantPrimaryParameterContext::class,
+            """
+                logic [N:0] x;
+            """.trimIndent(),
+            "Property(x, BitDescriptor(Nothing, ReferenceDescriptor(Nothing, N, Nothing, []), LiteralDescriptor(*), 0))"
+        ) { it.findDeclaration("x") }
+    }
+
+    @Test
+    fun `cast descriptor from primaryHierarchical`() {
+        driveCasterTest(
+            SystemVerilogParser.PrimaryHierarchicalContext::class,
+            """
+                c#(d) x;
+            """.trimIndent(),
+            """
+                Property(
+                    x, ReferenceDescriptor(Nothing, c, Nothing,
+                    [TypeArgument(null, ReferenceDescriptor(Nothing, d, Nothing, []))])
+                )
+            """.trimIndent()
         ) { it.findDeclaration("x") }
     }
 }

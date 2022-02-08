@@ -47,9 +47,10 @@ object FunctionOverrideTransformerStage : ProjectStage() {
             super.visitKtClass(`class`)
             val superClass = `class`.superDescriptor.type.reference
             if (superClass is EKtClass) {
-                `class`.declarations.forEach {
-                    if (it is EKtFunction) {
-                        it.isOverride = isOverride(it, superClass)
+                `class`.declarations.forEach { function ->
+                    if (function is EKtFunction) {
+                        function.isOverride = isOverride(function, superClass)
+                        function.valueParameters.forEach { it.hasDefault = false }
                     }
                 }
             }

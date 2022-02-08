@@ -14,18 +14,20 @@
  * limitations under the License.
  */
 
-package io.verik.importer.ast.element.expression
+package io.verik.importer.ast.element.descriptor
 
+import io.verik.importer.ast.common.Type
 import io.verik.importer.common.Visitor
 import io.verik.importer.message.SourceLocation
 
-class ELiteralExpression(
-    override val location: SourceLocation,
-    val value: String
-) : EExpression() {
+class ENothingDescriptor(
+    override val location: SourceLocation
+) : EDescriptor() {
+
+    override var type = Type.unresolved()
 
     override fun accept(visitor: Visitor) {
-        visitor.visitLiteralExpression(this)
+        visitor.visitNothingDescriptor(this)
     }
 
     override fun acceptChildren(visitor: Visitor) {}
