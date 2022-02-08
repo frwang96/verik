@@ -608,8 +608,8 @@ packedDimension
     ;
 
 associativeDimension
-    : LBRACK dataType RBRACK # associativeDimensionDataType
-    | LBRACK STAR RBRACK     # associativeDimensionStar
+    : LBRACK dataType RBRACK
+    | LBRACK STAR RBRACK
     ;
 
 variableDimension

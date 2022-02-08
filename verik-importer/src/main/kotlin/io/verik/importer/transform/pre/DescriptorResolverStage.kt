@@ -17,9 +17,10 @@
 package io.verik.importer.transform.pre
 
 import io.verik.importer.ast.element.descriptor.EBitDescriptor
+import io.verik.importer.ast.element.descriptor.EIndexDimensionDescriptor
 import io.verik.importer.ast.element.descriptor.ELiteralDescriptor
-import io.verik.importer.ast.element.descriptor.EPackedDescriptor
 import io.verik.importer.ast.element.descriptor.EQueueDescriptor
+import io.verik.importer.ast.element.descriptor.ERangeDimensionDescriptor
 import io.verik.importer.ast.element.descriptor.EReferenceDescriptor
 import io.verik.importer.common.TreeVisitor
 import io.verik.importer.core.Cardinal
@@ -66,15 +67,27 @@ object DescriptorResolverStage : ProjectStage() {
             referenceDescriptor.type = referenceDescriptor.reference.toType(typeArguments)
         }
 
-        override fun visitPackedDescriptor(packedDescriptor: EPackedDescriptor) {
-            super.visitPackedDescriptor(packedDescriptor)
-            val type = Core.T_ADD.toType(
-                Core.T_SUB.toType(packedDescriptor.left.type.copy(), packedDescriptor.right.type.copy()),
+        override fun visitRangeDimensionDescriptor(rangeDimensionDescriptor: ERangeDimensionDescriptor) {
+            super.visitRangeDimensionDescriptor(rangeDimensionDescriptor)
+            val baseType = if (rangeDimensionDescriptor.isPacked) Core.C_Packed else Core.C_Unpacked
+            val widthType = Core.T_ADD.toType(
+                Core.T_SUB.toType(
+                    rangeDimensionDescriptor.left.type.copy(),
+                    rangeDimensionDescriptor.right.type.copy()
+                ),
                 Cardinal.of(1).toType()
             )
-            packedDescriptor.type = Core.C_Packed.toType(
-                type,
-                packedDescriptor.descriptor.type.copy()
+            rangeDimensionDescriptor.type = baseType.toType(
+                widthType,
+                rangeDimensionDescriptor.descriptor.type.copy()
+            )
+        }
+
+        override fun visitIndexDimensionDescriptor(indexDimensionDescriptor: EIndexDimensionDescriptor) {
+            super.visitIndexDimensionDescriptor(indexDimensionDescriptor)
+            indexDimensionDescriptor.type = Core.C_HashMap.toType(
+                indexDimensionDescriptor.indexDescriptor.type.copy(),
+                indexDimensionDescriptor.descriptor.type.copy()
             )
         }
 

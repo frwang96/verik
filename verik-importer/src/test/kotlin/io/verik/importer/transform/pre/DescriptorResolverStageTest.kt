@@ -62,18 +62,34 @@ internal class DescriptorResolverStageTest : BaseTest() {
     }
 
     @Test
-    fun `resolve packed descriptor`() {
+    fun `resolve range dimension descriptor`() {
         driveElementTest(
             """
                 logic [1:0][3:0] x;
             """.trimIndent(),
             DescriptorResolverStage::class,
-            "Property(x, PackedDescriptor(Packed<ADD<SUB<`3`, `0`>, `1`>, Ubit<ADD<SUB<`1`, `0`>, `1`>>>, *, *, *))"
+            """
+                Property(
+                    x,
+                    RangeDimensionDescriptor(Packed<ADD<SUB<`3`, `0`>, `1`>, Ubit<ADD<SUB<`1`, `0`>, `1`>>>, *, *, *, 1)
+                )
+            """.trimIndent()
         ) { it.findDeclaration("x") }
     }
 
     @Test
-    fun `resolve queue discriptor`() {
+    fun `resolve index dimension descriptor`() {
+        driveElementTest(
+            """
+                logic x [int];
+            """.trimIndent(),
+            DescriptorResolverStage::class,
+            "Property(x, IndexDimensionDescriptor(HashMap<Int, Boolean>, SimpleDescriptor(*), SimpleDescriptor(*)))"
+        ) { it.findDeclaration("x") }
+    }
+
+    @Test
+    fun `resolve queue descriptor`() {
         driveElementTest(
             """
                 logic x [$];

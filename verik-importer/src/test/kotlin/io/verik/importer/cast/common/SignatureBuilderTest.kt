@@ -19,6 +19,7 @@ package io.verik.importer.cast.common
 import io.verik.importer.antlr.SystemVerilogParser
 import io.verik.importer.test.BaseTest
 import io.verik.importer.test.findDeclaration
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 class SignatureBuilderTest : BaseTest() {
@@ -189,6 +190,21 @@ class SignatureBuilderTest : BaseTest() {
                 } e;
             """.trimIndent()
         ) { it.findDeclaration("e") }
+    }
+
+    @Test
+    @Disabled
+    // TODO handle variable dimensions
+    fun `signature variableDimension`() {
+        driveSignatureTest(
+            SystemVerilogParser.VariableDimensionContext::class,
+            """
+                logic x [$];
+            """.trimIndent(),
+            """
+                logic x [$];
+            """.trimIndent()
+        ) { it.findDeclaration("x") }
     }
 
     @Test

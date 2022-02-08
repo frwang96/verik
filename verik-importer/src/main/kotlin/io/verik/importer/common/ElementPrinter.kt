@@ -40,10 +40,11 @@ import io.verik.importer.ast.element.declaration.ETask
 import io.verik.importer.ast.element.declaration.ETypeAlias
 import io.verik.importer.ast.element.declaration.ETypeParameter
 import io.verik.importer.ast.element.descriptor.EBitDescriptor
+import io.verik.importer.ast.element.descriptor.EIndexDimensionDescriptor
 import io.verik.importer.ast.element.descriptor.ELiteralDescriptor
 import io.verik.importer.ast.element.descriptor.ENothingDescriptor
-import io.verik.importer.ast.element.descriptor.EPackedDescriptor
 import io.verik.importer.ast.element.descriptor.EQueueDescriptor
+import io.verik.importer.ast.element.descriptor.ERangeDimensionDescriptor
 import io.verik.importer.ast.element.descriptor.EReferenceDescriptor
 import io.verik.importer.ast.element.descriptor.ESimpleDescriptor
 import io.verik.importer.ast.element.descriptor.ETypeArgument
@@ -269,12 +270,21 @@ class ElementPrinter : Visitor() {
         }
     }
 
-    override fun visitPackedDescriptor(packedDescriptor: EPackedDescriptor) {
-        build("PackedDescriptor") {
-            build(packedDescriptor.type.toString())
-            build(packedDescriptor.descriptor)
-            build(packedDescriptor.left)
-            build(packedDescriptor.right)
+    override fun visitRangeDimensionDescriptor(rangeDimensionDescriptor: ERangeDimensionDescriptor) {
+        build("RangeDimensionDescriptor") {
+            build(rangeDimensionDescriptor.type.toString())
+            build(rangeDimensionDescriptor.descriptor)
+            build(rangeDimensionDescriptor.left)
+            build(rangeDimensionDescriptor.right)
+            build(rangeDimensionDescriptor.isPacked)
+        }
+    }
+
+    override fun visitIndexDimensionDescriptor(indexDimensionDescriptor: EIndexDimensionDescriptor) {
+        build("IndexDimensionDescriptor") {
+            build(indexDimensionDescriptor.type.toString())
+            build(indexDimensionDescriptor.descriptor)
+            build(indexDimensionDescriptor.indexDescriptor)
         }
     }
 

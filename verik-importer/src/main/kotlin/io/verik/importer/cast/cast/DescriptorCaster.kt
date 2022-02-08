@@ -20,9 +20,10 @@ import io.verik.importer.antlr.SystemVerilogParser
 import io.verik.importer.ast.common.Type
 import io.verik.importer.ast.element.descriptor.EBitDescriptor
 import io.verik.importer.ast.element.descriptor.EDescriptor
+import io.verik.importer.ast.element.descriptor.EIndexDimensionDescriptor
 import io.verik.importer.ast.element.descriptor.ELiteralDescriptor
-import io.verik.importer.ast.element.descriptor.EPackedDescriptor
 import io.verik.importer.ast.element.descriptor.EQueueDescriptor
+import io.verik.importer.ast.element.descriptor.ERangeDimensionDescriptor
 import io.verik.importer.ast.element.descriptor.EReferenceDescriptor
 import io.verik.importer.ast.element.descriptor.ESimpleDescriptor
 import io.verik.importer.cast.common.CastContext
@@ -124,6 +125,30 @@ object DescriptorCaster {
         }
     }
 
+    fun castDescriptorFromAssociativeDimension(
+        ctx: SystemVerilogParser.AssociativeDimensionContext,
+        castContext: CastContext
+    ): EDescriptor {
+        val location = castContext.getLocation(ctx)
+        val dataType = ctx.dataType()
+        return if (dataType != null) {
+            val indexDescriptor = castContext.castDescriptor(dataType)
+            EIndexDimensionDescriptor(
+                location,
+                Type.unresolved(),
+                ESimpleDescriptor(location, Core.C_Boolean.toType()),
+                indexDescriptor
+            )
+        } else {
+            EIndexDimensionDescriptor(
+                location,
+                Type.unresolved(),
+                ESimpleDescriptor(location, Core.C_Boolean.toType()),
+                ESimpleDescriptor(location, Core.C_Int.toType())
+            )
+        }
+    }
+
     fun castDescriptorFromQueueDimension(
         ctx: SystemVerilogParser.QueueDimensionContext,
         castContext: CastContext
@@ -194,17 +219,18 @@ object DescriptorCaster {
             castContext.castDescriptor(packedDimensionRanges[0].constantRange().constantExpression()[1]),
             isSigned
         )
-        val packedDescriptors = packedDimensionRanges.drop(1).map {
+        val rangeDimensionDescriptors = packedDimensionRanges.drop(1).map {
             val packedDescriptorLocation = castContext.getLocation(it)
-            EPackedDescriptor(
+            ERangeDimensionDescriptor(
                 packedDescriptorLocation,
                 Type.unresolved(),
                 ESimpleDescriptor(packedDescriptorLocation, Core.C_Boolean.toType()),
                 castContext.castDescriptor(it.constantRange().constantExpression(0)),
-                castContext.castDescriptor(it.constantRange().constantExpression(1))
+                castContext.castDescriptor(it.constantRange().constantExpression(1)),
+                true
             )
         }
-        return packedDescriptors.fold(baseDescriptor) { accumulatedDescriptor, descriptor ->
+        return rangeDimensionDescriptors.fold(baseDescriptor) { accumulatedDescriptor, descriptor ->
             accumulatedDescriptor.wrap(descriptor)
         }
     }

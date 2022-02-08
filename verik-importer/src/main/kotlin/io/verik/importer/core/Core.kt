@@ -28,12 +28,14 @@ object Core {
     val C_Ubit = CoreClassDeclaration("Ubit")
     val C_Sbit = CoreClassDeclaration("Sbit")
     val C_Packed = CoreClassDeclaration("Packed")
+    val C_Unpacked = CoreClassDeclaration("Unpacked")
     val C_Time = CoreClassDeclaration("Time")
 
     val C_Struct = CoreClassDeclaration("Struct")
     val C_Module = CoreClassDeclaration("Module")
 
     val C_ArrayList = CoreClassDeclaration("ArrayList")
+    val C_HashMap = CoreClassDeclaration("HashMap")
 
     val T_ADD = CoreCardinalFunctionDeclaration("ADD")
     val T_SUB = CoreCardinalFunctionDeclaration("SUB")

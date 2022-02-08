@@ -196,14 +196,8 @@ class CasterVisitor(
         return null
     }
 
-    override fun visitAssociativeDimensionDataType(
-        ctx: SystemVerilogParser.AssociativeDimensionDataTypeContext?
-    ): EElement? {
-        return null
-    }
-
-    override fun visitAssociativeDimensionStar(ctx: SystemVerilogParser.AssociativeDimensionStarContext?): EElement? {
-        return null
+    override fun visitAssociativeDimension(ctx: SystemVerilogParser.AssociativeDimensionContext?): EElement {
+        return DescriptorCaster.castDescriptorFromAssociativeDimension(ctx!!, castContext)
     }
 
     override fun visitQueueDimension(ctx: SystemVerilogParser.QueueDimensionContext?): EElement {

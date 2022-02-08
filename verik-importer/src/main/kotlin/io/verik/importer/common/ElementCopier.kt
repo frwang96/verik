@@ -18,9 +18,10 @@ package io.verik.importer.common
 
 import io.verik.importer.ast.element.common.EElement
 import io.verik.importer.ast.element.descriptor.EBitDescriptor
+import io.verik.importer.ast.element.descriptor.EIndexDimensionDescriptor
 import io.verik.importer.ast.element.descriptor.ELiteralDescriptor
-import io.verik.importer.ast.element.descriptor.EPackedDescriptor
 import io.verik.importer.ast.element.descriptor.EQueueDescriptor
+import io.verik.importer.ast.element.descriptor.ERangeDimensionDescriptor
 import io.verik.importer.ast.element.descriptor.EReferenceDescriptor
 import io.verik.importer.ast.element.descriptor.ESimpleDescriptor
 import io.verik.importer.ast.element.descriptor.ETypeArgument
@@ -39,8 +40,9 @@ object ElementCopier {
             is ELiteralDescriptor -> copyLiteralDescriptor(element, location)
             is EBitDescriptor -> copyBitDescriptor(element, location)
             is EReferenceDescriptor -> copyReferenceDescriptor(element, location)
-            is EPackedDescriptor -> copyPackedDescriptor(element, location)
+            is ERangeDimensionDescriptor -> copyRangeDimensionDescriptor(element, location)
             is EQueueDescriptor -> copyQueueDescriptor(element, location)
+            is EIndexDimensionDescriptor -> copyIndexDimensionDescriptor(element, location)
             is ETypeArgument -> copyTypeArgument(element, location)
             else -> Messages.INTERNAL_ERROR.on(element, "Unable to copy element: $element")
         }
@@ -102,20 +104,21 @@ object ElementCopier {
         )
     }
 
-    private fun copyPackedDescriptor(
-        packedDescriptor: EPackedDescriptor,
+    private fun copyRangeDimensionDescriptor(
+        packedDescriptor: ERangeDimensionDescriptor,
         location: SourceLocation?
-    ): EPackedDescriptor {
+    ): ERangeDimensionDescriptor {
         val type = packedDescriptor.type.copy()
         val descriptor = copy(packedDescriptor.descriptor, location)
         val left = copy(packedDescriptor.left, location)
         val right = copy(packedDescriptor.right, location)
-        return EPackedDescriptor(
+        return ERangeDimensionDescriptor(
             location ?: packedDescriptor.location,
             type,
             descriptor,
             left,
-            right
+            right,
+            packedDescriptor.isPacked
         )
     }
 
@@ -129,6 +132,21 @@ object ElementCopier {
             location ?: queueDescriptor.location,
             type,
             descriptor
+        )
+    }
+
+    private fun copyIndexDimensionDescriptor(
+        mapDescriptor: EIndexDimensionDescriptor,
+        location: SourceLocation?
+    ): EIndexDimensionDescriptor {
+        val type = mapDescriptor.type.copy()
+        val descriptor = copy(mapDescriptor.descriptor, location)
+        val indexDescriptor = copy(mapDescriptor.indexDescriptor, location)
+        return EIndexDimensionDescriptor(
+            location ?: mapDescriptor.location,
+            type,
+            descriptor,
+            indexDescriptor
         )
     }
 

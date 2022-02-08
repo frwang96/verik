@@ -85,7 +85,23 @@ internal class DescriptorCasterTest : BaseTest() {
             """
                 logic [1:0][1:0] x;
             """.trimIndent(),
-            "Property(x, PackedDescriptor(Nothing, BitDescriptor(*), LiteralDescriptor(*), LiteralDescriptor(*)))"
+            """
+                Property(
+                    x,
+                    RangeDimensionDescriptor(Nothing, BitDescriptor(*), LiteralDescriptor(*), LiteralDescriptor(*), 1)
+                )
+            """.trimIndent()
+        ) { it.findDeclaration("x") }
+    }
+
+    @Test
+    fun `cast descriptor from associative dimension`() {
+        driveCasterTest(
+            SystemVerilogParser.AssociativeDimensionContext::class,
+            """
+                logic x [int];
+            """.trimIndent(),
+            "Property(x, IndexDimensionDescriptor(Nothing, SimpleDescriptor(Boolean), SimpleDescriptor(Int)))"
         ) { it.findDeclaration("x") }
     }
 

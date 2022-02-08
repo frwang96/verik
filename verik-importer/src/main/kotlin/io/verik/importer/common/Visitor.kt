@@ -47,10 +47,11 @@ import io.verik.importer.ast.element.declaration.ETypeParameter
 import io.verik.importer.ast.element.descriptor.EBitDescriptor
 import io.verik.importer.ast.element.descriptor.EContainerDescriptor
 import io.verik.importer.ast.element.descriptor.EDescriptor
+import io.verik.importer.ast.element.descriptor.EIndexDimensionDescriptor
 import io.verik.importer.ast.element.descriptor.ELiteralDescriptor
 import io.verik.importer.ast.element.descriptor.ENothingDescriptor
-import io.verik.importer.ast.element.descriptor.EPackedDescriptor
 import io.verik.importer.ast.element.descriptor.EQueueDescriptor
+import io.verik.importer.ast.element.descriptor.ERangeDimensionDescriptor
 import io.verik.importer.ast.element.descriptor.EReferenceDescriptor
 import io.verik.importer.ast.element.descriptor.ESimpleDescriptor
 import io.verik.importer.ast.element.descriptor.ETypeArgument
@@ -203,8 +204,12 @@ abstract class Visitor {
         visitDescriptor(containerDescriptor)
     }
 
-    open fun visitPackedDescriptor(packedDescriptor: EPackedDescriptor) {
-        visitDescriptor(packedDescriptor)
+    open fun visitRangeDimensionDescriptor(rangeDimensionDescriptor: ERangeDimensionDescriptor) {
+        visitDescriptor(rangeDimensionDescriptor)
+    }
+
+    open fun visitIndexDimensionDescriptor(indexDimensionDescriptor: EIndexDimensionDescriptor) {
+        visitDescriptor(indexDimensionDescriptor)
     }
 
     open fun visitQueueDescriptor(queueDescriptor: EQueueDescriptor) {
