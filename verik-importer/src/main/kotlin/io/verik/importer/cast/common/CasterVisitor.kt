@@ -186,14 +186,14 @@ class CasterVisitor(
 
 // A.2.5 Declaration Ranges ////////////////////////////////////////////////////////////////////////////////////////////
 
-    override fun visitUnpackedDimensionRange(ctx: SystemVerilogParser.UnpackedDimensionRangeContext?): EElement? {
-        return null
+    override fun visitUnpackedDimensionRange(ctx: SystemVerilogParser.UnpackedDimensionRangeContext?): EElement {
+        return DescriptorCaster.castDescriptorFromUnpackedDimensionRange(ctx!!, castContext)
     }
 
     override fun visitUnpackedDimensionExpression(
         ctx: SystemVerilogParser.UnpackedDimensionExpressionContext?
-    ): EElement? {
-        return null
+    ): EElement {
+        return DescriptorCaster.castDescriptorFromUnpackedDimensionExpression(ctx!!, castContext)
     }
 
     override fun visitAssociativeDimension(ctx: SystemVerilogParser.AssociativeDimensionContext?): EElement {

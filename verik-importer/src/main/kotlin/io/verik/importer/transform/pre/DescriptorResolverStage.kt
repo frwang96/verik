@@ -86,7 +86,7 @@ object DescriptorResolverStage : ProjectStage() {
         override fun visitIndexDimensionDescriptor(indexDimensionDescriptor: EIndexDimensionDescriptor) {
             super.visitIndexDimensionDescriptor(indexDimensionDescriptor)
             indexDimensionDescriptor.type = Core.C_HashMap.toType(
-                indexDimensionDescriptor.indexDescriptor.type.copy(),
+                indexDimensionDescriptor.index.type.copy(),
                 indexDimensionDescriptor.descriptor.type.copy()
             )
         }

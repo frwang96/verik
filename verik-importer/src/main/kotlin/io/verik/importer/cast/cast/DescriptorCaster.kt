@@ -125,6 +125,37 @@ object DescriptorCaster {
         }
     }
 
+    fun castDescriptorFromUnpackedDimensionRange(
+        ctx: SystemVerilogParser.UnpackedDimensionRangeContext,
+        castContext: CastContext
+    ): EDescriptor {
+        val location = castContext.getLocation(ctx)
+        val left = castContext.castDescriptor(ctx.constantRange().constantExpression(0))
+        val right = castContext.castDescriptor(ctx.constantRange().constantExpression(1))
+        return ERangeDimensionDescriptor(
+            location,
+            Type.unresolved(),
+            ESimpleDescriptor(location, Core.C_Boolean.toType()),
+            left,
+            right,
+            false
+        )
+    }
+
+    fun castDescriptorFromUnpackedDimensionExpression(
+        ctx: SystemVerilogParser.UnpackedDimensionExpressionContext,
+        castContext: CastContext
+    ): EDescriptor {
+        val location = castContext.getLocation(ctx)
+        val index = castContext.castDescriptor(ctx.constantExpression())
+        return EIndexDimensionDescriptor(
+            location,
+            Type.unresolved(),
+            ESimpleDescriptor(location, Core.C_Boolean.toType()),
+            index
+        )
+    }
+
     fun castDescriptorFromAssociativeDimension(
         ctx: SystemVerilogParser.AssociativeDimensionContext,
         castContext: CastContext
@@ -132,12 +163,12 @@ object DescriptorCaster {
         val location = castContext.getLocation(ctx)
         val dataType = ctx.dataType()
         return if (dataType != null) {
-            val indexDescriptor = castContext.castDescriptor(dataType)
+            val index = castContext.castDescriptor(dataType)
             EIndexDimensionDescriptor(
                 location,
                 Type.unresolved(),
                 ESimpleDescriptor(location, Core.C_Boolean.toType()),
-                indexDescriptor
+                index
             )
         } else {
             EIndexDimensionDescriptor(

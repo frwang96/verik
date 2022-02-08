@@ -19,7 +19,6 @@ package io.verik.importer.cast.common
 import io.verik.importer.antlr.SystemVerilogParser
 import io.verik.importer.test.BaseTest
 import io.verik.importer.test.findDeclaration
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 class SignatureBuilderTest : BaseTest() {
@@ -145,7 +144,7 @@ class SignatureBuilderTest : BaseTest() {
             """
                 const var automatic logic x = 0;
             """.trimIndent(),
-            "const var automatic logic x;"
+            "const var automatic logic x = 0;"
         ) { it.findDeclaration("x") }
     }
 
@@ -193,16 +192,14 @@ class SignatureBuilderTest : BaseTest() {
     }
 
     @Test
-    @Disabled
-    // TODO handle variable dimensions
-    fun `signature variableDimension`() {
+    fun `signature variableDeclAssignmentVariable`() {
         driveSignatureTest(
-            SystemVerilogParser.VariableDimensionContext::class,
+            SystemVerilogParser.VariableDeclAssignmentVariableContext::class,
             """
-                logic x [$];
+                logic x [$] = y, z;
             """.trimIndent(),
             """
-                logic x [$];
+                logic x [$] = y;
             """.trimIndent()
         ) { it.findDeclaration("x") }
     }

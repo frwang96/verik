@@ -68,6 +68,34 @@ internal class DescriptorCasterTest : BaseTest() {
     }
 
     @Test
+    fun `cast descriptor from unpackedDimensionRange`() {
+        driveCasterTest(
+            SystemVerilogParser.UnpackedDimensionRangeContext::class,
+            """
+                int x [7:0];
+            """.trimIndent(),
+            """
+                Property(
+                    x, RangeDimensionDescriptor(
+                        Nothing, SimpleDescriptor(Int), LiteralDescriptor(*), LiteralDescriptor(*), 0
+                    )
+                )
+            """.trimIndent()
+        ) { it.findDeclaration("x") }
+    }
+
+    @Test
+    fun `cast descriptor from unpackedDimensionExpression`() {
+        driveCasterTest(
+            SystemVerilogParser.UnpackedDimensionExpressionContext::class,
+            """
+                int x [8];
+            """.trimIndent(),
+            "Property(x, IndexDimensionDescriptor(Nothing, SimpleDescriptor(Int), LiteralDescriptor(Nothing, 8)))"
+        ) { it.findDeclaration("x") }
+    }
+
+    @Test
     fun `cast descriptor from packedDimensionRange single`() {
         driveCasterTest(
             SystemVerilogParser.PackedDimensionRangeContext::class,

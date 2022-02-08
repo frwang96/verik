@@ -141,12 +141,12 @@ object ElementCopier {
     ): EIndexDimensionDescriptor {
         val type = mapDescriptor.type.copy()
         val descriptor = copy(mapDescriptor.descriptor, location)
-        val indexDescriptor = copy(mapDescriptor.indexDescriptor, location)
+        val index = copy(mapDescriptor.index, location)
         return EIndexDimensionDescriptor(
             location ?: mapDescriptor.location,
             type,
             descriptor,
-            indexDescriptor
+            index
         )
     }
 

@@ -284,7 +284,7 @@ class ElementPrinter : Visitor() {
         build("IndexDimensionDescriptor") {
             build(indexDimensionDescriptor.type.toString())
             build(indexDimensionDescriptor.descriptor)
-            build(indexDimensionDescriptor.indexDescriptor)
+            build(indexDimensionDescriptor.index)
         }
     }
 

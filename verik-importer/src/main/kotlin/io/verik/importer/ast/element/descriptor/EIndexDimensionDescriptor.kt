@@ -24,12 +24,12 @@ class EIndexDimensionDescriptor(
     override val location: SourceLocation,
     override var type: Type,
     override var descriptor: EDescriptor,
-    var indexDescriptor: EDescriptor
+    var index: EDescriptor
 ) : EContainerDescriptor() {
 
     init {
         descriptor.parent = this
-        indexDescriptor.parent = this
+        index.parent = this
     }
 
     override fun accept(visitor: Visitor) {
@@ -38,14 +38,14 @@ class EIndexDimensionDescriptor(
 
     override fun acceptChildren(visitor: Visitor) {
         super.acceptChildren(visitor)
-        indexDescriptor.accept(visitor)
+        index.accept(visitor)
     }
 
     override fun replaceChild(oldDescriptor: EDescriptor, newDescriptor: EDescriptor): Boolean {
         if (super.replaceChild(oldDescriptor, newDescriptor))
             return true
-        return if (oldDescriptor == indexDescriptor) {
-            indexDescriptor = newDescriptor
+        return if (oldDescriptor == index) {
+            index = newDescriptor
             true
         } else false
     }
