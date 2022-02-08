@@ -14,21 +14,11 @@
  * limitations under the License.
  */
 
-// test.kt /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+@file:Suppress("unused")
 
-package imported
+package io.verik.core
 
-import io.verik.core.*
-
-typealias t0 = Ubit<`8`>
-
-var x0: t0 = imported()
-
-typealias t1 = Queue<Boolean>
-
-var x1: t1 = imported()
-
-open class c {
-
-    var x2: Boolean = imported()
-}
+/**
+ * A dynamic array of elements of type [T]. It corresponds to a SystemVerilog dynamic array.
+ */
+class DynamicArray<T>

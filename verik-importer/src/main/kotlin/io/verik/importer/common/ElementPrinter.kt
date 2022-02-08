@@ -39,11 +39,11 @@ import io.verik.importer.ast.element.declaration.ESvValueParameter
 import io.verik.importer.ast.element.declaration.ETask
 import io.verik.importer.ast.element.declaration.ETypeAlias
 import io.verik.importer.ast.element.declaration.ETypeParameter
+import io.verik.importer.ast.element.descriptor.EArrayDimensionDescriptor
 import io.verik.importer.ast.element.descriptor.EBitDescriptor
 import io.verik.importer.ast.element.descriptor.EIndexDimensionDescriptor
 import io.verik.importer.ast.element.descriptor.ELiteralDescriptor
 import io.verik.importer.ast.element.descriptor.ENothingDescriptor
-import io.verik.importer.ast.element.descriptor.EQueueDescriptor
 import io.verik.importer.ast.element.descriptor.ERangeDimensionDescriptor
 import io.verik.importer.ast.element.descriptor.EReferenceDescriptor
 import io.verik.importer.ast.element.descriptor.ESimpleDescriptor
@@ -270,13 +270,11 @@ class ElementPrinter : Visitor() {
         }
     }
 
-    override fun visitRangeDimensionDescriptor(rangeDimensionDescriptor: ERangeDimensionDescriptor) {
-        build("RangeDimensionDescriptor") {
-            build(rangeDimensionDescriptor.type.toString())
-            build(rangeDimensionDescriptor.descriptor)
-            build(rangeDimensionDescriptor.left)
-            build(rangeDimensionDescriptor.right)
-            build(rangeDimensionDescriptor.isPacked)
+    override fun visitArrayDimensionDescriptor(arrayDimensionDescriptor: EArrayDimensionDescriptor) {
+        build("ArrayDimensionDescriptor") {
+            build(arrayDimensionDescriptor.type.toString())
+            build(arrayDimensionDescriptor.descriptor)
+            build(arrayDimensionDescriptor.isQueue)
         }
     }
 
@@ -288,10 +286,13 @@ class ElementPrinter : Visitor() {
         }
     }
 
-    override fun visitQueueDescriptor(queueDescriptor: EQueueDescriptor) {
-        build("QueueDescriptor") {
-            build(queueDescriptor.type.toString())
-            build(queueDescriptor.descriptor)
+    override fun visitRangeDimensionDescriptor(rangeDimensionDescriptor: ERangeDimensionDescriptor) {
+        build("RangeDimensionDescriptor") {
+            build(rangeDimensionDescriptor.type.toString())
+            build(rangeDimensionDescriptor.descriptor)
+            build(rangeDimensionDescriptor.left)
+            build(rangeDimensionDescriptor.right)
+            build(rangeDimensionDescriptor.isPacked)
         }
     }
 

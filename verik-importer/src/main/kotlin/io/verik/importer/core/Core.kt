@@ -34,8 +34,9 @@ object Core {
     val C_Struct = CoreClassDeclaration("Struct")
     val C_Module = CoreClassDeclaration("Module")
 
-    val C_ArrayList = CoreClassDeclaration("ArrayList")
-    val C_HashMap = CoreClassDeclaration("HashMap")
+    val C_Queue = CoreClassDeclaration("Queue")
+    val C_DynamicArray = CoreClassDeclaration("DynamicArray")
+    val C_AssociativeArray = CoreClassDeclaration("AssociativeArray")
 
     val T_ADD = CoreCardinalFunctionDeclaration("ADD")
     val T_SUB = CoreCardinalFunctionDeclaration("SUB")

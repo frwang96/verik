@@ -16,10 +16,10 @@
 
 package io.verik.importer.transform.pre
 
+import io.verik.importer.ast.element.descriptor.EArrayDimensionDescriptor
 import io.verik.importer.ast.element.descriptor.EBitDescriptor
 import io.verik.importer.ast.element.descriptor.EIndexDimensionDescriptor
 import io.verik.importer.ast.element.descriptor.ELiteralDescriptor
-import io.verik.importer.ast.element.descriptor.EQueueDescriptor
 import io.verik.importer.ast.element.descriptor.ERangeDimensionDescriptor
 import io.verik.importer.ast.element.descriptor.EReferenceDescriptor
 import io.verik.importer.common.TreeVisitor
@@ -27,7 +27,6 @@ import io.verik.importer.core.Cardinal
 import io.verik.importer.core.Core
 import io.verik.importer.main.ProjectContext
 import io.verik.importer.main.ProjectStage
-import io.verik.importer.message.Messages
 
 object DescriptorResolverStage : ProjectStage() {
 
@@ -42,7 +41,7 @@ object DescriptorResolverStage : ProjectStage() {
             if (value != null) {
                 literalDescriptor.type = Cardinal.of(value).toType()
             } else {
-                Messages.INTERNAL_ERROR.on(literalDescriptor, "Unable to parse literal: ${literalDescriptor.value}")
+                literalDescriptor.type = Core.C_Nothing.toType()
             }
         }
 
@@ -67,6 +66,20 @@ object DescriptorResolverStage : ProjectStage() {
             referenceDescriptor.type = referenceDescriptor.reference.toType(typeArguments)
         }
 
+        override fun visitArrayDimensionDescriptor(arrayDimensionDescriptor: EArrayDimensionDescriptor) {
+            super.visitArrayDimensionDescriptor(arrayDimensionDescriptor)
+            val baseType = if (arrayDimensionDescriptor.isQueue) Core.C_Queue else Core.C_DynamicArray
+            arrayDimensionDescriptor.type = baseType.toType(arrayDimensionDescriptor.descriptor.type.copy())
+        }
+
+        override fun visitIndexDimensionDescriptor(indexDimensionDescriptor: EIndexDimensionDescriptor) {
+            super.visitIndexDimensionDescriptor(indexDimensionDescriptor)
+            indexDimensionDescriptor.type = Core.C_AssociativeArray.toType(
+                indexDimensionDescriptor.index.type.copy(),
+                indexDimensionDescriptor.descriptor.type.copy()
+            )
+        }
+
         override fun visitRangeDimensionDescriptor(rangeDimensionDescriptor: ERangeDimensionDescriptor) {
             super.visitRangeDimensionDescriptor(rangeDimensionDescriptor)
             val baseType = if (rangeDimensionDescriptor.isPacked) Core.C_Packed else Core.C_Unpacked
@@ -81,19 +94,6 @@ object DescriptorResolverStage : ProjectStage() {
                 widthType,
                 rangeDimensionDescriptor.descriptor.type.copy()
             )
-        }
-
-        override fun visitIndexDimensionDescriptor(indexDimensionDescriptor: EIndexDimensionDescriptor) {
-            super.visitIndexDimensionDescriptor(indexDimensionDescriptor)
-            indexDimensionDescriptor.type = Core.C_HashMap.toType(
-                indexDimensionDescriptor.index.type.copy(),
-                indexDimensionDescriptor.descriptor.type.copy()
-            )
-        }
-
-        override fun visitQueueDescriptor(queueDescriptor: EQueueDescriptor) {
-            super.visitQueueDescriptor(queueDescriptor)
-            queueDescriptor.type = Core.C_ArrayList.toType(queueDescriptor.descriptor.type.copy())
         }
     }
 }

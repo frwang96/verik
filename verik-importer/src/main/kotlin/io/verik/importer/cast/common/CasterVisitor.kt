@@ -204,6 +204,10 @@ class CasterVisitor(
         return DescriptorCaster.castDescriptorFromQueueDimension(ctx!!, castContext)
     }
 
+    override fun visitUnsizedDimension(ctx: SystemVerilogParser.UnsizedDimensionContext?): EElement {
+        return DescriptorCaster.castDescriptorFromUnsizedDimension(ctx!!, castContext)
+    }
+
 // A.2.6 Function Declarations /////////////////////////////////////////////////////////////////////////////////////////
 
     override fun visitFunctionDeclaration(ctx: SystemVerilogParser.FunctionDeclarationContext?): EElement? {

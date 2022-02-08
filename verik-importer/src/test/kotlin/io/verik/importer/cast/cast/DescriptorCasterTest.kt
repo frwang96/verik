@@ -140,7 +140,18 @@ internal class DescriptorCasterTest : BaseTest() {
             """
                 logic x [$];
             """.trimIndent(),
-            "Property(x, QueueDescriptor(Nothing, SimpleDescriptor(*)))"
+            "Property(x, ArrayDimensionDescriptor(Nothing, SimpleDescriptor(*), 1))"
+        ) { it.findDeclaration("x") }
+    }
+
+    @Test
+    fun `cast descriptor from unsizedDimension`() {
+        driveCasterTest(
+            SystemVerilogParser.UnsizedDimensionContext::class,
+            """
+                logic x [];
+            """.trimIndent(),
+            "Property(x, ArrayDimensionDescriptor(Nothing, SimpleDescriptor(*), 0))"
         ) { it.findDeclaration("x") }
     }
 

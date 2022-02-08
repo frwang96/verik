@@ -14,23 +14,11 @@
  * limitations under the License.
  */
 
-package io.verik.importer.ast.element.descriptor
+@file:Suppress("unused")
 
-import io.verik.importer.ast.common.Type
-import io.verik.importer.common.Visitor
-import io.verik.importer.message.SourceLocation
+package io.verik.core
 
-class EQueueDescriptor(
-    override val location: SourceLocation,
-    override var type: Type,
-    override var descriptor: EDescriptor
-) : EContainerDescriptor() {
-
-    init {
-        descriptor.parent = this
-    }
-
-    override fun accept(visitor: Visitor) {
-        visitor.visitQueueDescriptor(this)
-    }
-}
+/**
+ * An associative array of elements with key [K] and value [V]. It corresponds to a SystemVerilog associative array.
+ */
+class AssociativeArray<K, V>

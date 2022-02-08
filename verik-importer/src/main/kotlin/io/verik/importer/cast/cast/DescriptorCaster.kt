@@ -18,11 +18,11 @@ package io.verik.importer.cast.cast
 
 import io.verik.importer.antlr.SystemVerilogParser
 import io.verik.importer.ast.common.Type
+import io.verik.importer.ast.element.descriptor.EArrayDimensionDescriptor
 import io.verik.importer.ast.element.descriptor.EBitDescriptor
 import io.verik.importer.ast.element.descriptor.EDescriptor
 import io.verik.importer.ast.element.descriptor.EIndexDimensionDescriptor
 import io.verik.importer.ast.element.descriptor.ELiteralDescriptor
-import io.verik.importer.ast.element.descriptor.EQueueDescriptor
 import io.verik.importer.ast.element.descriptor.ERangeDimensionDescriptor
 import io.verik.importer.ast.element.descriptor.EReferenceDescriptor
 import io.verik.importer.ast.element.descriptor.ESimpleDescriptor
@@ -185,10 +185,24 @@ object DescriptorCaster {
         castContext: CastContext
     ): EDescriptor {
         val location = castContext.getLocation(ctx)
-        return EQueueDescriptor(
+        return EArrayDimensionDescriptor(
             location,
             Type.unresolved(),
-            ESimpleDescriptor(location, Core.C_Boolean.toType())
+            ESimpleDescriptor(location, Core.C_Boolean.toType()),
+            true
+        )
+    }
+
+    fun castDescriptorFromUnsizedDimension(
+        ctx: SystemVerilogParser.UnsizedDimensionContext,
+        castContext: CastContext
+    ): EDescriptor {
+        val location = castContext.getLocation(ctx)
+        return EArrayDimensionDescriptor(
+            location,
+            Type.unresolved(),
+            ESimpleDescriptor(location, Core.C_Boolean.toType()),
+            false
         )
     }
 

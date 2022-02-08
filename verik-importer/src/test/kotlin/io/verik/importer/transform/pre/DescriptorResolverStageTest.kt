@@ -62,6 +62,33 @@ internal class DescriptorResolverStageTest : BaseTest() {
     }
 
     @Test
+    fun `resolve array dimension descriptor`() {
+        driveElementTest(
+            """
+                logic x [$];
+            """.trimIndent(),
+            DescriptorResolverStage::class,
+            "Property(x, ArrayDimensionDescriptor(Queue<Boolean>, SimpleDescriptor(*), 1))"
+        ) { it.findDeclaration("x") }
+    }
+
+    @Test
+    fun `resolve index dimension descriptor`() {
+        driveElementTest(
+            """
+                logic x [int];
+            """.trimIndent(),
+            DescriptorResolverStage::class,
+            """
+                Property(
+                    x,
+                    IndexDimensionDescriptor(AssociativeArray<Int, Boolean>, SimpleDescriptor(*), SimpleDescriptor(*))
+                )
+            """.trimIndent()
+        ) { it.findDeclaration("x") }
+    }
+
+    @Test
     fun `resolve range dimension descriptor`() {
         driveElementTest(
             """
@@ -74,28 +101,6 @@ internal class DescriptorResolverStageTest : BaseTest() {
                     RangeDimensionDescriptor(Packed<ADD<SUB<`3`, `0`>, `1`>, Ubit<ADD<SUB<`1`, `0`>, `1`>>>, *, *, *, 1)
                 )
             """.trimIndent()
-        ) { it.findDeclaration("x") }
-    }
-
-    @Test
-    fun `resolve index dimension descriptor`() {
-        driveElementTest(
-            """
-                logic x [int];
-            """.trimIndent(),
-            DescriptorResolverStage::class,
-            "Property(x, IndexDimensionDescriptor(HashMap<Int, Boolean>, SimpleDescriptor(*), SimpleDescriptor(*)))"
-        ) { it.findDeclaration("x") }
-    }
-
-    @Test
-    fun `resolve queue descriptor`() {
-        driveElementTest(
-            """
-                logic x [$];
-            """.trimIndent(),
-            DescriptorResolverStage::class,
-            "Property(x, QueueDescriptor(ArrayList<Boolean>, SimpleDescriptor(*)))"
         ) { it.findDeclaration("x") }
     }
 }

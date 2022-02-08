@@ -14,21 +14,24 @@
  * limitations under the License.
  */
 
-// test.kt /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+package io.verik.importer.ast.element.descriptor
 
-package imported
+import io.verik.importer.ast.common.Type
+import io.verik.importer.common.Visitor
+import io.verik.importer.message.SourceLocation
 
-import io.verik.core.*
+class EArrayDimensionDescriptor(
+    override val location: SourceLocation,
+    override var type: Type,
+    override var descriptor: EDescriptor,
+    val isQueue: Boolean
+) : EContainerDescriptor() {
 
-typealias t0 = Ubit<`8`>
+    init {
+        descriptor.parent = this
+    }
 
-var x0: t0 = imported()
-
-typealias t1 = Queue<Boolean>
-
-var x1: t1 = imported()
-
-open class c {
-
-    var x2: Boolean = imported()
+    override fun accept(visitor: Visitor) {
+        visitor.visitArrayDimensionDescriptor(this)
+    }
 }

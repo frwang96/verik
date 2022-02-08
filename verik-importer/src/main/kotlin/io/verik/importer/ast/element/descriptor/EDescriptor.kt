@@ -28,6 +28,8 @@ abstract class EDescriptor : EElement() {
     }
 
     fun wrap(descriptor: EDescriptor): EDescriptor {
+        if (descriptor is ENothingDescriptor)
+            return descriptor
         val containerDescriptor = descriptor.cast<EContainerDescriptor>()
         containerDescriptor.descriptor = this
         this.parent = containerDescriptor

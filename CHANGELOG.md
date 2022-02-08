@@ -4,6 +4,7 @@
 ### Importer
 - Fix function override bugs.
 - Merge expressions with descriptors.
+- Add classes `Queue`, `AssociativeArray`, and `DynamicArray` to mirror SystemVerilog.
 
 ### Compiler
 - Rename `onr` to `oni`.
