@@ -22,7 +22,6 @@ import io.verik.importer.ast.element.declaration.EModule
 import io.verik.importer.ast.element.declaration.ESvClass
 import io.verik.importer.ast.element.declaration.ESvPackage
 import io.verik.importer.ast.element.descriptor.EReferenceDescriptor
-import io.verik.importer.ast.element.expression.EReferenceExpression
 import io.verik.importer.common.TreeVisitor
 import io.verik.importer.main.ProjectContext
 import io.verik.importer.main.ProjectStage
@@ -83,16 +82,6 @@ object ReferenceResolverStage : ProjectStage() {
                 referenceDescriptor.reference = declaration
             } else {
                 Messages.UNRESOLVED_REFERENCE.on(referenceDescriptor, referenceDescriptor.name)
-            }
-        }
-
-        override fun visitReferenceExpression(referenceExpression: EReferenceExpression) {
-            super.visitReferenceExpression(referenceExpression)
-            val declaration = namespaceMap[referenceExpression, referenceExpression.name]
-            if (declaration != null) {
-                referenceExpression.reference = declaration
-            } else {
-                Messages.UNRESOLVED_REFERENCE.on(referenceExpression, referenceExpression.name)
             }
         }
     }

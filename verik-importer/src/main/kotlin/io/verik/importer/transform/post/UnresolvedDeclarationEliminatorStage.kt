@@ -16,11 +16,9 @@
 
 package io.verik.importer.transform.post
 
-import io.verik.importer.ast.common.Type
 import io.verik.importer.ast.element.declaration.EContainerDeclaration
 import io.verik.importer.ast.element.declaration.EDeclaration
 import io.verik.importer.ast.element.descriptor.EDescriptor
-import io.verik.importer.ast.element.expression.EExpression
 import io.verik.importer.common.TreeVisitor
 import io.verik.importer.main.ProjectContext
 import io.verik.importer.main.ProjectStage
@@ -63,20 +61,12 @@ object UnresolvedDeclarationEliminatorStage : ProjectStage() {
 
         var isResolved = true
 
-        private fun check(type: Type) {
-            if (!type.isResolved() || type.reference in unresolvedDeclarations) isResolved = false
-        }
-
         override fun visitDescriptor(descriptor: EDescriptor) {
             if (!isResolved) return
             super.visitDescriptor(descriptor)
-            check(descriptor.type)
-        }
-
-        override fun visitExpression(expression: EExpression) {
-            if (!isResolved) return
-            super.visitExpression(expression)
-            check(expression.type)
+            if (!descriptor.type.isResolved() || descriptor.type.reference in unresolvedDeclarations) {
+                isResolved = false
+            }
         }
     }
 }

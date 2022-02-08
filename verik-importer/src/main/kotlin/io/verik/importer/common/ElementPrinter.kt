@@ -40,17 +40,13 @@ import io.verik.importer.ast.element.declaration.ETask
 import io.verik.importer.ast.element.declaration.ETypeAlias
 import io.verik.importer.ast.element.declaration.ETypeParameter
 import io.verik.importer.ast.element.descriptor.EBitDescriptor
-import io.verik.importer.ast.element.descriptor.EDescriptorTypeArgument
-import io.verik.importer.ast.element.descriptor.EExpressionTypeArgument
 import io.verik.importer.ast.element.descriptor.ELiteralDescriptor
 import io.verik.importer.ast.element.descriptor.ENothingDescriptor
 import io.verik.importer.ast.element.descriptor.EPackedDescriptor
 import io.verik.importer.ast.element.descriptor.EQueueDescriptor
 import io.verik.importer.ast.element.descriptor.EReferenceDescriptor
 import io.verik.importer.ast.element.descriptor.ESimpleDescriptor
-import io.verik.importer.ast.element.expression.ELiteralExpression
-import io.verik.importer.ast.element.expression.ENothingExpression
-import io.verik.importer.ast.element.expression.EReferenceExpression
+import io.verik.importer.ast.element.descriptor.ETypeArgument
 import io.verik.importer.message.Messages
 
 class ElementPrinter : Visitor() {
@@ -289,38 +285,10 @@ class ElementPrinter : Visitor() {
         }
     }
 
-    override fun visitDescriptorTypeArgument(descriptorTypeArgument: EDescriptorTypeArgument) {
-        build("DescriptorTypeArgument") {
-            build(descriptorTypeArgument.name)
-            build(descriptorTypeArgument.descriptor)
-        }
-    }
-
-    override fun visitExpressionTypeArgument(expressionTypeArgument: EExpressionTypeArgument) {
-        build("ExpressionTypeArgument") {
-            build(expressionTypeArgument.name)
-            build(expressionTypeArgument.expression)
-        }
-    }
-
-// Expression Like /////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    override fun visitNothingExpression(nothingExpression: ENothingExpression) {
-        build("NothingExpression") {}
-    }
-
-    override fun visitLiteralExpression(literalExpression: ELiteralExpression) {
-        build("LiteralExpression") {
-            build(literalExpression.type.toString())
-            build(literalExpression.value)
-        }
-    }
-
-    override fun visitReferenceExpression(referenceExpression: EReferenceExpression) {
-        build("ReferenceExpression") {
-            build(referenceExpression.type.toString())
-            build(referenceExpression.name)
-            build(referenceExpression.reference.name)
+    override fun visitTypeArgument(typeArgument: ETypeArgument) {
+        build("TypeArgument") {
+            build(typeArgument.name)
+            build(typeArgument.descriptor)
         }
     }
 

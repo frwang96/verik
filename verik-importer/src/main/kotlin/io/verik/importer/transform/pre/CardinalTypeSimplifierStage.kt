@@ -18,7 +18,6 @@ package io.verik.importer.transform.pre
 
 import io.verik.importer.ast.common.Type
 import io.verik.importer.ast.element.descriptor.EDescriptor
-import io.verik.importer.ast.element.expression.EExpression
 import io.verik.importer.common.TreeVisitor
 import io.verik.importer.core.Cardinal
 import io.verik.importer.core.Core
@@ -58,11 +57,6 @@ object CardinalTypeSimplifierStage : ProjectStage() {
         override fun visitDescriptor(descriptor: EDescriptor) {
             super.visitDescriptor(descriptor)
             simplify(descriptor.type)
-        }
-
-        override fun visitExpression(expression: EExpression) {
-            super.visitExpression(expression)
-            simplify(expression.type)
         }
     }
 }

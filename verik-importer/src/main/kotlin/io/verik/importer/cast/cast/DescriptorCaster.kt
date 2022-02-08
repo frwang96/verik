@@ -20,6 +20,7 @@ import io.verik.importer.antlr.SystemVerilogParser
 import io.verik.importer.ast.common.Type
 import io.verik.importer.ast.element.descriptor.EBitDescriptor
 import io.verik.importer.ast.element.descriptor.EDescriptor
+import io.verik.importer.ast.element.descriptor.ELiteralDescriptor
 import io.verik.importer.ast.element.descriptor.EPackedDescriptor
 import io.verik.importer.ast.element.descriptor.EQueueDescriptor
 import io.verik.importer.ast.element.descriptor.EReferenceDescriptor
@@ -113,7 +114,7 @@ object DescriptorCaster {
     fun castDescriptorFromDataTypeOrVoid(
         ctx: SystemVerilogParser.DataTypeOrVoidContext,
         castContext: CastContext
-    ): EDescriptor? {
+    ): EDescriptor {
         val dataType = ctx.dataType()
         return if (dataType != null) {
             castContext.castDescriptor(dataType)
@@ -133,6 +134,34 @@ object DescriptorCaster {
             Type.unresolved(),
             ESimpleDescriptor(location, Core.C_Boolean.toType())
         )
+    }
+
+    fun castDescriptorFromConstantPrimaryParameter(
+        ctx: SystemVerilogParser.ConstantPrimaryParameterContext,
+        castContext: CastContext
+    ): EDescriptor {
+        val identifier = ctx.psParameterIdentifier().parameterIdentifier()
+        val location = castContext.getLocation(identifier)
+        val name = identifier.text
+        return EReferenceDescriptor(location, Type.unresolved(), name, Core.C_Nothing, listOf())
+    }
+
+    fun castDescriptorFromPrimaryLiteral(
+        ctx: SystemVerilogParser.PrimaryLiteralContext,
+        castContext: CastContext
+    ): EDescriptor {
+        val location = castContext.getLocation(ctx)
+        return ELiteralDescriptor(location, Type.unresolved(), ctx.text)
+    }
+
+    fun castDescriptorFromPrimaryHierarchical(
+        ctx: SystemVerilogParser.PrimaryHierarchicalContext,
+        castContext: CastContext
+    ): EDescriptor {
+        val identifier = ctx.hierarchicalIdentifier()
+        val location = castContext.getLocation(identifier)
+        val name = identifier.text
+        return EReferenceDescriptor(location, Type.unresolved(), name, Core.C_Nothing, listOf())
     }
 
     private fun castIsSignedFromSigning(
@@ -161,8 +190,8 @@ object DescriptorCaster {
         val baseDescriptor: EDescriptor = EBitDescriptor(
             location,
             Type.unresolved(),
-            castContext.castExpression(packedDimensionRanges[0].constantRange().constantExpression()[0]),
-            castContext.castExpression(packedDimensionRanges[0].constantRange().constantExpression()[1]),
+            castContext.castDescriptor(packedDimensionRanges[0].constantRange().constantExpression()[0]),
+            castContext.castDescriptor(packedDimensionRanges[0].constantRange().constantExpression()[1]),
             isSigned
         )
         val packedDescriptors = packedDimensionRanges.drop(1).map {
@@ -171,8 +200,8 @@ object DescriptorCaster {
                 packedDescriptorLocation,
                 Type.unresolved(),
                 ESimpleDescriptor(packedDescriptorLocation, Core.C_Boolean.toType()),
-                castContext.castExpression(it.constantRange().constantExpression(0)),
-                castContext.castExpression(it.constantRange().constantExpression(1))
+                castContext.castDescriptor(it.constantRange().constantExpression(0)),
+                castContext.castDescriptor(it.constantRange().constantExpression(1))
             )
         }
         return packedDescriptors.fold(baseDescriptor) { accumulatedDescriptor, descriptor ->

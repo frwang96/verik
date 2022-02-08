@@ -17,8 +17,7 @@
 package io.verik.importer.transform.pre
 
 import io.verik.importer.ast.element.descriptor.EBitDescriptor
-import io.verik.importer.ast.element.descriptor.EDescriptorTypeArgument
-import io.verik.importer.ast.element.descriptor.EExpressionTypeArgument
+import io.verik.importer.ast.element.descriptor.ELiteralDescriptor
 import io.verik.importer.ast.element.descriptor.EPackedDescriptor
 import io.verik.importer.ast.element.descriptor.EQueueDescriptor
 import io.verik.importer.ast.element.descriptor.EReferenceDescriptor
@@ -37,10 +36,19 @@ object DescriptorResolverStage : ProjectStage() {
 
     private object DescriptorResolverVisitor : TreeVisitor() {
 
+        override fun visitLiteralDescriptor(literalDescriptor: ELiteralDescriptor) {
+            val value = literalDescriptor.value.toIntOrNull()
+            if (value != null) {
+                literalDescriptor.type = Cardinal.of(value).toType()
+            } else {
+                Messages.INTERNAL_ERROR.on(literalDescriptor, "Unable to parse literal: ${literalDescriptor.value}")
+            }
+        }
+
         override fun visitBitDescriptor(bitDescriptor: EBitDescriptor) {
             super.visitBitDescriptor(bitDescriptor)
             val type = Core.T_ADD.toType(
-                Core.T_SUB.toType(bitDescriptor.left.type, bitDescriptor.right.type),
+                Core.T_SUB.toType(bitDescriptor.left.type.copy(), bitDescriptor.right.type.copy()),
                 Cardinal.of(1).toType()
             )
             bitDescriptor.type = if (bitDescriptor.isSigned) {
@@ -53,11 +61,7 @@ object DescriptorResolverStage : ProjectStage() {
         override fun visitReferenceDescriptor(referenceDescriptor: EReferenceDescriptor) {
             super.visitReferenceDescriptor(referenceDescriptor)
             val typeArguments = referenceDescriptor.typeArguments.map {
-                when (it) {
-                    is EDescriptorTypeArgument -> it.descriptor.type.copy()
-                    is EExpressionTypeArgument -> it.expression.type.copy()
-                    else -> Messages.INTERNAL_ERROR.on(referenceDescriptor, "Unexpected type argument")
-                }
+                it.descriptor.type.copy()
             }
             referenceDescriptor.type = referenceDescriptor.reference.toType(typeArguments)
         }
@@ -65,7 +69,7 @@ object DescriptorResolverStage : ProjectStage() {
         override fun visitPackedDescriptor(packedDescriptor: EPackedDescriptor) {
             super.visitPackedDescriptor(packedDescriptor)
             val type = Core.T_ADD.toType(
-                Core.T_SUB.toType(packedDescriptor.left.type, packedDescriptor.right.type),
+                Core.T_SUB.toType(packedDescriptor.left.type.copy(), packedDescriptor.right.type.copy()),
                 Cardinal.of(1).toType()
             )
             packedDescriptor.type = Core.C_Packed.toType(

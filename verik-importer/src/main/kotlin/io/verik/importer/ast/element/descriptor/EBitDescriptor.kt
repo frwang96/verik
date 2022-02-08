@@ -17,15 +17,14 @@
 package io.verik.importer.ast.element.descriptor
 
 import io.verik.importer.ast.common.Type
-import io.verik.importer.ast.element.expression.EExpression
 import io.verik.importer.common.Visitor
 import io.verik.importer.message.SourceLocation
 
 class EBitDescriptor(
     override val location: SourceLocation,
     override var type: Type,
-    val left: EExpression,
-    val right: EExpression,
+    val left: EDescriptor,
+    val right: EDescriptor,
     val isSigned: Boolean
 ) : EDescriptor() {
 

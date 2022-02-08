@@ -22,7 +22,6 @@ import io.verik.importer.ast.element.common.EElement
 import io.verik.importer.cast.cast.ClassCaster
 import io.verik.importer.cast.cast.ConstructorCaster
 import io.verik.importer.cast.cast.DescriptorCaster
-import io.verik.importer.cast.cast.ExpressionCaster
 import io.verik.importer.cast.cast.FunctionCaster
 import io.verik.importer.cast.cast.ModuleCaster
 import io.verik.importer.cast.cast.PackageCaster
@@ -181,7 +180,7 @@ class CasterVisitor(
         return DescriptorCaster.castDescriptorFromClassType(ctx!!, castContext)
     }
 
-    override fun visitDataTypeOrVoid(ctx: SystemVerilogParser.DataTypeOrVoidContext?): EElement? {
+    override fun visitDataTypeOrVoid(ctx: SystemVerilogParser.DataTypeOrVoidContext?): EElement {
         return DescriptorCaster.castDescriptorFromDataTypeOrVoid(ctx!!, castContext)
     }
 
@@ -294,14 +293,14 @@ class CasterVisitor(
 // A.8.4 Primaries /////////////////////////////////////////////////////////////////////////////////////////////////////
 
     override fun visitConstantPrimaryParameter(ctx: SystemVerilogParser.ConstantPrimaryParameterContext?): EElement {
-        return ExpressionCaster.castExpressionFromConstantPrimaryParameter(ctx!!, castContext)
+        return DescriptorCaster.castDescriptorFromConstantPrimaryParameter(ctx!!, castContext)
     }
 
     override fun visitPrimaryLiteral(ctx: SystemVerilogParser.PrimaryLiteralContext?): EElement {
-        return ExpressionCaster.castExpressionFromPrimaryLiteral(ctx!!, castContext)
+        return DescriptorCaster.castDescriptorFromPrimaryLiteral(ctx!!, castContext)
     }
 
     override fun visitPrimaryHierarchical(ctx: SystemVerilogParser.PrimaryHierarchicalContext?): EElement {
-        return ExpressionCaster.castExpressionFromPrimaryHierarchical(ctx!!, castContext)
+        return DescriptorCaster.castDescriptorFromPrimaryHierarchical(ctx!!, castContext)
     }
 }

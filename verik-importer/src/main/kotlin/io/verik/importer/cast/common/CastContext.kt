@@ -25,8 +25,6 @@ import io.verik.importer.ast.element.declaration.ETypeParameter
 import io.verik.importer.ast.element.descriptor.EDescriptor
 import io.verik.importer.ast.element.descriptor.ENothingDescriptor
 import io.verik.importer.ast.element.descriptor.ETypeArgument
-import io.verik.importer.ast.element.expression.EExpression
-import io.verik.importer.ast.element.expression.ENothingExpression
 import io.verik.importer.message.Messages
 import io.verik.importer.message.SourceLocation
 import org.antlr.v4.runtime.RuleContext
@@ -93,17 +91,6 @@ class CastContext(
 
     fun castTypeArguments(ctx: RuleContext): List<ETypeArgument> {
         return castElements(ctx).map { it.cast() }
-    }
-
-    fun castExpression(ctx: RuleContext): EExpression {
-        val expression = casterVisitor.getElement<EExpression>(ctx)
-        return if (expression != null) {
-            expression
-        } else {
-            val location = getLocation(ctx)
-            Messages.UNABLE_TO_CAST.on(location, "expression")
-            ENothingExpression(location)
-        }
     }
 
     private fun castElements(ctx: RuleContext): List<EElement> {

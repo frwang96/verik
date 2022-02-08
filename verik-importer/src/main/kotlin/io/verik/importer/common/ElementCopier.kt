@@ -18,14 +18,12 @@ package io.verik.importer.common
 
 import io.verik.importer.ast.element.common.EElement
 import io.verik.importer.ast.element.descriptor.EBitDescriptor
-import io.verik.importer.ast.element.descriptor.EDescriptorTypeArgument
-import io.verik.importer.ast.element.descriptor.EExpressionTypeArgument
+import io.verik.importer.ast.element.descriptor.ELiteralDescriptor
 import io.verik.importer.ast.element.descriptor.EPackedDescriptor
 import io.verik.importer.ast.element.descriptor.EQueueDescriptor
 import io.verik.importer.ast.element.descriptor.EReferenceDescriptor
 import io.verik.importer.ast.element.descriptor.ESimpleDescriptor
-import io.verik.importer.ast.element.expression.ELiteralExpression
-import io.verik.importer.ast.element.expression.EReferenceExpression
+import io.verik.importer.ast.element.descriptor.ETypeArgument
 import io.verik.importer.message.Messages
 import io.verik.importer.message.SourceLocation
 
@@ -38,14 +36,12 @@ object ElementCopier {
     private fun <E : EElement> copy(element: E, location: SourceLocation?): E {
         val copiedElement: EElement = when (element) {
             is ESimpleDescriptor -> copySimpleDescriptor(element, location)
+            is ELiteralDescriptor -> copyLiteralDescriptor(element, location)
             is EBitDescriptor -> copyBitDescriptor(element, location)
             is EReferenceDescriptor -> copyReferenceDescriptor(element, location)
             is EPackedDescriptor -> copyPackedDescriptor(element, location)
             is EQueueDescriptor -> copyQueueDescriptor(element, location)
-            is EDescriptorTypeArgument -> copyDescriptorTypeArgument(element, location)
-            is EExpressionTypeArgument -> copyExpressionTypeArgument(element, location)
-            is ELiteralExpression -> copyLiteralExpression(element, location)
-            is EReferenceExpression -> copyReferenceExpression(element, location)
+            is ETypeArgument -> copyTypeArgument(element, location)
             else -> Messages.INTERNAL_ERROR.on(element, "Unable to copy element: $element")
         }
         @Suppress("UNCHECKED_CAST")
@@ -60,6 +56,18 @@ object ElementCopier {
         return ESimpleDescriptor(
             location ?: simpleDescriptor.location,
             type
+        )
+    }
+
+    private fun copyLiteralDescriptor(
+        literalDescriptor: ELiteralDescriptor,
+        location: SourceLocation?
+    ): ELiteralDescriptor {
+        val type = literalDescriptor.type.copy()
+        return ELiteralDescriptor(
+            location ?: literalDescriptor.location,
+            type,
+            literalDescriptor.value
         )
     }
 
@@ -124,52 +132,15 @@ object ElementCopier {
         )
     }
 
-    private fun copyDescriptorTypeArgument(
-        descriptorTypeArgument: EDescriptorTypeArgument,
+    private fun copyTypeArgument(
+        typeArgument: ETypeArgument,
         location: SourceLocation?
-    ): EDescriptorTypeArgument {
-        val descriptor = copy(descriptorTypeArgument.descriptor, location)
-        return EDescriptorTypeArgument(
-            location ?: descriptorTypeArgument.location,
-            descriptorTypeArgument.name,
+    ): ETypeArgument {
+        val descriptor = copy(typeArgument.descriptor, location)
+        return ETypeArgument(
+            location ?: typeArgument.location,
+            typeArgument.name,
             descriptor
-        )
-    }
-
-    private fun copyExpressionTypeArgument(
-        expressionTypeArgument: EExpressionTypeArgument,
-        location: SourceLocation?
-    ): EExpressionTypeArgument {
-        val expression = copy(expressionTypeArgument.expression, location)
-        return EExpressionTypeArgument(
-            location ?: expressionTypeArgument.location,
-            expressionTypeArgument.name,
-            expression
-        )
-    }
-
-    private fun copyLiteralExpression(
-        literalExpression: ELiteralExpression,
-        location: SourceLocation?
-    ): ELiteralExpression {
-        val type = literalExpression.type.copy()
-        return ELiteralExpression(
-            location ?: literalExpression.location,
-            type,
-            literalExpression.value
-        )
-    }
-
-    private fun copyReferenceExpression(
-        referenceExpression: EReferenceExpression,
-        location: SourceLocation?,
-    ): EElement {
-        val type = referenceExpression.type.copy()
-        return EReferenceExpression(
-            location ?: referenceExpression.location,
-            type,
-            referenceExpression.name,
-            referenceExpression.reference
         )
     }
 }

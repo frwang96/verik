@@ -23,7 +23,20 @@ import org.junit.jupiter.api.Test
 internal class DescriptorResolverStageTest : BaseTest() {
 
     @Test
-    fun `resolve bitDescriptor`() {
+    fun `resolve literal descriptor`() {
+        driveElementTest(
+            """
+                class c #(N);
+                endclass
+                c #(1) x;
+            """.trimIndent(),
+            DescriptorResolverStage::class,
+            "Property(x, ReferenceDescriptor(c<`1`>, c, c, [TypeArgument(null, LiteralDescriptor(`1`, 1))]))"
+        ) { it.findDeclaration("x") }
+    }
+
+    @Test
+    fun `resolve bit descriptor`() {
         driveElementTest(
             """
                 logic [1:0] x;
@@ -34,7 +47,7 @@ internal class DescriptorResolverStageTest : BaseTest() {
     }
 
     @Test
-    fun `resolve referenceDescriptor`() {
+    fun `resolve reference descriptor`() {
         driveElementTest(
             """
                 class c #(type T);
@@ -43,13 +56,13 @@ internal class DescriptorResolverStageTest : BaseTest() {
             """.trimIndent(),
             DescriptorResolverStage::class,
             """
-                Property(x, ReferenceDescriptor(c<Int>, c, c, [DescriptorTypeArgument(null, SimpleDescriptor(Int))]))
+                Property(x, ReferenceDescriptor(c<Int>, c, c, [TypeArgument(null, SimpleDescriptor(Int))]))
             """.trimIndent()
         ) { it.findDeclaration("x") }
     }
 
     @Test
-    fun `resolve packedDescriptor`() {
+    fun `resolve packed descriptor`() {
         driveElementTest(
             """
                 logic [1:0][3:0] x;
@@ -60,7 +73,7 @@ internal class DescriptorResolverStageTest : BaseTest() {
     }
 
     @Test
-    fun `resolve queueDescriptor`() {
+    fun `resolve queue discriptor`() {
         driveElementTest(
             """
                 logic x [$];
