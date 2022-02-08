@@ -8,6 +8,7 @@
 
 ### Compiler
 - Rename `onr` to `oni`.
+- Support secondary constructors.
 
 ## [0.1.13]
 ### Importer

@@ -37,6 +37,7 @@ import io.verik.compiler.ast.element.declaration.kt.EKtConstructor
 import io.verik.compiler.ast.element.declaration.kt.EKtFunction
 import io.verik.compiler.ast.element.declaration.kt.EKtValueParameter
 import io.verik.compiler.ast.element.declaration.kt.EPrimaryConstructor
+import io.verik.compiler.ast.element.declaration.kt.ESecondaryConstructor
 import io.verik.compiler.ast.element.declaration.kt.ETypeAlias
 import io.verik.compiler.ast.element.declaration.sv.EAbstractComponent
 import io.verik.compiler.ast.element.declaration.sv.EAbstractComponentInstantiation
@@ -223,6 +224,10 @@ abstract class Visitor {
 
     open fun visitPrimaryConstructor(primaryConstructor: EPrimaryConstructor) {
         visitKtAbstractFunction(primaryConstructor)
+    }
+
+    open fun visitSecondaryConstructor(secondaryConstructor: ESecondaryConstructor) {
+        visitKtAbstractFunction(secondaryConstructor)
     }
 
     open fun visitKtConstructor(constructor: EKtConstructor) {

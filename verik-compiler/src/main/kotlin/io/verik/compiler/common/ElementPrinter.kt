@@ -28,6 +28,7 @@ import io.verik.compiler.ast.element.declaration.kt.EKtConstructor
 import io.verik.compiler.ast.element.declaration.kt.EKtFunction
 import io.verik.compiler.ast.element.declaration.kt.EKtValueParameter
 import io.verik.compiler.ast.element.declaration.kt.EPrimaryConstructor
+import io.verik.compiler.ast.element.declaration.kt.ESecondaryConstructor
 import io.verik.compiler.ast.element.declaration.kt.ETypeAlias
 import io.verik.compiler.ast.element.declaration.sv.EAlwaysComBlock
 import io.verik.compiler.ast.element.declaration.sv.EAlwaysSeqBlock
@@ -270,7 +271,15 @@ class ElementPrinter : Visitor() {
             build(primaryConstructor.name)
             build(primaryConstructor.type.toString())
             build(primaryConstructor.valueParameters)
-            build(primaryConstructor.typeParameters.map { it.name })
+        }
+    }
+
+    override fun visitSecondaryConstructor(secondaryConstructor: ESecondaryConstructor) {
+        build("SecondaryConstructor") {
+            build(secondaryConstructor.name)
+            build(secondaryConstructor.type.toString())
+            build(secondaryConstructor.body)
+            build(secondaryConstructor.valueParameters)
         }
     }
 
@@ -280,7 +289,6 @@ class ElementPrinter : Visitor() {
             build(constructor.type.toString())
             build(constructor.body)
             build(constructor.valueParameters)
-            build(constructor.typeParameters.map { it.name })
             build(constructor.superTypeCallExpression)
         }
     }

@@ -179,11 +179,8 @@ object DeclarationCaster {
         val valueParameters = constructor.valueParameters.mapNotNull {
             castContext.castValueParameter(it)
         }
-        val typeParameters = descriptor.typeParameters.map {
-            castContext.resolveDeclaration(it, constructor).cast<ETypeParameter>(constructor)
-        }
 
-        castedPrimaryConstructor.fill(type, valueParameters, typeParameters)
+        castedPrimaryConstructor.fill(type, valueParameters)
         return castedPrimaryConstructor
     }
 
@@ -198,11 +195,8 @@ object DeclarationCaster {
             .cast<EPrimaryConstructor>(classOrObject)
 
         val type = castContext.castType(primaryConstructorDescriptor.returnType, classOrObject)
-        val typeParameters = primaryConstructorDescriptor.typeParameters.map {
-            castContext.resolveDeclaration(it, classOrObject).cast<ETypeParameter>(classOrObject)
-        }
 
-        castedPrimaryConstructor.fill(type, listOf(), typeParameters)
+        castedPrimaryConstructor.fill(type, listOf())
         return castedPrimaryConstructor
     }
 

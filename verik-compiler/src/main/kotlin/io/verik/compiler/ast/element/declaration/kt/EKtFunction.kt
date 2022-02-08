@@ -17,6 +17,7 @@
 package io.verik.compiler.ast.element.declaration.kt
 
 import io.verik.compiler.ast.common.Type
+import io.verik.compiler.ast.common.TypeParameterized
 import io.verik.compiler.ast.element.declaration.common.ETypeParameter
 import io.verik.compiler.ast.element.expression.common.EBlockExpression
 import io.verik.compiler.ast.property.AnnotationEntry
@@ -35,7 +36,7 @@ class EKtFunction(
     override var typeParameters: ArrayList<ETypeParameter>,
     var isAbstract: Boolean,
     var isOverride: Boolean
-) : EKtAbstractFunction() {
+) : EKtAbstractFunction(), TypeParameterized {
 
     init {
         body.parent = this

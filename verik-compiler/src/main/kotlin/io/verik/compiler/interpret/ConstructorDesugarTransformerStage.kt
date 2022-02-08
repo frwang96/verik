@@ -66,7 +66,6 @@ object ConstructorDesugarTransformerStage : ProjectStage() {
                     documentationLines = null,
                     body = body,
                     valueParameters = primaryConstructor.valueParameters,
-                    typeParameters = primaryConstructor.typeParameters,
                     superTypeCallExpression = superTypeCallExpression
                 )
                 declarations.add(constructor)

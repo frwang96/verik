@@ -14,17 +14,10 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.element.declaration.kt
+// test.sv /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-import io.verik.compiler.ast.element.declaration.common.EAbstractFunction
-import io.verik.compiler.common.TreeVisitor
+int x0 [$];
 
-abstract class EKtAbstractFunction : EAbstractFunction() {
+int x1 [string];
 
-    abstract var valueParameters: ArrayList<EKtValueParameter>
-
-    override fun acceptChildren(visitor: TreeVisitor) {
-        super.acceptChildren(visitor)
-        valueParameters.forEach { it.accept(visitor) }
-    }
-}
+logic [3:0][7:0] x3 [1:0];

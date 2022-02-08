@@ -188,13 +188,11 @@ object SpecializerCopier {
     ): EPrimaryConstructor {
         val type = primaryConstructor.type.copy()
         val valueParameters = primaryConstructor.valueParameters.map { copy(it, typeArguments, specializeContext) }
-        val typeParameters = primaryConstructor.typeParameters.map { copy(it, typeArguments, specializeContext) }
         val copiedPrimaryConstructor = EPrimaryConstructor(
             primaryConstructor.location,
             primaryConstructor.name,
             type,
-            ArrayList(valueParameters),
-            ArrayList(typeParameters)
+            ArrayList(valueParameters)
         )
         specializeContext.register(primaryConstructor, typeArguments, copiedPrimaryConstructor)
         return copiedPrimaryConstructor

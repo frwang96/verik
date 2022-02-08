@@ -22,32 +22,23 @@ import io.verik.compiler.ast.property.AnnotationEntry
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
 
-class EPrimaryConstructor(
+class ESecondaryConstructor(
     override val location: SourceLocation,
     override var name: String,
     override var type: Type,
+    override var documentationLines: List<String>?,
+    override var body: EBlockExpression,
     override var valueParameters: ArrayList<EKtValueParameter>
 ) : EKtAbstractFunction() {
 
     override var annotationEntries: List<AnnotationEntry> = listOf()
-    override var documentationLines: List<String>? = null
-    override var body: EBlockExpression = EBlockExpression.empty(location)
 
     init {
-        valueParameters.forEach { it.parent = this }
         body.parent = this
-    }
-
-    fun fill(
-        type: Type,
-        valueParameters: List<EKtValueParameter>
-    ) {
         valueParameters.forEach { it.parent = this }
-        this.type = type
-        this.valueParameters = ArrayList(valueParameters)
     }
 
     override fun accept(visitor: Visitor) {
-        visitor.visitPrimaryConstructor(this)
+        visitor.visitSecondaryConstructor(this)
     }
 }

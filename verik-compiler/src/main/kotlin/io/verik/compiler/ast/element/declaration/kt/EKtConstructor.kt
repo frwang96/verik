@@ -17,7 +17,6 @@
 package io.verik.compiler.ast.element.declaration.kt
 
 import io.verik.compiler.ast.common.Type
-import io.verik.compiler.ast.element.declaration.common.ETypeParameter
 import io.verik.compiler.ast.element.expression.common.EBlockExpression
 import io.verik.compiler.ast.element.expression.common.ECallExpression
 import io.verik.compiler.ast.property.AnnotationEntry
@@ -33,7 +32,6 @@ class EKtConstructor(
     override var documentationLines: List<String>?,
     override var body: EBlockExpression,
     override var valueParameters: ArrayList<EKtValueParameter>,
-    override var typeParameters: ArrayList<ETypeParameter>,
     var superTypeCallExpression: ECallExpression?
 ) : EKtAbstractFunction() {
 

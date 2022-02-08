@@ -94,7 +94,6 @@ object CastIndexerStage : ProjectStage() {
                     location,
                     name,
                     NullDeclaration.toType(),
-                    ArrayList(),
                     ArrayList()
                 )
                 castContext.registerDeclaration(descriptor.unsubstitutedPrimaryConstructor!!, indexedPrimaryConstructor)
@@ -149,7 +148,6 @@ object CastIndexerStage : ProjectStage() {
                 location,
                 name,
                 NullDeclaration.toType(),
-                ArrayList(),
                 ArrayList()
             )
             castContext.registerDeclaration(descriptor, indexedPrimaryConstructor)
