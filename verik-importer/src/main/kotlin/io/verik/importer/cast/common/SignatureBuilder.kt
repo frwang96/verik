@@ -25,7 +25,7 @@ class SignatureBuilder private constructor(private val name: String) {
     private var isIndented = false
 
     private fun buildSignature(ctx: RuleContext): String {
-        val signatureVisitor = SignatureVisitor()
+        val signatureVisitor = SignatureVisitor(name)
         ctx.accept(signatureVisitor)
         val signatureFragments = signatureVisitor.signatureFragments
         for (index in 0 until signatureFragments.size - 1) {

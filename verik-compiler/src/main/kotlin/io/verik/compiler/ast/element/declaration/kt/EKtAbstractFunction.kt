@@ -16,11 +16,10 @@
 
 package io.verik.compiler.ast.element.declaration.kt
 
-import io.verik.compiler.ast.common.TypeParameterized
 import io.verik.compiler.ast.element.declaration.common.EAbstractFunction
 import io.verik.compiler.common.TreeVisitor
 
-abstract class EKtAbstractFunction : EAbstractFunction(), TypeParameterized {
+abstract class EKtAbstractFunction : EAbstractFunction() {
 
     abstract var valueParameters: ArrayList<EKtValueParameter>
 

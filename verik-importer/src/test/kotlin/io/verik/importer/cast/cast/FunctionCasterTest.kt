@@ -24,6 +24,20 @@ import org.junit.jupiter.api.Test
 internal class FunctionCasterTest : BaseTest() {
 
     @Test
+    fun `cast function from classMethodFunction`() {
+        driveCasterTest(
+            SystemVerilogParser.ClassMethodFunctionContext::class,
+            """
+                class c;
+                    static function void f();
+                    endfunction
+                endclass
+            """.trimIndent(),
+            "SvFunction(f, [], SimpleDescriptor(Unit), 1)"
+        ) { it.findDeclaration("f") }
+    }
+
+    @Test
     fun `cast function from functionBodyDeclarationNoPortList`() {
         driveCasterTest(
             SystemVerilogParser.FunctionBodyDeclarationNoPortListContext::class,
@@ -32,7 +46,7 @@ internal class FunctionCasterTest : BaseTest() {
                     input x;
                 endfunction
             """.trimIndent(),
-            "SvFunction(f, [SvValueParameter(x, SimpleDescriptor(Boolean), 0)], SimpleDescriptor(Unit))"
+            "SvFunction(f, [SvValueParameter(x, SimpleDescriptor(Boolean), 0)], SimpleDescriptor(Unit), 0)"
         ) { it.findDeclaration("f") }
     }
 
@@ -44,7 +58,7 @@ internal class FunctionCasterTest : BaseTest() {
                 function void f(logic x);
                 endfunction
             """.trimIndent(),
-            "SvFunction(f, [SvValueParameter(x, SimpleDescriptor(Boolean), 0)], SimpleDescriptor(Unit))"
+            "SvFunction(f, [SvValueParameter(x, SimpleDescriptor(Boolean), 0)], SimpleDescriptor(Unit), 0)"
         ) { it.findDeclaration("f") }
     }
 
@@ -57,7 +71,7 @@ internal class FunctionCasterTest : BaseTest() {
                     extern function void f(logic x);
                 endclass
             """.trimIndent(),
-            "SvFunction(f, [SvValueParameter(x, SimpleDescriptor(Boolean), 0)], SimpleDescriptor(Unit))"
+            "SvFunction(f, [SvValueParameter(x, SimpleDescriptor(Boolean), 0)], SimpleDescriptor(Unit), 0)"
         ) { it.findDeclaration("f") }
     }
 }

@@ -144,7 +144,7 @@ class SignatureBuilderTest : BaseTest() {
             """
                 const var automatic logic x = 0;
             """.trimIndent(),
-            "const var automatic logic x;"
+            "const var automatic logic x = 0;"
         ) { it.findDeclaration("x") }
     }
 
@@ -189,6 +189,19 @@ class SignatureBuilderTest : BaseTest() {
                 } e;
             """.trimIndent()
         ) { it.findDeclaration("e") }
+    }
+
+    @Test
+    fun `signature variableDeclAssignmentVariable`() {
+        driveSignatureTest(
+            SystemVerilogParser.VariableDeclAssignmentVariableContext::class,
+            """
+                logic x [$] = y, z;
+            """.trimIndent(),
+            """
+                logic x [$] = y;
+            """.trimIndent()
+        ) { it.findDeclaration("x") }
     }
 
     @Test

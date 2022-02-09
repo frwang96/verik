@@ -14,23 +14,10 @@
  * limitations under the License.
  */
 
-package io.verik.importer.ast.element.descriptor
+// test.sv /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-import io.verik.importer.ast.common.Type
-import io.verik.importer.common.Visitor
-import io.verik.importer.message.SourceLocation
+int x0 [$];
 
-class EQueueDescriptor(
-    override val location: SourceLocation,
-    override var type: Type,
-    override var descriptor: EDescriptor
-) : EContainerDescriptor() {
+int x1 [string];
 
-    init {
-        descriptor.parent = this
-    }
-
-    override fun accept(visitor: Visitor) {
-        visitor.visitQueueDescriptor(this)
-    }
-}
+logic [3:0][7:0] x3 [1:0];

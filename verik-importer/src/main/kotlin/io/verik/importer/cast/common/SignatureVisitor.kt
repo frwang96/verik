@@ -22,7 +22,9 @@ import org.antlr.v4.runtime.RuleContext
 import org.antlr.v4.runtime.tree.ParseTree
 import org.antlr.v4.runtime.tree.TerminalNode
 
-class SignatureVisitor : SystemVerilogParserBaseVisitor<Unit>() {
+class SignatureVisitor(
+    private val name: String
+) : SystemVerilogParserBaseVisitor<Unit>() {
 
     val signatureFragments = ArrayList<SignatureFragment>()
 
@@ -139,11 +141,19 @@ class SignatureVisitor : SystemVerilogParserBaseVisitor<Unit>() {
         accept(ctx.VAR())
         accept(ctx.lifetime())
         accept(ctx.dataTypeOrImplicit())
-        add(SignatureFragmentKind.NAME)
+        accept(ctx.listOfVariableDeclAssignments())
         accept(ctx.SEMICOLON())
     }
 
 // A.2.2.1 Net and Variable Types //////////////////////////////////////////////////////////////////////////////////////
+
+    override fun visitDataTypeStruct(ctx: SystemVerilogParser.DataTypeStructContext?) {
+        accept(ctx!!.structUnion())
+        accept(ctx.PACKED())
+        accept(ctx.signing())
+        acceptWrapBraceBreak(ctx.structUnionMember(), false)
+        accept(ctx.packedDimension())
+    }
 
     override fun visitDataTypeEnum(ctx: SystemVerilogParser.DataTypeEnumContext?) {
         accept(ctx!!.ENUM())
@@ -152,12 +162,33 @@ class SignatureVisitor : SystemVerilogParserBaseVisitor<Unit>() {
         accept(ctx.packedDimension())
     }
 
-    override fun visitDataTypeStruct(ctx: SystemVerilogParser.DataTypeStructContext?) {
-        accept(ctx!!.structUnion())
-        accept(ctx.PACKED())
-        accept(ctx.signing())
-        acceptWrapBraceBreak(ctx.structUnionMember(), false)
-        accept(ctx.packedDimension())
+    override fun visitStructUnionMember(ctx: SystemVerilogParser.StructUnionMemberContext?) {
+        accept(ctx!!.randomQualifier())
+        accept(ctx.dataTypeOrVoid())
+        ctx.listOfVariableDeclAssignments().children.forEach { child ->
+            when (child) {
+                is SystemVerilogParser.VariableDeclAssignmentContext -> { child.children.forEach { accept(it) } }
+                else -> accept(child)
+            }
+        }
+        accept(ctx.SEMICOLON())
+    }
+
+// A.2.3 Declaration Lists /////////////////////////////////////////////////////////////////////////////////////////////
+
+    override fun visitListOfVariableDeclAssignments(ctx: SystemVerilogParser.ListOfVariableDeclAssignmentsContext?) {
+        accept(ctx!!.variableDeclAssignment())
+    }
+
+// A.2.4 Declaration Assignments ///////////////////////////////////////////////////////////////////////////////////////
+
+    override fun visitVariableDeclAssignmentVariable(ctx: SystemVerilogParser.VariableDeclAssignmentVariableContext?) {
+        if (ctx!!.variableIdentifier().text == name) {
+            add(SignatureFragmentKind.NAME)
+            accept(ctx.variableDimension())
+            accept(ctx.EQ())
+            accept(ctx.expression())
+        }
     }
 
 // A.2.6 Function Declarations /////////////////////////////////////////////////////////////////////////////////////////

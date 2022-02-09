@@ -34,7 +34,7 @@ internal class UnlabeledSourceBuilderTest : BaseTest() {
                 int         y;
                 logic [7:0] z;
             """.trimIndent()
-        ) { it.regularPackageTextFiles[0] }
+        ) { it.nonRootPackageTextFiles[0] }
     }
 
     @Test
@@ -57,7 +57,7 @@ internal class UnlabeledSourceBuilderTest : BaseTest() {
                         + bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb;
                 endfunction : f
             """.trimIndent()
-        ) { it.regularPackageTextFiles[0] }
+        ) { it.nonRootPackageTextFiles[0] }
     }
 
     @Test
@@ -72,6 +72,6 @@ internal class UnlabeledSourceBuilderTest : BaseTest() {
                 int b = aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa + aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
                     + 1;
             """.trimIndent()
-        ) { it.regularPackageTextFiles[0] }
+        ) { it.nonRootPackageTextFiles[0] }
     }
 }

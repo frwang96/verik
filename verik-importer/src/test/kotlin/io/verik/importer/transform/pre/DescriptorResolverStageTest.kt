@@ -62,24 +62,60 @@ internal class DescriptorResolverStageTest : BaseTest() {
     }
 
     @Test
-    fun `resolve packed descriptor`() {
+    fun `resolve reference descriptor default arguments`() {
         driveElementTest(
             """
-                logic [1:0][3:0] x;
+                class c #(type T = int, type U = T);
+                endclass
+                c x;
             """.trimIndent(),
             DescriptorResolverStage::class,
-            "Property(x, PackedDescriptor(Packed<ADD<SUB<`3`, `0`>, `1`>, Ubit<ADD<SUB<`1`, `0`>, `1`>>>, *, *, *))"
+            """
+                Property(x, ReferenceDescriptor(c<Int, Int>, c, c, []))
+            """.trimIndent()
         ) { it.findDeclaration("x") }
     }
 
     @Test
-    fun `resolve queue discriptor`() {
+    fun `resolve array dimension descriptor`() {
         driveElementTest(
             """
                 logic x [$];
             """.trimIndent(),
             DescriptorResolverStage::class,
-            "Property(x, QueueDescriptor(ArrayList<Boolean>, SimpleDescriptor(*)))"
+            "Property(x, ArrayDimensionDescriptor(Queue<Boolean>, SimpleDescriptor(*), 1))"
+        ) { it.findDeclaration("x") }
+    }
+
+    @Test
+    fun `resolve index dimension descriptor`() {
+        driveElementTest(
+            """
+                logic x [int];
+            """.trimIndent(),
+            DescriptorResolverStage::class,
+            """
+                Property(
+                    x,
+                    IndexDimensionDescriptor(AssociativeArray<Int, Boolean>, SimpleDescriptor(*), SimpleDescriptor(*))
+                )
+            """.trimIndent()
+        ) { it.findDeclaration("x") }
+    }
+
+    @Test
+    fun `resolve range dimension descriptor`() {
+        driveElementTest(
+            """
+                logic [1:0][3:0] x;
+            """.trimIndent(),
+            DescriptorResolverStage::class,
+            """
+                Property(
+                    x,
+                    RangeDimensionDescriptor(Packed<ADD<SUB<`3`, `0`>, `1`>, Ubit<ADD<SUB<`1`, `0`>, `1`>>>, *, *, *, 1)
+                )
+            """.trimIndent()
         ) { it.findDeclaration("x") }
     }
 }

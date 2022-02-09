@@ -17,20 +17,16 @@
 package io.verik.compiler.ast.property
 
 enum class PackageType {
-    NATIVE_REGULAR,
-    NATIVE_ROOT,
-    IMPORTED_REGULAR,
+    REGULAR_NON_ROOT,
+    REGULAR_ROOT,
+    IMPORTED_NON_ROOT,
     IMPORTED_ROOT;
 
-    fun isRegular(): Boolean {
-        return this in listOf(NATIVE_REGULAR, IMPORTED_REGULAR)
-    }
-
     fun isRoot(): Boolean {
-        return this in listOf(NATIVE_ROOT, IMPORTED_ROOT)
+        return this in listOf(REGULAR_ROOT, IMPORTED_ROOT)
     }
 
-    fun isNative(): Boolean {
-        return this in listOf(NATIVE_REGULAR, NATIVE_ROOT)
+    fun isImported(): Boolean {
+        return this in listOf(IMPORTED_NON_ROOT, IMPORTED_ROOT)
     }
 }

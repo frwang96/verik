@@ -171,7 +171,7 @@ internal class ExpressionCasterTest : BaseTest() {
                 val x = null
             """.trimIndent(),
             CasterStage::class,
-            "NullExpression()"
+            "ConstantExpression(Nothing, null)"
         ) { it.findExpression("x") }
     }
 

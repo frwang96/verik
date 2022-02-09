@@ -56,15 +56,15 @@ object CasterStage : ProjectStage() {
             }
         }
 
-        val nativeRegularPackages = ArrayList<EPackage>()
-        val nativeRootPackage = EPackage(
+        val regularNonRootPackages = ArrayList<EPackage>()
+        val regularRootPackage = EPackage(
             SourceLocation.NULL,
             "<root>",
             ArrayList(),
             getPackageOutputPath("", projectContext),
-            PackageType.NATIVE_ROOT
+            PackageType.REGULAR_ROOT
         )
-        val importedRegularPackages = ArrayList<EPackage>()
+        val importedNonRootPackages = ArrayList<EPackage>()
         val importedRootPackage = EPackage(
             SourceLocation.NULL,
             "imported",
@@ -76,32 +76,32 @@ object CasterStage : ProjectStage() {
         filesMap.forEach { (packageName, files) ->
             when {
                 packageName == "" -> {
-                    files.forEach { it.parent = nativeRootPackage }
-                    nativeRootPackage.files = files
+                    files.forEach { it.parent = regularRootPackage }
+                    regularRootPackage.files = files
                 }
                 packageName == "imported" -> {
                     files.forEach { it.parent = importedRootPackage }
                     importedRootPackage.files = files
                 }
                 packageName.startsWith("imported.") -> {
-                    importedRegularPackages.add(
+                    importedNonRootPackages.add(
                         EPackage(
                             SourceLocation.NULL,
                             packageName,
                             files,
                             getPackageOutputPath(packageName, projectContext),
-                            PackageType.IMPORTED_REGULAR
+                            PackageType.IMPORTED_NON_ROOT
                         )
                     )
                 }
                 else -> {
-                    nativeRegularPackages.add(
+                    regularNonRootPackages.add(
                         EPackage(
                             SourceLocation.NULL,
                             packageName,
                             files,
                             getPackageOutputPath(packageName, projectContext),
-                            PackageType.NATIVE_REGULAR
+                            PackageType.REGULAR_NON_ROOT
                         )
                     )
                 }
@@ -110,9 +110,9 @@ object CasterStage : ProjectStage() {
 
         val project = EProject(
             SourceLocation.NULL,
-            nativeRegularPackages,
-            nativeRootPackage,
-            importedRegularPackages,
+            regularNonRootPackages,
+            regularRootPackage,
+            importedNonRootPackages,
             importedRootPackage
         )
         projectContext.project = project

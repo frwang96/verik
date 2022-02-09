@@ -50,14 +50,14 @@ internal class PropertyInterpreterStageTest : BaseTest() {
     fun `interpret module instantiation`() {
         driveElementTest(
             """
-                class M(@In var x: Boolean) : Module()
-                class Top : Module() {
+                class M0(@In var x: Boolean) : Module()
+                class M1 : Module() {
                     @Make
-                    val m = M(false)
+                    val m = M0(false)
                 }
             """.trimIndent(),
             PropertyInterpreterStage::class,
-            "ComponentInstantiation(m, M, [PortInstantiation(x, INPUT, *)])"
+            "ComponentInstantiation(m, M0, [PortInstantiation(x, INPUT, *)])"
         ) { it.findDeclaration("m") }
     }
 
@@ -65,29 +65,29 @@ internal class PropertyInterpreterStageTest : BaseTest() {
     fun `interpret module instantiation null`() {
         driveElementTest(
             """
-                class M : Module()
-                class Top : Module() {
+                class M0 : Module()
+                class M1 : Module() {
                     @Make
-                    val m = optional<FALSE, M> { M() }
+                    val m = optional<FALSE, M0> { M0() }
                 }
             """.trimIndent(),
             PropertyInterpreterStage::class,
-            "Property(m, Nothing, NullExpression(), 0)"
-        ) { it.findDeclaration("m") }
+            "Module(M1, M1, [], [])"
+        ) { it.findDeclaration("M1") }
     }
 
     @Test
     fun `interpret module instantiation not connected`() {
         driveElementTest(
             """
-                class M(@Out var x: Boolean) : Module()
-                class Top : Module() {
+                class M0(@Out var x: Boolean) : Module()
+                class M1 : Module() {
                     @Make
-                    val m = M(nc())
+                    val m = M0(nc())
                 }
             """.trimIndent(),
             PropertyInterpreterStage::class,
-            "ComponentInstantiation(m, M, [PortInstantiation(x, OUTPUT, null)])"
+            "ComponentInstantiation(m, M0, [PortInstantiation(x, OUTPUT, null)])"
         ) { it.findDeclaration("m") }
     }
 
@@ -96,7 +96,7 @@ internal class PropertyInterpreterStageTest : BaseTest() {
         driveElementTest(
             """
                 class MI : ModuleInterface()
-                class Top : Module() {
+                class M : Module() {
                     @Make
                     val mi = MI()
                 }
@@ -111,7 +111,7 @@ internal class PropertyInterpreterStageTest : BaseTest() {
         driveElementTest(
             """
                 class MP : ModulePort()
-                class Top : Module() {
+                class M : Module() {
                     @Make
                     val mp = MP()
                 }
@@ -126,7 +126,7 @@ internal class PropertyInterpreterStageTest : BaseTest() {
         driveElementTest(
             """
                 class CB(override val event: Event) : ClockingBlock()
-                class Top : Module() {
+                class M : Module() {
                     @Make
                     val cb = CB(posedge(false))
                 }
@@ -141,7 +141,7 @@ internal class PropertyInterpreterStageTest : BaseTest() {
         driveMessageTest(
             """
                 class CB(override val event: Event, @In var x: Boolean) : ClockingBlock()
-                class Top : Module() {
+                class M : Module() {
                     @Make
                     val cb = CB(posedge(false), false)
                 }

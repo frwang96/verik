@@ -38,7 +38,7 @@ internal class CastTransformerStageTest : BaseTest() {
                     x = ${'$'}cast(__0, 0);
                 endfunction : f
             """.trimIndent()
-        ) { it.regularPackageTextFiles[0] }
+        ) { it.nonRootPackageTextFiles[0] }
     }
 
     @Test
@@ -58,7 +58,7 @@ internal class CastTransformerStageTest : BaseTest() {
                     x = !${'$'}cast(__0, 0);
                 endfunction : f
             """.trimIndent()
-        ) { it.regularPackageTextFiles[0] }
+        ) { it.nonRootPackageTextFiles[0] }
     }
 
     @Test
@@ -81,6 +81,6 @@ internal class CastTransformerStageTest : BaseTest() {
                     x = __0;
                 endfunction : f
             """.trimIndent()
-        ) { it.regularPackageTextFiles[0] }
+        ) { it.nonRootPackageTextFiles[0] }
     }
 }

@@ -19,7 +19,7 @@ package io.verik.compiler.specialize
 import io.verik.compiler.ast.element.declaration.common.EDeclaration
 import io.verik.compiler.ast.element.declaration.common.EProperty
 import io.verik.compiler.ast.element.expression.common.ECallExpression
-import io.verik.compiler.ast.element.expression.common.ENullExpression
+import io.verik.compiler.ast.element.expression.common.EConstantExpression
 import io.verik.compiler.ast.element.expression.kt.EFunctionLiteralExpression
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Cardinal
@@ -58,9 +58,13 @@ object OptionalReducerSubstage : SpecializerSubstage() {
                         }
                     }
                     Cardinal.FALSE -> {
-                        val nullExpression = ENullExpression(callExpression.location)
-                        callExpression.replace(nullExpression)
-                        property.type = nullExpression.type.copy()
+                        val constantExpression = EConstantExpression(
+                            callExpression.location,
+                            Core.Kt.C_Nothing.toType(),
+                            "null"
+                        )
+                        callExpression.replace(constantExpression)
+                        property.type = constantExpression.type.copy()
                         return
                     }
                 }

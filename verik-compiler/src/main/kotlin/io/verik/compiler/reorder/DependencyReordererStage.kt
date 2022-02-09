@@ -46,18 +46,18 @@ object DependencyReordererStage : ProjectStage() {
             dependencies.forEach {
                 val fromPackage = it.fromDeclaration.cast<EPackage>()
                 val toPackage = it.toDeclaration.cast<EPackage>()
-                if (fromPackage.packageType == PackageType.NATIVE_REGULAR && toPackage.packageType.isRoot()) {
+                if (fromPackage.packageType == PackageType.REGULAR_NON_ROOT && toPackage.packageType.isRoot()) {
                     Messages.ILLEGAL_PACKAGE_DEPENDENCY.on(it.element, it)
                 }
             }
             val dependencyReordererResult = DependencyReorderer.reorder(
-                project.nativeRegularPackages,
+                project.regularNonRootPackages,
                 dependencies
             )
             dependencyReordererResult.unsatisfiedDependencies.forEach {
                 Messages.CIRCULAR_PACKAGE_DEPENDENCY.on(it.element, it)
             }
-            project.nativeRegularPackages = ArrayList(dependencyReordererResult.reorderedDeclarations)
+            project.regularNonRootPackages = ArrayList(dependencyReordererResult.reorderedDeclarations)
         }
 
         private fun reorderFiles(`package`: EPackage, dependencies: List<Dependency>) {
@@ -85,7 +85,7 @@ object DependencyReordererStage : ProjectStage() {
         }
 
         override fun visitPackage(`package`: EPackage) {
-            if (`package`.packageType.isNative()) {
+            if (!`package`.packageType.isImported()) {
                 super.visitPackage(`package`)
                 reorderFiles(`package`, dependencyRegistry.getDependencies(`package`))
             }

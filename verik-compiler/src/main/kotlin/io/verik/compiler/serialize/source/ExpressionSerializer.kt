@@ -159,10 +159,6 @@ object ExpressionSerializer {
         serializeContext.append("}")
     }
 
-    fun serializeNullExpression(serializeContext: SerializeContext) {
-        serializeContext.append("null")
-    }
-
     fun serializeThisExpression(serializeContext: SerializeContext) {
         serializeContext.append("this")
     }

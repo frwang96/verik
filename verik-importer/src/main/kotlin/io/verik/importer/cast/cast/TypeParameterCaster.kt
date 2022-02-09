@@ -45,12 +45,13 @@ object TypeParameterCaster {
             else -> return null
         }
         val paramAssignments = ctx.listOfParamAssignments().paramAssignment()
-        val typeParameters = paramAssignments.mapNotNull {
-            val identifier = it.parameterIdentifier()
+        val typeParameters = paramAssignments.mapNotNull { paramAssignment ->
+            val identifier = paramAssignment.parameterIdentifier()
             val location = castContext.getLocation(identifier)
             val name = identifier.text
-            if (it.unpackedDimension().isEmpty()) {
-                ETypeParameter(location, name, true)
+            val descriptor = paramAssignment.constantParamExpression()?.let { castContext.castDescriptor(it) }
+            if (paramAssignment.unpackedDimension().isEmpty()) {
+                ETypeParameter(location, name, descriptor, true)
             } else null
         }
         return EContainerElement(castContext.getLocation(ctx), typeParameters)
@@ -61,12 +62,13 @@ object TypeParameterCaster {
         castContext: CastContext
     ): EContainerElement {
         val paramAssignments = ctx.listOfParamAssignments().paramAssignment()
-        val typeParameters = paramAssignments.mapNotNull {
-            val identifier = it.parameterIdentifier()
+        val typeParameters = paramAssignments.mapNotNull { paramAssignment ->
+            val identifier = paramAssignment.parameterIdentifier()
             val location = castContext.getLocation(identifier)
             val name = identifier.text
-            if (it.unpackedDimension().isEmpty()) {
-                ETypeParameter(location, name, false)
+            val descriptor = paramAssignment.constantParamExpression()?.let { castContext.castDescriptor(it) }
+            if (paramAssignment.unpackedDimension().isEmpty()) {
+                ETypeParameter(location, name, descriptor, false)
             } else null
         }
         return EContainerElement(castContext.getLocation(ctx), typeParameters)

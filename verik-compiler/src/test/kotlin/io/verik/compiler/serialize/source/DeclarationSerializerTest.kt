@@ -38,7 +38,7 @@ internal class DeclarationSerializerTest : BaseTest() {
                     return x;
                 endfunction : f
             """.trimIndent()
-        ) { it.regularPackageTextFiles[0] }
+        ) { it.nonRootPackageTextFiles[0] }
     }
 
     @Test
@@ -130,19 +130,19 @@ internal class DeclarationSerializerTest : BaseTest() {
             """
                 class C;
                 
-                    static function automatic C C_new();
+                    static function automatic C __new();
                         C __0;
                         __0 = new();
-                        __0.C_init();
+                        __0.__init();
                         return __0;
-                    endfunction : C_new
+                    endfunction : __new
                 
-                    function automatic void C_init();
-                    endfunction : C_init
+                    function automatic void __init();
+                    endfunction : __init
                 
                 endclass : C
             """.trimIndent()
-        ) { it.regularPackageTextFiles[0] }
+        ) { it.nonRootPackageTextFiles[0] }
     }
 
     @Test
@@ -157,7 +157,7 @@ internal class DeclarationSerializerTest : BaseTest() {
                     B
                 } E;
             """.trimIndent()
-        ) { it.regularPackageTextFiles[0] }
+        ) { it.nonRootPackageTextFiles[0] }
     }
 
     @Test
@@ -171,7 +171,7 @@ internal class DeclarationSerializerTest : BaseTest() {
                     logic x;
                 } S;
             """.trimIndent()
-        ) { it.regularPackageTextFiles[0] }
+        ) { it.nonRootPackageTextFiles[0] }
     }
 
     @Test
@@ -184,7 +184,7 @@ internal class DeclarationSerializerTest : BaseTest() {
                 function automatic void f();
                 endfunction : f
             """.trimIndent()
-        ) { it.regularPackageTextFiles[0] }
+        ) { it.nonRootPackageTextFiles[0] }
     }
 
     @Test
@@ -200,7 +200,7 @@ internal class DeclarationSerializerTest : BaseTest() {
                 );
                 endtask : t
             """.trimIndent()
-        ) { it.regularPackageTextFiles[0] }
+        ) { it.nonRootPackageTextFiles[0] }
     }
 
     @Test
@@ -212,7 +212,7 @@ internal class DeclarationSerializerTest : BaseTest() {
             """
                 logic x = 1'b0;
             """.trimIndent()
-        ) { it.regularPackageTextFiles[0] }
+        ) { it.nonRootPackageTextFiles[0] }
     }
 
     @Test
@@ -230,7 +230,7 @@ internal class DeclarationSerializerTest : BaseTest() {
                  */
                 logic x = 1'b0;
             """.trimIndent()
-        ) { it.regularPackageTextFiles[0] }
+        ) { it.nonRootPackageTextFiles[0] }
     }
 
     @Test
@@ -398,6 +398,6 @@ internal class DeclarationSerializerTest : BaseTest() {
                 );
                 endfunction : f
             """.trimIndent()
-        ) { it.regularPackageTextFiles[0] }
+        ) { it.nonRootPackageTextFiles[0] }
     }
 }

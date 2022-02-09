@@ -33,10 +33,10 @@ import io.verik.compiler.ast.element.declaration.common.EProperty
 import io.verik.compiler.ast.element.declaration.common.ETypeParameter
 import io.verik.compiler.ast.element.declaration.kt.EKtAbstractFunction
 import io.verik.compiler.ast.element.declaration.kt.EKtClass
-import io.verik.compiler.ast.element.declaration.kt.EKtConstructor
 import io.verik.compiler.ast.element.declaration.kt.EKtFunction
 import io.verik.compiler.ast.element.declaration.kt.EKtValueParameter
 import io.verik.compiler.ast.element.declaration.kt.EPrimaryConstructor
+import io.verik.compiler.ast.element.declaration.kt.ESecondaryConstructor
 import io.verik.compiler.ast.element.declaration.kt.ETypeAlias
 import io.verik.compiler.ast.element.declaration.sv.EAbstractComponent
 import io.verik.compiler.ast.element.declaration.sv.EAbstractComponentInstantiation
@@ -70,7 +70,7 @@ import io.verik.compiler.ast.element.expression.common.ECallExpression
 import io.verik.compiler.ast.element.expression.common.EConstantExpression
 import io.verik.compiler.ast.element.expression.common.EExpression
 import io.verik.compiler.ast.element.expression.common.EIfExpression
-import io.verik.compiler.ast.element.expression.common.ENullExpression
+import io.verik.compiler.ast.element.expression.common.ENothingExpression
 import io.verik.compiler.ast.element.expression.common.EParenthesizedExpression
 import io.verik.compiler.ast.element.expression.common.EPropertyStatement
 import io.verik.compiler.ast.element.expression.common.EReceiverExpression
@@ -225,8 +225,8 @@ abstract class Visitor {
         visitKtAbstractFunction(primaryConstructor)
     }
 
-    open fun visitKtConstructor(constructor: EKtConstructor) {
-        visitKtAbstractFunction(constructor)
+    open fun visitSecondaryConstructor(secondaryConstructor: ESecondaryConstructor) {
+        visitKtAbstractFunction(secondaryConstructor)
     }
 
     open fun visitSvAbstractFunction(abstractFunction: ESvAbstractFunction) {
@@ -309,6 +309,10 @@ abstract class Visitor {
 
 // EXPRESSION //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    open fun visitNothingExpression(nothingExpression: ENothingExpression) {
+        visitExpression(nothingExpression)
+    }
+
     open fun visitBlockExpression(blockExpression: EBlockExpression) {
         visitExpression(blockExpression)
     }
@@ -367,10 +371,6 @@ abstract class Visitor {
 
     open fun visitStructLiteralExpression(structLiteralExpression: EStructLiteralExpression) {
         visitExpression(structLiteralExpression)
-    }
-
-    open fun visitNullExpression(nullExpression: ENullExpression) {
-        visitExpression(nullExpression)
     }
 
     open fun visitThisExpression(thisExpression: EThisExpression) {

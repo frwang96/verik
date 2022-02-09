@@ -17,7 +17,6 @@
 package io.verik.compiler.ast.element.declaration.kt
 
 import io.verik.compiler.ast.common.Type
-import io.verik.compiler.ast.element.declaration.common.ETypeParameter
 import io.verik.compiler.ast.element.expression.common.EBlockExpression
 import io.verik.compiler.ast.property.AnnotationEntry
 import io.verik.compiler.common.Visitor
@@ -27,8 +26,7 @@ class EPrimaryConstructor(
     override val location: SourceLocation,
     override var name: String,
     override var type: Type,
-    override var valueParameters: ArrayList<EKtValueParameter>,
-    override var typeParameters: ArrayList<ETypeParameter>
+    override var valueParameters: ArrayList<EKtValueParameter>
 ) : EKtAbstractFunction() {
 
     override var annotationEntries: List<AnnotationEntry> = listOf()
@@ -42,13 +40,11 @@ class EPrimaryConstructor(
 
     fun fill(
         type: Type,
-        valueParameters: List<EKtValueParameter>,
-        typeParameters: List<ETypeParameter>
+        valueParameters: List<EKtValueParameter>
     ) {
         valueParameters.forEach { it.parent = this }
         this.type = type
         this.valueParameters = ArrayList(valueParameters)
-        this.typeParameters = ArrayList(typeParameters)
     }
 
     override fun accept(visitor: Visitor) {

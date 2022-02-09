@@ -24,10 +24,10 @@ import io.verik.compiler.ast.element.declaration.common.EPackage
 import io.verik.compiler.ast.element.declaration.common.EProperty
 import io.verik.compiler.ast.element.declaration.common.ETypeParameter
 import io.verik.compiler.ast.element.declaration.kt.EKtClass
-import io.verik.compiler.ast.element.declaration.kt.EKtConstructor
 import io.verik.compiler.ast.element.declaration.kt.EKtFunction
 import io.verik.compiler.ast.element.declaration.kt.EKtValueParameter
 import io.verik.compiler.ast.element.declaration.kt.EPrimaryConstructor
+import io.verik.compiler.ast.element.declaration.kt.ESecondaryConstructor
 import io.verik.compiler.ast.element.declaration.kt.ETypeAlias
 import io.verik.compiler.ast.element.declaration.sv.EAlwaysComBlock
 import io.verik.compiler.ast.element.declaration.sv.EAlwaysSeqBlock
@@ -52,7 +52,7 @@ import io.verik.compiler.ast.element.expression.common.EBlockExpression
 import io.verik.compiler.ast.element.expression.common.ECallExpression
 import io.verik.compiler.ast.element.expression.common.EConstantExpression
 import io.verik.compiler.ast.element.expression.common.EIfExpression
-import io.verik.compiler.ast.element.expression.common.ENullExpression
+import io.verik.compiler.ast.element.expression.common.ENothingExpression
 import io.verik.compiler.ast.element.expression.common.EParenthesizedExpression
 import io.verik.compiler.ast.element.expression.common.EPropertyStatement
 import io.verik.compiler.ast.element.expression.common.EReferenceExpression
@@ -106,15 +106,11 @@ class ElementPrinter : Visitor() {
         Messages.INTERNAL_ERROR.on(element, "Unable to print element: $element")
     }
 
-    override fun visitNullExpression(nullExpression: ENullExpression) {
-        build("NullExpression") {}
-    }
-
     override fun visitProject(project: EProject) {
         build("Project") {
-            build(project.nativeRegularPackages)
-            build(project.nativeRootPackage)
-            build(project.importedRegularPackages)
+            build(project.regularNonRootPackages)
+            build(project.regularRootPackage)
+            build(project.importedNonRootPackages)
             build(project.importedRootPackage)
         }
     }
@@ -270,18 +266,16 @@ class ElementPrinter : Visitor() {
             build(primaryConstructor.name)
             build(primaryConstructor.type.toString())
             build(primaryConstructor.valueParameters)
-            build(primaryConstructor.typeParameters.map { it.name })
         }
     }
 
-    override fun visitKtConstructor(constructor: EKtConstructor) {
-        build("KtConstructor") {
-            build(constructor.name)
-            build(constructor.type.toString())
-            build(constructor.body)
-            build(constructor.valueParameters)
-            build(constructor.typeParameters.map { it.name })
-            build(constructor.superTypeCallExpression)
+    override fun visitSecondaryConstructor(secondaryConstructor: ESecondaryConstructor) {
+        build("SecondaryConstructor") {
+            build(secondaryConstructor.name)
+            build(secondaryConstructor.type.toString())
+            build(secondaryConstructor.body)
+            build(secondaryConstructor.valueParameters)
+            build(secondaryConstructor.superTypeCallExpression)
         }
     }
 
@@ -384,6 +378,10 @@ class ElementPrinter : Visitor() {
     }
 
 //  EXPRESSION  ////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    override fun visitNothingExpression(nothingExpression: ENothingExpression) {
+        build("NothingExpression") {}
+    }
 
     override fun visitBlockExpression(blockExpression: EBlockExpression) {
         build("BlockExpression") {

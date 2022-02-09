@@ -49,7 +49,7 @@ internal class ValueParameterCasterTest : BaseTest() {
                     f, [
                         SvValueParameter(x, SimpleDescriptor(Boolean), 0),
                         SvValueParameter(y, SimpleDescriptor(Boolean), 1)
-                    ], SimpleDescriptor(Unit)
+                    ], SimpleDescriptor(Unit), 0
                 )
             """.trimIndent()
         ) { it.findDeclaration("f") }

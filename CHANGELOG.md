@@ -4,9 +4,12 @@
 ### Importer
 - Fix function override bugs.
 - Merge expressions with descriptors.
+- Add classes `Queue`, `AssociativeArray`, and `DynamicArray` to mirror SystemVerilog.
 
 ### Compiler
 - Rename `onr` to `oni`.
+- Support secondary constructors.
+- Replace `ENullExpression` with `ENothingExpression`.
 
 ## [0.1.13]
 ### Importer

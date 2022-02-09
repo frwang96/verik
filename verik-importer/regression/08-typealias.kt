@@ -24,7 +24,7 @@ typealias t0 = Ubit<`8`>
 
 var x0: t0 = imported()
 
-typealias t1 = ArrayList<Boolean>
+typealias t1 = Queue<Boolean>
 
 var x1: t1 = imported()
 

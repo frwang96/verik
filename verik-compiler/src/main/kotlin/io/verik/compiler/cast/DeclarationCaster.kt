@@ -24,6 +24,7 @@ import io.verik.compiler.ast.element.declaration.kt.EKtClass
 import io.verik.compiler.ast.element.declaration.kt.EKtFunction
 import io.verik.compiler.ast.element.declaration.kt.EKtValueParameter
 import io.verik.compiler.ast.element.declaration.kt.EPrimaryConstructor
+import io.verik.compiler.ast.element.declaration.kt.ESecondaryConstructor
 import io.verik.compiler.ast.element.declaration.kt.ETypeAlias
 import io.verik.compiler.ast.element.expression.common.EBlockExpression
 import io.verik.compiler.ast.element.expression.common.ECallExpression
@@ -42,6 +43,7 @@ import org.jetbrains.kotlin.psi.KtObjectDeclaration
 import org.jetbrains.kotlin.psi.KtParameter
 import org.jetbrains.kotlin.psi.KtPrimaryConstructor
 import org.jetbrains.kotlin.psi.KtProperty
+import org.jetbrains.kotlin.psi.KtSecondaryConstructor
 import org.jetbrains.kotlin.psi.KtSuperTypeCallEntry
 import org.jetbrains.kotlin.psi.KtTypeAlias
 import org.jetbrains.kotlin.psi.KtTypeParameter
@@ -179,11 +181,8 @@ object DeclarationCaster {
         val valueParameters = constructor.valueParameters.mapNotNull {
             castContext.castValueParameter(it)
         }
-        val typeParameters = descriptor.typeParameters.map {
-            castContext.resolveDeclaration(it, constructor).cast<ETypeParameter>(constructor)
-        }
 
-        castedPrimaryConstructor.fill(type, valueParameters, typeParameters)
+        castedPrimaryConstructor.fill(type, valueParameters)
         return castedPrimaryConstructor
     }
 
@@ -198,12 +197,33 @@ object DeclarationCaster {
             .cast<EPrimaryConstructor>(classOrObject)
 
         val type = castContext.castType(primaryConstructorDescriptor.returnType, classOrObject)
-        val typeParameters = primaryConstructorDescriptor.typeParameters.map {
-            castContext.resolveDeclaration(it, classOrObject).cast<ETypeParameter>(classOrObject)
+
+        castedPrimaryConstructor.fill(type, listOf())
+        return castedPrimaryConstructor
+    }
+
+    fun castSecondaryConstructor(constructor: KtSecondaryConstructor, castContext: CastContext): ESecondaryConstructor {
+        val descriptor = castContext.sliceConstructor[constructor]!!
+        val castedSecondaryConstructor = castContext.resolveDeclaration(descriptor, constructor)
+            .cast<ESecondaryConstructor>(constructor)
+
+        val type = castContext.castType(descriptor.returnType, constructor)
+        val documentationLines = castDocumentationLines(constructor.docComment)
+        val body = constructor.bodyBlockExpression?.let {
+            castContext.castExpression(it).cast()
+        } ?: EBlockExpression.empty(castedSecondaryConstructor.location)
+        val valueParameters = constructor.valueParameters.mapNotNull {
+            castContext.castValueParameter(it)
         }
 
-        castedPrimaryConstructor.fill(type, listOf(), typeParameters)
-        return castedPrimaryConstructor
+        castedSecondaryConstructor.fill(
+            type,
+            documentationLines,
+            body,
+            valueParameters,
+            null
+        )
+        return castedSecondaryConstructor
     }
 
     fun castProperty(property: KtProperty, castContext: CastContext): EProperty {

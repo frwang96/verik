@@ -48,7 +48,7 @@ object TypeSerializer {
             is EAbstractClass -> {
                 val elementPackage = element.getParentPackage()
                 val referencePackage = reference.getParentPackage()
-                if (referencePackage.packageType.isRegular() && referencePackage != elementPackage) {
+                if (!referencePackage.packageType.isRoot() && referencePackage != elementPackage) {
                     SerializedType("${referencePackage.name}::${reference.name}")
                 } else SerializedType(reference.name)
             }

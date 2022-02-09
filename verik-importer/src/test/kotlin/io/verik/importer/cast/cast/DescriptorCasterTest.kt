@@ -68,6 +68,34 @@ internal class DescriptorCasterTest : BaseTest() {
     }
 
     @Test
+    fun `cast descriptor from unpackedDimensionRange`() {
+        driveCasterTest(
+            SystemVerilogParser.UnpackedDimensionRangeContext::class,
+            """
+                int x [7:0];
+            """.trimIndent(),
+            """
+                Property(
+                    x, RangeDimensionDescriptor(
+                        Nothing, SimpleDescriptor(Int), LiteralDescriptor(*), LiteralDescriptor(*), 0
+                    )
+                )
+            """.trimIndent()
+        ) { it.findDeclaration("x") }
+    }
+
+    @Test
+    fun `cast descriptor from unpackedDimensionExpression`() {
+        driveCasterTest(
+            SystemVerilogParser.UnpackedDimensionExpressionContext::class,
+            """
+                int x [8];
+            """.trimIndent(),
+            "Property(x, IndexDimensionDescriptor(Nothing, SimpleDescriptor(Int), LiteralDescriptor(Nothing, 8)))"
+        ) { it.findDeclaration("x") }
+    }
+
+    @Test
     fun `cast descriptor from packedDimensionRange single`() {
         driveCasterTest(
             SystemVerilogParser.PackedDimensionRangeContext::class,
@@ -85,7 +113,23 @@ internal class DescriptorCasterTest : BaseTest() {
             """
                 logic [1:0][1:0] x;
             """.trimIndent(),
-            "Property(x, PackedDescriptor(Nothing, BitDescriptor(*), LiteralDescriptor(*), LiteralDescriptor(*)))"
+            """
+                Property(
+                    x,
+                    RangeDimensionDescriptor(Nothing, BitDescriptor(*), LiteralDescriptor(*), LiteralDescriptor(*), 1)
+                )
+            """.trimIndent()
+        ) { it.findDeclaration("x") }
+    }
+
+    @Test
+    fun `cast descriptor from associative dimension`() {
+        driveCasterTest(
+            SystemVerilogParser.AssociativeDimensionContext::class,
+            """
+                logic x [int];
+            """.trimIndent(),
+            "Property(x, IndexDimensionDescriptor(Nothing, SimpleDescriptor(Boolean), SimpleDescriptor(Int)))"
         ) { it.findDeclaration("x") }
     }
 
@@ -96,7 +140,18 @@ internal class DescriptorCasterTest : BaseTest() {
             """
                 logic x [$];
             """.trimIndent(),
-            "Property(x, QueueDescriptor(Nothing, SimpleDescriptor(*)))"
+            "Property(x, ArrayDimensionDescriptor(Nothing, SimpleDescriptor(*), 1))"
+        ) { it.findDeclaration("x") }
+    }
+
+    @Test
+    fun `cast descriptor from unsizedDimension`() {
+        driveCasterTest(
+            SystemVerilogParser.UnsizedDimensionContext::class,
+            """
+                logic x [];
+            """.trimIndent(),
+            "Property(x, ArrayDimensionDescriptor(Nothing, SimpleDescriptor(*), 0))"
         ) { it.findDeclaration("x") }
     }
 

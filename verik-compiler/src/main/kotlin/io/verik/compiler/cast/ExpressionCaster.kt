@@ -24,7 +24,6 @@ import io.verik.compiler.ast.element.expression.common.ECallExpression
 import io.verik.compiler.ast.element.expression.common.EConstantExpression
 import io.verik.compiler.ast.element.expression.common.EExpression
 import io.verik.compiler.ast.element.expression.common.EIfExpression
-import io.verik.compiler.ast.element.expression.common.ENullExpression
 import io.verik.compiler.ast.element.expression.common.EReferenceExpression
 import io.verik.compiler.ast.element.expression.common.EReturnStatement
 import io.verik.compiler.ast.element.expression.common.ESuperExpression
@@ -189,11 +188,7 @@ object ExpressionCaster {
         val location = expression.location()
         val type = castContext.castType(expression)
         val value = expression.text
-        return if (value != "null") {
-            EConstantExpression(location, type, value)
-        } else {
-            ENullExpression(location)
-        }
+        return EConstantExpression(location, type, value)
     }
 
     fun castThisExpression(expression: KtThisExpression, castContext: CastContext): EThisExpression {

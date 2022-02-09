@@ -39,11 +39,12 @@ import io.verik.importer.ast.element.declaration.ESvValueParameter
 import io.verik.importer.ast.element.declaration.ETask
 import io.verik.importer.ast.element.declaration.ETypeAlias
 import io.verik.importer.ast.element.declaration.ETypeParameter
+import io.verik.importer.ast.element.descriptor.EArrayDimensionDescriptor
 import io.verik.importer.ast.element.descriptor.EBitDescriptor
+import io.verik.importer.ast.element.descriptor.EIndexDimensionDescriptor
 import io.verik.importer.ast.element.descriptor.ELiteralDescriptor
 import io.verik.importer.ast.element.descriptor.ENothingDescriptor
-import io.verik.importer.ast.element.descriptor.EPackedDescriptor
-import io.verik.importer.ast.element.descriptor.EQueueDescriptor
+import io.verik.importer.ast.element.descriptor.ERangeDimensionDescriptor
 import io.verik.importer.ast.element.descriptor.EReferenceDescriptor
 import io.verik.importer.ast.element.descriptor.ESimpleDescriptor
 import io.verik.importer.ast.element.descriptor.ETypeArgument
@@ -140,6 +141,7 @@ class ElementPrinter : Visitor() {
     override fun visitTypeParameter(typeParameter: ETypeParameter) {
         build("TypeParameter") {
             build(typeParameter.name)
+            build(typeParameter.descriptor)
             build(typeParameter.isCardinal)
         }
     }
@@ -151,6 +153,7 @@ class ElementPrinter : Visitor() {
             build(function.name)
             build(function.valueParameters)
             build(function.descriptor)
+            build(function.isStatic)
         }
     }
 
@@ -158,6 +161,7 @@ class ElementPrinter : Visitor() {
         build("Task") {
             build(task.name)
             build(task.valueParameters)
+            build(task.isStatic)
         }
     }
 
@@ -269,19 +273,29 @@ class ElementPrinter : Visitor() {
         }
     }
 
-    override fun visitPackedDescriptor(packedDescriptor: EPackedDescriptor) {
-        build("PackedDescriptor") {
-            build(packedDescriptor.type.toString())
-            build(packedDescriptor.descriptor)
-            build(packedDescriptor.left)
-            build(packedDescriptor.right)
+    override fun visitArrayDimensionDescriptor(arrayDimensionDescriptor: EArrayDimensionDescriptor) {
+        build("ArrayDimensionDescriptor") {
+            build(arrayDimensionDescriptor.type.toString())
+            build(arrayDimensionDescriptor.descriptor)
+            build(arrayDimensionDescriptor.isQueue)
         }
     }
 
-    override fun visitQueueDescriptor(queueDescriptor: EQueueDescriptor) {
-        build("QueueDescriptor") {
-            build(queueDescriptor.type.toString())
-            build(queueDescriptor.descriptor)
+    override fun visitIndexDimensionDescriptor(indexDimensionDescriptor: EIndexDimensionDescriptor) {
+        build("IndexDimensionDescriptor") {
+            build(indexDimensionDescriptor.type.toString())
+            build(indexDimensionDescriptor.descriptor)
+            build(indexDimensionDescriptor.index)
+        }
+    }
+
+    override fun visitRangeDimensionDescriptor(rangeDimensionDescriptor: ERangeDimensionDescriptor) {
+        build("RangeDimensionDescriptor") {
+            build(rangeDimensionDescriptor.type.toString())
+            build(rangeDimensionDescriptor.descriptor)
+            build(rangeDimensionDescriptor.left)
+            build(rangeDimensionDescriptor.right)
+            build(rangeDimensionDescriptor.isPacked)
         }
     }
 

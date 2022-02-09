@@ -28,10 +28,10 @@ internal class TypeParameterCasterTest : BaseTest() {
         driveCasterTest(
             SystemVerilogParser.ParameterPortDeclarationDataTypeContext::class,
             """
-                class c #(int N = 1);
+                class c #(int N);
                 endclass
             """.trimIndent(),
-            "SvClass(c, [], [TypeParameter(N, 1)], SimpleDescriptor(Any))"
+            "SvClass(c, [], [TypeParameter(N, null, 1)], SimpleDescriptor(Any))"
         ) { it.findDeclaration("c") }
     }
 
@@ -43,7 +43,7 @@ internal class TypeParameterCasterTest : BaseTest() {
                 class c #(type T = int);
                 endclass
             """.trimIndent(),
-            "SvClass(c, [], [TypeParameter(T, 0)], SimpleDescriptor(Any))"
+            "SvClass(c, [], [TypeParameter(T, SimpleDescriptor(Int), 0)], SimpleDescriptor(Any))"
         ) { it.findDeclaration("c") }
     }
 
@@ -52,10 +52,10 @@ internal class TypeParameterCasterTest : BaseTest() {
         driveCasterTest(
             SystemVerilogParser.ParameterPortDeclarationTypeContext::class,
             """
-                module m #(type T = int, type U = int);
+                module m #(type T, type U);
                 endmodule
             """.trimIndent(),
-            "Module(m, [], [TypeParameter(T, 0), TypeParameter(U, 0)], [])"
+            "Module(m, [], [TypeParameter(T, null, 0), TypeParameter(U, null, 0)], [])"
         ) { it.findDeclaration("m") }
     }
 }

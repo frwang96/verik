@@ -282,7 +282,6 @@ object Core {
             val F_toSbit = CoreVkUbit.F_toSbit
             val F_toBinString = CoreVkUbit.F_toBinString
             val F_toDecString = CoreVkUbit.F_toDecString
-            val F_toHexString = CoreVkUbit.F_toHexString
         }
 
         object Sbit {

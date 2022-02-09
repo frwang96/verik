@@ -21,8 +21,8 @@ import io.verik.compiler.ast.element.common.EProject
 import io.verik.compiler.ast.element.declaration.common.EAbstractFunction
 import io.verik.compiler.ast.element.declaration.common.EDeclaration
 import io.verik.compiler.ast.element.declaration.common.EProperty
-import io.verik.compiler.ast.element.declaration.kt.EKtConstructor
 import io.verik.compiler.ast.element.declaration.kt.EPrimaryConstructor
+import io.verik.compiler.ast.element.declaration.kt.ESecondaryConstructor
 import io.verik.compiler.ast.element.expression.common.EExpression
 import io.verik.compiler.common.TreeVisitor
 
@@ -33,7 +33,7 @@ fun EProject.findDeclaration(name: String): EDeclaration {
             super.visitElement(element)
             if (element is EDeclaration &&
                 element !is EPrimaryConstructor &&
-                element !is EKtConstructor &&
+                element !is ESecondaryConstructor &&
                 element.name == name
             ) declarations.add(element)
         }

@@ -27,11 +27,13 @@ object TaskCaster {
     fun castTaskFromClassMethodTask(
         ctx: SystemVerilogParser.ClassMethodTaskContext,
         castContext: CastContext
-    ): EDeclaration? {
-        val declaration = castContext.castDeclaration(ctx.taskDeclaration()) ?: return null
-        val signature = SignatureBuilder.buildSignature(ctx, declaration.name)
-        declaration.signature = signature
-        return declaration
+    ): ETask? {
+        val task = castContext.castDeclaration(ctx.taskDeclaration())?.cast<ETask>() ?: return null
+        val signature = SignatureBuilder.buildSignature(ctx, task.name)
+        val isStatic = ctx.methodQualifier().any { it.text == "static" }
+        task.signature = signature
+        task.isStatic = isStatic
+        return task
     }
 
     fun castTaskFromTaskDeclaration(
@@ -55,7 +57,13 @@ object TaskCaster {
         val name = identifier.text
         val tfPortDeclarations = ctx.tfItemDeclaration().mapNotNull { it.tfPortDeclaration() }
         val valueParameters = tfPortDeclarations.flatMap { castContext.castValueParameters(it) }
-        return ETask(location, name, null, valueParameters)
+        return ETask(
+            location,
+            name,
+            null,
+            valueParameters,
+            false
+        )
     }
 
     fun castTaskFromTaskBodyDeclarationPortList(
@@ -69,7 +77,13 @@ object TaskCaster {
         val name = identifier.text
         val tfPortItems = ctx.tfPortList()?.tfPortItem() ?: listOf()
         val valueParameters = tfPortItems.flatMap { castContext.castValueParameters(it) }
-        return ETask(location, name, null, valueParameters)
+        return ETask(
+            location,
+            name,
+            null,
+            valueParameters,
+            false
+        )
     }
 
     fun castTaskFromTaskPrototype(ctx: SystemVerilogParser.TaskPrototypeContext, castContext: CastContext): ETask {
@@ -79,6 +93,12 @@ object TaskCaster {
         val signature = SignatureBuilder.buildSignature(ctx, name)
         val tfPortItems = ctx.tfPortList()?.tfPortItem() ?: listOf()
         val valueParameters = tfPortItems.flatMap { castContext.castValueParameters(it) }
-        return ETask(location, name, signature, valueParameters)
+        return ETask(
+            location,
+            name,
+            signature,
+            valueParameters,
+            false
+        )
     }
 }

@@ -27,7 +27,7 @@ object PackageWrapperSerializerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
         val packageWrapperTextFiles = ArrayList<TextFile>()
-        projectContext.project.nativeRegularPackages.forEach {
+        projectContext.project.regularNonRootPackages.forEach {
             val packageWrapperTextFile = serialize(projectContext, it)
             if (packageWrapperTextFile != null)
                 packageWrapperTextFiles.add(packageWrapperTextFile)

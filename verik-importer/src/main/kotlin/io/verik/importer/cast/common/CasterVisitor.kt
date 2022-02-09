@@ -186,28 +186,26 @@ class CasterVisitor(
 
 // A.2.5 Declaration Ranges ////////////////////////////////////////////////////////////////////////////////////////////
 
-    override fun visitUnpackedDimensionRange(ctx: SystemVerilogParser.UnpackedDimensionRangeContext?): EElement? {
-        return null
+    override fun visitUnpackedDimensionRange(ctx: SystemVerilogParser.UnpackedDimensionRangeContext?): EElement {
+        return DescriptorCaster.castDescriptorFromUnpackedDimensionRange(ctx!!, castContext)
     }
 
     override fun visitUnpackedDimensionExpression(
         ctx: SystemVerilogParser.UnpackedDimensionExpressionContext?
-    ): EElement? {
-        return null
+    ): EElement {
+        return DescriptorCaster.castDescriptorFromUnpackedDimensionExpression(ctx!!, castContext)
     }
 
-    override fun visitAssociativeDimensionDataType(
-        ctx: SystemVerilogParser.AssociativeDimensionDataTypeContext?
-    ): EElement? {
-        return null
-    }
-
-    override fun visitAssociativeDimensionStar(ctx: SystemVerilogParser.AssociativeDimensionStarContext?): EElement? {
-        return null
+    override fun visitAssociativeDimension(ctx: SystemVerilogParser.AssociativeDimensionContext?): EElement {
+        return DescriptorCaster.castDescriptorFromAssociativeDimension(ctx!!, castContext)
     }
 
     override fun visitQueueDimension(ctx: SystemVerilogParser.QueueDimensionContext?): EElement {
         return DescriptorCaster.castDescriptorFromQueueDimension(ctx!!, castContext)
+    }
+
+    override fun visitUnsizedDimension(ctx: SystemVerilogParser.UnsizedDimensionContext?): EElement {
+        return DescriptorCaster.castDescriptorFromUnsizedDimension(ctx!!, castContext)
     }
 
 // A.2.6 Function Declarations /////////////////////////////////////////////////////////////////////////////////////////

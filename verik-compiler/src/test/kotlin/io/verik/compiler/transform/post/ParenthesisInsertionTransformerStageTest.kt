@@ -30,7 +30,7 @@ internal class ParenthesisInsertionTransformerStageTest : BaseTest() {
             """
                 logic x = !(|4'b0000);
             """.trimIndent()
-        ) { it.regularPackageTextFiles[0] }
+        ) { it.nonRootPackageTextFiles[0] }
     }
 
     @Test
@@ -46,7 +46,7 @@ internal class ParenthesisInsertionTransformerStageTest : BaseTest() {
                 logic y = 1'b0;
                 logic z = !(x && y);
             """.trimIndent()
-        ) { it.regularPackageTextFiles[0] }
+        ) { it.nonRootPackageTextFiles[0] }
     }
 
     @Test
@@ -60,7 +60,7 @@ internal class ParenthesisInsertionTransformerStageTest : BaseTest() {
                 int x = 0;
                 int y = x + 1 + x;
             """.trimIndent()
-        ) { it.regularPackageTextFiles[0] }
+        ) { it.nonRootPackageTextFiles[0] }
     }
 
     @Test
@@ -74,7 +74,7 @@ internal class ParenthesisInsertionTransformerStageTest : BaseTest() {
                 int x = 0;
                 int y = x + (1 + x);
             """.trimIndent()
-        ) { it.regularPackageTextFiles[0] }
+        ) { it.nonRootPackageTextFiles[0] }
     }
 
     @Test
@@ -88,7 +88,7 @@ internal class ParenthesisInsertionTransformerStageTest : BaseTest() {
                 int x = 0;
                 int y = (x * 2) + x;
             """.trimIndent()
-        ) { it.regularPackageTextFiles[0] }
+        ) { it.nonRootPackageTextFiles[0] }
     }
 
     @Test
@@ -103,7 +103,7 @@ internal class ParenthesisInsertionTransformerStageTest : BaseTest() {
                 logic x = 1'b0;
                 int   y = (x ? 1'b1 : 1'b0) ? 3 : 4;
             """.trimIndent()
-        ) { it.regularPackageTextFiles[0] }
+        ) { it.nonRootPackageTextFiles[0] }
     }
 
     @Test
@@ -119,7 +119,7 @@ internal class ParenthesisInsertionTransformerStageTest : BaseTest() {
                 logic y = 1'b0;
                 int   z = x ? 1 : y ? 2 : 3;
             """.trimIndent()
-        ) { it.regularPackageTextFiles[0] }
+        ) { it.nonRootPackageTextFiles[0] }
     }
 
     @Test
@@ -135,6 +135,6 @@ internal class ParenthesisInsertionTransformerStageTest : BaseTest() {
                 logic y = 1'b0;
                 int   z = (x && y) ? 1 : 0;
             """.trimIndent()
-        ) { it.regularPackageTextFiles[0] }
+        ) { it.nonRootPackageTextFiles[0] }
     }
 }

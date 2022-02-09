@@ -22,16 +22,16 @@ import io.verik.compiler.common.Visitor
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.message.SourceLocation
 
-class ENullExpression(
+class ENothingExpression(
     override val location: SourceLocation
 ) : EExpression() {
 
     override var type = Core.Kt.C_Nothing.toType()
 
-    override val serializationType = SerializationType.EXPRESSION
+    override val serializationType = SerializationType.INTERNAL
 
     override fun accept(visitor: Visitor) {
-        visitor.visitNullExpression(this)
+        visitor.visitNothingExpression(this)
     }
 
     override fun acceptChildren(visitor: TreeVisitor) {}

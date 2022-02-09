@@ -20,22 +20,17 @@ import io.verik.importer.test.BaseTest
 import io.verik.importer.test.findDeclaration
 import org.junit.jupiter.api.Test
 
-internal class PropertyOverrideTransformerStageTest : BaseTest() {
+internal class SuperDescriptorTransformerStageTest : BaseTest() {
 
     @Test
-    fun `resolve bitDescriptor`() {
+    fun `replace super descriptor`() {
         driveElementTest(
             """
-                class c;
-                    logic x;
-                endclass
-
-                class d extends c;
-                    logic x;
+                class c #(type T) extends T;
                 endclass
             """.trimIndent(),
-            PropertyOverrideTransformerStage::class,
-            "KtClass(d, [], [], [], ReferenceDescriptor(*), 1)"
-        ) { it.findDeclaration("d") }
+            SuperDescriptorTransformerStage::class,
+            "KtClass(c, [], [TypeParameter(T, null, 0)], [], SimpleDescriptor(Any), 1)"
+        ) { it.findDeclaration("c") }
     }
 }

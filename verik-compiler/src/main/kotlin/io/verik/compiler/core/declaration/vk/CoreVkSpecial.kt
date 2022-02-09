@@ -19,6 +19,7 @@ package io.verik.compiler.core.declaration.vk
 import io.verik.compiler.ast.element.expression.common.ECallExpression
 import io.verik.compiler.ast.element.expression.common.EConstantExpression
 import io.verik.compiler.ast.element.expression.common.EExpression
+import io.verik.compiler.ast.element.expression.common.ENothingExpression
 import io.verik.compiler.ast.element.expression.common.EReferenceExpression
 import io.verik.compiler.constant.BitComponent
 import io.verik.compiler.constant.BitConstant
@@ -36,7 +37,7 @@ import io.verik.compiler.resolve.TypeConstraintKind
 
 object CoreVkSpecial : CoreScope(CorePackage.VK) {
 
-    val F_imported = object : BasicCoreFunctionDeclaration(parent, "imported", "fun imported()", null) {
+    val F_imported = object : TransformableCoreFunctionDeclaration(parent, "imported", "fun imported()") {
 
         override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
             return listOf(
@@ -46,6 +47,13 @@ object CoreVkSpecial : CoreScope(CorePackage.VK) {
                     TypeAdapter.ofTypeArgument(callExpression, 0)
                 )
             )
+        }
+
+        override fun transform(callExpression: ECallExpression): EExpression {
+            if (!callExpression.isImported()) {
+                Messages.EXPRESSION_OUT_OF_CONTEXT.on(callExpression, name)
+            }
+            return ENothingExpression(callExpression.location)
         }
     }
 

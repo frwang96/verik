@@ -17,10 +17,12 @@
 package io.verik.importer.common
 
 import io.verik.importer.ast.element.common.EElement
+import io.verik.importer.ast.element.descriptor.EArrayDimensionDescriptor
 import io.verik.importer.ast.element.descriptor.EBitDescriptor
+import io.verik.importer.ast.element.descriptor.EIndexDimensionDescriptor
 import io.verik.importer.ast.element.descriptor.ELiteralDescriptor
-import io.verik.importer.ast.element.descriptor.EPackedDescriptor
-import io.verik.importer.ast.element.descriptor.EQueueDescriptor
+import io.verik.importer.ast.element.descriptor.ENothingDescriptor
+import io.verik.importer.ast.element.descriptor.ERangeDimensionDescriptor
 import io.verik.importer.ast.element.descriptor.EReferenceDescriptor
 import io.verik.importer.ast.element.descriptor.ESimpleDescriptor
 import io.verik.importer.ast.element.descriptor.ETypeArgument
@@ -35,17 +37,26 @@ object ElementCopier {
 
     private fun <E : EElement> copy(element: E, location: SourceLocation?): E {
         val copiedElement: EElement = when (element) {
+            is ENothingDescriptor -> copyNothingDescriptor(element, location)
             is ESimpleDescriptor -> copySimpleDescriptor(element, location)
             is ELiteralDescriptor -> copyLiteralDescriptor(element, location)
             is EBitDescriptor -> copyBitDescriptor(element, location)
             is EReferenceDescriptor -> copyReferenceDescriptor(element, location)
-            is EPackedDescriptor -> copyPackedDescriptor(element, location)
-            is EQueueDescriptor -> copyQueueDescriptor(element, location)
+            is ERangeDimensionDescriptor -> copyRangeDimensionDescriptor(element, location)
+            is EArrayDimensionDescriptor -> copyArrayDimensionDescriptor(element, location)
+            is EIndexDimensionDescriptor -> copyIndexDimensionDescriptor(element, location)
             is ETypeArgument -> copyTypeArgument(element, location)
             else -> Messages.INTERNAL_ERROR.on(element, "Unable to copy element: $element")
         }
         @Suppress("UNCHECKED_CAST")
         return copiedElement as E
+    }
+
+    private fun copyNothingDescriptor(
+        nothingDescriptor: ENothingDescriptor,
+        location: SourceLocation?
+    ): ENothingDescriptor {
+        return ENothingDescriptor(location ?: nothingDescriptor.location)
     }
 
     private fun copySimpleDescriptor(
@@ -102,33 +113,50 @@ object ElementCopier {
         )
     }
 
-    private fun copyPackedDescriptor(
-        packedDescriptor: EPackedDescriptor,
+    private fun copyArrayDimensionDescriptor(
+        arrayDimensionDescriptor: EArrayDimensionDescriptor,
         location: SourceLocation?
-    ): EPackedDescriptor {
+    ): EArrayDimensionDescriptor {
+        val type = arrayDimensionDescriptor.type.copy()
+        val descriptor = copy(arrayDimensionDescriptor.descriptor, location)
+        return EArrayDimensionDescriptor(
+            location ?: arrayDimensionDescriptor.location,
+            type,
+            descriptor,
+            arrayDimensionDescriptor.isQueue
+        )
+    }
+
+    private fun copyIndexDimensionDescriptor(
+        mapDescriptor: EIndexDimensionDescriptor,
+        location: SourceLocation?
+    ): EIndexDimensionDescriptor {
+        val type = mapDescriptor.type.copy()
+        val descriptor = copy(mapDescriptor.descriptor, location)
+        val index = copy(mapDescriptor.index, location)
+        return EIndexDimensionDescriptor(
+            location ?: mapDescriptor.location,
+            type,
+            descriptor,
+            index
+        )
+    }
+
+    private fun copyRangeDimensionDescriptor(
+        packedDescriptor: ERangeDimensionDescriptor,
+        location: SourceLocation?
+    ): ERangeDimensionDescriptor {
         val type = packedDescriptor.type.copy()
         val descriptor = copy(packedDescriptor.descriptor, location)
         val left = copy(packedDescriptor.left, location)
         val right = copy(packedDescriptor.right, location)
-        return EPackedDescriptor(
+        return ERangeDimensionDescriptor(
             location ?: packedDescriptor.location,
             type,
             descriptor,
             left,
-            right
-        )
-    }
-
-    private fun copyQueueDescriptor(
-        queueDescriptor: EQueueDescriptor,
-        location: SourceLocation?
-    ): EQueueDescriptor {
-        val type = queueDescriptor.type.copy()
-        val descriptor = copy(queueDescriptor.descriptor, location)
-        return EQueueDescriptor(
-            location ?: queueDescriptor.location,
-            type,
-            descriptor
+            right,
+            packedDescriptor.isPacked
         )
     }
 
