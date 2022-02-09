@@ -9,6 +9,7 @@
 ### Compiler
 - Rename `onr` to `oni`.
 - Support secondary constructors.
+- Replace `ENullExpression` with `ENothingExpression`.
 
 ## [0.1.13]
 ### Importer

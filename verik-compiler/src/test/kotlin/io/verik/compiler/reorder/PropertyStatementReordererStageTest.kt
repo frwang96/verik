@@ -37,7 +37,7 @@ internal class PropertyStatementReordererStageTest : BaseTest() {
                     x = 1'b0;
                 endfunction : f
             """.trimIndent()
-        ) { it.regularPackageTextFiles[0] }
+        ) { it.nonRootPackageTextFiles[0] }
     }
 
     @Test
@@ -57,6 +57,6 @@ internal class PropertyStatementReordererStageTest : BaseTest() {
                     x = 1'b0;
                 endfunction : f
             """.trimIndent()
-        ) { it.regularPackageTextFiles[0] }
+        ) { it.nonRootPackageTextFiles[0] }
     }
 }

@@ -52,7 +52,7 @@ import io.verik.compiler.ast.element.expression.common.EBlockExpression
 import io.verik.compiler.ast.element.expression.common.ECallExpression
 import io.verik.compiler.ast.element.expression.common.EConstantExpression
 import io.verik.compiler.ast.element.expression.common.EIfExpression
-import io.verik.compiler.ast.element.expression.common.ENullExpression
+import io.verik.compiler.ast.element.expression.common.ENothingExpression
 import io.verik.compiler.ast.element.expression.common.EParenthesizedExpression
 import io.verik.compiler.ast.element.expression.common.EPropertyStatement
 import io.verik.compiler.ast.element.expression.common.EReferenceExpression
@@ -106,15 +106,11 @@ class ElementPrinter : Visitor() {
         Messages.INTERNAL_ERROR.on(element, "Unable to print element: $element")
     }
 
-    override fun visitNullExpression(nullExpression: ENullExpression) {
-        build("NullExpression") {}
-    }
-
     override fun visitProject(project: EProject) {
         build("Project") {
-            build(project.nativeRegularPackages)
-            build(project.nativeRootPackage)
-            build(project.importedRegularPackages)
+            build(project.regularNonRootPackages)
+            build(project.regularRootPackage)
+            build(project.importedNonRootPackages)
             build(project.importedRootPackage)
         }
     }
@@ -382,6 +378,10 @@ class ElementPrinter : Visitor() {
     }
 
 //  EXPRESSION  ////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    override fun visitNothingExpression(nothingExpression: ENothingExpression) {
+        build("NothingExpression") {}
+    }
 
     override fun visitBlockExpression(blockExpression: EBlockExpression) {
         build("BlockExpression") {

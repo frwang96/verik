@@ -38,7 +38,7 @@ internal class DeclarationSerializerTest : BaseTest() {
                     return x;
                 endfunction : f
             """.trimIndent()
-        ) { it.regularPackageTextFiles[0] }
+        ) { it.nonRootPackageTextFiles[0] }
     }
 
     @Test
@@ -142,7 +142,7 @@ internal class DeclarationSerializerTest : BaseTest() {
                 
                 endclass : C
             """.trimIndent()
-        ) { it.regularPackageTextFiles[0] }
+        ) { it.nonRootPackageTextFiles[0] }
     }
 
     @Test
@@ -157,7 +157,7 @@ internal class DeclarationSerializerTest : BaseTest() {
                     B
                 } E;
             """.trimIndent()
-        ) { it.regularPackageTextFiles[0] }
+        ) { it.nonRootPackageTextFiles[0] }
     }
 
     @Test
@@ -171,7 +171,7 @@ internal class DeclarationSerializerTest : BaseTest() {
                     logic x;
                 } S;
             """.trimIndent()
-        ) { it.regularPackageTextFiles[0] }
+        ) { it.nonRootPackageTextFiles[0] }
     }
 
     @Test
@@ -184,7 +184,7 @@ internal class DeclarationSerializerTest : BaseTest() {
                 function automatic void f();
                 endfunction : f
             """.trimIndent()
-        ) { it.regularPackageTextFiles[0] }
+        ) { it.nonRootPackageTextFiles[0] }
     }
 
     @Test
@@ -200,7 +200,7 @@ internal class DeclarationSerializerTest : BaseTest() {
                 );
                 endtask : t
             """.trimIndent()
-        ) { it.regularPackageTextFiles[0] }
+        ) { it.nonRootPackageTextFiles[0] }
     }
 
     @Test
@@ -212,7 +212,7 @@ internal class DeclarationSerializerTest : BaseTest() {
             """
                 logic x = 1'b0;
             """.trimIndent()
-        ) { it.regularPackageTextFiles[0] }
+        ) { it.nonRootPackageTextFiles[0] }
     }
 
     @Test
@@ -230,7 +230,7 @@ internal class DeclarationSerializerTest : BaseTest() {
                  */
                 logic x = 1'b0;
             """.trimIndent()
-        ) { it.regularPackageTextFiles[0] }
+        ) { it.nonRootPackageTextFiles[0] }
     }
 
     @Test
@@ -398,6 +398,6 @@ internal class DeclarationSerializerTest : BaseTest() {
                 );
                 endfunction : f
             """.trimIndent()
-        ) { it.regularPackageTextFiles[0] }
+        ) { it.nonRootPackageTextFiles[0] }
     }
 }

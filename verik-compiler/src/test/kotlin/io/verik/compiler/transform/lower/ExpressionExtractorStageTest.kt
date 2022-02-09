@@ -41,7 +41,7 @@ internal class ExpressionExtractorStageTest : BaseTest() {
                     y = __0[3:0];
                 endfunction : f
             """.trimIndent()
-        ) { it.regularPackageTextFiles[0] }
+        ) { it.nonRootPackageTextFiles[0] }
     }
 
     @Test
@@ -62,6 +62,6 @@ internal class ExpressionExtractorStageTest : BaseTest() {
                     x = __0 + 1'b0;
                 endfunction : f
             """.trimIndent()
-        ) { it.regularPackageTextFiles[0] }
+        ) { it.nonRootPackageTextFiles[0] }
     }
 }

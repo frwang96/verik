@@ -28,8 +28,8 @@ internal class CasterStageTest : BaseTest() {
             CasterStage::class,
             """
                 Project(
-                    [Package(test, [File([])], NATIVE_REGULAR)],
-                    Package(<root>, [], NATIVE_ROOT),
+                    [Package(test, [File([])], REGULAR_NON_ROOT)],
+                    Package(<root>, [], REGULAR_ROOT),
                     [],
                     Package(imported, [], IMPORTED_ROOT)
                 )

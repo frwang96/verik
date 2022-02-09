@@ -32,7 +32,7 @@ internal class InlineIfExpressionTransformerStageTest : BaseTest() {
                 logic x = 1'b1;
                 int   y = x ? 1 : 0;
             """.trimIndent()
-        ) { it.regularPackageTextFiles[0] }
+        ) { it.nonRootPackageTextFiles[0] }
     }
 
     @Test
@@ -46,7 +46,7 @@ internal class InlineIfExpressionTransformerStageTest : BaseTest() {
                 logic x = 1'b1;
                 int   y = x ? 1 : x ? 2 : 3;
             """.trimIndent()
-        ) { it.regularPackageTextFiles[0] }
+        ) { it.nonRootPackageTextFiles[0] }
     }
 
     @Test
@@ -61,6 +61,6 @@ internal class InlineIfExpressionTransformerStageTest : BaseTest() {
                 logic x = 1'b1;
                 int   y = (x ? 1'b1 : 1'b0) ? 1 : 0;
             """.trimIndent()
-        ) { it.regularPackageTextFiles[0] }
+        ) { it.nonRootPackageTextFiles[0] }
     }
 }

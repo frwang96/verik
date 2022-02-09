@@ -36,7 +36,7 @@ internal class TaskReturnTransformerStageTest : BaseTest() {
                     return;
                 endtask : f
             """.trimIndent()
-        ) { it.regularPackageTextFiles[0] }
+        ) { it.nonRootPackageTextFiles[0] }
     }
 
     @Test
@@ -65,6 +65,6 @@ internal class TaskReturnTransformerStageTest : BaseTest() {
                     x = __1;
                 endtask : g
             """.trimIndent()
-        ) { it.regularPackageTextFiles[0] }
+        ) { it.nonRootPackageTextFiles[0] }
     }
 }

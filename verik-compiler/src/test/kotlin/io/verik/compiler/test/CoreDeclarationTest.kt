@@ -44,15 +44,15 @@ abstract class CoreDeclarationTest : BaseTest() {
         projectContext.project.accept(PropertyEliminatorVisitor)
         stageSequence.processAll(projectContext)
 
-        val regularPackageTextFiles = projectContext.outputContext.regularPackageTextFiles
+        val nonRootPackageTextFiles = projectContext.outputContext.nonRootPackageTextFiles
         val rootPackageTextFiles = projectContext.outputContext.rootPackageTextFiles
         when {
-            regularPackageTextFiles.size + rootPackageTextFiles.size > 1 ->
+            nonRootPackageTextFiles.size + rootPackageTextFiles.size > 1 ->
                 throw IllegalArgumentException("Multiple source files generated")
-            regularPackageTextFiles.size + rootPackageTextFiles.size == 0 ->
+            nonRootPackageTextFiles.size + rootPackageTextFiles.size == 0 ->
                 throw IllegalArgumentException("No source files generated")
-            regularPackageTextFiles.size == 1 ->
-                assertOutputTextEquals(expected, regularPackageTextFiles[0])
+            nonRootPackageTextFiles.size == 1 ->
+                assertOutputTextEquals(expected, nonRootPackageTextFiles[0])
             rootPackageTextFiles.size == 1 ->
                 assertOutputTextEquals(expected, rootPackageTextFiles[0])
         }

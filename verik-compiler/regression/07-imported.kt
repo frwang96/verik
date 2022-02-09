@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,19 +14,32 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.property
+// Imported.kt /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-enum class PackageType {
-    REGULAR_NON_ROOT,
-    REGULAR_ROOT,
-    IMPORTED_NON_ROOT,
-    IMPORTED_ROOT;
+@file:Verik
 
-    fun isRoot(): Boolean {
-        return this in listOf(REGULAR_ROOT, IMPORTED_ROOT)
-    }
+package imported
 
-    fun isImported(): Boolean {
-        return this in listOf(IMPORTED_NON_ROOT, IMPORTED_ROOT)
+import io.verik.core.*
+
+val x0: Boolean = imported()
+
+class C
+
+// Test.kt /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+@file:Verik
+
+import imported.C
+import imported.x0
+import io.verik.core.*
+
+@SimTop
+object M : Module() {
+
+    @Run
+    fun f() {
+        val x1 = x0
+        val c = C()
     }
 }

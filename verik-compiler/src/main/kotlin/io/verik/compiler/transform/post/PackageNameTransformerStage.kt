@@ -32,7 +32,7 @@ object PackageNameTransformerStage : ProjectStage() {
     private object PackageNameTransformerVisitor : TreeVisitor() {
 
         override fun visitPackage(`package`: EPackage) {
-            if (`package`.packageType == PackageType.NATIVE_REGULAR) {
+            if (`package`.packageType == PackageType.REGULAR_NON_ROOT) {
                 if (!`package`.name.matches(Regex("[a-zA-Z][a-zA-Z\\d]*(\\.[a-zA-Z][a-zA-Z\\d]*)*")))
                     Messages.INTERNAL_ERROR.on(`package`, "Unable to transform package name: ${`package`.name}")
                 val names = `package`.name.split(".")

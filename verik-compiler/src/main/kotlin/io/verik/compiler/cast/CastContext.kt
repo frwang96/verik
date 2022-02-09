@@ -27,7 +27,7 @@ import io.verik.compiler.ast.element.declaration.kt.EKtFunction
 import io.verik.compiler.ast.element.declaration.kt.EKtValueParameter
 import io.verik.compiler.ast.element.declaration.kt.EPrimaryConstructor
 import io.verik.compiler.ast.element.expression.common.EExpression
-import io.verik.compiler.ast.element.expression.common.ENullExpression
+import io.verik.compiler.ast.element.expression.common.ENothingExpression
 import io.verik.compiler.ast.element.expression.common.EPropertyStatement
 import io.verik.compiler.ast.element.expression.common.EReferenceExpression
 import io.verik.compiler.common.location
@@ -133,17 +133,17 @@ class CastContext(
         return when (val element = casterVisitor.getElement<EElement>(expression)) {
             is EKtClass -> {
                 Messages.ILLEGAL_LOCAL_DECLARATION.on(element, element.name)
-                ENullExpression(location)
+                ENothingExpression(location)
             }
             is EKtFunction -> {
                 Messages.ILLEGAL_LOCAL_DECLARATION.on(element, element.name)
-                ENullExpression(location)
+                ENothingExpression(location)
             }
             is EProperty -> {
                 EPropertyStatement(location, element)
             }
             is EExpression -> element
-            null -> ENullExpression(location)
+            null -> ENothingExpression(location)
             else -> {
                 Messages.INTERNAL_ERROR.on(location, "Expression expected but got: ${element::class.simpleName}")
             }

@@ -70,7 +70,7 @@ import io.verik.compiler.ast.element.expression.common.ECallExpression
 import io.verik.compiler.ast.element.expression.common.EConstantExpression
 import io.verik.compiler.ast.element.expression.common.EExpression
 import io.verik.compiler.ast.element.expression.common.EIfExpression
-import io.verik.compiler.ast.element.expression.common.ENullExpression
+import io.verik.compiler.ast.element.expression.common.ENothingExpression
 import io.verik.compiler.ast.element.expression.common.EParenthesizedExpression
 import io.verik.compiler.ast.element.expression.common.EPropertyStatement
 import io.verik.compiler.ast.element.expression.common.EReceiverExpression
@@ -309,6 +309,10 @@ abstract class Visitor {
 
 // EXPRESSION //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    open fun visitNothingExpression(nothingExpression: ENothingExpression) {
+        visitExpression(nothingExpression)
+    }
+
     open fun visitBlockExpression(blockExpression: EBlockExpression) {
         visitExpression(blockExpression)
     }
@@ -367,10 +371,6 @@ abstract class Visitor {
 
     open fun visitStructLiteralExpression(structLiteralExpression: EStructLiteralExpression) {
         visitExpression(structLiteralExpression)
-    }
-
-    open fun visitNullExpression(nullExpression: ENullExpression) {
-        visitExpression(nullExpression)
     }
 
     open fun visitThisExpression(thisExpression: EThisExpression) {

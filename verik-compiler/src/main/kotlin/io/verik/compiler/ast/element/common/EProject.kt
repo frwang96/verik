@@ -24,16 +24,16 @@ import io.verik.compiler.message.SourceLocation
 
 class EProject(
     override val location: SourceLocation,
-    var nativeRegularPackages: ArrayList<EPackage>,
-    val nativeRootPackage: EPackage,
-    val importedRegularPackages: ArrayList<EPackage>,
+    var regularNonRootPackages: ArrayList<EPackage>,
+    val regularRootPackage: EPackage,
+    val importedNonRootPackages: ArrayList<EPackage>,
     val importedRootPackage: EPackage
 ) : EElement() {
 
     init {
-        nativeRegularPackages.forEach { it.parent = this }
-        nativeRootPackage.parent = this
-        importedRegularPackages.forEach { it.parent = this }
+        regularNonRootPackages.forEach { it.parent = this }
+        regularRootPackage.parent = this
+        importedNonRootPackages.forEach { it.parent = this }
         importedRootPackage.parent = this
     }
 
@@ -42,24 +42,24 @@ class EProject(
     }
 
     override fun acceptChildren(visitor: TreeVisitor) {
-        nativeRegularPackages.forEach { it.accept(visitor) }
-        nativeRootPackage.accept(visitor)
-        importedRegularPackages.forEach { it.accept(visitor) }
+        regularNonRootPackages.forEach { it.accept(visitor) }
+        regularRootPackage.accept(visitor)
+        importedNonRootPackages.forEach { it.accept(visitor) }
         importedRootPackage.accept(visitor)
     }
 
     fun packages(): List<EPackage> {
-        return nativeRegularPackages + nativeRootPackage + importedRegularPackages + importedRootPackage
+        return regularNonRootPackages + regularRootPackage + importedNonRootPackages + importedRootPackage
     }
 
     fun files(): List<EFile> {
-        return nativeRegularPackages.flatMap { it.files } +
-            nativeRootPackage.files +
-            importedRegularPackages.flatMap { it.files } +
+        return regularNonRootPackages.flatMap { it.files } +
+            regularRootPackage.files +
+            importedNonRootPackages.flatMap { it.files } +
             importedRootPackage.files
     }
 
-    fun nonImportedFiles(): List<EFile> {
-        return nativeRegularPackages.flatMap { it.files } + nativeRootPackage.files
+    fun regularFiles(): List<EFile> {
+        return regularNonRootPackages.flatMap { it.files } + regularRootPackage.files
     }
 }

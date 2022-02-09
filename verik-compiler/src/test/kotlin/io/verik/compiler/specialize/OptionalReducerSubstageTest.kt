@@ -42,7 +42,7 @@ internal class OptionalReducerSubstageTest : BaseTest() {
                 val m = optional<FALSE, M> { M() }
             """.trimIndent(),
             SpecializerStage::class,
-            "Property(m, Nothing, NullExpression(), 0)"
+            "Property(m, Nothing, ConstantExpression(Nothing, null), 0)"
         ) { it.findDeclaration("m") }
     }
 

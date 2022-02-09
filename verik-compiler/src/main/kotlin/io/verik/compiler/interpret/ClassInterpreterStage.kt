@@ -165,6 +165,8 @@ object ClassInterpreterStage : ProjectStage() {
             if (`class`.isAbstract)
                 return null
 
+            // TODO better handling of imported constructors
+            val name = if (`class`.isImported()) "new" else "__new"
             val property = EProperty.temporary(
                 secondaryConstructor.location,
                 secondaryConstructor.type.copy(),
@@ -219,7 +221,7 @@ object ClassInterpreterStage : ProjectStage() {
 
             val constructor = ESvFunction(
                 location = secondaryConstructor.location,
-                name = "__new",
+                name = name,
                 type = secondaryConstructor.type,
                 annotationEntries = secondaryConstructor.annotationEntries,
                 documentationLines = secondaryConstructor.documentationLines,

@@ -72,6 +72,10 @@ abstract class EElement {
         }
     }
 
+    fun isImported(): Boolean {
+        return getParentPackage().packageType.isImported()
+    }
+
     abstract fun accept(visitor: Visitor)
 
     abstract fun acceptChildren(visitor: TreeVisitor)

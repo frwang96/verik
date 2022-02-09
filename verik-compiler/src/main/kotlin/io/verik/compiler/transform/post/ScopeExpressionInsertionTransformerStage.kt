@@ -64,7 +64,7 @@ object ScopeExpressionInsertionTransformerStage : ProjectStage() {
                         is EFile -> {
                             val `package` = parent.parent
                             if (`package` is EPackage &&
-                                `package`.packageType.isRegular() &&
+                                !`package`.packageType.isRoot() &&
                                 `package` != parentPackage
                             ) {
                                 return EScopeExpression(receiverExpression.location, `package`.toType())
@@ -101,7 +101,7 @@ object ScopeExpressionInsertionTransformerStage : ProjectStage() {
         }
 
         override fun visitPackage(`package`: EPackage) {
-            if (`package`.packageType.isNative()) {
+            if (!`package`.packageType.isImported()) {
                 parentPackage = `package`
                 super.visitPackage(`package`)
                 parentPackage = null
