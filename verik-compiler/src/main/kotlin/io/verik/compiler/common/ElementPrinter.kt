@@ -163,7 +163,6 @@ class ElementPrinter : Visitor() {
             build(`class`.isAbstract)
             build(`class`.isObject)
             build(`class`.primaryConstructor)
-            build(`class`.superTypeCallExpression)
         }
     }
 
@@ -266,6 +265,7 @@ class ElementPrinter : Visitor() {
             build(primaryConstructor.name)
             build(primaryConstructor.type.toString())
             build(primaryConstructor.valueParameters)
+            build(primaryConstructor.superTypeCallExpression)
         }
     }
 

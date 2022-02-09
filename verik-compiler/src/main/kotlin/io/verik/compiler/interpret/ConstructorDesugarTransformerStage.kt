@@ -57,7 +57,8 @@ object ConstructorDesugarTransformerStage : ProjectStage() {
                 declarations.addAll(properties.filterNotNull())
 
                 val body = getBody(primaryConstructor, properties)
-                val superTypeCallExpression = `class`.superTypeCallExpression?.let { ExpressionCopier.deepCopy(it) }
+                val superTypeCallExpression = primaryConstructor.superTypeCallExpression
+                    ?.let { ExpressionCopier.deepCopy(it) }
                 val secondaryConstructor = ESecondaryConstructor(
                     location = primaryConstructor.location,
                     name = primaryConstructor.name,

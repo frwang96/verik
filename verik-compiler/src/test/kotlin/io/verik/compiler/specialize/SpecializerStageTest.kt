@@ -29,7 +29,7 @@ internal class SpecializerStageTest : BaseTest() {
                 class C
             """.trimIndent(),
             SpecializerStage::class,
-            "KtClass(C, C, [], [], 0, 0, 0, PrimaryConstructor(C, C, []), null)"
+            "KtClass(C, C, [], [], 0, 0, 0, PrimaryConstructor(C, C, [], null))"
         ) { it.findDeclaration("C") }
     }
 
@@ -44,7 +44,7 @@ internal class SpecializerStageTest : BaseTest() {
             """
                 KtClass(
                     C_N_8, C<`8`>, [], [TypeParameter(N, `8`)],
-                    0, 0, 0, PrimaryConstructor(C_N_8, C<`8`>, []), null
+                    0, 0, 0, PrimaryConstructor(C_N_8, C<`8`>, [], null)
                 )
             """.trimIndent()
         ) { it.findDeclaration("C_N_8") }
@@ -61,7 +61,7 @@ internal class SpecializerStageTest : BaseTest() {
             """
                 KtClass(
                     C_N_8, C<`8`>, [], [TypeParameter(N, `8`)],
-                    0, 0, 0, PrimaryConstructor(C_N_8, C<`8`>, []), null
+                    0, 0, 0, PrimaryConstructor(C_N_8, C<`8`>, [], null)
                 )
             """.trimIndent()
         ) { it.findDeclaration("C_N_8") }
@@ -79,7 +79,7 @@ internal class SpecializerStageTest : BaseTest() {
             """
                 KtClass(
                     D_T_C, D<C>, [], [TypeParameter(T, C)],
-                    0, 0, 0, PrimaryConstructor(D_T_C, D<C>, []), null
+                    0, 0, 0, PrimaryConstructor(D_T_C, D<C>, [], null)
                 )
             """.trimIndent()
         ) { it.findDeclaration("D_T_C") }

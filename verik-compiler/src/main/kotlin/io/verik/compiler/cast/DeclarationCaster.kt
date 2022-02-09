@@ -32,7 +32,6 @@ import io.verik.compiler.ast.property.AnnotationEntry
 import io.verik.compiler.common.location
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreConstructorDeclaration
-import io.verik.compiler.message.Messages
 import org.jetbrains.kotlin.kdoc.psi.api.KDoc
 import org.jetbrains.kotlin.lexer.KtTokens
 import org.jetbrains.kotlin.psi.KtAnnotationEntry
@@ -45,6 +44,7 @@ import org.jetbrains.kotlin.psi.KtPrimaryConstructor
 import org.jetbrains.kotlin.psi.KtProperty
 import org.jetbrains.kotlin.psi.KtSecondaryConstructor
 import org.jetbrains.kotlin.psi.KtSuperTypeCallEntry
+import org.jetbrains.kotlin.psi.KtSuperTypeListEntry
 import org.jetbrains.kotlin.psi.KtTypeAlias
 import org.jetbrains.kotlin.psi.KtTypeParameter
 import org.jetbrains.kotlin.resolve.descriptorUtil.classValueType
@@ -105,18 +105,6 @@ object DeclarationCaster {
                 castImplicitPrimaryConstructor(classOrObject, castContext)
             else -> null
         }
-        val superTypeCallEntry = when (classOrObject.superTypeListEntries.size) {
-            0 -> null
-            1 -> {
-                val superTypeListEntry = classOrObject.superTypeListEntries[0]
-                if (superTypeListEntry is KtSuperTypeCallEntry) {
-                    castSuperTypeCallExpression(superTypeListEntry, castContext)
-                } else {
-                    Messages.INTERNAL_ERROR.on(classOrObject, "Super type call entry expected")
-                }
-            }
-            else -> Messages.INTERNAL_ERROR.on(classOrObject, "Multiple inheritance not supported")
-        }
 
         castedClass.fill(
             type = type,
@@ -129,7 +117,6 @@ object DeclarationCaster {
             isAbstract = isAbstract,
             isObject = isObject,
             primaryConstructor = primaryConstructor,
-            superTypeCallExpression = superTypeCallEntry
         )
         return castedClass
     }
@@ -182,23 +169,12 @@ object DeclarationCaster {
             castContext.castValueParameter(it)
         }
 
-        castedPrimaryConstructor.fill(type, valueParameters)
-        return castedPrimaryConstructor
-    }
+        val classOrObject = constructor.parent
+        val superTypeListEntry = if (classOrObject is KtClassOrObject) {
+            castSuperTypeCallExpression(classOrObject.superTypeListEntries, castContext)
+        } else null
 
-    private fun castImplicitPrimaryConstructor(
-        classOrObject: KtClassOrObject,
-        castContext: CastContext
-    ): EPrimaryConstructor {
-        val descriptor = castContext.sliceClass[classOrObject]!!
-        val primaryConstructorDescriptor = descriptor.unsubstitutedPrimaryConstructor!!
-        val castedPrimaryConstructor = castContext
-            .resolveDeclaration(primaryConstructorDescriptor, classOrObject)
-            .cast<EPrimaryConstructor>(classOrObject)
-
-        val type = castContext.castType(primaryConstructorDescriptor.returnType, classOrObject)
-
-        castedPrimaryConstructor.fill(type, listOf())
+        castedPrimaryConstructor.fill(type, valueParameters, superTypeListEntry)
         return castedPrimaryConstructor
     }
 
@@ -304,6 +280,35 @@ object DeclarationCaster {
             .trim()
             .lines()
             .map { it.trim().removePrefix("*").removePrefix(" ") }
+    }
+
+    private fun castImplicitPrimaryConstructor(
+        classOrObject: KtClassOrObject,
+        castContext: CastContext
+    ): EPrimaryConstructor {
+        val descriptor = castContext.sliceClass[classOrObject]!!
+        val primaryConstructorDescriptor = descriptor.unsubstitutedPrimaryConstructor!!
+        val castedPrimaryConstructor = castContext
+            .resolveDeclaration(primaryConstructorDescriptor, classOrObject)
+            .cast<EPrimaryConstructor>(classOrObject)
+
+        val type = castContext.castType(primaryConstructorDescriptor.returnType, classOrObject)
+        val superTypeListEntry = castSuperTypeCallExpression(classOrObject.superTypeListEntries, castContext)
+
+        castedPrimaryConstructor.fill(type, listOf(), superTypeListEntry)
+        return castedPrimaryConstructor
+    }
+
+    private fun castSuperTypeCallExpression(
+        superTypeListEntries: List<KtSuperTypeListEntry>,
+        castContext: CastContext
+    ): ECallExpression? {
+        superTypeListEntries.forEach {
+            if (it is KtSuperTypeCallEntry) {
+                return castSuperTypeCallExpression(it, castContext)
+            }
+        }
+        return null
     }
 
     private fun castSuperTypeCallExpression(

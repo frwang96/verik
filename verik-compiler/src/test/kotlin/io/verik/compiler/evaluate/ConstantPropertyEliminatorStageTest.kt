@@ -32,7 +32,7 @@ internal class ConstantPropertyEliminatorStageTest : BaseTest() {
                 }
             """.trimIndent(),
             ConstantPropertyEliminatorStage::class,
-            "KtClass(C, C, [], [], 0, 0, 0, PrimaryConstructor(*), null)"
+            "KtClass(C, C, [], [], 0, 0, 0, PrimaryConstructor(*))"
         ) { it.findDeclaration("C") }
     }
 
