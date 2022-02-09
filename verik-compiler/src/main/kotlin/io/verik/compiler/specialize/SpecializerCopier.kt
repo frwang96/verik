@@ -25,6 +25,7 @@ import io.verik.compiler.ast.element.declaration.kt.EKtClass
 import io.verik.compiler.ast.element.declaration.kt.EKtFunction
 import io.verik.compiler.ast.element.declaration.kt.EKtValueParameter
 import io.verik.compiler.ast.element.declaration.kt.EPrimaryConstructor
+import io.verik.compiler.ast.element.declaration.kt.ESecondaryConstructor
 import io.verik.compiler.ast.element.expression.common.EBlockExpression
 import io.verik.compiler.ast.element.expression.common.ECallExpression
 import io.verik.compiler.ast.element.expression.common.EConstantExpression
@@ -60,6 +61,8 @@ object SpecializerCopier {
                 copyKtFunction(element, typeArguments, specializeContext)
             is EPrimaryConstructor ->
                 copyPrimaryConstructor(element, typeArguments, specializeContext)
+            is ESecondaryConstructor ->
+                copySecondaryConstructor(element, typeArguments, specializeContext)
             is EProperty ->
                 copyProperty(element, typeArguments, specializeContext)
             is EEnumEntry ->
@@ -196,6 +199,29 @@ object SpecializerCopier {
         )
         specializeContext.register(primaryConstructor, typeArguments, copiedPrimaryConstructor)
         return copiedPrimaryConstructor
+    }
+
+    private fun copySecondaryConstructor(
+        secondaryConstructor: ESecondaryConstructor,
+        typeArguments: List<Type>,
+        specializeContext: SpecializeContext
+    ): ESecondaryConstructor {
+        val type = secondaryConstructor.type.copy()
+        val body = copy(secondaryConstructor.body, typeArguments, specializeContext)
+        val valueParameters = secondaryConstructor.valueParameters.map { copy(it, typeArguments, specializeContext) }
+        val superTypeCallExpression = secondaryConstructor.superTypeCallExpression
+            ?.let { copy(it, typeArguments, specializeContext) }
+        val copiedSecondaryConstructor = ESecondaryConstructor(
+            location = secondaryConstructor.location,
+            name = secondaryConstructor.name,
+            type = type,
+            documentationLines = secondaryConstructor.documentationLines,
+            body = body,
+            valueParameters = ArrayList(valueParameters),
+            superTypeCallExpression = superTypeCallExpression
+        )
+        specializeContext.register(secondaryConstructor, typeArguments, copiedSecondaryConstructor)
+        return copiedSecondaryConstructor
     }
 
     private fun copyProperty(

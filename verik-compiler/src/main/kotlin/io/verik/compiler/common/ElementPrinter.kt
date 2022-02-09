@@ -24,7 +24,6 @@ import io.verik.compiler.ast.element.declaration.common.EPackage
 import io.verik.compiler.ast.element.declaration.common.EProperty
 import io.verik.compiler.ast.element.declaration.common.ETypeParameter
 import io.verik.compiler.ast.element.declaration.kt.EKtClass
-import io.verik.compiler.ast.element.declaration.kt.EKtConstructor
 import io.verik.compiler.ast.element.declaration.kt.EKtFunction
 import io.verik.compiler.ast.element.declaration.kt.EKtValueParameter
 import io.verik.compiler.ast.element.declaration.kt.EPrimaryConstructor
@@ -280,16 +279,7 @@ class ElementPrinter : Visitor() {
             build(secondaryConstructor.type.toString())
             build(secondaryConstructor.body)
             build(secondaryConstructor.valueParameters)
-        }
-    }
-
-    override fun visitKtConstructor(constructor: EKtConstructor) {
-        build("KtConstructor") {
-            build(constructor.name)
-            build(constructor.type.toString())
-            build(constructor.body)
-            build(constructor.valueParameters)
-            build(constructor.superTypeCallExpression)
+            build(secondaryConstructor.superTypeCallExpression)
         }
     }
 

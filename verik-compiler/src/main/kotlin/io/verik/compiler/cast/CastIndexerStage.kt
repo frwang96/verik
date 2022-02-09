@@ -23,6 +23,7 @@ import io.verik.compiler.ast.element.declaration.kt.EKtClass
 import io.verik.compiler.ast.element.declaration.kt.EKtFunction
 import io.verik.compiler.ast.element.declaration.kt.EKtValueParameter
 import io.verik.compiler.ast.element.declaration.kt.EPrimaryConstructor
+import io.verik.compiler.ast.element.declaration.kt.ESecondaryConstructor
 import io.verik.compiler.ast.element.declaration.kt.ETypeAlias
 import io.verik.compiler.ast.element.expression.common.EBlockExpression
 import io.verik.compiler.common.endLocation
@@ -37,6 +38,7 @@ import org.jetbrains.kotlin.psi.KtNamedFunction
 import org.jetbrains.kotlin.psi.KtParameter
 import org.jetbrains.kotlin.psi.KtPrimaryConstructor
 import org.jetbrains.kotlin.psi.KtProperty
+import org.jetbrains.kotlin.psi.KtSecondaryConstructor
 import org.jetbrains.kotlin.psi.KtTreeVisitorVoid
 import org.jetbrains.kotlin.psi.KtTypeAlias
 import org.jetbrains.kotlin.psi.KtTypeParameter
@@ -151,6 +153,23 @@ object CastIndexerStage : ProjectStage() {
                 ArrayList()
             )
             castContext.registerDeclaration(descriptor, indexedPrimaryConstructor)
+        }
+
+        override fun visitSecondaryConstructor(constructor: KtSecondaryConstructor) {
+            super.visitSecondaryConstructor(constructor)
+            val descriptor = castContext.sliceConstructor[constructor]!!
+            val location = constructor.location()
+            val name = constructor.name!!
+            val indexedSecondaryConstructor = ESecondaryConstructor(
+                location = location,
+                name = name,
+                type = NullDeclaration.toType(),
+                documentationLines = null,
+                body = EBlockExpression.empty(location),
+                valueParameters = ArrayList(),
+                superTypeCallExpression = null
+            )
+            castContext.registerDeclaration(descriptor, indexedSecondaryConstructor)
         }
 
         override fun visitProperty(property: KtProperty) {

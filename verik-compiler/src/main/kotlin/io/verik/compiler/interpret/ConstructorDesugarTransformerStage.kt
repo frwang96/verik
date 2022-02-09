@@ -19,9 +19,9 @@ package io.verik.compiler.interpret
 import io.verik.compiler.ast.element.declaration.common.EDeclaration
 import io.verik.compiler.ast.element.declaration.common.EProperty
 import io.verik.compiler.ast.element.declaration.kt.EKtClass
-import io.verik.compiler.ast.element.declaration.kt.EKtConstructor
 import io.verik.compiler.ast.element.declaration.kt.EKtValueParameter
 import io.verik.compiler.ast.element.declaration.kt.EPrimaryConstructor
+import io.verik.compiler.ast.element.declaration.kt.ESecondaryConstructor
 import io.verik.compiler.ast.element.expression.common.EBlockExpression
 import io.verik.compiler.ast.element.expression.common.EExpression
 import io.verik.compiler.ast.element.expression.common.EReferenceExpression
@@ -56,21 +56,20 @@ object ConstructorDesugarTransformerStage : ProjectStage() {
                 val properties = desugarValueParameterProperties(primaryConstructor.valueParameters)
                 declarations.addAll(properties.filterNotNull())
 
-                val body = getPrimaryConstructorBody(primaryConstructor, properties)
+                val body = getBody(primaryConstructor, properties)
                 val superTypeCallExpression = `class`.superTypeCallExpression?.let { ExpressionCopier.deepCopy(it) }
-                val constructor = EKtConstructor(
+                val secondaryConstructor = ESecondaryConstructor(
                     location = primaryConstructor.location,
                     name = primaryConstructor.name,
                     type = primaryConstructor.type,
-                    annotationEntries = listOf(),
                     documentationLines = null,
                     body = body,
                     valueParameters = primaryConstructor.valueParameters,
                     superTypeCallExpression = superTypeCallExpression
                 )
-                declarations.add(constructor)
+                declarations.add(secondaryConstructor)
                 `class`.primaryConstructor = null
-                referenceUpdater.update(primaryConstructor, constructor)
+                referenceUpdater.update(primaryConstructor, secondaryConstructor)
 
                 declarations.forEach { it.parent = `class` }
                 `class`.declarations.addAll(0, declarations)
@@ -98,10 +97,7 @@ object ConstructorDesugarTransformerStage : ProjectStage() {
             }
         }
 
-        private fun getPrimaryConstructorBody(
-            primaryConstructor: EPrimaryConstructor,
-            properties: List<EProperty?>
-        ): EBlockExpression {
+        private fun getBody(primaryConstructor: EPrimaryConstructor, properties: List<EProperty?>): EBlockExpression {
             val statements = ArrayList<EExpression>()
             primaryConstructor.valueParameters.zip(properties).forEach { (valueParameter, property) ->
                 if (property != null) {

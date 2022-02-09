@@ -174,6 +174,26 @@ internal class DeclarationCasterTest : BaseTest() {
     }
 
     @Test
+    fun `class with secondary constructor`() {
+        driveElementTest(
+            """
+                class C {
+                    @Suppress("ConvertSecondaryConstructorToPrimary")
+                    constructor(x: Int) { println() }
+                }
+            """.trimIndent(),
+            CasterStage::class,
+            """
+                KtClass(
+                    C, C,
+                    [SecondaryConstructor(C, C, BlockExpression(*), [KtValueParameter(x, Int, 0, 0)], null)],
+                    [], 0, 0, 0, null, null
+                )
+            """.trimIndent()
+        ) { it.findDeclaration("C") }
+    }
+
+    @Test
     fun `class with super type call entry`() {
         driveElementTest(
             """

@@ -416,19 +416,4 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
             )
         }
     }
-
-    val F_toHexString = object : TransformableCoreFunctionDeclaration(parent, "toHexString", "fun toHexString()") {
-
-        override fun transform(callExpression: ECallExpression): EExpression {
-            val stringExpression = EStringExpression(callExpression.location, "%h")
-            return ECallExpression(
-                callExpression.location,
-                Core.Kt.C_String.toType(),
-                Target.F_sformatf,
-                null,
-                arrayListOf(stringExpression, callExpression.receiver!!),
-                ArrayList()
-            )
-        }
-    }
 }

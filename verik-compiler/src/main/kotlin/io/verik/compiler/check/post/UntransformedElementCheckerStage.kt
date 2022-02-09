@@ -19,6 +19,8 @@ package io.verik.compiler.check.post
 import io.verik.compiler.ast.element.declaration.kt.EKtClass
 import io.verik.compiler.ast.element.declaration.kt.EKtFunction
 import io.verik.compiler.ast.element.declaration.kt.EKtValueParameter
+import io.verik.compiler.ast.element.declaration.kt.EPrimaryConstructor
+import io.verik.compiler.ast.element.declaration.kt.ESecondaryConstructor
 import io.verik.compiler.ast.element.expression.kt.EAsExpression
 import io.verik.compiler.ast.element.expression.kt.EIsExpression
 import io.verik.compiler.ast.element.expression.kt.EKtArrayAccessExpression
@@ -43,57 +45,57 @@ object UntransformedElementCheckerStage : ProjectStage() {
         private const val message = "has not been transformed to SystemVerilog"
 
         override fun visitKtClass(`class`: EKtClass) {
-            super.visitKtClass(`class`)
             Messages.INTERNAL_ERROR.on(`class`, "Class ${`class`.name} $message")
         }
 
         override fun visitKtFunction(function: EKtFunction) {
-            super.visitKtFunction(function)
             Messages.INTERNAL_ERROR.on(function, "Function ${function.name} $message")
         }
 
+        override fun visitPrimaryConstructor(primaryConstructor: EPrimaryConstructor) {
+            Messages.INTERNAL_ERROR.on(primaryConstructor, "Primary constructor ${primaryConstructor.name} $message")
+        }
+
+        override fun visitSecondaryConstructor(secondaryConstructor: ESecondaryConstructor) {
+            Messages.INTERNAL_ERROR.on(
+                secondaryConstructor,
+                "Secondary constructor ${secondaryConstructor.name} $message"
+            )
+        }
+
         override fun visitKtValueParameter(valueParameter: EKtValueParameter) {
-            super.visitKtValueParameter(valueParameter)
             Messages.INTERNAL_ERROR.on(valueParameter, "Value parameter ${valueParameter.name} $message")
         }
 
         override fun visitKtUnaryExpression(unaryExpression: EKtUnaryExpression) {
-            super.visitKtUnaryExpression(unaryExpression)
             Messages.INTERNAL_ERROR.on(unaryExpression, "Unary expression $message")
         }
 
         override fun visitKtBinaryExpression(binaryExpression: EKtBinaryExpression) {
-            super.visitKtBinaryExpression(binaryExpression)
             Messages.INTERNAL_ERROR.on(binaryExpression, "Binary expression $message")
         }
 
         override fun visitStringTemplateExpression(stringTemplateExpression: EStringTemplateExpression) {
-            super.visitStringTemplateExpression(stringTemplateExpression)
             Messages.INTERNAL_ERROR.on(stringTemplateExpression, "String template expression $message")
         }
 
         override fun visitKtArrayAccessExpression(arrayAccessExpression: EKtArrayAccessExpression) {
-            super.visitKtArrayAccessExpression(arrayAccessExpression)
             Messages.INTERNAL_ERROR.on(arrayAccessExpression, "Array access expression $message")
         }
 
         override fun visitIsExpression(isExpression: EIsExpression) {
-            super.visitIsExpression(isExpression)
             Messages.INTERNAL_ERROR.on(isExpression, "Is expression $message")
         }
 
         override fun visitAsExpression(asExpression: EAsExpression) {
-            super.visitAsExpression(asExpression)
             Messages.INTERNAL_ERROR.on(asExpression, "As expression $message")
         }
 
         override fun visitWhenExpression(whenExpression: EWhenExpression) {
-            super.visitWhenExpression(whenExpression)
             Messages.INTERNAL_ERROR.on(whenExpression, "When expression $message")
         }
 
         override fun visitKtForStatement(forStatement: EKtForStatement) {
-            super.visitKtForStatement(forStatement)
             Messages.INTERNAL_ERROR.on(forStatement, "For statement $message")
         }
     }
