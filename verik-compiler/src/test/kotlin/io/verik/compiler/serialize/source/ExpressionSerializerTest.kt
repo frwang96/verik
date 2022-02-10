@@ -17,6 +17,7 @@
 package io.verik.compiler.serialize.source
 
 import io.verik.compiler.test.BaseTest
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 internal class ExpressionSerializerTest : BaseTest() {
@@ -99,6 +100,26 @@ internal class ExpressionSerializerTest : BaseTest() {
             """.trimIndent(),
             """
                 int x = ${"$"}random();
+            """.trimIndent()
+        ) { it.nonRootPackageTextFiles[0] }
+    }
+
+    @Test
+    @Disabled
+    fun `call expression default argument`() {
+        driveTextFileTest(
+            """
+                fun f(x: Int = 0): Int { return x }
+                var x = f()
+            """.trimIndent(),
+            """
+                function automatic int f(
+                    input int x = 0
+                );
+                    return x;
+                endfunction : f
+
+                int x = f(.x());
             """.trimIndent()
         ) { it.nonRootPackageTextFiles[0] }
     }

@@ -93,7 +93,6 @@ import io.verik.compiler.ast.element.expression.sv.EWidthCastExpression
 import io.verik.compiler.ast.property.AnnotationEntry
 import io.verik.compiler.ast.property.ExpressionStringEntry
 import io.verik.compiler.ast.property.LiteralStringEntry
-import io.verik.compiler.ast.property.PortInstantiation
 import io.verik.compiler.message.Messages
 import io.verik.compiler.message.SourceLocation
 
@@ -331,7 +330,7 @@ class ElementPrinter : Visitor() {
         build("ComponentInstantiation") {
             build(componentInstantiation.name)
             build(componentInstantiation.type.toString())
-            buildPortInstantiations(componentInstantiation.portInstantiations)
+            build(componentInstantiation.valueArguments)
         }
     }
 
@@ -339,7 +338,7 @@ class ElementPrinter : Visitor() {
         build("ModulePortInstantiation") {
             build(modulePortInstantiation.name)
             build(modulePortInstantiation.type.toString())
-            buildPortInstantiations(modulePortInstantiation.portInstantiations)
+            build(modulePortInstantiation.valueArguments)
         }
     }
 
@@ -347,7 +346,7 @@ class ElementPrinter : Visitor() {
         build("ClockingBlockInstantiation") {
             build(clockingBlockInstantiation.name)
             build(clockingBlockInstantiation.type.toString())
-            buildPortInstantiations(clockingBlockInstantiation.portInstantiations)
+            build(clockingBlockInstantiation.valueArguments)
             build(clockingBlockInstantiation.eventControlExpression)
         }
     }
@@ -788,16 +787,6 @@ class ElementPrinter : Visitor() {
         entries.forEach { builder(it) }
         this.builder.append("]")
         first = false
-    }
-
-    private fun buildPortInstantiations(portInstantiations: List<PortInstantiation>) {
-        buildList(portInstantiations) {
-            build("PortInstantiation") {
-                build(it.port.name)
-                build(it.port.portType.toString())
-                build(it.expression)
-            }
-        }
     }
 
     companion object {

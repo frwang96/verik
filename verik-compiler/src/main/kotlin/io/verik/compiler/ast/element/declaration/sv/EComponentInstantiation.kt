@@ -17,8 +17,8 @@
 package io.verik.compiler.ast.element.declaration.sv
 
 import io.verik.compiler.ast.common.Type
+import io.verik.compiler.ast.element.expression.common.EExpression
 import io.verik.compiler.ast.property.AnnotationEntry
-import io.verik.compiler.ast.property.PortInstantiation
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
 
@@ -29,11 +29,11 @@ class EComponentInstantiation(
     override var type: Type,
     override var annotationEntries: List<AnnotationEntry>,
     override var documentationLines: List<String>?,
-    override val portInstantiations: List<PortInstantiation>
+    override val valueArguments: ArrayList<EExpression>
 ) : EAbstractComponentInstantiation() {
 
     init {
-        portInstantiations.forEach { it.expression?.parent = this }
+        valueArguments.forEach { it.parent = this }
     }
 
     override fun accept(visitor: Visitor) {

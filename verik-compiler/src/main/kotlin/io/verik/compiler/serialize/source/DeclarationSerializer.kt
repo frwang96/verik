@@ -226,21 +226,18 @@ object DeclarationSerializer {
         serializedType.checkNoPackedDimension(componentInstantiation)
         serializedType.checkNoUnpackedDimension(componentInstantiation)
         serializeContext.append("${serializedType.base} ${componentInstantiation.name} (")
-        if (componentInstantiation.portInstantiations.isNotEmpty()) {
+        if (componentInstantiation.valueArguments.isNotEmpty()) {
             serializeContext.appendLine()
             serializeContext.indent {
-                serializeContext.serializeJoinAppendLine(componentInstantiation.portInstantiations) {
-                    serializeContext.label(it.location) {
-                        serializeContext.append(".${it.port.name} ")
+                val portsAndValueArguments = componentInstantiation.getPorts()
+                    .zip(componentInstantiation.valueArguments)
+                serializeContext.serializeJoinAppendLine(portsAndValueArguments) { (port, valueArgument) ->
+                    serializeContext.label(valueArgument.location) {
+                        serializeContext.append(".${port.name} ")
                         serializeContext.align()
                         serializeContext.append("( ")
-                        val expression = it.expression
-                        if (expression != null) {
-                            serializeContext.serializeAsExpression(expression)
-                            serializeContext.append(" )")
-                        } else {
-                            serializeContext.append(")")
-                        }
+                        serializeContext.serializeAsExpression(valueArgument)
+                        serializeContext.append(" )")
                     }
                 }
             }
@@ -255,15 +252,17 @@ object DeclarationSerializer {
         serializeContext: SerializeContext
     ) {
         serializeContext.append("modport ${modulePortInstantiation.name}")
-        if (modulePortInstantiation.portInstantiations.isEmpty()) {
+        if (modulePortInstantiation.valueArguments.isEmpty()) {
             serializeContext.appendLine(";")
         } else {
             serializeContext.appendLine(" (")
             serializeContext.indent {
-                serializeContext.serializeJoinAppendLine(modulePortInstantiation.portInstantiations) {
-                    serializeContext.label(it.location) {
-                        serializePortType(it.port.portType, serializeContext)
-                        serializeContext.append(it.port.name)
+                val portsAndValueArguments = modulePortInstantiation.getPorts()
+                    .zip(modulePortInstantiation.valueArguments)
+                serializeContext.serializeJoinAppendLine(portsAndValueArguments) { (port, valueArgument) ->
+                    serializeContext.label(valueArgument.location) {
+                        serializePortType(port.portType, serializeContext)
+                        serializeContext.append(port.name)
                     }
                 }
             }
@@ -281,10 +280,12 @@ object DeclarationSerializer {
         serializeContext.serializeAsExpression(clockingBlockInstantiation.eventControlExpression)
         serializeContext.appendLine(";")
         serializeContext.indent {
-            clockingBlockInstantiation.portInstantiations.forEach {
-                serializeContext.label(it.location) {
-                    serializePortType(it.port.portType, serializeContext)
-                    serializeContext.appendLine("${it.port.name};")
+            val portsAndValueArguments = clockingBlockInstantiation.getPorts()
+                .zip(clockingBlockInstantiation.valueArguments)
+            portsAndValueArguments.forEach { (port, valueArgument) ->
+                serializeContext.label(valueArgument.location) {
+                    serializePortType(port.portType, serializeContext)
+                    serializeContext.appendLine("${port.name};")
                 }
             }
         }

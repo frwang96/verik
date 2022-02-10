@@ -16,6 +16,7 @@
 
 package io.verik.compiler.core.declaration.vk
 
+import io.verik.compiler.ast.element.declaration.sv.EAbstractComponentInstantiation
 import io.verik.compiler.ast.element.expression.common.ECallExpression
 import io.verik.compiler.ast.element.expression.common.EConstantExpression
 import io.verik.compiler.ast.element.expression.common.EExpression
@@ -66,8 +67,10 @@ object CoreVkSpecial : CoreScope(CorePackage.VK) {
         }
 
         override fun transform(callExpression: ECallExpression): EExpression {
-            Messages.EXPRESSION_OUT_OF_CONTEXT.on(callExpression, name)
-            return callExpression
+            if (callExpression.parent !is EAbstractComponentInstantiation) {
+                Messages.EXPRESSION_OUT_OF_CONTEXT.on(callExpression, name)
+            }
+            return ENothingExpression(callExpression.location)
         }
     }
 

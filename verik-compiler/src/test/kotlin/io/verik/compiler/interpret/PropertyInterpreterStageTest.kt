@@ -57,7 +57,7 @@ internal class PropertyInterpreterStageTest : BaseTest() {
                 }
             """.trimIndent(),
             PropertyInterpreterStage::class,
-            "ComponentInstantiation(m, M0, [PortInstantiation(x, INPUT, *)])"
+            "ComponentInstantiation(m, M0, [ConstantExpression(*)])"
         ) { it.findDeclaration("m") }
     }
 
@@ -74,21 +74,6 @@ internal class PropertyInterpreterStageTest : BaseTest() {
             PropertyInterpreterStage::class,
             "Module(M1, M1, [], [])"
         ) { it.findDeclaration("M1") }
-    }
-
-    @Test
-    fun `interpret module instantiation not connected`() {
-        driveElementTest(
-            """
-                class M0(@Out var x: Boolean) : Module()
-                class M1 : Module() {
-                    @Make
-                    val m = M0(nc())
-                }
-            """.trimIndent(),
-            PropertyInterpreterStage::class,
-            "ComponentInstantiation(m, M0, [PortInstantiation(x, OUTPUT, null)])"
-        ) { it.findDeclaration("m") }
     }
 
     @Test
