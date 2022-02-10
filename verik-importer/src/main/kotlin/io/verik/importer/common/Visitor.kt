@@ -18,6 +18,7 @@ package io.verik.importer.common
 
 import io.verik.importer.ast.element.common.EElement
 import io.verik.importer.ast.element.common.EProject
+import io.verik.importer.ast.element.declaration.ECompanionObject
 import io.verik.importer.ast.element.declaration.EContainerDeclaration
 import io.verik.importer.ast.element.declaration.EDeclaration
 import io.verik.importer.ast.element.declaration.EEnum
@@ -92,6 +93,10 @@ abstract class Visitor {
 
     open fun visitKtClass(`class`: EKtClass) {
         visitContainerDeclaration(`class`)
+    }
+
+    open fun visitCompanionObject(companionObject: ECompanionObject) {
+        visitContainerDeclaration(companionObject)
     }
 
     open fun visitModule(module: EModule) {

@@ -16,6 +16,7 @@
 
 package io.verik.importer.serialize.source
 
+import io.verik.importer.ast.element.declaration.ECompanionObject
 import io.verik.importer.ast.element.declaration.EDeclaration
 import io.verik.importer.ast.element.declaration.EEnum
 import io.verik.importer.ast.element.declaration.EEnumEntry
@@ -70,6 +71,15 @@ object DeclarationSerializer {
         }
     }
 
+    fun serializeCompanionObject(companionObject: ECompanionObject, serializeContext: SerializeContext) {
+        serializeContext.appendLine()
+        serializeContext.appendLine("companion object {")
+        serializeContext.indent {
+            companionObject.declarations.forEach { serializeContext.serialize(it) }
+        }
+        serializeContext.appendLine("}")
+    }
+
     fun serializeEnum(enum: EEnum, serializeContext: SerializeContext) {
         serializeContext.appendLine()
         serializeDocs(enum, serializeContext)
@@ -122,7 +132,9 @@ object DeclarationSerializer {
         } else {
             serializeContext.append("()")
         }
-        serializeContext.appendLine(": ${function.descriptor.type} = imported()")
+        serializeContext.append(": ${function.descriptor.type}")
+        if (function.descriptor.type.isNullable()) serializeContext.append("?")
+        serializeContext.appendLine(" = imported()")
     }
 
     fun serializeConstructor(constructor: EKtConstructor, serializeContext: SerializeContext) {
@@ -155,7 +167,9 @@ object DeclarationSerializer {
             serializeContext.append("val ")
         }
         serializeContext.serializeName(property)
-        serializeContext.appendLine(": ${property.descriptor.type} = imported()")
+        serializeContext.append(": ${property.descriptor.type}")
+        if (property.descriptor.type.isNullable()) serializeContext.append("?")
+        serializeContext.appendLine(" = imported()")
     }
 
     fun serializeValueParameter(valueParameter: EKtValueParameter, serializeContext: SerializeContext) {
@@ -168,9 +182,8 @@ object DeclarationSerializer {
         }
         serializeContext.serializeName(valueParameter)
         serializeContext.append(": ${valueParameter.descriptor.type}")
-        if (valueParameter.hasDefault) {
-            serializeContext.append(" = imported()")
-        }
+        if (valueParameter.descriptor.type.isNullable()) serializeContext.append("?")
+        if (valueParameter.hasDefault) serializeContext.append(" = imported()")
     }
 
     fun serializeEnumEntry(enumEntry: EEnumEntry, serializeContext: SerializeContext) {

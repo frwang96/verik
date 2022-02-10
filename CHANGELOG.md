@@ -5,6 +5,7 @@
 - Fix function override bugs.
 - Merge expressions with descriptors.
 - Add classes `Queue`, `AssociativeArray`, and `DynamicArray` to mirror SystemVerilog.
+- Static functions as functions of companion objects.
 
 ### Compiler
 - Rename `onr` to `oni`.

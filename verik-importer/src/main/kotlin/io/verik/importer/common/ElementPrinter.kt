@@ -18,6 +18,7 @@ package io.verik.importer.common
 
 import io.verik.importer.ast.element.common.EElement
 import io.verik.importer.ast.element.common.EProject
+import io.verik.importer.ast.element.declaration.ECompanionObject
 import io.verik.importer.ast.element.declaration.EEnum
 import io.verik.importer.ast.element.declaration.EEnumEntry
 import io.verik.importer.ast.element.declaration.EKtClass
@@ -105,6 +106,12 @@ class ElementPrinter : Visitor() {
             build(`class`.valueParameters)
             build(`class`.superDescriptor)
             build(`class`.isOpen)
+        }
+    }
+
+    override fun visitCompanionObject(companionObject: ECompanionObject) {
+        build("CompanionObject") {
+            build(companionObject.declarations)
         }
     }
 

@@ -99,6 +99,27 @@ internal class DeclarationSerializerTest : BaseTest() {
     }
 
     @Test
+    fun `serialize class with companion object`() {
+        driveTextFileTest(
+            """
+                class c;
+                    static function void f();
+                    endfunction
+                endclass
+            """.trimIndent(),
+            """
+                open class c {
+
+                    companion object {
+                
+                        fun f(): Unit = imported()
+                    }
+                }
+            """.trimIndent()
+        )
+    }
+
+    @Test
     fun `serialize enum`() {
         driveTextFileTest(
             """
@@ -163,6 +184,25 @@ internal class DeclarationSerializerTest : BaseTest() {
             """
                 @Task
                 fun t(): Unit = imported()
+            """.trimIndent()
+        )
+    }
+
+    @Test
+    fun `serialize function nullable`() {
+        driveTextFileTest(
+            """
+                class c;
+                endclass
+                function c f(c x);
+                endfunction
+            """.trimIndent(),
+            """
+                open class c
+
+                fun f(
+                    x: c?
+                ): c? = imported()
             """.trimIndent()
         )
     }
