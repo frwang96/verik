@@ -199,6 +199,7 @@ object DeclarationSerializer {
     }
 
     fun serializeProperty(property: EProperty, serializeContext: SerializeContext) {
+        if (property.isStatic) serializeContext.append("static ")
         if (TypeSerializer.isVirtual(property.type))
             serializeContext.append("virtual ")
         serializePropertyTypeAndName(property, serializeContext)

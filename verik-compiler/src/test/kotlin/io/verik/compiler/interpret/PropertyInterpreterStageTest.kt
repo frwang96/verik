@@ -137,17 +137,6 @@ internal class PropertyInterpreterStageTest : BaseTest() {
     }
 
     @Test
-    fun `interpret property`() {
-        driveElementTest(
-            """
-                var x = false
-            """.trimIndent(),
-            PropertyInterpreterStage::class,
-            "Property(x, Boolean, *, 1)"
-        ) { it.findDeclaration("x") }
-    }
-
-    @Test
     fun `interpret property static`() {
         driveElementTest(
             """
@@ -156,7 +145,7 @@ internal class PropertyInterpreterStageTest : BaseTest() {
                 }
             """.trimIndent(),
             PropertyInterpreterStage::class,
-            "Property(x, Boolean, *, 1)"
+            "Property(x, Boolean, *, 1, 1)"
         ) { it.findDeclaration("x") }
     }
 }

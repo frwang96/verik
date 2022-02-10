@@ -30,7 +30,7 @@ internal class TypeResolverStageTest : BaseTest() {
                 var x = false
             """.trimIndent(),
             TypeResolverStage::class,
-            "Property(x, Boolean, *, 1)"
+            "Property(x, Boolean, *, 1, 0)"
         ) { it.findDeclaration("x") }
     }
 
@@ -42,7 +42,7 @@ internal class TypeResolverStageTest : BaseTest() {
                 var c = C<`8`>()
             """.trimIndent(),
             TypeResolverStage::class,
-            "Property(c, C<`8`>, CallExpression(C<`8`>, C_N_8, null, [], []), 1)"
+            "Property(c, C<`8`>, CallExpression(C<`8`>, C_N_8, null, [], []), 1, 0)"
         ) { it.findDeclaration("c") }
     }
 
@@ -53,7 +53,7 @@ internal class TypeResolverStageTest : BaseTest() {
                 var x = if (b<TRUE>()) u(0x0) else u(0x00)
             """.trimIndent(),
             TypeResolverStage::class,
-            "Property(x, Ubit<`4`>, *, 1)"
+            "Property(x, Ubit<`4`>, *, 1, 0)"
         ) { it.findDeclaration("x") }
     }
 

@@ -60,7 +60,7 @@ internal class ConstructorDesugarTransformerStageTest : BaseTest() {
             """
                 KtClass(
                     C, C, [
-                        Property(x, Int, null, 0),
+                        Property(x, Int, null, 0, 0),
                         SecondaryConstructor(C, C, $blockExpression, [KtValueParameter(*)], null)
                     ], [], 0, 0, 0, null
                 )

@@ -196,7 +196,8 @@ object CastIndexerStage : ProjectStage() {
                 annotationEntries = listOf(),
                 documentationLines = null,
                 initializer = null,
-                isMutable = false
+                isMutable = false,
+                isStatic = false
             )
             castContext.registerDeclaration(descriptor, indexedProperty)
         }

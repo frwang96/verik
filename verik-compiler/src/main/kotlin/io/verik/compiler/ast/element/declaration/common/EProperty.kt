@@ -18,7 +18,6 @@ package io.verik.compiler.ast.element.declaration.common
 
 import io.verik.compiler.ast.common.ExpressionContainer
 import io.verik.compiler.ast.common.Type
-import io.verik.compiler.ast.element.declaration.sv.ESvClass
 import io.verik.compiler.ast.element.expression.common.EExpression
 import io.verik.compiler.ast.property.AnnotationEntry
 import io.verik.compiler.common.TreeVisitor
@@ -33,7 +32,8 @@ class EProperty(
     override var annotationEntries: List<AnnotationEntry>,
     override var documentationLines: List<String>?,
     var initializer: EExpression?,
-    var isMutable: Boolean
+    var isMutable: Boolean,
+    var isStatic: Boolean
 ) : EAbstractProperty(), ExpressionContainer {
 
     init {
@@ -53,11 +53,7 @@ class EProperty(
         this.documentationLines = documentationLines
         this.initializer = initializer
         this.isMutable = isMutable
-    }
-
-    fun isStatic(): Boolean {
-        val parent = parent
-        return (parent is ESvClass && parent.isObject)
+        isStatic = false
     }
 
     override fun accept(visitor: Visitor) {
@@ -92,7 +88,8 @@ class EProperty(
                 annotationEntries = listOf(),
                 documentationLines = null,
                 initializer = initializer,
-                isMutable = isMutable
+                isMutable = isMutable,
+                isStatic = false
             )
         }
 
@@ -111,7 +108,8 @@ class EProperty(
                 annotationEntries = listOf(),
                 documentationLines = null,
                 initializer = initializer,
-                isMutable = isMutable
+                isMutable = isMutable,
+                isStatic = false
             )
         }
     }

@@ -12,6 +12,7 @@
 - Support secondary constructors.
 - Replace `ENullExpression` with `ENothingExpression`.
 - Support optional value parameters.
+- Unwrap companion objects.
 
 ## [0.1.13]
 ### Importer

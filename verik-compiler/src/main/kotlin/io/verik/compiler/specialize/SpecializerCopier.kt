@@ -242,7 +242,8 @@ object SpecializerCopier {
             annotationEntries = property.annotationEntries,
             documentationLines = property.documentationLines,
             initializer = initializer,
-            isMutable = property.isMutable
+            isMutable = property.isMutable,
+            isStatic = property.isStatic
         )
         specializeContext.register(property, typeArguments, copiedProperty)
         return copiedProperty

@@ -107,7 +107,7 @@ internal class DeclarationCasterTest : BaseTest() {
             """
                 KtClass(
                     C, C,
-                    [Property(x, Boolean, ConstantExpression(*), 0)],
+                    [Property(x, Boolean, ConstantExpression(*), 0, 0)],
                     [], 0, 0, 0,
                     PrimaryConstructor(C, C, [], null)
                 )
@@ -243,7 +243,7 @@ internal class DeclarationCasterTest : BaseTest() {
                 var x = false
             """.trimIndent(),
             CasterStage::class,
-            "Property(x, Boolean, ConstantExpression(*), 1)"
+            "Property(x, Boolean, ConstantExpression(*), 1, 0)"
         ) { it.findDeclaration("x") }
     }
 }

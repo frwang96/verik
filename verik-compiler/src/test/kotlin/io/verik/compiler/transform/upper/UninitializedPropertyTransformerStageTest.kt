@@ -29,7 +29,7 @@ internal class UninitializedPropertyTransformerStageTest : BaseTest() {
                 val x: Boolean = nc()
             """.trimIndent(),
             UninitializedPropertyTransformerStage::class,
-            "Property(x, Boolean, null, 0)"
+            "Property(x, Boolean, null, 0, 0)"
         ) { it.findDeclaration("x") }
     }
 }

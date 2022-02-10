@@ -302,7 +302,7 @@ internal class ExpressionCasterTest : BaseTest() {
                 var x = 0 is Int
             """.trimIndent(),
             CasterStage::class,
-            "IsExpression(Boolean, ConstantExpression(*), Property(<tmp>, Int, null, 0), 0, Int)"
+            "IsExpression(Boolean, ConstantExpression(*), Property(<tmp>, Int, null, 0, 0), 0, Int)"
         ) { it.findExpression("x") }
     }
 
