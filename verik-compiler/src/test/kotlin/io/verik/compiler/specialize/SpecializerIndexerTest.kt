@@ -17,13 +17,26 @@
 package io.verik.compiler.specialize
 
 import io.verik.compiler.test.BaseTest
+import io.verik.compiler.test.findDeclaration
 import io.verik.compiler.test.findExpression
 import org.junit.jupiter.api.Test
 
 internal class SpecializerIndexerTest : BaseTest() {
 
     @Test
-    fun `call expression resolved`() {
+    fun `type resolved`() {
+        driveElementTest(
+            """
+                class C<X: `*`>
+                val x: C<`1`> = C()
+            """.trimIndent(),
+            SpecializerStage::class,
+            "Property(x, C<`1`>, CallExpression(*), 0, 0)"
+        ) { it.findDeclaration("x") }
+    }
+
+    @Test
+    fun `primary constructor resolved`() {
         driveElementTest(
             """
                 class C<X: `*`>
@@ -32,17 +45,5 @@ internal class SpecializerIndexerTest : BaseTest() {
             SpecializerStage::class,
             "CallExpression(C<`*`>, C, null, [], [`1`])"
         ) { it.findExpression("x") }
-    }
-
-    @Test
-    fun `call expression unresolved`() {
-        driveMessageTest(
-            """
-                class C<X: `*`>
-                val x = C<`*`>()
-            """.trimIndent(),
-            true,
-            "Type arguments must be explicitly provided: C"
-        )
     }
 }

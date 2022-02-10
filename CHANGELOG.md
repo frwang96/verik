@@ -13,6 +13,7 @@
 - Replace `ENullExpression` with `ENothingExpression`.
 - Support optional value parameters.
 - Unwrap companion objects.
+- Separately specialize nested classes.
 
 ## [0.1.13]
 ### Importer

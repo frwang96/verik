@@ -18,6 +18,7 @@ package io.verik.compiler.specialize
 
 import io.verik.compiler.ast.common.Type
 import io.verik.compiler.ast.element.common.EElement
+import io.verik.compiler.ast.element.declaration.common.EAbstractClass
 import io.verik.compiler.ast.element.declaration.common.EEnumEntry
 import io.verik.compiler.ast.element.declaration.common.EProperty
 import io.verik.compiler.ast.element.declaration.common.ETypeParameter
@@ -139,7 +140,9 @@ object SpecializerCopier {
     ): EKtClass {
         val type = cls.type.copy()
         val superType = cls.superType.copy()
-        val declarations = cls.declarations.map { copy(it, typeArguments, specializeContext) }
+        val declarations = cls.declarations
+            .filter { it !is EAbstractClass }
+            .map { copy(it, typeArguments, specializeContext) }
         val typeParameters = cls.typeParameters.map { copy(it, typeArguments, specializeContext) }
         val primaryConstructor = cls.primaryConstructor?.let { copy(it, typeArguments, specializeContext) }
         val copiedClass = EKtClass(
@@ -168,7 +171,9 @@ object SpecializerCopier {
         specializeContext: SpecializeContext
     ): ECompanionObject {
         val type = companionObject.type.copy()
-        val declarations = companionObject.declarations.map { copy(it, typeArguments, specializeContext) }
+        val declarations = companionObject.declarations
+            .filter { it !is EAbstractClass }
+            .map { copy(it, typeArguments, specializeContext) }
         val copiedCompanionObject = ECompanionObject(
             companionObject.location,
             type,
