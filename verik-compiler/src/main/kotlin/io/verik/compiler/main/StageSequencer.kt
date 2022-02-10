@@ -46,6 +46,7 @@ import io.verik.compiler.evaluate.ConstantPropagatorStage
 import io.verik.compiler.evaluate.ConstantPropertyEliminatorStage
 import io.verik.compiler.evaluate.ExpressionEvaluatorStage
 import io.verik.compiler.interpret.ClassInterpreterStage
+import io.verik.compiler.interpret.CompanionObjectReducerStage
 import io.verik.compiler.interpret.ComponentInterpreterStage
 import io.verik.compiler.interpret.ConstructorDesugarTransformerStage
 import io.verik.compiler.interpret.EnumInterpreterStage
@@ -168,6 +169,7 @@ object StageSequencer {
         stageSequence.add(StageType.INTERPRET, FunctionInterpreterStage)
         stageSequence.add(StageType.INTERPRET, PropertyInterpreterStage)
         stageSequence.add(StageType.INTERPRET, FunctionLiteralInterpreterStage)
+        stageSequence.add(StageType.INTERPRET, CompanionObjectReducerStage)
         stageSequence.add(StageType.INTERPRET, ModulePortParentResolverStage)
         stageSequence.add(StageType.INTERPRET, FileSplitterStage)
 

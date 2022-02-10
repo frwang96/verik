@@ -16,6 +16,7 @@
 
 package io.verik.compiler.check.post
 
+import io.verik.compiler.ast.element.declaration.kt.ECompanionObject
 import io.verik.compiler.ast.element.declaration.kt.EKtClass
 import io.verik.compiler.ast.element.declaration.kt.EKtFunction
 import io.verik.compiler.ast.element.declaration.kt.EKtValueParameter
@@ -46,6 +47,10 @@ object UntransformedElementCheckerStage : ProjectStage() {
 
         override fun visitKtClass(cls: EKtClass) {
             Messages.INTERNAL_ERROR.on(cls, "Class ${cls.name} $message")
+        }
+
+        override fun visitCompanionObject(companionObject: ECompanionObject) {
+            Messages.INTERNAL_ERROR.on(companionObject, "Companion object ${companionObject.name} $message")
         }
 
         override fun visitKtFunction(function: EKtFunction) {

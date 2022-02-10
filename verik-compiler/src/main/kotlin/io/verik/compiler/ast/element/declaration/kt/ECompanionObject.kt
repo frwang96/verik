@@ -16,6 +16,7 @@
 
 package io.verik.compiler.ast.element.declaration.kt
 
+import io.verik.compiler.ast.common.Type
 import io.verik.compiler.ast.element.declaration.common.EAbstractContainerClass
 import io.verik.compiler.ast.element.declaration.common.EDeclaration
 import io.verik.compiler.ast.property.AnnotationEntry
@@ -25,13 +26,13 @@ import io.verik.compiler.message.SourceLocation
 
 class ECompanionObject(
     override val location: SourceLocation,
+    override var type: Type,
     override var declarations: ArrayList<EDeclaration>
 ) : EAbstractContainerClass() {
 
     override val bodyStartLocation = location
     override val bodyEndLocation = location
     override var name = "Companion"
-    override var type = this.toType()
     override var annotationEntries: List<AnnotationEntry> = listOf()
     override var documentationLines: List<String>? = null
     override var superType = Core.Kt.C_Any.toType()
@@ -40,8 +41,9 @@ class ECompanionObject(
         declarations.forEach { it.parent = this }
     }
 
-    fun fill(declarations: List<EDeclaration>) {
+    fun fill(type: Type, declarations: List<EDeclaration>) {
         declarations.forEach { it.parent = this }
+        this.type = type
         this.declarations = ArrayList(declarations)
     }
 

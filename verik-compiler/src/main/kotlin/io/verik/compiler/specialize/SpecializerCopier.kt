@@ -21,6 +21,7 @@ import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.declaration.common.EEnumEntry
 import io.verik.compiler.ast.element.declaration.common.EProperty
 import io.verik.compiler.ast.element.declaration.common.ETypeParameter
+import io.verik.compiler.ast.element.declaration.kt.ECompanionObject
 import io.verik.compiler.ast.element.declaration.kt.EKtClass
 import io.verik.compiler.ast.element.declaration.kt.EKtFunction
 import io.verik.compiler.ast.element.declaration.kt.EKtValueParameter
@@ -58,6 +59,8 @@ object SpecializerCopier {
                 copyTypeParameter(element, typeArguments, specializeContext)
             is EKtClass ->
                 copyKtClass(element, typeArguments, specializeContext)
+            is ECompanionObject ->
+                copyCompanionObject(element, typeArguments, specializeContext)
             is EKtFunction ->
                 copyKtFunction(element, typeArguments, specializeContext)
             is EPrimaryConstructor ->
@@ -132,7 +135,7 @@ object SpecializerCopier {
     private fun copyKtClass(
         cls: EKtClass,
         typeArguments: List<Type>,
-        specializeContext: SpecializeContext,
+        specializeContext: SpecializeContext
     ): EKtClass {
         val type = cls.type.copy()
         val superType = cls.superType.copy()
@@ -157,6 +160,22 @@ object SpecializerCopier {
         )
         specializeContext.register(cls, typeArguments, copiedClass)
         return copiedClass
+    }
+
+    private fun copyCompanionObject(
+        companionObject: ECompanionObject,
+        typeArguments: List<Type>,
+        specializeContext: SpecializeContext
+    ): ECompanionObject {
+        val type = companionObject.type.copy()
+        val declarations = companionObject.declarations.map { copy(it, typeArguments, specializeContext) }
+        val copiedCompanionObject = ECompanionObject(
+            companionObject.location,
+            type,
+            ArrayList(declarations)
+        )
+        specializeContext.register(companionObject, typeArguments, copiedCompanionObject)
+        return copiedCompanionObject
     }
 
     private fun copyKtFunction(

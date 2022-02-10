@@ -90,7 +90,11 @@ object CastIndexerStage : ProjectStage() {
                 ?: classOrObject.getDeclarationKeyword()!!.location()
 
             if (classOrObject is KtObjectDeclaration && classOrObject.isCompanion()) {
-                val indexedCompanionObject = ECompanionObject(location, ArrayList())
+                val indexedCompanionObject = ECompanionObject(
+                    location,
+                    NullDeclaration.toType(),
+                    ArrayList()
+                )
                 castContext.registerDeclaration(descriptor, indexedCompanionObject)
                 return
             }

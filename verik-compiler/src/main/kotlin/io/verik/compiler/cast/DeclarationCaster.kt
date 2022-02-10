@@ -128,11 +128,12 @@ object DeclarationCaster {
         val castedCompanionObject = castContext.resolveDeclaration(descriptor, objectDeclaration)
             .cast<ECompanionObject>(objectDeclaration)
 
+        val type = castContext.castType(descriptor.defaultType, objectDeclaration)
         val declarations = objectDeclaration.declarations.mapNotNull {
             castContext.castDeclaration(it)
         }
 
-        castedCompanionObject.fill(declarations)
+        castedCompanionObject.fill(type, declarations)
         return castedCompanionObject
     }
 

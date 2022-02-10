@@ -168,6 +168,7 @@ class ElementPrinter : Visitor() {
 
     override fun visitCompanionObject(companionObject: ECompanionObject) {
         build("CompanionObject") {
+            build(companionObject.type.toString())
             build(companionObject.declarations)
         }
     }
