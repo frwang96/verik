@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,34 +14,38 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.element.declaration.sv
+package io.verik.compiler.ast.element.declaration.kt
 
-import io.verik.compiler.ast.common.Type
 import io.verik.compiler.ast.element.declaration.common.EAbstractContainerClass
 import io.verik.compiler.ast.element.declaration.common.EDeclaration
 import io.verik.compiler.ast.property.AnnotationEntry
 import io.verik.compiler.common.Visitor
+import io.verik.compiler.core.common.Core
 import io.verik.compiler.message.SourceLocation
 
-class ESvClass(
+class ECompanionObject(
     override val location: SourceLocation,
-    override val bodyStartLocation: SourceLocation,
-    override val bodyEndLocation: SourceLocation,
-    override var name: String,
-    override var type: Type,
-    override var annotationEntries: List<AnnotationEntry>,
-    override var documentationLines: List<String>?,
-    override var superType: Type,
-    override var declarations: ArrayList<EDeclaration>,
-    val isVirtual: Boolean,
-    val isObject: Boolean
+    override var declarations: ArrayList<EDeclaration>
 ) : EAbstractContainerClass() {
+
+    override val bodyStartLocation = location
+    override val bodyEndLocation = location
+    override var name = "Companion"
+    override var type = this.toType()
+    override var annotationEntries: List<AnnotationEntry> = listOf()
+    override var documentationLines: List<String>? = null
+    override var superType = Core.Kt.C_Any.toType()
 
     init {
         declarations.forEach { it.parent = this }
     }
 
+    fun fill(declarations: List<EDeclaration>) {
+        declarations.forEach { it.parent = this }
+        this.declarations = ArrayList(declarations)
+    }
+
     override fun accept(visitor: Visitor) {
-        return visitor.visitSvClass(this)
+        visitor.visitCompanionObject(this)
     }
 }

@@ -23,6 +23,7 @@ import io.verik.compiler.ast.element.declaration.common.EFile
 import io.verik.compiler.ast.element.declaration.common.EPackage
 import io.verik.compiler.ast.element.declaration.common.EProperty
 import io.verik.compiler.ast.element.declaration.common.ETypeParameter
+import io.verik.compiler.ast.element.declaration.kt.ECompanionObject
 import io.verik.compiler.ast.element.declaration.kt.EKtClass
 import io.verik.compiler.ast.element.declaration.kt.EKtFunction
 import io.verik.compiler.ast.element.declaration.kt.EKtValueParameter
@@ -165,13 +166,19 @@ class ElementPrinter : Visitor() {
         }
     }
 
+    override fun visitCompanionObject(companionObject: ECompanionObject) {
+        build("CompanionObject") {
+            build(companionObject.declarations)
+        }
+    }
+
     override fun visitSvClass(cls: ESvClass) {
         build("SvClass") {
             build(cls.name)
             build(cls.type.toString())
             build(cls.declarations)
             build(cls.isVirtual)
-            build(cls.isDeclarationsStatic)
+            build(cls.isObject)
         }
     }
 
@@ -247,7 +254,7 @@ class ElementPrinter : Visitor() {
             build(function.body)
             build(function.valueParameters)
             build(function.qualifierType.toString())
-            build(function.isConstructor)
+            build(function.isStatic)
         }
     }
 

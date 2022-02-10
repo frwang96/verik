@@ -135,9 +135,7 @@ object DeclarationSerializer {
     }
 
     fun serializeFunction(function: ESvFunction, serializeContext: SerializeContext) {
-        if (function.isStatic()) {
-            serializeContext.append("static ")
-        }
+        if (function.isStatic) serializeContext.append("static ")
         when (function.qualifierType) {
             FunctionQualifierType.VIRTUAL -> serializeContext.append("virtual ")
             FunctionQualifierType.PURE_VIRTUAL -> serializeContext.append("pure virtual ")

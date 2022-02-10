@@ -122,14 +122,7 @@ internal class DeclarationCasterTest : BaseTest() {
                 class C { companion object }
             """.trimIndent(),
             CasterStage::class,
-            """
-                KtClass(
-                    C, C,
-                    [KtClass(Companion, Companion, [], [], 0, 0, 1, null)],
-                    [], 0, 0, 0,
-                    PrimaryConstructor(C, C, [], null)
-                )
-            """.trimIndent()
+            "KtClass(C, C, [CompanionObject([])], [], 0, 0, 0, PrimaryConstructor(C, C, [], null))"
         ) { it.findDeclaration("C") }
     }
 

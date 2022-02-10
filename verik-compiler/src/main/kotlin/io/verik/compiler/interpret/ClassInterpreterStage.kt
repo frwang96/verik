@@ -76,7 +76,7 @@ object ClassInterpreterStage : ProjectStage() {
                 body = secondaryConstructor.body,
                 valueParameters = ArrayList(valueParameters),
                 qualifierType = FunctionQualifierType.REGULAR,
-                isConstructor = false
+                isStatic = false
             )
             initializerMap[secondaryConstructor] = initializer
         }
@@ -220,7 +220,7 @@ object ClassInterpreterStage : ProjectStage() {
                 ),
                 valueParameters = ArrayList(valueParameters),
                 qualifierType = FunctionQualifierType.REGULAR,
-                isConstructor = true
+                isStatic = true
             )
             referenceUpdater.replace(secondaryConstructor, constructor)
             return constructor

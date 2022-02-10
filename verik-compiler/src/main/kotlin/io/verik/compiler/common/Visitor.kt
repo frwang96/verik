@@ -31,6 +31,7 @@ import io.verik.compiler.ast.element.declaration.common.EFile
 import io.verik.compiler.ast.element.declaration.common.EPackage
 import io.verik.compiler.ast.element.declaration.common.EProperty
 import io.verik.compiler.ast.element.declaration.common.ETypeParameter
+import io.verik.compiler.ast.element.declaration.kt.ECompanionObject
 import io.verik.compiler.ast.element.declaration.kt.EKtAbstractFunction
 import io.verik.compiler.ast.element.declaration.kt.EKtClass
 import io.verik.compiler.ast.element.declaration.kt.EKtFunction
@@ -169,6 +170,10 @@ abstract class Visitor {
 
     open fun visitKtClass(cls: EKtClass) {
         visitAbstractContainerClass(cls)
+    }
+
+    open fun visitCompanionObject(companionObject: ECompanionObject) {
+        visitAbstractContainerClass(companionObject)
     }
 
     open fun visitSvClass(cls: ESvClass) {

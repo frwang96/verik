@@ -35,6 +35,7 @@ import org.jetbrains.kotlin.psi.KtIfExpression
 import org.jetbrains.kotlin.psi.KtIsExpression
 import org.jetbrains.kotlin.psi.KtLambdaExpression
 import org.jetbrains.kotlin.psi.KtNamedFunction
+import org.jetbrains.kotlin.psi.KtObjectDeclaration
 import org.jetbrains.kotlin.psi.KtParameter
 import org.jetbrains.kotlin.psi.KtParenthesizedExpression
 import org.jetbrains.kotlin.psi.KtPostfixExpression
@@ -76,7 +77,11 @@ class CasterVisitor(private val castContext: CastContext) : KtVisitor<EElement, 
     }
 
     override fun visitClassOrObject(classOrObject: KtClassOrObject, data: Unit?): EElement {
-        return DeclarationCaster.castClass(classOrObject, castContext)
+        return if (classOrObject is KtObjectDeclaration && classOrObject.isCompanion()) {
+            DeclarationCaster.castCompanionObject(classOrObject, castContext)
+        } else {
+            DeclarationCaster.castClass(classOrObject, castContext)
+        }
     }
 
     override fun visitPrimaryConstructor(constructor: KtPrimaryConstructor, data: Unit?): EElement {

@@ -57,7 +57,7 @@ class EProperty(
 
     fun isStatic(): Boolean {
         val parent = parent
-        return (parent is ESvClass && parent.isDeclarationsStatic)
+        return (parent is ESvClass && parent.isObject)
     }
 
     override fun accept(visitor: Visitor) {
