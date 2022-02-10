@@ -30,6 +30,7 @@ import io.verik.compiler.ast.element.expression.common.EBlockExpression
 import io.verik.compiler.ast.element.expression.common.ECallExpression
 import io.verik.compiler.ast.element.expression.common.EConstantExpression
 import io.verik.compiler.ast.element.expression.common.EIfExpression
+import io.verik.compiler.ast.element.expression.common.ENothingExpression
 import io.verik.compiler.ast.element.expression.common.EPropertyStatement
 import io.verik.compiler.ast.element.expression.common.EReferenceExpression
 import io.verik.compiler.ast.element.expression.common.EReturnStatement
@@ -70,6 +71,8 @@ object SpecializerCopier {
             is EKtValueParameter ->
                 copyKtValueParameter(element, typeArguments, specializeContext)
             // Expressions
+            is ENothingExpression ->
+                copyNothingExpression(element)
             is EBlockExpression ->
                 copyBlockExpression(element, typeArguments, specializeContext)
             is EPropertyStatement ->
@@ -278,6 +281,10 @@ object SpecializerCopier {
         )
         specializeContext.register(valueParameter, typeArguments, copiedValueParameter)
         return copiedValueParameter
+    }
+
+    private fun copyNothingExpression(nothingExpression: ENothingExpression): ENothingExpression {
+        return ENothingExpression(nothingExpression.location)
     }
 
     private fun copyBlockExpression(

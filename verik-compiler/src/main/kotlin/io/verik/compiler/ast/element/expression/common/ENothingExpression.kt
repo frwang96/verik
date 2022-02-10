@@ -28,7 +28,7 @@ class ENothingExpression(
 
     override var type = Core.Kt.C_Nothing.toType()
 
-    override val serializationType = SerializationType.INTERNAL
+    override val serializationType = SerializationType.EXPRESSION
 
     override fun accept(visitor: Visitor) {
         visitor.visitNothingExpression(this)

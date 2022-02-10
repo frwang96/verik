@@ -32,6 +32,7 @@ import io.verik.compiler.ast.property.AnnotationEntry
 import io.verik.compiler.common.location
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreConstructorDeclaration
+import io.verik.compiler.message.Messages
 import org.jetbrains.kotlin.kdoc.psi.api.KDoc
 import org.jetbrains.kotlin.lexer.KtTokens
 import org.jetbrains.kotlin.psi.KtAnnotationEntry
@@ -320,10 +321,14 @@ object DeclarationCaster {
             superTypeCallEntry.calleeExpression.constructorReferenceExpression!!
         ]!!
         val declaration = castContext.resolveDeclaration(descriptor, superTypeCallEntry)
-        val type = if (declaration is CoreConstructorDeclaration) {
-            declaration.parent.toType()
-        } else {
-            (declaration as EPrimaryConstructor).type.copy()
+        val type = when (declaration) {
+            is CoreConstructorDeclaration -> declaration.parent.toType()
+            is EPrimaryConstructor -> declaration.type.copy()
+            is ESecondaryConstructor -> declaration.type.copy()
+            else -> Messages.INTERNAL_ERROR.on(
+                superTypeCallEntry,
+                "Unexpected constructor reference: ${declaration::class.simpleName}"
+            )
         }
         val valueArguments = CallExpressionCaster.castValueArguments(superTypeCallEntry.calleeExpression, castContext)
         return ECallExpression(

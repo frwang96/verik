@@ -18,7 +18,6 @@ package io.verik.compiler.cast
 
 import io.verik.compiler.test.BaseTest
 import io.verik.compiler.test.findExpression
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 internal class CallExpressionCasterTest : BaseTest() {
@@ -82,8 +81,28 @@ internal class CallExpressionCasterTest : BaseTest() {
     }
 
     @Test
-    @Disabled
-    // TODO support default arguments
+    fun `value argument vararg none`() {
+        driveElementTest(
+            """
+                var x = max(0)
+            """.trimIndent(),
+            CasterStage::class,
+            "CallExpression(Int, max, null, [ConstantExpression(*)], [])"
+        ) { it.findExpression("x") }
+    }
+
+    @Test
+    fun `value argument vararg multiple`() {
+        driveElementTest(
+            """
+                var x = max(0, 1, 2)
+            """.trimIndent(),
+            CasterStage::class,
+            "CallExpression(Int, max, null, [ConstantExpression(*), ConstantExpression(*), ConstantExpression(*)], [])"
+        ) { it.findExpression("x") }
+    }
+
+    @Test
     fun `value argument default`() {
         driveElementTest(
             """
@@ -91,7 +110,7 @@ internal class CallExpressionCasterTest : BaseTest() {
                 var x = f()
             """.trimIndent(),
             CasterStage::class,
-            "CallExpression(Unit, f, null, [], [ConstantExpression(*)])"
+            "CallExpression(Unit, f, null, [NothingExpression()], [])"
         ) { it.findExpression("x") }
     }
 }

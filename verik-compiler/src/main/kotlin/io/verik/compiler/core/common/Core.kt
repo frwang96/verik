@@ -133,6 +133,9 @@ object Core {
         val C_Sbit = CoreVkClass.C_Sbit
         val C_Packed = CoreVkClass.C_Packed
         val C_Unpacked = CoreVkClass.C_Unpacked
+        val C_Queue = CoreVkClass.C_Queue
+        val C_DynamicArray = CoreVkClass.C_DynamicArray
+        val C_AssociativeArray = CoreVkClass.C_AssociativeArray
         val C_Time = CoreVkClass.C_Time
         val C_Event = CoreVkClass.C_Event
         val C_Struct = CoreVkClass.C_Struct

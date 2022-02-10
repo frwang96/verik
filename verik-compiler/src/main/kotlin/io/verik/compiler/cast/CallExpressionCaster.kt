@@ -18,21 +18,34 @@ package io.verik.compiler.cast
 
 import io.verik.compiler.ast.common.Type
 import io.verik.compiler.ast.element.expression.common.EExpression
+import io.verik.compiler.ast.element.expression.common.ENothingExpression
+import io.verik.compiler.common.location
 import org.jetbrains.kotlin.descriptors.CallableDescriptor
 import org.jetbrains.kotlin.psi.KtCallExpression
 import org.jetbrains.kotlin.psi.KtExpression
+import org.jetbrains.kotlin.resolve.calls.components.isVararg
 
 object CallExpressionCaster {
 
-    // TODO cast default arguments
     fun castValueArguments(calleeExpression: KtExpression, castContext: CastContext): ArrayList<EExpression> {
+        val location = calleeExpression.location()
         val call = castContext.sliceCall[calleeExpression]!!
         val resolvedCall = castContext.sliceResolvedCall[call]!!
-        val resolvedValueArguments = resolvedCall.valueArgumentsByIndex!!
-        val valueArguments = resolvedValueArguments
-            .flatMap { it.arguments }
-            .map { castContext.castExpression(it.getArgumentExpression()!!) }
-        return ArrayList(valueArguments)
+        val valueParametersAndArguments = resolvedCall.valueArguments
+            .map { Pair(it.key, it.value) }
+            .sortedBy { it.first.index }
+
+        val valueArguments = ArrayList<EExpression>()
+        valueParametersAndArguments.forEach { (valueParameterDescriptor, resolvedValueArgument) ->
+            val argumentExpressions = resolvedValueArgument.arguments
+                .map { castContext.castExpression(it.getArgumentExpression()!!) }
+            if (argumentExpressions.size == 1 || valueParameterDescriptor.isVararg) {
+                valueArguments.addAll(argumentExpressions)
+            } else {
+                valueArguments.add(ENothingExpression(location))
+            }
+        }
+        return valueArguments
     }
 
     fun castTypeArguments(expression: KtCallExpression, castContext: CastContext): ArrayList<Type> {
