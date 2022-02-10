@@ -22,7 +22,6 @@ import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.ETypedElement
 import io.verik.compiler.ast.element.declaration.common.EAbstractClass
 import io.verik.compiler.ast.element.declaration.common.EDeclaration
-import io.verik.compiler.ast.element.declaration.sv.EAbstractComponentInstantiation
 import io.verik.compiler.ast.element.declaration.sv.EEnum
 import io.verik.compiler.ast.element.expression.common.ECallExpression
 import io.verik.compiler.ast.element.expression.common.EReferenceExpression
@@ -85,9 +84,6 @@ object DanglingReferenceChecker : NormalizationChecker {
             when (typedElement) {
                 is EEnum -> {
                     typedElement.enumEntries.forEach { checkReference(it, typedElement) }
-                }
-                is EAbstractComponentInstantiation -> {
-                    typedElement.portInstantiations.forEach { checkReference(it.port, typedElement) }
                 }
                 is EReferenceExpression -> {
                     checkReference(typedElement.reference, typedElement)

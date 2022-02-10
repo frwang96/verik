@@ -33,9 +33,18 @@ module M;
         return ~x;
     endfunction : f1
 
-    initial begin : f2
+    function automatic void f2(
+        input int x = 0,
+        input int y = 0
+    );
+    endfunction : f2
+
+    initial begin : f3
         $display($sformatf("%b", f0()));
         $display($sformatf("%h", f1(.x(8'h00))));
-    end : f2
+        f2(.x(0), .y(0));
+        f2(.x(0), .y());
+        f2(.x(), .y());
+    end : f3
 
 endmodule : M

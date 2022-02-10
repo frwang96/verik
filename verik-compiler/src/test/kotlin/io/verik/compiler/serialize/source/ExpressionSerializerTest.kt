@@ -104,6 +104,25 @@ internal class ExpressionSerializerTest : BaseTest() {
     }
 
     @Test
+    fun `call expression default argument`() {
+        driveTextFileTest(
+            """
+                fun f(x: Int = 0): Int { return x }
+                var x = f()
+            """.trimIndent(),
+            """
+                function automatic int f(
+                    input int x = 0
+                );
+                    return x;
+                endfunction : f
+
+                int x = f(.x());
+            """.trimIndent()
+        ) { it.nonRootPackageTextFiles[0] }
+    }
+
+    @Test
     fun `scope expression`() {
         driveTextFileTest(
             """

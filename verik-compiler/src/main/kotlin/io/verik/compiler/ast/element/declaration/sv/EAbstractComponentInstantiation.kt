@@ -17,30 +17,29 @@
 package io.verik.compiler.ast.element.declaration.sv
 
 import io.verik.compiler.ast.common.ExpressionContainer
+import io.verik.compiler.ast.common.cast
 import io.verik.compiler.ast.element.declaration.common.EAbstractProperty
 import io.verik.compiler.ast.element.expression.common.EExpression
-import io.verik.compiler.ast.property.PortInstantiation
 import io.verik.compiler.common.TreeVisitor
+import io.verik.compiler.common.replaceIfContains
 import io.verik.compiler.message.SourceLocation
 
 abstract class EAbstractComponentInstantiation : EAbstractProperty(), ExpressionContainer {
 
     abstract val endLocation: SourceLocation
 
-    abstract val portInstantiations: List<PortInstantiation>
+    abstract val valueArguments: ArrayList<EExpression>
+
+    fun getPorts(): List<EPort> {
+        return type.reference.cast<EAbstractComponent>(this).ports
+    }
 
     override fun acceptChildren(visitor: TreeVisitor) {
-        portInstantiations.forEach { it.expression?.accept(visitor) }
+        valueArguments.forEach { it.accept(visitor) }
     }
 
     override fun replaceChild(oldExpression: EExpression, newExpression: EExpression): Boolean {
         newExpression.parent = this
-        portInstantiations.forEach {
-            if (it.expression == oldExpression) {
-                it.expression = newExpression
-                return true
-            }
-        }
-        return false
+        return valueArguments.replaceIfContains(oldExpression, newExpression)
     }
 }

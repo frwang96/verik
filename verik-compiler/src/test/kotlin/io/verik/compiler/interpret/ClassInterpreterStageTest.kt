@@ -53,8 +53,8 @@ internal class ClassInterpreterStageTest : BaseTest() {
                 SvClass(
                     C, C,
                     [
-                        SvFunction(__new, C, *, [SvValueParameter(x, Int, 1)], REGULAR, 1),
-                        SvFunction(__init, Unit, *, [SvValueParameter(x, Int, 1)], REGULAR, 0)
+                        SvFunction(__new, C, *, [SvValueParameter(x, Int, null, 1)], REGULAR, 1),
+                        SvFunction(__init, Unit, *, [SvValueParameter(x, Int, null, 1)], REGULAR, 0)
                     ],
                     0, 0
                 )
@@ -74,8 +74,8 @@ internal class ClassInterpreterStageTest : BaseTest() {
                     C, C,
                     [
                         Property(x, Int, null, 0),
-                        SvFunction(__new, C, *, [SvValueParameter(x, Int, 1)], REGULAR, 1),
-                        SvFunction(__init, Unit, *, [SvValueParameter(x, Int, 1)], REGULAR, 0)
+                        SvFunction(__new, C, *, [SvValueParameter(x, Int, null, 1)], REGULAR, 1),
+                        SvFunction(__init, Unit, *, [SvValueParameter(x, Int, null, 1)], REGULAR, 0)
                     ],
                     0, 0
                 )

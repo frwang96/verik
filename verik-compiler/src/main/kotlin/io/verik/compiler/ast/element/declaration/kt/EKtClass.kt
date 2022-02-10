@@ -21,7 +21,6 @@ import io.verik.compiler.ast.common.TypeParameterized
 import io.verik.compiler.ast.element.declaration.common.EAbstractContainerClass
 import io.verik.compiler.ast.element.declaration.common.EDeclaration
 import io.verik.compiler.ast.element.declaration.common.ETypeParameter
-import io.verik.compiler.ast.element.expression.common.ECallExpression
 import io.verik.compiler.ast.property.AnnotationEntry
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
@@ -41,15 +40,13 @@ class EKtClass(
     var isEnum: Boolean,
     var isAbstract: Boolean,
     var isObject: Boolean,
-    var primaryConstructor: EPrimaryConstructor?,
-    var superTypeCallExpression: ECallExpression?,
+    var primaryConstructor: EPrimaryConstructor?
 ) : EAbstractContainerClass(), TypeParameterized {
 
     init {
         declarations.forEach { it.parent = this }
         typeParameters.forEach { it.parent = this }
         primaryConstructor?.parent = this
-        superTypeCallExpression?.parent = this
     }
 
     @Suppress("DuplicatedCode")
@@ -63,13 +60,11 @@ class EKtClass(
         isEnum: Boolean,
         isAbstract: Boolean,
         isObject: Boolean,
-        primaryConstructor: EPrimaryConstructor?,
-        superTypeCallExpression: ECallExpression?
+        primaryConstructor: EPrimaryConstructor?
     ) {
         declarations.forEach { it.parent = this }
         typeParameters.forEach { it.parent = this }
         primaryConstructor?.parent = this
-        superTypeCallExpression?.parent = this
         this.type = type
         this.annotationEntries = annotationEntries
         this.documentationLines = documentationLines
@@ -80,7 +75,6 @@ class EKtClass(
         this.isAbstract = isAbstract
         this.isObject = isObject
         this.primaryConstructor = primaryConstructor
-        this.superTypeCallExpression = superTypeCallExpression
     }
 
     override fun accept(visitor: Visitor) {
@@ -91,6 +85,5 @@ class EKtClass(
         super.acceptChildren(visitor)
         typeParameters.forEach { it.accept(visitor) }
         primaryConstructor?.accept(visitor)
-        superTypeCallExpression?.accept(visitor)
     }
 }

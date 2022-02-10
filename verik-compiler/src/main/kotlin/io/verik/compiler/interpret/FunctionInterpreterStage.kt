@@ -134,6 +134,7 @@ object FunctionInterpreterStage : ProjectStage() {
                     name = "<tmp>",
                     type = function.type.copy(),
                     annotationEntries = listOf(),
+                    expression = null,
                     isInput = false
                 )
                 valueParameters.add(valueParameter)
@@ -183,7 +184,14 @@ object FunctionInterpreterStage : ProjectStage() {
             referenceUpdater: ReferenceUpdater
         ): List<ESvValueParameter> {
             return valueParameters.map {
-                val valueParameter = ESvValueParameter(it.location, it.name, it.type, it.annotationEntries, true)
+                val valueParameter = ESvValueParameter(
+                    it.location,
+                    it.name,
+                    it.type,
+                    it.annotationEntries,
+                    it.expression,
+                    true
+                )
                 referenceUpdater.update(it, valueParameter)
                 valueParameter
             }

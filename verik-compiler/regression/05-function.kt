@@ -31,9 +31,14 @@ object M : Module() {
         return x.inv()
     }
 
+    fun f2(x: Int = 0, y: Int = 0) {}
+
     @Run
-    fun f2() {
+    fun f3() {
         println(f0())
         println(f1(u0()))
+        f2(0, 0)
+        f2(0)
+        f2()
     }
 }

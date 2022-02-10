@@ -24,10 +24,12 @@
 module M;
 
     initial begin : f
-        logic x1;
-        C     c;
+        logic        x1;
+        C0           c0;
+        test_pkg::C1 c1;
         x1 = x0;
-        c = C::new();
+        c0 = C0::new();
+        c1 = test_pkg::C1::new();
     end : f
 
 endmodule : M

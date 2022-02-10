@@ -22,7 +22,7 @@ import org.junit.jupiter.api.Test
 internal class DeclarationSerializerTest : BaseTest() {
 
     @Test
-    fun `serialize type definition`() {
+    fun `type definition`() {
         driveTextFileTest(
             """
                 fun f(x: Unpacked<`8`, Boolean>): Unpacked<`8`, Boolean> {
@@ -42,7 +42,7 @@ internal class DeclarationSerializerTest : BaseTest() {
     }
 
     @Test
-    fun `serialize injected property`() {
+    fun `injected property`() {
         driveTextFileTest(
             """
                 val M = sv(${"\"\"\""}
@@ -58,7 +58,7 @@ internal class DeclarationSerializerTest : BaseTest() {
     }
 
     @Test
-    fun `serialize module simple`() {
+    fun `module simple`() {
         driveTextFileTest(
             """
                 class M: Module()
@@ -72,7 +72,7 @@ internal class DeclarationSerializerTest : BaseTest() {
     }
 
     @Test
-    fun `serialize module with port`() {
+    fun `module with port`() {
         driveTextFileTest(
             """
                 class M(@In var x: Boolean): Module()
@@ -88,7 +88,7 @@ internal class DeclarationSerializerTest : BaseTest() {
     }
 
     @Test
-    fun `serialize module with documentation`() {
+    fun `module with documentation`() {
         driveTextFileTest(
             """
                 /**
@@ -108,7 +108,7 @@ internal class DeclarationSerializerTest : BaseTest() {
     }
 
     @Test
-    fun `serialize module interface simple`() {
+    fun `module interface simple`() {
         driveTextFileTest(
             """
                 class MI: ModuleInterface()
@@ -122,7 +122,7 @@ internal class DeclarationSerializerTest : BaseTest() {
     }
 
     @Test
-    fun `serialize class`() {
+    fun `class simple`() {
         driveTextFileTest(
             """
                 class C
@@ -146,7 +146,7 @@ internal class DeclarationSerializerTest : BaseTest() {
     }
 
     @Test
-    fun `serialize enum`() {
+    fun `enum simple`() {
         driveTextFileTest(
             """
                 enum class E { A, B }
@@ -161,7 +161,7 @@ internal class DeclarationSerializerTest : BaseTest() {
     }
 
     @Test
-    fun `serialize struct`() {
+    fun `struct simple`() {
         driveTextFileTest(
             """
                 class S(val x: Boolean) : Struct()
@@ -175,7 +175,7 @@ internal class DeclarationSerializerTest : BaseTest() {
     }
 
     @Test
-    fun `serialize function`() {
+    fun `function simple`() {
         driveTextFileTest(
             """
                 fun f() {}
@@ -188,7 +188,22 @@ internal class DeclarationSerializerTest : BaseTest() {
     }
 
     @Test
-    fun `serialize task`() {
+    fun `function default argument`() {
+        driveTextFileTest(
+            """
+                fun f(x: Int = 0) {}
+            """.trimIndent(),
+            """
+                function automatic void f(
+                    input int x = 0
+                );
+                endfunction : f
+            """.trimIndent()
+        ) { it.nonRootPackageTextFiles[0] }
+    }
+
+    @Test
+    fun `task simple`() {
         driveTextFileTest(
             """
                 @Task
@@ -204,7 +219,7 @@ internal class DeclarationSerializerTest : BaseTest() {
     }
 
     @Test
-    fun `serialize property`() {
+    fun `property simple`() {
         driveTextFileTest(
             """
                 var x = false
@@ -216,7 +231,7 @@ internal class DeclarationSerializerTest : BaseTest() {
     }
 
     @Test
-    fun `serialize property with documentation`() {
+    fun `property with documentation`() {
         driveTextFileTest(
             """
                 /**
@@ -234,7 +249,7 @@ internal class DeclarationSerializerTest : BaseTest() {
     }
 
     @Test
-    fun `serialize initial block`() {
+    fun `initial block`() {
         driveTextFileTest(
             """
                 class M : Module() {
@@ -255,7 +270,7 @@ internal class DeclarationSerializerTest : BaseTest() {
     }
 
     @Test
-    fun `serialize always com block`() {
+    fun `always com block`() {
         driveTextFileTest(
             """
                 class M : Module() {
@@ -280,7 +295,7 @@ internal class DeclarationSerializerTest : BaseTest() {
     }
 
     @Test
-    fun `serialize always seq block`() {
+    fun `always seq block`() {
         driveTextFileTest(
             """
                 @Suppress("MemberVisibilityCanBePrivate")
@@ -309,7 +324,7 @@ internal class DeclarationSerializerTest : BaseTest() {
     }
 
     @Test
-    fun `serialize module instantiation`() {
+    fun `module instantiation`() {
         driveTextFileTest(
             """
                 class M(@In var x: Boolean): Module()
@@ -337,7 +352,7 @@ internal class DeclarationSerializerTest : BaseTest() {
     }
 
     @Test
-    fun `serialize module port instantiation`() {
+    fun `module port instantiation`() {
         driveTextFileTest(
             """
                 class MP(@In var x: Boolean) : ModulePort()
@@ -362,7 +377,7 @@ internal class DeclarationSerializerTest : BaseTest() {
     }
 
     @Test
-    fun `serialize clocking block instantiation`() {
+    fun `clocking block instantiation`() {
         driveTextFileTest(
             """
                 class CB(override val event: Event, @In var x: Boolean) : ClockingBlock()
@@ -384,20 +399,5 @@ internal class DeclarationSerializerTest : BaseTest() {
                 endmodule : Top
             """.trimIndent()
         ) { it.rootPackageTextFiles[0] }
-    }
-
-    @Test
-    fun `serialize value parameter`() {
-        driveTextFileTest(
-            """
-                fun f(x: Int) {}
-            """.trimIndent(),
-            """
-                function automatic void f(
-                    input int x
-                );
-                endfunction : f
-            """.trimIndent()
-        ) { it.nonRootPackageTextFiles[0] }
     }
 }

@@ -30,6 +30,7 @@ import io.verik.compiler.ast.element.expression.common.EBlockExpression
 import io.verik.compiler.ast.element.expression.common.ECallExpression
 import io.verik.compiler.ast.element.expression.common.EConstantExpression
 import io.verik.compiler.ast.element.expression.common.EIfExpression
+import io.verik.compiler.ast.element.expression.common.ENothingExpression
 import io.verik.compiler.ast.element.expression.common.EPropertyStatement
 import io.verik.compiler.ast.element.expression.common.EReferenceExpression
 import io.verik.compiler.ast.element.expression.common.EReturnStatement
@@ -70,6 +71,8 @@ object SpecializerCopier {
             is EKtValueParameter ->
                 copyKtValueParameter(element, typeArguments, specializeContext)
             // Expressions
+            is ENothingExpression ->
+                copyNothingExpression(element)
             is EBlockExpression ->
                 copyBlockExpression(element, typeArguments, specializeContext)
             is EPropertyStatement ->
@@ -136,8 +139,6 @@ object SpecializerCopier {
         val declarations = `class`.declarations.map { copy(it, typeArguments, specializeContext) }
         val typeParameters = `class`.typeParameters.map { copy(it, typeArguments, specializeContext) }
         val primaryConstructor = `class`.primaryConstructor?.let { copy(it, typeArguments, specializeContext) }
-        val superTypeCallExpression = `class`.superTypeCallExpression
-            ?.let { copy(it, typeArguments, specializeContext) }
         val copiedClass = EKtClass(
             location = `class`.location,
             bodyStartLocation = `class`.bodyStartLocation,
@@ -152,8 +153,7 @@ object SpecializerCopier {
             isEnum = `class`.isEnum,
             isAbstract = `class`.isAbstract,
             isObject = `class`.isObject,
-            primaryConstructor = primaryConstructor,
-            superTypeCallExpression = superTypeCallExpression
+            primaryConstructor = primaryConstructor
         )
         specializeContext.register(`class`, typeArguments, copiedClass)
         return copiedClass
@@ -191,11 +191,14 @@ object SpecializerCopier {
     ): EPrimaryConstructor {
         val type = primaryConstructor.type.copy()
         val valueParameters = primaryConstructor.valueParameters.map { copy(it, typeArguments, specializeContext) }
+        val superTypeCallExpression = primaryConstructor.superTypeCallExpression
+            ?.let { copy(it, typeArguments, specializeContext) }
         val copiedPrimaryConstructor = EPrimaryConstructor(
             primaryConstructor.location,
             primaryConstructor.name,
             type,
-            ArrayList(valueParameters)
+            ArrayList(valueParameters),
+            superTypeCallExpression
         )
         specializeContext.register(primaryConstructor, typeArguments, copiedPrimaryConstructor)
         return copiedPrimaryConstructor
@@ -268,16 +271,22 @@ object SpecializerCopier {
         specializeContext: SpecializeContext
     ): EKtValueParameter {
         val type = valueParameter.type.copy()
+        val expression = valueParameter.expression?.let { copy(it, typeArguments, specializeContext) }
         val copiedValueParameter = EKtValueParameter(
             location = valueParameter.location,
             name = valueParameter.name,
             type = type,
             annotationEntries = valueParameter.annotationEntries,
+            expression = expression,
             isPrimaryConstructorProperty = valueParameter.isPrimaryConstructorProperty,
             isMutable = valueParameter.isMutable
         )
         specializeContext.register(valueParameter, typeArguments, copiedValueParameter)
         return copiedValueParameter
+    }
+
+    private fun copyNothingExpression(nothingExpression: ENothingExpression): ENothingExpression {
+        return ENothingExpression(nothingExpression.location)
     }
 
     private fun copyBlockExpression(

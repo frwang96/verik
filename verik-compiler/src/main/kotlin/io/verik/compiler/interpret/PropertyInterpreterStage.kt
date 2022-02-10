@@ -31,7 +31,6 @@ import io.verik.compiler.ast.element.expression.common.EExpression
 import io.verik.compiler.ast.element.expression.common.EReferenceExpression
 import io.verik.compiler.ast.element.expression.kt.EStringTemplateExpression
 import io.verik.compiler.ast.element.expression.sv.EEventControlExpression
-import io.verik.compiler.ast.property.PortInstantiation
 import io.verik.compiler.ast.property.StringEntry
 import io.verik.compiler.common.ReferenceUpdater
 import io.verik.compiler.common.TreeVisitor
@@ -112,9 +111,6 @@ object PropertyInterpreterStage : ProjectStage() {
                 Messages.INTERNAL_ERROR.on(callExpression, "Incorrect number of value arguments")
             }
 
-            val portInstantiations = component.ports
-                .zip(callExpression.valueArguments)
-                .map { interpretPortInstantiation(it.first, it.second, false) }
             return EComponentInstantiation(
                 property.location,
                 property.endLocation,
@@ -122,7 +118,7 @@ object PropertyInterpreterStage : ProjectStage() {
                 property.type,
                 property.annotationEntries,
                 property.documentationLines,
-                portInstantiations
+                callExpression.valueArguments
             )
         }
 
@@ -134,10 +130,10 @@ object PropertyInterpreterStage : ProjectStage() {
             if (modulePort.ports.size != callExpression.valueArguments.size) {
                 Messages.INTERNAL_ERROR.on(callExpression, "Incorrect number of value arguments")
             }
+            modulePort.ports.zip(callExpression.valueArguments).forEach { (port, valueArgument) ->
+                checkPortNameMatch(port, valueArgument)
+            }
 
-            val portInstantiations = modulePort.ports
-                .zip(callExpression.valueArguments)
-                .map { interpretPortInstantiation(it.first, it.second, true) }
             return EModulePortInstantiation(
                 property.location,
                 property.endLocation,
@@ -145,7 +141,7 @@ object PropertyInterpreterStage : ProjectStage() {
                 property.type,
                 property.annotationEntries,
                 property.documentationLines,
-                portInstantiations
+                callExpression.valueArguments
             )
         }
 
@@ -167,9 +163,10 @@ object PropertyInterpreterStage : ProjectStage() {
                 arrayListOf(eventExpression)
             )
 
-            val portInstantiations = clockingBlock.ports
-                .zip(valueArguments)
-                .map { interpretPortInstantiation(it.first, it.second, true) }
+            clockingBlock.ports.zip(valueArguments).forEach { (port, valueArgument) ->
+                checkPortNameMatch(port, valueArgument)
+            }
+
             return EClockingBlockInstantiation(
                 property.location,
                 property.endLocation,
@@ -177,28 +174,17 @@ object PropertyInterpreterStage : ProjectStage() {
                 property.type,
                 property.annotationEntries,
                 property.documentationLines,
-                portInstantiations,
+                ArrayList(valueArguments),
                 eventControlExpression
             )
         }
 
-        private fun interpretPortInstantiation(
-            port: EPort,
-            expression: EExpression,
-            matchPortName: Boolean
-        ): PortInstantiation {
-            if (matchPortName) {
-                if (expression !is EReferenceExpression ||
-                    expression.receiver != null ||
-                    expression.reference.name != port.name
-                ) {
-                    Messages.MISMATCHED_PORT_NAME.on(expression, port.name)
-                }
-            }
-            return if (expression is ECallExpression && expression.reference == Core.Vk.F_nc) {
-                PortInstantiation(expression.location, port, null)
-            } else {
-                PortInstantiation(expression.location, port, expression)
+        private fun checkPortNameMatch(port: EPort, expression: EExpression) {
+            if (expression !is EReferenceExpression ||
+                expression.receiver != null ||
+                expression.reference.name != port.name
+            ) {
+                Messages.MISMATCHED_PORT_NAME.on(expression, port.name)
             }
         }
 

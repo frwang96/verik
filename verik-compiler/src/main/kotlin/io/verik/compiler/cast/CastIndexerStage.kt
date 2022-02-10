@@ -96,7 +96,8 @@ object CastIndexerStage : ProjectStage() {
                     location,
                     name,
                     NullDeclaration.toType(),
-                    ArrayList()
+                    ArrayList(),
+                    null
                 )
                 castContext.registerDeclaration(descriptor.unsubstitutedPrimaryConstructor!!, indexedPrimaryConstructor)
             }
@@ -115,8 +116,7 @@ object CastIndexerStage : ProjectStage() {
                 isEnum = false,
                 isAbstract = false,
                 isObject = false,
-                primaryConstructor = null,
-                superTypeCallExpression = null
+                primaryConstructor = null
             )
             castContext.registerDeclaration(descriptor, indexedClass)
         }
@@ -150,7 +150,8 @@ object CastIndexerStage : ProjectStage() {
                 location,
                 name,
                 NullDeclaration.toType(),
-                ArrayList()
+                ArrayList(),
+                null
             )
             castContext.registerDeclaration(descriptor, indexedPrimaryConstructor)
         }
@@ -217,6 +218,7 @@ object CastIndexerStage : ProjectStage() {
                 name = name,
                 type = NullDeclaration.toType(),
                 annotationEntries = listOf(),
+                expression = null,
                 isPrimaryConstructorProperty = false,
                 isMutable = false
             )
@@ -236,6 +238,7 @@ object CastIndexerStage : ProjectStage() {
                     name = name,
                     type = NullDeclaration.toType(),
                     annotationEntries = listOf(),
+                    expression = null,
                     isPrimaryConstructorProperty = false,
                     isMutable = false
                 )

@@ -45,6 +45,7 @@ import org.jetbrains.kotlin.psi.KtPrimaryConstructor
 import org.jetbrains.kotlin.psi.KtProperty
 import org.jetbrains.kotlin.psi.KtSecondaryConstructor
 import org.jetbrains.kotlin.psi.KtSuperTypeCallEntry
+import org.jetbrains.kotlin.psi.KtSuperTypeListEntry
 import org.jetbrains.kotlin.psi.KtTypeAlias
 import org.jetbrains.kotlin.psi.KtTypeParameter
 import org.jetbrains.kotlin.resolve.descriptorUtil.classValueType
@@ -105,18 +106,6 @@ object DeclarationCaster {
                 castImplicitPrimaryConstructor(classOrObject, castContext)
             else -> null
         }
-        val superTypeCallEntry = when (classOrObject.superTypeListEntries.size) {
-            0 -> null
-            1 -> {
-                val superTypeListEntry = classOrObject.superTypeListEntries[0]
-                if (superTypeListEntry is KtSuperTypeCallEntry) {
-                    castSuperTypeCallExpression(superTypeListEntry, castContext)
-                } else {
-                    Messages.INTERNAL_ERROR.on(classOrObject, "Super type call entry expected")
-                }
-            }
-            else -> Messages.INTERNAL_ERROR.on(classOrObject, "Multiple inheritance not supported")
-        }
 
         castedClass.fill(
             type = type,
@@ -129,7 +118,6 @@ object DeclarationCaster {
             isAbstract = isAbstract,
             isObject = isObject,
             primaryConstructor = primaryConstructor,
-            superTypeCallExpression = superTypeCallEntry
         )
         return castedClass
     }
@@ -182,23 +170,12 @@ object DeclarationCaster {
             castContext.castValueParameter(it)
         }
 
-        castedPrimaryConstructor.fill(type, valueParameters)
-        return castedPrimaryConstructor
-    }
+        val classOrObject = constructor.parent
+        val superTypeListEntry = if (classOrObject is KtClassOrObject) {
+            castSuperTypeCallExpression(classOrObject.superTypeListEntries, castContext)
+        } else null
 
-    private fun castImplicitPrimaryConstructor(
-        classOrObject: KtClassOrObject,
-        castContext: CastContext
-    ): EPrimaryConstructor {
-        val descriptor = castContext.sliceClass[classOrObject]!!
-        val primaryConstructorDescriptor = descriptor.unsubstitutedPrimaryConstructor!!
-        val castedPrimaryConstructor = castContext
-            .resolveDeclaration(primaryConstructorDescriptor, classOrObject)
-            .cast<EPrimaryConstructor>(classOrObject)
-
-        val type = castContext.castType(primaryConstructorDescriptor.returnType, classOrObject)
-
-        castedPrimaryConstructor.fill(type, listOf())
+        castedPrimaryConstructor.fill(type, valueParameters, superTypeListEntry)
         return castedPrimaryConstructor
     }
 
@@ -279,10 +256,17 @@ object DeclarationCaster {
             castContext.castType(descriptor.type, parameter)
         }
         val annotationEntries = castAnnotationEntries(parameter.annotationEntries, castContext)
+        val expression = parameter.defaultValue?.let { castContext.castExpression(it) }
         val isPrimaryConstructorProperty = (propertyDescriptor != null)
         val isMutable = descriptor.isVar
 
-        castedValueParameter.fill(type, annotationEntries, isPrimaryConstructorProperty, isMutable)
+        castedValueParameter.fill(
+            type = type,
+            annotationEntries = annotationEntries,
+            expression = expression,
+            isPrimaryConstructorProperty = isPrimaryConstructorProperty,
+            isMutable = isMutable
+        )
         return castedValueParameter
     }
 
@@ -306,6 +290,35 @@ object DeclarationCaster {
             .map { it.trim().removePrefix("*").removePrefix(" ") }
     }
 
+    private fun castImplicitPrimaryConstructor(
+        classOrObject: KtClassOrObject,
+        castContext: CastContext
+    ): EPrimaryConstructor {
+        val descriptor = castContext.sliceClass[classOrObject]!!
+        val primaryConstructorDescriptor = descriptor.unsubstitutedPrimaryConstructor!!
+        val castedPrimaryConstructor = castContext
+            .resolveDeclaration(primaryConstructorDescriptor, classOrObject)
+            .cast<EPrimaryConstructor>(classOrObject)
+
+        val type = castContext.castType(primaryConstructorDescriptor.returnType, classOrObject)
+        val superTypeListEntry = castSuperTypeCallExpression(classOrObject.superTypeListEntries, castContext)
+
+        castedPrimaryConstructor.fill(type, listOf(), superTypeListEntry)
+        return castedPrimaryConstructor
+    }
+
+    private fun castSuperTypeCallExpression(
+        superTypeListEntries: List<KtSuperTypeListEntry>,
+        castContext: CastContext
+    ): ECallExpression? {
+        superTypeListEntries.forEach {
+            if (it is KtSuperTypeCallEntry) {
+                return castSuperTypeCallExpression(it, castContext)
+            }
+        }
+        return null
+    }
+
     private fun castSuperTypeCallExpression(
         superTypeCallEntry: KtSuperTypeCallEntry,
         castContext: CastContext
@@ -315,10 +328,14 @@ object DeclarationCaster {
             superTypeCallEntry.calleeExpression.constructorReferenceExpression!!
         ]!!
         val declaration = castContext.resolveDeclaration(descriptor, superTypeCallEntry)
-        val type = if (declaration is CoreConstructorDeclaration) {
-            declaration.parent.toType()
-        } else {
-            (declaration as EPrimaryConstructor).type.copy()
+        val type = when (declaration) {
+            is CoreConstructorDeclaration -> declaration.parent.toType()
+            is EPrimaryConstructor -> declaration.type.copy()
+            is ESecondaryConstructor -> declaration.type.copy()
+            else -> Messages.INTERNAL_ERROR.on(
+                superTypeCallEntry,
+                "Unexpected constructor reference: ${declaration::class.simpleName}"
+            )
         }
         val valueArguments = CallExpressionCaster.castValueArguments(superTypeCallEntry.calleeExpression, castContext)
         return ECallExpression(

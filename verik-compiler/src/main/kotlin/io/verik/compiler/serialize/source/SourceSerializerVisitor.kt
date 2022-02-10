@@ -42,6 +42,7 @@ import io.verik.compiler.ast.element.expression.common.ECallExpression
 import io.verik.compiler.ast.element.expression.common.EConstantExpression
 import io.verik.compiler.ast.element.expression.common.EExpression
 import io.verik.compiler.ast.element.expression.common.EIfExpression
+import io.verik.compiler.ast.element.expression.common.ENothingExpression
 import io.verik.compiler.ast.element.expression.common.EParenthesizedExpression
 import io.verik.compiler.ast.element.expression.common.EPropertyStatement
 import io.verik.compiler.ast.element.expression.common.EReferenceExpression
@@ -197,6 +198,8 @@ class SourceSerializerVisitor(
     override fun visitPort(port: EPort) {
         DeclarationSerializer.serializePort(port, serializeContext)
     }
+
+    override fun visitNothingExpression(nothingExpression: ENothingExpression) {}
 
     override fun visitBlockExpression(blockExpression: EBlockExpression) {
         ExpressionSerializer.serializeBlockExpression(blockExpression, serializeContext)
