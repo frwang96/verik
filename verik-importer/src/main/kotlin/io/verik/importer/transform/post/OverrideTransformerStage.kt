@@ -75,12 +75,12 @@ object OverrideTransformerStage : ProjectStage() {
             return false
         }
 
-        override fun visitKtClass(`class`: EKtClass) {
-            super.visitKtClass(`class`)
-            val superClass = getSuperClass(`class`.superDescriptor)
+        override fun visitKtClass(cls: EKtClass) {
+            super.visitKtClass(cls)
+            val superClass = getSuperClass(cls.superDescriptor)
             if (superClass != null) {
                 val declarations = ArrayList<EDeclaration>()
-                `class`.declarations.forEach { declaration ->
+                cls.declarations.forEach { declaration ->
                     when (declaration) {
                         is EProperty -> {
                             if (!isOverride(declaration, superClass)) declarations.add(declaration)
@@ -93,7 +93,7 @@ object OverrideTransformerStage : ProjectStage() {
                         else -> declarations.add(declaration)
                     }
                 }
-                `class`.declarations = ArrayList(declarations)
+                cls.declarations = ArrayList(declarations)
             }
         }
     }

@@ -55,10 +55,10 @@ object NameRedeclarationCheckerStage : ProjectStage() {
 
     private object NameRedeclarationCheckerVisitor : TreeVisitor() {
 
-        override fun visitPackage(`package`: EPackage) {
-            super.visitPackage(`package`)
+        override fun visitPackage(pkg: EPackage) {
+            super.visitPackage(pkg)
             val declarationSet = DeclarationSet()
-            `package`.files.forEach { file ->
+            pkg.files.forEach { file ->
                 file.declarations.forEach { declarationSet.add(it) }
             }
             declarationSet.checkDuplicates()

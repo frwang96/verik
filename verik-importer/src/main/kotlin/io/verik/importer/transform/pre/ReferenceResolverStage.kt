@@ -55,14 +55,14 @@ object ReferenceResolverStage : ProjectStage() {
             namespaceMap[project] = buildNamespace(project.declarations)
         }
 
-        override fun visitSvPackage(`package`: ESvPackage) {
-            super.visitSvPackage(`package`)
-            namespaceMap[`package`] = buildNamespace(`package`.declarations)
+        override fun visitSvPackage(pkg: ESvPackage) {
+            super.visitSvPackage(pkg)
+            namespaceMap[pkg] = buildNamespace(pkg.declarations)
         }
 
-        override fun visitSvClass(`class`: ESvClass) {
-            super.visitSvClass(`class`)
-            namespaceMap[`class`] = buildNamespace(`class`.declarations + `class`.typeParameters)
+        override fun visitSvClass(cls: ESvClass) {
+            super.visitSvClass(cls)
+            namespaceMap[cls] = buildNamespace(cls.declarations + cls.typeParameters)
         }
 
         override fun visitModule(module: EModule) {

@@ -26,9 +26,9 @@ object SourceSerializerStage : ProjectStage() {
     override fun process(projectContext: ProjectContext) {
         val sourceTextFiles = ArrayList<TextFile>()
         val packages = projectContext.project.declarations.filterIsInstance<EKtPackage>()
-        packages.forEach { `package` ->
-            `package`.files.forEach { file ->
-                val serializeContext = SerializeContext(projectContext, `package`.name, file.outputPath)
+        packages.forEach { pkg ->
+            pkg.files.forEach { file ->
+                val serializeContext = SerializeContext(projectContext, pkg.name, file.outputPath)
                 file.declarations.forEach { serializeContext.serialize(it) }
                 sourceTextFiles.add(serializeContext.getTextFile())
             }

@@ -48,9 +48,9 @@ object ConstructorDesugarTransformerStage : ProjectStage() {
         private val referenceUpdater: ReferenceUpdater
     ) : TreeVisitor() {
 
-        override fun visitKtClass(`class`: EKtClass) {
-            super.visitKtClass(`class`)
-            val primaryConstructor = `class`.primaryConstructor
+        override fun visitKtClass(cls: EKtClass) {
+            super.visitKtClass(cls)
+            val primaryConstructor = cls.primaryConstructor
             if (primaryConstructor != null) {
                 val declarations = ArrayList<EDeclaration>()
                 val properties = desugarValueParameterProperties(primaryConstructor.valueParameters)
@@ -69,11 +69,11 @@ object ConstructorDesugarTransformerStage : ProjectStage() {
                     superTypeCallExpression = superTypeCallExpression
                 )
                 declarations.add(secondaryConstructor)
-                `class`.primaryConstructor = null
+                cls.primaryConstructor = null
                 referenceUpdater.update(primaryConstructor, secondaryConstructor)
 
-                declarations.forEach { it.parent = `class` }
-                `class`.declarations.addAll(0, declarations)
+                declarations.forEach { it.parent = cls }
+                cls.declarations.addAll(0, declarations)
             }
         }
 

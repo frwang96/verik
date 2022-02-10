@@ -32,37 +32,37 @@ object ObjectCheckerStage : ProjectStage() {
 
     private object ObjectCheckerVisitor : TreeVisitor() {
 
-        override fun visitKtClass(`class`: EKtClass) {
-            super.visitKtClass(`class`)
+        override fun visitKtClass(cls: EKtClass) {
+            super.visitKtClass(cls)
             when {
-                `class`.type.isSubtype(Core.Vk.C_Struct) -> {
-                    if (`class`.isObject)
-                        Messages.EXPECTED_NOT_OBJECT.on(`class`, "Struct", `class`.name)
+                cls.type.isSubtype(Core.Vk.C_Struct) -> {
+                    if (cls.isObject)
+                        Messages.EXPECTED_NOT_OBJECT.on(cls, "Struct", cls.name)
                 }
-                `class`.type.isSubtype(Core.Vk.C_Module) -> {
-                    val isSynthesisTop = `class`.hasAnnotationEntry(AnnotationEntries.SYNTHESIS_TOP)
-                    val isSimulationTop = `class`.hasAnnotationEntry(AnnotationEntries.SIMULATION_TOP)
-                    if (`class`.isObject) {
+                cls.type.isSubtype(Core.Vk.C_Module) -> {
+                    val isSynthesisTop = cls.hasAnnotationEntry(AnnotationEntries.SYNTHESIS_TOP)
+                    val isSimulationTop = cls.hasAnnotationEntry(AnnotationEntries.SIMULATION_TOP)
+                    if (cls.isObject) {
                         if (isSynthesisTop)
-                            Messages.EXPECTED_NOT_OBJECT.on(`class`, "Synthesis top", `class`.name)
+                            Messages.EXPECTED_NOT_OBJECT.on(cls, "Synthesis top", cls.name)
                         if (!isSynthesisTop && !isSimulationTop)
-                            Messages.EXPECTED_NOT_OBJECT.on(`class`, "Module", `class`.name)
+                            Messages.EXPECTED_NOT_OBJECT.on(cls, "Module", cls.name)
                     } else {
                         if (isSimulationTop)
-                            Messages.EXPECTED_OBJECT.on(`class`, "Simulation top", `class`.name)
+                            Messages.EXPECTED_OBJECT.on(cls, "Simulation top", cls.name)
                     }
                 }
-                `class`.type.isSubtype(Core.Vk.C_ModuleInterface) -> {
-                    if (`class`.isObject)
-                        Messages.EXPECTED_NOT_OBJECT.on(`class`, "Module interface", `class`.name)
+                cls.type.isSubtype(Core.Vk.C_ModuleInterface) -> {
+                    if (cls.isObject)
+                        Messages.EXPECTED_NOT_OBJECT.on(cls, "Module interface", cls.name)
                 }
-                `class`.type.isSubtype(Core.Vk.C_ModulePort) -> {
-                    if (`class`.isObject)
-                        Messages.EXPECTED_NOT_OBJECT.on(`class`, "Module port", `class`.name)
+                cls.type.isSubtype(Core.Vk.C_ModulePort) -> {
+                    if (cls.isObject)
+                        Messages.EXPECTED_NOT_OBJECT.on(cls, "Module port", cls.name)
                 }
-                `class`.type.isSubtype(Core.Vk.C_ClockingBlock) -> {
-                    if (`class`.isObject)
-                        Messages.EXPECTED_NOT_OBJECT.on(`class`, "Clocking block", `class`.name)
+                cls.type.isSubtype(Core.Vk.C_ClockingBlock) -> {
+                    if (cls.isObject)
+                        Messages.EXPECTED_NOT_OBJECT.on(cls, "Clocking block", cls.name)
                 }
             }
         }

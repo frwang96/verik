@@ -41,19 +41,19 @@ object ClassInterpreterStage : ProjectStage() {
         private val referenceUpdater: ReferenceUpdater
     ) : TreeVisitor() {
 
-        override fun visitSvClass(`class`: ESvClass) {
-            super.visitSvClass(`class`)
+        override fun visitSvClass(cls: ESvClass) {
+            super.visitSvClass(cls)
             val interpretedClass = EKtClass(
-                `class`.location,
-                `class`.name,
-                `class`.signature,
-                `class`.declarations,
-                `class`.typeParameters,
+                cls.location,
+                cls.name,
+                cls.signature,
+                cls.declarations,
+                cls.typeParameters,
                 listOf(),
-                `class`.superDescriptor,
+                cls.superDescriptor,
                 true
             )
-            referenceUpdater.replace(`class`, interpretedClass)
+            referenceUpdater.replace(cls, interpretedClass)
         }
 
         override fun visitModule(module: EModule) {

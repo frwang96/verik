@@ -66,17 +66,17 @@ class ElementPrinter : Visitor() {
         }
     }
 
-    override fun visitSvPackage(`package`: ESvPackage) {
+    override fun visitSvPackage(pkg: ESvPackage) {
         build("SvPackage") {
-            build(`package`.name)
-            build(`package`.declarations)
+            build(pkg.name)
+            build(pkg.declarations)
         }
     }
 
-    override fun visitKtPackage(`package`: EKtPackage) {
+    override fun visitKtPackage(pkg: EKtPackage) {
         build("KtPackage") {
-            build(`package`.name)
-            build(`package`.files)
+            build(pkg.name)
+            build(pkg.files)
         }
     }
 
@@ -89,23 +89,23 @@ class ElementPrinter : Visitor() {
 
 // Class Like //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    override fun visitSvClass(`class`: ESvClass) {
+    override fun visitSvClass(cls: ESvClass) {
         build("SvClass") {
-            build(`class`.name)
-            build(`class`.declarations)
-            build(`class`.typeParameters)
-            build(`class`.superDescriptor)
+            build(cls.name)
+            build(cls.declarations)
+            build(cls.typeParameters)
+            build(cls.superDescriptor)
         }
     }
 
-    override fun visitKtClass(`class`: EKtClass) {
+    override fun visitKtClass(cls: EKtClass) {
         build("KtClass") {
-            build(`class`.name)
-            build(`class`.declarations)
-            build(`class`.typeParameters)
-            build(`class`.valueParameters)
-            build(`class`.superDescriptor)
-            build(`class`.isOpen)
+            build(cls.name)
+            build(cls.declarations)
+            build(cls.typeParameters)
+            build(cls.valueParameters)
+            build(cls.superDescriptor)
+            build(cls.isOpen)
         }
     }
 

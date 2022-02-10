@@ -133,8 +133,8 @@ abstract class Visitor {
         visitElement(project)
     }
 
-    open fun visitPackage(`package`: EPackage) {
-        visitDeclaration(`package`)
+    open fun visitPackage(pkg: EPackage) {
+        visitDeclaration(pkg)
     }
 
     open fun visitFile(file: EFile) {
@@ -167,12 +167,12 @@ abstract class Visitor {
         visitAbstractClass(abstractContainerClass)
     }
 
-    open fun visitKtClass(`class`: EKtClass) {
-        visitAbstractContainerClass(`class`)
+    open fun visitKtClass(cls: EKtClass) {
+        visitAbstractContainerClass(cls)
     }
 
-    open fun visitSvClass(`class`: ESvClass) {
-        visitAbstractContainerClass(`class`)
+    open fun visitSvClass(cls: ESvClass) {
+        visitAbstractContainerClass(cls)
     }
 
     open fun visitAbstractComponent(abstractComponent: EAbstractComponent) {

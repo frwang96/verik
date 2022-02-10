@@ -38,8 +38,8 @@ class SourceSerializerVisitor(
         Messages.INTERNAL_ERROR.on(element, "Unable to serialize element: $element")
     }
 
-    override fun visitKtClass(`class`: EKtClass) {
-        DeclarationSerializer.serializeClass(`class`, serializeContext)
+    override fun visitKtClass(cls: EKtClass) {
+        DeclarationSerializer.serializeClass(cls, serializeContext)
     }
 
     override fun visitCompanionObject(companionObject: ECompanionObject) {

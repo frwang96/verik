@@ -114,11 +114,11 @@ class ElementPrinter : Visitor() {
         }
     }
 
-    override fun visitPackage(`package`: EPackage) {
+    override fun visitPackage(pkg: EPackage) {
         build("Package") {
-            build(`package`.name)
-            build(`package`.files)
-            build(`package`.packageType.toString())
+            build(pkg.name)
+            build(pkg.files)
+            build(pkg.packageType.toString())
         }
     }
 
@@ -152,26 +152,26 @@ class ElementPrinter : Visitor() {
 
 //  CLASS  /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    override fun visitKtClass(`class`: EKtClass) {
+    override fun visitKtClass(cls: EKtClass) {
         build("KtClass") {
-            build(`class`.name)
-            build(`class`.type.toString())
-            build(`class`.declarations)
-            build(`class`.typeParameters)
-            build(`class`.isEnum)
-            build(`class`.isAbstract)
-            build(`class`.isObject)
-            build(`class`.primaryConstructor)
+            build(cls.name)
+            build(cls.type.toString())
+            build(cls.declarations)
+            build(cls.typeParameters)
+            build(cls.isEnum)
+            build(cls.isAbstract)
+            build(cls.isObject)
+            build(cls.primaryConstructor)
         }
     }
 
-    override fun visitSvClass(`class`: ESvClass) {
+    override fun visitSvClass(cls: ESvClass) {
         build("SvClass") {
-            build(`class`.name)
-            build(`class`.type.toString())
-            build(`class`.declarations)
-            build(`class`.isVirtual)
-            build(`class`.isDeclarationsStatic)
+            build(cls.name)
+            build(cls.type.toString())
+            build(cls.declarations)
+            build(cls.isVirtual)
+            build(cls.isDeclarationsStatic)
         }
     }
 

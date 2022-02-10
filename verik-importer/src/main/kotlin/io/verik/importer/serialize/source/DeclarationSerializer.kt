@@ -32,38 +32,38 @@ import io.verik.importer.core.Core
 
 object DeclarationSerializer {
 
-    fun serializeClass(`class`: EKtClass, serializeContext: SerializeContext) {
+    fun serializeClass(cls: EKtClass, serializeContext: SerializeContext) {
         serializeContext.appendLine()
-        serializeDocs(`class`, serializeContext)
-        if (`class`.isOpen) {
+        serializeDocs(cls, serializeContext)
+        if (cls.isOpen) {
             serializeContext.append("open ")
         }
         serializeContext.append("class ")
-        serializeContext.serializeName(`class`)
-        if (`class`.typeParameters.isNotEmpty()) {
+        serializeContext.serializeName(cls)
+        if (cls.typeParameters.isNotEmpty()) {
             serializeContext.appendLine("<")
             serializeContext.indent {
-                serializeContext.serializeJoinAppendLine(`class`.typeParameters)
+                serializeContext.serializeJoinAppendLine(cls.typeParameters)
             }
             serializeContext.append(">")
         }
-        if (`class`.valueParameters.isNotEmpty()) {
+        if (cls.valueParameters.isNotEmpty()) {
             serializeContext.appendLine("(")
             serializeContext.indent {
-                serializeContext.serializeJoinAppendLine(`class`.valueParameters)
+                serializeContext.serializeJoinAppendLine(cls.valueParameters)
             }
             serializeContext.append(")")
         }
-        if (`class`.superDescriptor.type.reference != Core.C_Any) {
-            serializeContext.append(" : ${`class`.superDescriptor.type}")
-            if (`class`.getConstructor() == null) {
-                serializeSuperConstructorCall(`class`.superDescriptor, serializeContext)
+        if (cls.superDescriptor.type.reference != Core.C_Any) {
+            serializeContext.append(" : ${cls.superDescriptor.type}")
+            if (cls.getConstructor() == null) {
+                serializeSuperConstructorCall(cls.superDescriptor, serializeContext)
             }
         }
-        if (`class`.declarations.isNotEmpty()) {
+        if (cls.declarations.isNotEmpty()) {
             serializeContext.appendLine(" {")
             serializeContext.indent {
-                `class`.declarations.forEach { serializeContext.serialize(it) }
+                cls.declarations.forEach { serializeContext.serialize(it) }
             }
             serializeContext.appendLine("}")
         } else {
@@ -150,10 +150,10 @@ object DeclarationSerializer {
         } else {
             serializeContext.append("()")
         }
-        val `class` = constructor.parentNotNull().cast<EKtClass>()
-        if (`class`.superDescriptor.type.reference != Core.C_Any) {
+        val cls = constructor.parentNotNull().cast<EKtClass>()
+        if (cls.superDescriptor.type.reference != Core.C_Any) {
             serializeContext.append(" : super")
-            serializeSuperConstructorCall(`class`.superDescriptor, serializeContext)
+            serializeSuperConstructorCall(cls.superDescriptor, serializeContext)
         }
         serializeContext.appendLine()
     }

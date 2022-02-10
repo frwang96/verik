@@ -68,21 +68,21 @@ object DeclarationSerializer {
         serializeContext.appendLine()
     }
 
-    fun serializeClass(`class`: ESvClass, serializeContext: SerializeContext) {
-        if (`class`.isVirtual)
+    fun serializeClass(cls: ESvClass, serializeContext: SerializeContext) {
+        if (cls.isVirtual)
             serializeContext.append("virtual ")
-        serializeContext.append("class ${`class`.name}")
-        val superType = `class`.superType
+        serializeContext.append("class ${cls.name}")
+        val superType = cls.superType
         if (superType.reference != Core.Kt.C_Any) {
             serializeContext.append(" extends ${superType.reference.name}")
         }
         serializeContext.appendLine(";")
         serializeContext.indent {
-            `class`.declarations.forEach { serializeContext.serializeAsDeclaration(it) }
+            cls.declarations.forEach { serializeContext.serializeAsDeclaration(it) }
             serializeContext.appendLine()
         }
-        serializeContext.label(`class`.bodyEndLocation) {
-            serializeContext.appendLine("endclass : ${`class`.name}")
+        serializeContext.label(cls.bodyEndLocation) {
+            serializeContext.appendLine("endclass : ${cls.name}")
         }
     }
 

@@ -130,32 +130,32 @@ object SpecializerCopier {
     }
 
     private fun copyKtClass(
-        `class`: EKtClass,
+        cls: EKtClass,
         typeArguments: List<Type>,
         specializeContext: SpecializeContext,
     ): EKtClass {
-        val type = `class`.type.copy()
-        val superType = `class`.superType.copy()
-        val declarations = `class`.declarations.map { copy(it, typeArguments, specializeContext) }
-        val typeParameters = `class`.typeParameters.map { copy(it, typeArguments, specializeContext) }
-        val primaryConstructor = `class`.primaryConstructor?.let { copy(it, typeArguments, specializeContext) }
+        val type = cls.type.copy()
+        val superType = cls.superType.copy()
+        val declarations = cls.declarations.map { copy(it, typeArguments, specializeContext) }
+        val typeParameters = cls.typeParameters.map { copy(it, typeArguments, specializeContext) }
+        val primaryConstructor = cls.primaryConstructor?.let { copy(it, typeArguments, specializeContext) }
         val copiedClass = EKtClass(
-            location = `class`.location,
-            bodyStartLocation = `class`.bodyStartLocation,
-            bodyEndLocation = `class`.bodyEndLocation,
-            name = `class`.name,
+            location = cls.location,
+            bodyStartLocation = cls.bodyStartLocation,
+            bodyEndLocation = cls.bodyEndLocation,
+            name = cls.name,
             type = type,
-            annotationEntries = `class`.annotationEntries,
-            documentationLines = `class`.documentationLines,
+            annotationEntries = cls.annotationEntries,
+            documentationLines = cls.documentationLines,
             superType = superType,
             declarations = ArrayList(declarations),
             typeParameters = ArrayList(typeParameters),
-            isEnum = `class`.isEnum,
-            isAbstract = `class`.isAbstract,
-            isObject = `class`.isObject,
+            isEnum = cls.isEnum,
+            isAbstract = cls.isAbstract,
+            isObject = cls.isObject,
             primaryConstructor = primaryConstructor
         )
-        specializeContext.register(`class`, typeArguments, copiedClass)
+        specializeContext.register(cls, typeArguments, copiedClass)
         return copiedClass
     }
 

@@ -42,15 +42,13 @@ object PackageInterpreterStage : ProjectStage() {
 
         projectContext.project.declarations.forEach {
             if (it is ESvPackage) {
-                val `package` = interpretPackage(
+                val pkg = interpretPackage(
                     it.location,
                     "${projectContext.config.rootPackageName}.${it.name}",
                     it.declarations,
                     projectContext.config.rootPackageOutputPath.resolve(it.name)
                 )
-                if (`package` != null) {
-                    packages.add(`package`)
-                }
+                if (pkg != null) packages.add(pkg)
             }
         }
 

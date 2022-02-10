@@ -44,8 +44,8 @@ object UntransformedElementCheckerStage : ProjectStage() {
 
         private const val message = "has not been transformed to SystemVerilog"
 
-        override fun visitKtClass(`class`: EKtClass) {
-            Messages.INTERNAL_ERROR.on(`class`, "Class ${`class`.name} $message")
+        override fun visitKtClass(cls: EKtClass) {
+            Messages.INTERNAL_ERROR.on(cls, "Class ${cls.name} $message")
         }
 
         override fun visitKtFunction(function: EKtFunction) {

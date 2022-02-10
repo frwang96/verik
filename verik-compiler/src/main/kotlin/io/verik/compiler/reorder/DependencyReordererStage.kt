@@ -60,12 +60,12 @@ object DependencyReordererStage : ProjectStage() {
             project.regularNonRootPackages = ArrayList(dependencyReordererResult.reorderedDeclarations)
         }
 
-        private fun reorderFiles(`package`: EPackage, dependencies: List<Dependency>) {
-            val dependencyReordererResult = DependencyReorderer.reorder(`package`.files, dependencies)
+        private fun reorderFiles(pkg: EPackage, dependencies: List<Dependency>) {
+            val dependencyReordererResult = DependencyReorderer.reorder(pkg.files, dependencies)
             dependencyReordererResult.unsatisfiedDependencies.forEach {
                 Messages.CIRCULAR_FILE_DEPENDENCY.on(it.element, it)
             }
-            `package`.files = ArrayList(dependencyReordererResult.reorderedDeclarations)
+            pkg.files = ArrayList(dependencyReordererResult.reorderedDeclarations)
         }
 
         private fun reorderDeclarations(
@@ -84,10 +84,10 @@ object DependencyReordererStage : ProjectStage() {
             reorderPackages(project, dependencyRegistry.getDependencies(project))
         }
 
-        override fun visitPackage(`package`: EPackage) {
-            if (!`package`.packageType.isImported()) {
-                super.visitPackage(`package`)
-                reorderFiles(`package`, dependencyRegistry.getDependencies(`package`))
+        override fun visitPackage(pkg: EPackage) {
+            if (!pkg.packageType.isImported()) {
+                super.visitPackage(pkg)
+                reorderFiles(pkg, dependencyRegistry.getDependencies(pkg))
             }
         }
 

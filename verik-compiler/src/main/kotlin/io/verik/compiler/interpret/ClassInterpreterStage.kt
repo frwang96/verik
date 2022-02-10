@@ -87,40 +87,40 @@ object ClassInterpreterStage : ProjectStage() {
         private val initializerMap: HashMap<ESecondaryConstructor, ESvFunction>
     ) : TreeVisitor() {
 
-        override fun visitKtClass(`class`: EKtClass) {
-            super.visitKtClass(`class`)
+        override fun visitKtClass(cls: EKtClass) {
+            super.visitKtClass(cls)
             val declarations = ArrayList<EDeclaration>()
-            `class`.declarations.forEach {
+            cls.declarations.forEach {
                 if (it is ESecondaryConstructor) {
-                    val (constructor, initializer) = interpretConstructorAndInitializer(`class`, it)
+                    val (constructor, initializer) = interpretConstructorAndInitializer(cls, it)
                     if (constructor != null) {
-                        constructor.parent = `class`
+                        constructor.parent = cls
                         declarations.add(constructor)
                     }
-                    initializer.parent = `class`
+                    initializer.parent = cls
                     declarations.add(initializer)
                 } else {
                     declarations.add(it)
                 }
             }
             val interpretedClass = ESvClass(
-                `class`.location,
-                `class`.bodyStartLocation,
-                `class`.bodyEndLocation,
-                `class`.name,
-                `class`.type,
-                `class`.annotationEntries,
-                `class`.documentationLines,
-                `class`.superType,
+                cls.location,
+                cls.bodyStartLocation,
+                cls.bodyEndLocation,
+                cls.name,
+                cls.type,
+                cls.annotationEntries,
+                cls.documentationLines,
+                cls.superType,
                 declarations,
-                `class`.isAbstract,
-                `class`.isObject
+                cls.isAbstract,
+                cls.isObject
             )
-            referenceUpdater.replace(`class`, interpretedClass)
+            referenceUpdater.replace(cls, interpretedClass)
         }
 
         private fun interpretConstructorAndInitializer(
-            `class`: EKtClass,
+            cls: EKtClass,
             secondaryConstructor: ESecondaryConstructor
         ): Pair<ESvFunction?, ESvFunction> {
             val initializer = initializerMap[secondaryConstructor]
@@ -148,20 +148,20 @@ object ClassInterpreterStage : ProjectStage() {
                     body.statements.add(0, callExpression)
                 }
             }
-            val constructor = interpretConstructor(`class`, secondaryConstructor, initializer)
+            val constructor = interpretConstructor(cls, secondaryConstructor, initializer)
             return Pair(constructor, initializer)
         }
 
         private fun interpretConstructor(
-            `class`: EKtClass,
+            cls: EKtClass,
             secondaryConstructor: ESecondaryConstructor,
             initializer: ESvFunction
         ): ESvFunction? {
-            if (`class`.isAbstract)
+            if (cls.isAbstract)
                 return null
 
             // TODO better handling of imported constructors
-            val name = if (`class`.isImported()) "new" else "__new"
+            val name = if (cls.isImported()) "new" else "__new"
             val property = EProperty.temporary(
                 secondaryConstructor.location,
                 secondaryConstructor.type.copy(),

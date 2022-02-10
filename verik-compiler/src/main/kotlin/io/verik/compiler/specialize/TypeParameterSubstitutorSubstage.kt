@@ -91,9 +91,9 @@ object TypeParameterSubstitutorSubstage : SpecializerSubstage() {
             typedElement.type = substitute(typedElement.type, typedElement)
         }
 
-        override fun visitKtClass(`class`: EKtClass) {
-            super.visitKtClass(`class`)
-            `class`.superType = substitute(`class`.superType, `class`)
+        override fun visitKtClass(cls: EKtClass) {
+            super.visitKtClass(cls)
+            cls.superType = substitute(cls.superType, cls)
         }
 
         override fun visitCallExpression(callExpression: ECallExpression) {

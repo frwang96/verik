@@ -62,12 +62,9 @@ object ScopeExpressionInsertionTransformerStage : ProjectStage() {
                 is EElement -> {
                     when (val parent = reference.parent) {
                         is EFile -> {
-                            val `package` = parent.parent
-                            if (`package` is EPackage &&
-                                !`package`.packageType.isRoot() &&
-                                `package` != parentPackage
-                            ) {
-                                return EScopeExpression(receiverExpression.location, `package`.toType())
+                            val pkg = parent.parent
+                            if (pkg is EPackage && !pkg.packageType.isRoot() && pkg != parentPackage) {
+                                return EScopeExpression(receiverExpression.location, pkg.toType())
                             }
                         }
                         is ESvClass -> {
@@ -100,10 +97,10 @@ object ScopeExpressionInsertionTransformerStage : ProjectStage() {
             return null
         }
 
-        override fun visitPackage(`package`: EPackage) {
-            if (!`package`.packageType.isImported()) {
-                parentPackage = `package`
-                super.visitPackage(`package`)
+        override fun visitPackage(pkg: EPackage) {
+            if (!pkg.packageType.isImported()) {
+                parentPackage = pkg
+                super.visitPackage(pkg)
                 parentPackage = null
             }
         }

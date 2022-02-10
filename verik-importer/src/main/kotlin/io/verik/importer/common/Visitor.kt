@@ -73,12 +73,12 @@ abstract class Visitor {
         visitElement(project)
     }
 
-    open fun visitSvPackage(`package`: ESvPackage) {
-        visitContainerDeclaration(`package`)
+    open fun visitSvPackage(pkg: ESvPackage) {
+        visitContainerDeclaration(pkg)
     }
 
-    open fun visitKtPackage(`package`: EKtPackage) {
-        visitDeclaration(`package`)
+    open fun visitKtPackage(pkg: EKtPackage) {
+        visitDeclaration(pkg)
     }
 
     open fun visitKtFile(file: EKtFile) {
@@ -87,12 +87,12 @@ abstract class Visitor {
 
 // Class Like //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    open fun visitSvClass(`class`: ESvClass) {
-        visitContainerDeclaration(`class`)
+    open fun visitSvClass(cls: ESvClass) {
+        visitContainerDeclaration(cls)
     }
 
-    open fun visitKtClass(`class`: EKtClass) {
-        visitContainerDeclaration(`class`)
+    open fun visitKtClass(cls: EKtClass) {
+        visitContainerDeclaration(cls)
     }
 
     open fun visitCompanionObject(companionObject: ECompanionObject) {

@@ -47,21 +47,21 @@ object EnumInterpreterStage : ProjectStage() {
 
     private class EnumInterpreterVisitor(private val referenceUpdater: ReferenceUpdater) : TreeVisitor() {
 
-        override fun visitKtClass(`class`: EKtClass) {
-            super.visitKtClass(`class`)
-            if (`class`.isEnum) {
-                val enumEntries = `class`.declarations.map { it.cast<EEnumEntry>() }
+        override fun visitKtClass(cls: EKtClass) {
+            super.visitKtClass(cls)
+            if (cls.isEnum) {
+                val enumEntries = cls.declarations.map { it.cast<EEnumEntry>() }
                 val enum = EEnum(
-                    `class`.location,
-                    `class`.bodyStartLocation,
-                    `class`.bodyEndLocation,
-                    `class`.name,
-                    `class`.type,
-                    `class`.annotationEntries,
-                    `class`.documentationLines,
+                    cls.location,
+                    cls.bodyStartLocation,
+                    cls.bodyEndLocation,
+                    cls.name,
+                    cls.type,
+                    cls.annotationEntries,
+                    cls.documentationLines,
                     enumEntries
                 )
-                referenceUpdater.replace(`class`, enum)
+                referenceUpdater.replace(cls, enum)
             }
         }
     }

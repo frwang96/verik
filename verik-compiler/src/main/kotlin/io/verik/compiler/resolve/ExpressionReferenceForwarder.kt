@@ -114,12 +114,12 @@ object ExpressionReferenceForwarder {
 
         private var parentTypeArguments: List<Type> = listOf()
 
-        override fun visitKtClass(`class`: EKtClass) {
-            if (`class`.parent is EFile) {
-                parentTypeArguments = `class`.typeParameters.map { it.type }
+        override fun visitKtClass(cls: EKtClass) {
+            if (cls.parent is EFile) {
+                parentTypeArguments = cls.typeParameters.map { it.type }
             }
-            super.visitKtClass(`class`)
-            if (`class`.parent is EFile) {
+            super.visitKtClass(cls)
+            if (cls.parent is EFile) {
                 parentTypeArguments = listOf()
             }
         }

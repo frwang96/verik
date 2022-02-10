@@ -32,16 +32,16 @@ object SuperDescriptorTransformerStage : ProjectStage() {
 
     object SuperDescriptorTransformerVisitor : TreeVisitor() {
 
-        override fun visitKtClass(`class`: EKtClass) {
-            super.visitKtClass(`class`)
-            val superDescriptor = `class`.superDescriptor
+        override fun visitKtClass(cls: EKtClass) {
+            super.visitKtClass(cls)
+            val superDescriptor = cls.superDescriptor
             if (superDescriptor.type.reference is ETypeParameter) {
                 val simpleDescriptor = ESimpleDescriptor(
                     superDescriptor.location,
                     Core.C_Any.toType()
                 )
-                simpleDescriptor.parent = `class`
-                `class`.superDescriptor = simpleDescriptor
+                simpleDescriptor.parent = cls
+                cls.superDescriptor = simpleDescriptor
             }
         }
     }

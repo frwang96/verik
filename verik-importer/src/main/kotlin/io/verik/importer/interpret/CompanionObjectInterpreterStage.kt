@@ -33,11 +33,11 @@ object CompanionObjectInterpreterStage : ProjectStage() {
 
     object CompanionObjectInterpreterVisitor : TreeVisitor() {
 
-        override fun visitKtClass(`class`: EKtClass) {
-            super.visitKtClass(`class`)
+        override fun visitKtClass(cls: EKtClass) {
+            super.visitKtClass(cls)
             val declarations = ArrayList<EDeclaration>()
             val companionObjectDeclarations = ArrayList<EDeclaration>()
-            `class`.declarations.forEach {
+            cls.declarations.forEach {
                 if (isCompanionObjectDeclaration(it)) {
                     companionObjectDeclarations.add(it)
                 } else {
@@ -46,13 +46,13 @@ object CompanionObjectInterpreterStage : ProjectStage() {
             }
             if (companionObjectDeclarations.isNotEmpty()) {
                 val companionObject = ECompanionObject(
-                    `class`.location,
+                    cls.location,
                     companionObjectDeclarations
                 )
-                companionObject.parent = `class`
+                companionObject.parent = cls
                 declarations.add(companionObject)
             }
-            `class`.declarations = declarations
+            cls.declarations = declarations
         }
 
         private fun isCompanionObjectDeclaration(declaration: EDeclaration): Boolean {

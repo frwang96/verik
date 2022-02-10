@@ -52,19 +52,19 @@ object FunctionOverloadingTransformerStage : ProjectStage() {
                 function.name = "${function.name}_$suffix"
         }
 
-        override fun visitPackage(`package`: EPackage) {
-            super.visitPackage(`package`)
-            if (!`package`.packageType.isImported()) {
-                val functions = `package`.files
+        override fun visitPackage(pkg: EPackage) {
+            super.visitPackage(pkg)
+            if (!pkg.packageType.isImported()) {
+                val functions = pkg.files
                     .flatMap { it.declarations }
                     .filterIsInstance<EKtFunction>()
                 transformFunctions(functions)
             }
         }
 
-        override fun visitKtClass(`class`: EKtClass) {
-            super.visitKtClass(`class`)
-            val functions = `class`.declarations.filterIsInstance<EKtFunction>()
+        override fun visitKtClass(cls: EKtClass) {
+            super.visitKtClass(cls)
+            val functions = cls.declarations.filterIsInstance<EKtFunction>()
             transformFunctions(functions)
         }
     }
