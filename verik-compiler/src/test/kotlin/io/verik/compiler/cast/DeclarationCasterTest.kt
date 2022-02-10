@@ -181,7 +181,7 @@ internal class DeclarationCasterTest : BaseTest() {
             """
                 KtClass(
                     C, C,
-                    [SecondaryConstructor(C, C, BlockExpression(*), [KtValueParameter(x, Int, 0, 0)], null)],
+                    [SecondaryConstructor(C, C, BlockExpression(*), [KtValueParameter(x, Int, null, 0, 0)], null)],
                     [], 0, 0, 0, null
                 )
             """.trimIndent()
@@ -225,10 +225,10 @@ internal class DeclarationCasterTest : BaseTest() {
     fun `function with value parameter`() {
         driveElementTest(
             """
-                fun f(x: Int) {}
+                fun f(x: Int = 0) {}
             """.trimIndent(),
             CasterStage::class,
-            "KtFunction(f, Unit, BlockExpression(*), [KtValueParameter(x, Int, 0, 0)], [], 0)"
+            "KtFunction(f, Unit, BlockExpression(*), [KtValueParameter(x, Int, ConstantExpression(*), 0, 0)], [], 0)"
         ) { it.findDeclaration("f") }
     }
 

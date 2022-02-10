@@ -17,7 +17,6 @@
 package io.verik.compiler.serialize.source
 
 import io.verik.compiler.test.BaseTest
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 internal class ExpressionSerializerTest : BaseTest() {
@@ -105,7 +104,6 @@ internal class ExpressionSerializerTest : BaseTest() {
     }
 
     @Test
-    @Disabled
     fun `call expression default argument`() {
         driveTextFileTest(
             """

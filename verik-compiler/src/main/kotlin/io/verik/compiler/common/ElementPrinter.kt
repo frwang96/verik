@@ -355,6 +355,7 @@ class ElementPrinter : Visitor() {
         build("KtValueParameter") {
             build(valueParameter.name)
             build(valueParameter.type.toString())
+            build(valueParameter.expression)
             build(valueParameter.isPrimaryConstructorProperty)
             build(valueParameter.isMutable)
         }
@@ -364,6 +365,7 @@ class ElementPrinter : Visitor() {
         build("SvValueParameter") {
             build(valueParameter.name)
             build(valueParameter.type.toString())
+            build(valueParameter.expression)
             build(valueParameter.isInput)
         }
     }

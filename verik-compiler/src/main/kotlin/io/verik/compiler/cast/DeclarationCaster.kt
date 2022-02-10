@@ -256,10 +256,17 @@ object DeclarationCaster {
             castContext.castType(descriptor.type, parameter)
         }
         val annotationEntries = castAnnotationEntries(parameter.annotationEntries, castContext)
+        val expression = parameter.defaultValue?.let { castContext.castExpression(it) }
         val isPrimaryConstructorProperty = (propertyDescriptor != null)
         val isMutable = descriptor.isVar
 
-        castedValueParameter.fill(type, annotationEntries, isPrimaryConstructorProperty, isMutable)
+        castedValueParameter.fill(
+            type = type,
+            annotationEntries = annotationEntries,
+            expression = expression,
+            isPrimaryConstructorProperty = isPrimaryConstructorProperty,
+            isMutable = isMutable
+        )
         return castedValueParameter
     }
 

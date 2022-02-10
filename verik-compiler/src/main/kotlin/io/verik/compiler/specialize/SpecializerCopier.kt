@@ -271,11 +271,13 @@ object SpecializerCopier {
         specializeContext: SpecializeContext
     ): EKtValueParameter {
         val type = valueParameter.type.copy()
+        val expression = valueParameter.expression?.let { copy(it, typeArguments, specializeContext) }
         val copiedValueParameter = EKtValueParameter(
             location = valueParameter.location,
             name = valueParameter.name,
             type = type,
             annotationEntries = valueParameter.annotationEntries,
+            expression = expression,
             isPrimaryConstructorProperty = valueParameter.isPrimaryConstructorProperty,
             isMutable = valueParameter.isMutable
         )

@@ -19,6 +19,7 @@ package io.verik.compiler.interpret
 import io.verik.compiler.ast.element.declaration.common.EDeclaration
 import io.verik.compiler.ast.element.declaration.common.EProperty
 import io.verik.compiler.ast.element.declaration.kt.EKtClass
+import io.verik.compiler.ast.element.declaration.kt.EKtValueParameter
 import io.verik.compiler.ast.element.declaration.kt.ESecondaryConstructor
 import io.verik.compiler.ast.element.declaration.sv.ESvClass
 import io.verik.compiler.ast.element.declaration.sv.ESvFunction
@@ -62,13 +63,7 @@ object ClassInterpreterStage : ProjectStage() {
             super.visitSecondaryConstructor(secondaryConstructor)
             val valueParameters = ArrayList<ESvValueParameter>()
             secondaryConstructor.valueParameters.forEach {
-                val valueParameter = ESvValueParameter(
-                    it.location,
-                    it.name,
-                    it.type,
-                    it.annotationEntries,
-                    true
-                )
+                val valueParameter = interpretValueParameter(it)
                 valueParameters.add(valueParameter)
                 referenceUpdater.update(it, valueParameter)
             }
@@ -180,15 +175,7 @@ object ClassInterpreterStage : ProjectStage() {
                 ),
                 false
             )
-            val valueParameters = secondaryConstructor.valueParameters.map {
-                ESvValueParameter(
-                    it.location,
-                    it.name,
-                    it.type.copy(),
-                    it.annotationEntries,
-                    true
-                )
-            }
+            val valueParameters = secondaryConstructor.valueParameters.map { interpretValueParameter(it) }
             val propertyStatement = EPropertyStatement(secondaryConstructor.location, property)
             val referenceExpression = EReferenceExpression(
                 secondaryConstructor.location,
@@ -238,5 +225,16 @@ object ClassInterpreterStage : ProjectStage() {
             referenceUpdater.replace(secondaryConstructor, constructor)
             return constructor
         }
+    }
+
+    private fun interpretValueParameter(valueParameter: EKtValueParameter): ESvValueParameter {
+        return ESvValueParameter(
+            location = valueParameter.location,
+            name = valueParameter.name,
+            type = valueParameter.type.copy(),
+            annotationEntries = valueParameter.annotationEntries,
+            expression = valueParameter.expression,
+            isInput = true
+        )
     }
 }

@@ -236,7 +236,7 @@ internal class ExpressionCasterTest : BaseTest() {
                     Unit,
                     forEach,
                     ReferenceExpression(*),
-                    [FunctionLiteralExpression(Function, [KtValueParameter(y, Boolean, 0, 0)], *)],
+                    [FunctionLiteralExpression(Function, [KtValueParameter(y, Boolean, null, 0, 0)], *)],
                     [Boolean]
                 )
             """.trimIndent()
@@ -258,7 +258,7 @@ internal class ExpressionCasterTest : BaseTest() {
                     Unit,
                     forEach,
                     ReferenceExpression(*),
-                    [FunctionLiteralExpression(Function, [KtValueParameter(it, Boolean, 0, 0)], *)],
+                    [FunctionLiteralExpression(Function, [KtValueParameter(it, Boolean, null, 0, 0)], *)],
                     [Boolean]
                 )
             """.trimIndent()
@@ -378,7 +378,7 @@ internal class ExpressionCasterTest : BaseTest() {
             """
                 KtForStatement(
                     Unit,
-                    KtValueParameter(y, Boolean, 0, 0),
+                    KtValueParameter(y, Boolean, null, 0, 0),
                     ReferenceExpression(*),
                     BlockExpression(Unit, [])
                 )
@@ -399,7 +399,7 @@ internal class ExpressionCasterTest : BaseTest() {
             """
                 KtForStatement(
                     Unit,
-                    KtValueParameter(y, Boolean, 0, 0),
+                    KtValueParameter(y, Boolean, null, 0, 0),
                     ReferenceExpression(*),
                     BlockExpression(Unit, [*])
                 )

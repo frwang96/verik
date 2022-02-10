@@ -302,6 +302,11 @@ object DeclarationSerializer {
         if (TypeSerializer.isVirtual(valueParameter.type))
             serializeContext.append("virtual ")
         serializePropertyTypeAndName(valueParameter, serializeContext)
+        val expression = valueParameter.expression
+        if (expression != null) {
+            serializeContext.append(" = ")
+            serializeContext.serializeAsExpression(expression)
+        }
     }
 
     fun serializePort(port: EPort, serializeContext: SerializeContext) {

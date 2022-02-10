@@ -218,6 +218,7 @@ object CastIndexerStage : ProjectStage() {
                 name = name,
                 type = NullDeclaration.toType(),
                 annotationEntries = listOf(),
+                expression = null,
                 isPrimaryConstructorProperty = false,
                 isMutable = false
             )
@@ -237,6 +238,7 @@ object CastIndexerStage : ProjectStage() {
                     name = name,
                     type = NullDeclaration.toType(),
                     annotationEntries = listOf(),
+                    expression = null,
                     isPrimaryConstructorProperty = false,
                     isMutable = false
                 )

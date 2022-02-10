@@ -17,7 +17,6 @@
 package io.verik.compiler.serialize.source
 
 import io.verik.compiler.test.BaseTest
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 internal class DeclarationSerializerTest : BaseTest() {
@@ -189,7 +188,6 @@ internal class DeclarationSerializerTest : BaseTest() {
     }
 
     @Test
-    @Disabled
     fun `function default argument`() {
         driveTextFileTest(
             """
