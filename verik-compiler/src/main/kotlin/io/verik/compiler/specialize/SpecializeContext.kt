@@ -29,6 +29,10 @@ class SpecializeContext {
 
     fun register(declaration: EDeclaration, typeArguments: List<Type>, copiedDeclaration: EDeclaration) {
         originalDeclarations.add(declaration)
+        val typeParameterBinding = TypeParameterBinding(declaration, typeArguments)
+        if (typeParameterBinding in referenceForwardingMap) {
+            Messages.INTERNAL_ERROR.on(declaration, "Declaration has already been added to reference forwarding map")
+        }
         referenceForwardingMap[TypeParameterBinding(declaration, typeArguments)] = copiedDeclaration
     }
 
@@ -43,14 +47,16 @@ class SpecializeContext {
             ?: Messages.INTERNAL_ERROR.on(element, "Forwarded declaration not found: ${declaration.name}")
     }
 
-    fun getSpecializedDeclarations(declaration: EDeclaration): List<EDeclaration> {
-        val declarations = ArrayList<EDeclaration>()
-        referenceForwardingMap.forEach { (declarationBinding, specializedDeclaration) ->
-            if (declarationBinding.declaration == declaration) {
-                declarations.add(specializedDeclaration)
+    fun getTypeParameterBindings(declaration: EDeclaration): List<TypeParameterBinding> {
+        val typeParameterBindings = ArrayList<TypeParameterBinding>()
+        referenceForwardingMap.forEach { (typeParameterBinding, specializedDeclaration) ->
+            if (typeParameterBinding.declaration == declaration) {
+                typeParameterBindings.add(
+                    TypeParameterBinding(specializedDeclaration, typeParameterBinding.typeArguments)
+                )
             }
         }
-        return declarations
+        return typeParameterBindings
     }
 
     fun getOriginalDeclarations(): Set<EDeclaration> {

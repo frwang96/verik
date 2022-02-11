@@ -25,14 +25,29 @@ object M : Module() {
 
     val x0 = C0()
     val x1 = C1()
+    val x2 = C2<Int>()
+
+    @Run
+    fun f0() {
+        println(C0.x4)
+        println(C2.x5)
+    }
 }
 
 open class C0 {
 
     companion object {
 
-        val x2 = false
+        var x4 = false
     }
 }
 
 class C1: C0()
+
+class C2<T> {
+
+    companion object {
+
+        var x5 = false
+    }
+}

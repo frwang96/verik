@@ -171,13 +171,10 @@ object SpecializerCopier {
         specializeContext: SpecializeContext
     ): ECompanionObject {
         val type = companionObject.type.copy()
-        val declarations = companionObject.declarations
-            .filter { it !is EAbstractClass }
-            .map { copy(it, typeArguments, specializeContext) }
         val copiedCompanionObject = ECompanionObject(
             companionObject.location,
             type,
-            ArrayList(declarations)
+            ArrayList()
         )
         specializeContext.register(companionObject, typeArguments, copiedCompanionObject)
         return copiedCompanionObject

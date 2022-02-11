@@ -33,7 +33,7 @@ class C0;
     function automatic void __init();
     endfunction : __init
 
-    static logic x2 = 1'b0;
+    static logic x4 = 1'b0;
 
 endclass : C0
 
@@ -52,9 +52,35 @@ class C1 extends C0;
 
 endclass : C1
 
+class C2;
+
+    static logic x5 = 1'b0;
+
+endclass : C2
+
+class C2_T_Int;
+
+    static function automatic C2_T_Int __new();
+        C2_T_Int __2;
+        __2 = new();
+        __2.__init();
+        return __2;
+    endfunction : __new
+
+    function automatic void __init();
+    endfunction : __init
+
+endclass : C2_T_Int
+
 module M;
 
-    C0 x0 = C0::__new();
-    C1 x1 = C1::__new();
+    C0       x0 = C0::__new();
+    C1       x1 = C1::__new();
+    C2_T_Int x2 = C2_T_Int::__new();
+
+    initial begin : f0
+        $display($sformatf("%b", C0::x4));
+        $display($sformatf("%b", C2::x5));
+    end : f0
 
 endmodule : M
