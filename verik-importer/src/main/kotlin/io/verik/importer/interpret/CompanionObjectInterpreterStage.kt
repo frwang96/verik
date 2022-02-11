@@ -19,6 +19,7 @@ package io.verik.importer.interpret
 import io.verik.importer.ast.element.declaration.ECompanionObject
 import io.verik.importer.ast.element.declaration.EDeclaration
 import io.verik.importer.ast.element.declaration.EKtClass
+import io.verik.importer.ast.element.declaration.EProperty
 import io.verik.importer.ast.element.declaration.ESvAbstractFunction
 import io.verik.importer.ast.element.declaration.ESvConstructor
 import io.verik.importer.common.TreeVisitor
@@ -59,6 +60,7 @@ object CompanionObjectInterpreterStage : ProjectStage() {
             return when (declaration) {
                 is ESvConstructor -> false
                 is ESvAbstractFunction -> declaration.isStatic
+                is EProperty -> declaration.isStatic
                 else -> false
             }
         }

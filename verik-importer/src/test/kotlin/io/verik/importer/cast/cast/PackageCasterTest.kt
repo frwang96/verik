@@ -32,7 +32,7 @@ internal class PackageCasterTest : BaseTest() {
                     logic x;
                 endpackage
             """.trimIndent(),
-            "SvPackage(p, [Property(x, SimpleDescriptor(Boolean))])"
+            "SvPackage(p, [Property(x, SimpleDescriptor(Boolean), 0, 1)])"
         ) { it.findDeclaration("p") }
     }
 }

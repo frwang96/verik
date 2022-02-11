@@ -29,7 +29,7 @@ internal class CardinalTypeSimplifierStageTest : BaseTest() {
                 logic [1:0] x;
             """.trimIndent(),
             CardinalTypeSimplifierStage::class,
-            "Property(x, BitDescriptor(Ubit<`2`>, *, *, *))"
+            "Property(x, BitDescriptor(Ubit<`2`>, *, *, *), 0, 1)"
         ) { it.findDeclaration("x") }
     }
 }

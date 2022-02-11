@@ -32,7 +32,7 @@ internal class TypeArgumentCasterTest : BaseTest() {
             """.trimIndent(),
             """
                 Property(
-                    x, ReferenceDescriptor(Nothing, c, Nothing, [TypeArgument(null, SimpleDescriptor(Int))])
+                    x, ReferenceDescriptor(Nothing, c, Nothing, [TypeArgument(null, SimpleDescriptor(Int))]), 0, 1
                 )
             """.trimIndent()
         ) { it.findDeclaration("x") }
@@ -47,7 +47,7 @@ internal class TypeArgumentCasterTest : BaseTest() {
             """.trimIndent(),
             """
                 Property(
-                    x, ReferenceDescriptor(Nothing, c, Nothing, [TypeArgument(null, LiteralDescriptor(*))])
+                    x, ReferenceDescriptor(Nothing, c, Nothing, [TypeArgument(null, LiteralDescriptor(*))]), 0, 1
                 )
             """.trimIndent()
         ) { it.findDeclaration("x") }

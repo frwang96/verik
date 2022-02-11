@@ -48,10 +48,6 @@ object Messages {
         "Invalid timescale: $0"
     )
 
-    val UNRECOGNIZED_WARNING = WarningMessageTemplate1<String>(
-        "Unrecognized warning: $0"
-    )
-
     val MISSING_ENTRY_POINT = ErrorMessageTemplate1<String>(
         "Entry point not found: $0"
     )

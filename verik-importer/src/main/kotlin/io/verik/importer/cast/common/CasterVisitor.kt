@@ -90,6 +90,10 @@ class CasterVisitor(
 
 // A.1.9 Class Items ///////////////////////////////////////////////////////////////////////////////////////////////////
 
+    override fun visitClassProperty(ctx: SystemVerilogParser.ClassPropertyContext?): EElement {
+        return PropertyCaster.castPropertiesFromClassProperty(ctx!!, castContext)
+    }
+
     override fun visitClassMethodTask(ctx: SystemVerilogParser.ClassMethodTaskContext?): EElement? {
         return TaskCaster.castTaskFromClassMethodTask(ctx!!, castContext)
     }
