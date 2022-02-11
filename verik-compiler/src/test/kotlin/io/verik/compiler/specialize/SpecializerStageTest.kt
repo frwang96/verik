@@ -95,7 +95,7 @@ internal class SpecializerStageTest : BaseTest() {
                 val c = C<`8`>()
             """.trimIndent(),
             SpecializerStage::class,
-            "Property(x, Ubit<`8`>, CallExpression(*), 0)"
+            "Property(x, Ubit<`8`>, CallExpression(*), 0, 0)"
         ) { it.findDeclaration("x") }
     }
 
@@ -111,7 +111,7 @@ internal class SpecializerStageTest : BaseTest() {
                 val c = C<`8`>()
             """.trimIndent(),
             SpecializerStage::class,
-            "Property(x, Boolean, CallExpression(Boolean, f, null, [], []), 0)"
+            "Property(x, Boolean, CallExpression(Boolean, f, null, [], []), 0, 0)"
         ) { it.findDeclaration("x") }
     }
 
@@ -119,15 +119,33 @@ internal class SpecializerStageTest : BaseTest() {
     fun `specialize class with call expression not parameterized`() {
         driveElementTest(
             """
-                class D
-                class C<N : `*`> {
-                    val x = D()
+                class C0
+                class C1<N : `*`> {
+                    val x = C0()
                 }
-                val c = C<`8`>()
+                val c = C1<`8`>()
             """.trimIndent(),
             SpecializerStage::class,
-            "Property(x, D, CallExpression(D, D, null, [], []), 0)"
+            "Property(x, C0, CallExpression(C0, C0, null, [], []), 0, 0)"
         ) { it.findDeclaration("x") }
+    }
+
+    @Test
+    fun `specialize class nested class`() {
+        driveElementTest(
+            """
+                class C0 {
+                    class C1
+                }
+            """.trimIndent(),
+            SpecializerStage::class,
+            """
+                KtClass(
+                    C0, C0, [KtClass(C1, C1, [], [], 0, 0, 0, PrimaryConstructor(C1, C1, [], null))],
+                    [], 0, 0, 0, PrimaryConstructor(C0, C0, [], null)
+                )
+            """.trimIndent()
+        ) { it.findDeclaration("C0") }
     }
 
     @Test

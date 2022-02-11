@@ -14,36 +14,24 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.specialize
+package io.verik.compiler.interpret
 
 import io.verik.compiler.test.BaseTest
 import io.verik.compiler.test.findDeclaration
-import io.verik.compiler.test.findExpression
 import org.junit.jupiter.api.Test
 
-internal class SpecializerIndexerTest : BaseTest() {
+internal class CompanionObjectReducerStageTest : BaseTest() {
 
     @Test
-    fun `type resolved`() {
+    fun `reduce companion object`() {
         driveElementTest(
             """
-                class C<X: `*`>
-                val x: C<`1`> = C()
+                class C {
+                    companion object { var x = false }
+                }
             """.trimIndent(),
-            SpecializerStage::class,
-            "Property(x, C<`1`>, CallExpression(*), 0, 0)"
-        ) { it.findDeclaration("x") }
-    }
-
-    @Test
-    fun `primary constructor resolved`() {
-        driveElementTest(
-            """
-                class C<X: `*`>
-                val x = C<`1`>()
-            """.trimIndent(),
-            SpecializerStage::class,
-            "CallExpression(C<`*`>, C, null, [], [`1`])"
-        ) { it.findExpression("x") }
+            CompanionObjectReducerStage::class,
+            "SvClass(C, C, [SvFunction(*), SvFunction(*), Property(x, Boolean, ConstantExpression(*), 1, 1)], 0, 0)"
+        ) { it.findDeclaration("C") }
     }
 }

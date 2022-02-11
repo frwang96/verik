@@ -22,6 +22,7 @@ import org.gradle.api.Project
 import org.gradle.api.internal.artifacts.dependencies.DefaultProjectDependency
 import org.gradle.api.plugins.JavaPluginExtension
 import java.nio.file.Path
+import kotlin.io.path.extension
 
 object VerikConfigBuilder {
 
@@ -72,7 +73,7 @@ object VerikConfigBuilder {
             }
         }
         val filesSorted = files
-            .filter { it.toString().endsWith(".kt") }
+            .filter { it.extension == "kt" }
             .sorted()
         return SourceSetConfig(project.name, filesSorted)
     }

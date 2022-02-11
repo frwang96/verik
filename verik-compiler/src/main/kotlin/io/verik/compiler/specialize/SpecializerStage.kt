@@ -16,22 +16,24 @@
 
 package io.verik.compiler.specialize
 
-import io.verik.compiler.ast.common.TypeParameterized
+import io.verik.compiler.ast.element.declaration.common.EAbstractClass
 import io.verik.compiler.ast.element.declaration.common.EDeclaration
+import io.verik.compiler.ast.element.declaration.kt.ECompanionObject
 import io.verik.compiler.ast.element.declaration.kt.EKtClass
-import io.verik.compiler.ast.element.declaration.kt.ETypeAlias
-import io.verik.compiler.core.common.AnnotationEntries
+import io.verik.compiler.core.common.Core
 import io.verik.compiler.evaluate.CardinalTypeEvaluatorSubstage
 import io.verik.compiler.evaluate.ConstantPropagatorSubstage
 import io.verik.compiler.evaluate.ExpressionEvaluatorSubstage
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
+import io.verik.compiler.message.Messages
 import org.jetbrains.kotlin.backend.common.pop
 
 object SpecializerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
-        val typeParameterBindings = ArrayList(getEntryPoints(projectContext))
+        val entryPoints = EntryPointIndexer.getEntryPoints(projectContext)
+        val typeParameterBindings = ArrayList(entryPoints.map { TypeParameterBinding(it, listOf()) })
         val specializeContext = SpecializeContext()
         while (typeParameterBindings.isNotEmpty()) {
             val typeParameterBinding = typeParameterBindings.pop()
@@ -41,42 +43,11 @@ object SpecializerStage : ProjectStage() {
         }
 
         projectContext.project.files().forEach { file ->
-            val declarations = file.declarations.flatMap { specializeContext.getSpecializedDeclarations(it) }
+            val declarations = file.declarations.flatMap { getSpecializedDeclarations(it, specializeContext) }
             declarations.forEach { it.parent = file }
             file.declarations = ArrayList(declarations)
         }
         projectContext.specializeContext = specializeContext
-    }
-
-    private fun getEntryPoints(projectContext: ProjectContext): List<TypeParameterBinding> {
-        val declarations = ArrayList<EDeclaration>()
-        if (projectContext.config.enableDeadCodeElimination) {
-            projectContext.project.files().forEach { file ->
-                file.declarations.forEach {
-                    if (it is EKtClass && it.typeParameters.isEmpty()) {
-                        val isSynthesisTop = it.hasAnnotationEntry(AnnotationEntries.SYNTHESIS_TOP)
-                        val isSimulationTop = it.hasAnnotationEntry(AnnotationEntries.SIMULATION_TOP)
-                        if (isSynthesisTop || isSimulationTop) {
-                            val entryPointNames = projectContext.config.entryPoints
-                            if (entryPointNames.isEmpty() || it.name in entryPointNames) {
-                                declarations.add(it)
-                            }
-                        }
-                    }
-                }
-            }
-        } else {
-            projectContext.project.files().forEach { file ->
-                file.declarations.forEach {
-                    if (it !is TypeParameterized) {
-                        declarations.add(it)
-                    } else if (it !is ETypeAlias && it.typeParameters.isEmpty()) {
-                        declarations.add(it)
-                    }
-                }
-            }
-        }
-        return declarations.map { TypeParameterBinding(it, listOf()) }
     }
 
     private fun specialize(
@@ -94,5 +65,78 @@ object SpecializerStage : ProjectStage() {
         ExpressionEvaluatorSubstage.process(declaration, typeParameterBinding)
         OptionalReducerSubstage.process(declaration, typeParameterBinding)
         return SpecializerIndexer.index(declaration)
+    }
+
+    private fun getSpecializedDeclarations(
+        declaration: EDeclaration,
+        specializeContext: SpecializeContext
+    ): List<EDeclaration> {
+        val typeParameterBindings = specializeContext.getTypeParameterBindings(declaration)
+        val declarations = typeParameterBindings.map { it.declaration }
+        return when (declaration) {
+            is EKtClass -> {
+                val classDeclarations = declaration.declarations
+                    .filterIsInstance<EAbstractClass>()
+                    .flatMap { getSpecializedDeclarations(it, specializeContext) }
+                if (classDeclarations.isEmpty()) return declarations
+
+                val classWithoutTypeArguments = typeParameterBindings
+                    .find { it.typeArguments.isEmpty() }
+                    ?.let { it.declaration as EKtClass }
+                if (classWithoutTypeArguments != null) {
+                    if (declarations.size != 1) {
+                        Messages.INTERNAL_ERROR.on(declaration, "Unexpected class with type arguments")
+                    }
+                    classDeclarations.forEach { it.parent = classWithoutTypeArguments }
+                    classWithoutTypeArguments.declarations.addAll(classDeclarations)
+                    listOf(classWithoutTypeArguments)
+                } else {
+                    val cls = EKtClass(
+                        location = declaration.location,
+                        bodyStartLocation = declaration.location,
+                        bodyEndLocation = declaration.location,
+                        name = declaration.name,
+                        type = declaration.toType(),
+                        annotationEntries = listOf(),
+                        documentationLines = null,
+                        superType = Core.Kt.C_Any.toType(),
+                        declarations = ArrayList(classDeclarations),
+                        typeParameters = ArrayList(),
+                        isEnum = false,
+                        isAbstract = false,
+                        isObject = false,
+                        primaryConstructor = null
+                    )
+                    specializeContext.register(declaration, listOf(), cls)
+                    listOf(cls) + declarations
+                }
+            }
+            is ECompanionObject -> {
+                val companionObjectDeclarations = declaration.declarations
+                    .flatMap { getSpecializedDeclarations(it, specializeContext) }
+                if (companionObjectDeclarations.isEmpty()) return declarations
+
+                val companionObjectOrNull = typeParameterBindings
+                    .find { it.typeArguments.isEmpty() }
+                    ?.let { it.declaration as ECompanionObject }
+                if (companionObjectOrNull != null) {
+                    if (declarations.size != 1) {
+                        Messages.INTERNAL_ERROR.on(declaration, "Unexpected companion object with type arguments")
+                    }
+                    companionObjectDeclarations.forEach { it.parent = companionObjectOrNull }
+                    companionObjectOrNull.declarations.addAll(companionObjectDeclarations)
+                    listOf(companionObjectOrNull)
+                } else {
+                    val companionObject = ECompanionObject(
+                        declaration.location,
+                        declaration.type.copy(),
+                        ArrayList(companionObjectDeclarations)
+                    )
+                    specializeContext.register(declaration, listOf(), companionObject)
+                    listOf(companionObject)
+                }
+            }
+            else -> declarations
+        }
     }
 }

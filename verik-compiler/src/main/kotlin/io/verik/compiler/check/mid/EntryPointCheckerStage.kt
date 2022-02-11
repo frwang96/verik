@@ -40,13 +40,13 @@ object EntryPointCheckerStage : ProjectStage() {
 
         val names = ArrayList<String>()
 
-        override fun visitKtClass(`class`: EKtClass) {
-            super.visitKtClass(`class`)
-            if (`class`.type.isSubtype(Core.Vk.C_Module)) {
-                val isSynthesisTop = `class`.hasAnnotationEntry(AnnotationEntries.SYNTHESIS_TOP)
-                val isSimulationTop = `class`.hasAnnotationEntry(AnnotationEntries.SIMULATION_TOP)
+        override fun visitKtClass(cls: EKtClass) {
+            super.visitKtClass(cls)
+            if (cls.type.isSubtype(Core.Vk.C_Module)) {
+                val isSynthesisTop = cls.hasAnnotationEntry(AnnotationEntries.SYNTHESIS_TOP)
+                val isSimulationTop = cls.hasAnnotationEntry(AnnotationEntries.SIMULATION_TOP)
                 if (isSynthesisTop || isSimulationTop)
-                    names.add(`class`.name)
+                    names.add(cls.name)
             }
         }
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,22 +14,40 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.transform.upper
+// Test.kt /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-import io.verik.compiler.test.BaseTest
-import io.verik.compiler.test.findDeclaration
-import org.junit.jupiter.api.Test
+@file:Verik
 
-internal class UninitializedPropertyTransformerStageTest : BaseTest() {
+import io.verik.core.*
 
-    @Test
-    fun `uninitialized property`() {
-        driveElementTest(
-            """
-                val x: Boolean = nc()
-            """.trimIndent(),
-            UninitializedPropertyTransformerStage::class,
-            "Property(x, Boolean, null, 0, 0)"
-        ) { it.findDeclaration("x") }
+@SimTop
+object M : Module() {
+
+    val x0 = C0()
+    val x1 = C1()
+    val x2 = C2<Int>()
+
+    @Run
+    fun f0() {
+        println(C0.x4)
+        println(C2.x5)
+    }
+}
+
+open class C0 {
+
+    companion object {
+
+        var x4 = false
+    }
+}
+
+class C1: C0()
+
+class C2<T> {
+
+    companion object {
+
+        var x5 = false
     }
 }

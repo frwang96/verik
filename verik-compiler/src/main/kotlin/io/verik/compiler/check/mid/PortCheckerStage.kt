@@ -33,16 +33,16 @@ object PortCheckerStage : ProjectStage() {
 
     private object PortCheckerVisitor : TreeVisitor() {
 
-        override fun visitKtClass(`class`: EKtClass) {
-            super.visitKtClass(`class`)
+        override fun visitKtClass(cls: EKtClass) {
+            super.visitKtClass(cls)
             when {
-                `class`.type.isSubtype(Core.Vk.C_ClockingBlock) -> {
-                    `class`.primaryConstructor?.valueParameters?.forEach {
+                cls.type.isSubtype(Core.Vk.C_ClockingBlock) -> {
+                    cls.primaryConstructor?.valueParameters?.forEach {
                         if (it.name != "event") { checkPort(it) }
                     }
                 }
-                `class`.type.isSubtype(Core.Vk.C_Component) ->
-                    `class`.primaryConstructor?.valueParameters?.forEach { checkPort(it) }
+                cls.type.isSubtype(Core.Vk.C_Component) ->
+                    cls.primaryConstructor?.valueParameters?.forEach { checkPort(it) }
             }
         }
 

@@ -17,6 +17,7 @@
 package io.verik.compiler.interpret
 
 import io.verik.compiler.ast.element.declaration.common.EDeclaration
+import io.verik.compiler.ast.element.declaration.kt.ECompanionObject
 import io.verik.compiler.ast.element.declaration.kt.EKtFunction
 import io.verik.compiler.ast.element.declaration.kt.EKtValueParameter
 import io.verik.compiler.ast.element.declaration.sv.EAlwaysComBlock
@@ -151,15 +152,13 @@ object FunctionInterpreterStage : ProjectStage() {
 
         private fun getFunction(function: EKtFunction): ESvFunction {
             val valueParameters = getValueParameters(function.valueParameters, referenceUpdater)
-            val isStatic = when (val parent = function.parent) {
-                is ESvClass -> parent.isDeclarationsStatic
-                else -> false
-            }
+            val parent = function.parent
+            val isStatic = (parent is ESvClass && parent.isObject) || parent is ECompanionObject
             val qualifierType = when {
                 function.isAbstract -> FunctionQualifierType.PURE_VIRTUAL
-                function.parent is ESvClass -> {
+                parent is ESvClass -> {
                     when {
-                        isStatic -> FunctionQualifierType.REGULAR
+                        parent.isObject -> FunctionQualifierType.REGULAR
                         function.isOverride -> FunctionQualifierType.REGULAR
                         else -> FunctionQualifierType.VIRTUAL
                     }

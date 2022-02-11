@@ -31,17 +31,17 @@ object PackageNameTransformerStage : ProjectStage() {
 
     private object PackageNameTransformerVisitor : TreeVisitor() {
 
-        override fun visitPackage(`package`: EPackage) {
-            when (`package`.packageType) {
+        override fun visitPackage(pkg: EPackage) {
+            when (pkg.packageType) {
                 PackageType.REGULAR_NON_ROOT -> {
-                    if (!`package`.name.matches(Regex("[a-zA-Z][a-zA-Z\\d]*(\\.[a-zA-Z][a-zA-Z\\d]*)*")))
-                        Messages.INTERNAL_ERROR.on(`package`, "Unable to transform package name: ${`package`.name}")
-                    val names = `package`.name.split(".")
+                    if (!pkg.name.matches(Regex("[a-zA-Z][a-zA-Z\\d]*(\\.[a-zA-Z][a-zA-Z\\d]*)*")))
+                        Messages.INTERNAL_ERROR.on(pkg, "Unable to transform package name: ${pkg.name}")
+                    val names = pkg.name.split(".")
                     val name = names.joinToString(separator = "_", postfix = "_pkg")
-                    `package`.name = name
+                    pkg.name = name
                 }
                 PackageType.IMPORTED_NON_ROOT -> {
-                    `package`.name = `package`.name.substringAfterLast(".")
+                    pkg.name = pkg.name.substringAfterLast(".")
                 }
                 else -> {}
             }

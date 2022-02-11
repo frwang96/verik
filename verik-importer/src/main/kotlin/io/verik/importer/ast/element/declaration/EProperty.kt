@@ -26,7 +26,7 @@ class EProperty(
     override val name: String,
     override var signature: String?,
     var descriptor: EDescriptor,
-    val isMutable: Boolean,
+    val isMutable: Boolean
 ) : EDeclaration(), DescriptorContainer {
 
     init {

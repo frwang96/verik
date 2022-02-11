@@ -68,21 +68,21 @@ object DeclarationSerializer {
         serializeContext.appendLine()
     }
 
-    fun serializeClass(`class`: ESvClass, serializeContext: SerializeContext) {
-        if (`class`.isVirtual)
+    fun serializeClass(cls: ESvClass, serializeContext: SerializeContext) {
+        if (cls.isVirtual)
             serializeContext.append("virtual ")
-        serializeContext.append("class ${`class`.name}")
-        val superType = `class`.superType
+        serializeContext.append("class ${cls.name}")
+        val superType = cls.superType
         if (superType.reference != Core.Kt.C_Any) {
             serializeContext.append(" extends ${superType.reference.name}")
         }
         serializeContext.appendLine(";")
         serializeContext.indent {
-            `class`.declarations.forEach { serializeContext.serializeAsDeclaration(it) }
+            cls.declarations.forEach { serializeContext.serializeAsDeclaration(it) }
             serializeContext.appendLine()
         }
-        serializeContext.label(`class`.bodyEndLocation) {
-            serializeContext.appendLine("endclass : ${`class`.name}")
+        serializeContext.label(cls.bodyEndLocation) {
+            serializeContext.appendLine("endclass : ${cls.name}")
         }
     }
 
@@ -135,9 +135,7 @@ object DeclarationSerializer {
     }
 
     fun serializeFunction(function: ESvFunction, serializeContext: SerializeContext) {
-        if (function.isStatic()) {
-            serializeContext.append("static ")
-        }
+        if (function.isStatic) serializeContext.append("static ")
         when (function.qualifierType) {
             FunctionQualifierType.VIRTUAL -> serializeContext.append("virtual ")
             FunctionQualifierType.PURE_VIRTUAL -> serializeContext.append("pure virtual ")
@@ -201,6 +199,7 @@ object DeclarationSerializer {
     }
 
     fun serializeProperty(property: EProperty, serializeContext: SerializeContext) {
+        if (property.isStatic) serializeContext.append("static ")
         if (TypeSerializer.isVirtual(property.type))
             serializeContext.append("virtual ")
         serializePropertyTypeAndName(property, serializeContext)

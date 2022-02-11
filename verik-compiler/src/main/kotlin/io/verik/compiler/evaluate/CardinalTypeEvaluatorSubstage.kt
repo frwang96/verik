@@ -123,9 +123,9 @@ object CardinalTypeEvaluatorSubstage : SpecializerSubstage() {
             typedElement.type = evaluate(typedElement.type, typedElement)
         }
 
-        override fun visitKtClass(`class`: EKtClass) {
-            super.visitKtClass(`class`)
-            `class`.superType = evaluate(`class`.superType, `class`)
+        override fun visitKtClass(cls: EKtClass) {
+            super.visitKtClass(cls)
+            cls.superType = evaluate(cls.superType, cls)
         }
 
         override fun visitCallExpression(callExpression: ECallExpression) {

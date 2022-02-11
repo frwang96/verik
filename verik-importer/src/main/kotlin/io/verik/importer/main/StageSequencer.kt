@@ -19,8 +19,8 @@ package io.verik.importer.main
 import io.verik.importer.cast.common.CasterStage
 import io.verik.importer.check.UninterpretedDeclarationCheckerStage
 import io.verik.importer.interpret.ClassInterpreterStage
+import io.verik.importer.interpret.CompanionObjectInterpreterStage
 import io.verik.importer.interpret.FunctionInterpreterStage
-import io.verik.importer.interpret.ObjectInterpreterStage
 import io.verik.importer.interpret.PackageInterpreterStage
 import io.verik.importer.parse.ParserStage
 import io.verik.importer.preprocess.PreprocessorFilterStage
@@ -56,7 +56,7 @@ object StageSequencer {
 
         stageSequence.add(StageType.INTERPRET, PackageInterpreterStage)
         stageSequence.add(StageType.INTERPRET, ClassInterpreterStage)
-        stageSequence.add(StageType.INTERPRET, ObjectInterpreterStage)
+        stageSequence.add(StageType.INTERPRET, CompanionObjectInterpreterStage)
         stageSequence.add(StageType.INTERPRET, FunctionInterpreterStage)
 
         stageSequence.add(StageType.POST_TRANSFORM, UnresolvedDeclarationEliminatorStage)

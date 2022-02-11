@@ -37,24 +37,24 @@ object StructInterpreterStage : ProjectStage() {
 
     private class StructInterpreterVisitor(private val referenceUpdater: ReferenceUpdater) : TreeVisitor() {
 
-        override fun visitKtClass(`class`: EKtClass) {
-            super.visitKtClass(`class`)
-            if (`class`.type.isSubtype(Core.Vk.C_Struct)) {
-                val properties = `class`.primaryConstructor!!
+        override fun visitKtClass(cls: EKtClass) {
+            super.visitKtClass(cls)
+            if (cls.type.isSubtype(Core.Vk.C_Struct)) {
+                val properties = cls.primaryConstructor!!
                     .valueParameters
                     .map { interpretProperty(it, referenceUpdater) }
                 val struct = EStruct(
-                    `class`.location,
-                    `class`.bodyStartLocation,
-                    `class`.bodyEndLocation,
-                    `class`.name,
-                    `class`.type,
-                    `class`.annotationEntries,
-                    `class`.documentationLines,
+                    cls.location,
+                    cls.bodyStartLocation,
+                    cls.bodyEndLocation,
+                    cls.name,
+                    cls.type,
+                    cls.annotationEntries,
+                    cls.documentationLines,
                     properties
                 )
-                referenceUpdater.replace(`class`, struct)
-                referenceUpdater.update(`class`.primaryConstructor!!, struct)
+                referenceUpdater.replace(cls, struct)
+                referenceUpdater.update(cls.primaryConstructor!!, struct)
             }
         }
 

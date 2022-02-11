@@ -35,24 +35,24 @@ object PackageWrapperSerializerStage : ProjectStage() {
         projectContext.outputContext.packageWrapperTextFiles = packageWrapperTextFiles
     }
 
-    private fun serialize(projectContext: ProjectContext, `package`: EPackage): TextFile? {
-        if (`package`.files.all { it.isEmptySerialization() })
+    private fun serialize(projectContext: ProjectContext, pkg: EPackage): TextFile? {
+        if (pkg.files.all { it.isEmptySerialization() })
             return null
 
-        val outputPath = `package`.outputPath.resolve("Pkg.sv")
+        val outputPath = pkg.outputPath.resolve("Pkg.sv")
         val fileHeader = FileHeaderBuilder.build(
             projectContext.config,
             null,
             outputPath,
             FileHeaderBuilder.HeaderStyle.SYSTEM_VERILOG
         )
-        val packageName = `package`.name
+        val packageName = pkg.name
         val indent = " ".repeat(projectContext.config.indentLength)
 
         val builder = StringBuilder()
         builder.append(fileHeader)
         builder.appendLine("package $packageName;")
-        `package`.files.forEach { file ->
+        pkg.files.forEach { file ->
             file.declarations.forEach {
                 if (it is ESvClass) {
                     builder.appendLine()
@@ -61,7 +61,7 @@ object PackageWrapperSerializerStage : ProjectStage() {
                 }
             }
         }
-        `package`.files.forEach {
+        pkg.files.forEach {
             if (!it.isEmptySerialization()) {
                 val pathString = Platform.getStringFromPath(
                     projectContext.config.buildDir.relativize(it.outputPath)

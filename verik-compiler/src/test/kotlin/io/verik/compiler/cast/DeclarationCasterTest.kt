@@ -107,7 +107,7 @@ internal class DeclarationCasterTest : BaseTest() {
             """
                 KtClass(
                     C, C,
-                    [Property(x, Boolean, ConstantExpression(*), 0)],
+                    [Property(x, Boolean, ConstantExpression(*), 0, 0)],
                     [], 0, 0, 0,
                     PrimaryConstructor(C, C, [], null)
                 )
@@ -122,14 +122,7 @@ internal class DeclarationCasterTest : BaseTest() {
                 class C { companion object }
             """.trimIndent(),
             CasterStage::class,
-            """
-                KtClass(
-                    C, C,
-                    [KtClass(Companion, Companion, [], [], 0, 0, 1, null)],
-                    [], 0, 0, 0,
-                    PrimaryConstructor(C, C, [], null)
-                )
-            """.trimIndent()
+            "KtClass(C, C, [CompanionObject(Companion, [])], [], 0, 0, 0, PrimaryConstructor(C, C, [], null))"
         ) { it.findDeclaration("C") }
     }
 
@@ -250,7 +243,7 @@ internal class DeclarationCasterTest : BaseTest() {
                 var x = false
             """.trimIndent(),
             CasterStage::class,
-            "Property(x, Boolean, ConstantExpression(*), 1)"
+            "Property(x, Boolean, ConstantExpression(*), 1, 0)"
         ) { it.findDeclaration("x") }
     }
 }

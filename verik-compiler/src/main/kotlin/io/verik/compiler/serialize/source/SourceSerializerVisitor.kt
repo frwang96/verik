@@ -131,8 +131,8 @@ class SourceSerializerVisitor(
         DeclarationSerializer.serializeInjectedProperty(injectedProperty, serializeContext)
     }
 
-    override fun visitSvClass(`class`: ESvClass) {
-        DeclarationSerializer.serializeClass(`class`, serializeContext)
+    override fun visitSvClass(cls: ESvClass) {
+        DeclarationSerializer.serializeClass(cls, serializeContext)
     }
 
     override fun visitModule(module: EModule) {

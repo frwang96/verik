@@ -17,6 +17,7 @@
 package io.verik.importer.serialize.source
 
 import io.verik.importer.ast.element.common.EElement
+import io.verik.importer.ast.element.declaration.ECompanionObject
 import io.verik.importer.ast.element.declaration.EEnum
 import io.verik.importer.ast.element.declaration.EEnumEntry
 import io.verik.importer.ast.element.declaration.EKtClass
@@ -37,8 +38,12 @@ class SourceSerializerVisitor(
         Messages.INTERNAL_ERROR.on(element, "Unable to serialize element: $element")
     }
 
-    override fun visitKtClass(`class`: EKtClass) {
-        DeclarationSerializer.serializeClass(`class`, serializeContext)
+    override fun visitKtClass(cls: EKtClass) {
+        DeclarationSerializer.serializeClass(cls, serializeContext)
+    }
+
+    override fun visitCompanionObject(companionObject: ECompanionObject) {
+        DeclarationSerializer.serializeCompanionObject(companionObject, serializeContext)
     }
 
     override fun visitEnum(enum: EEnum) {

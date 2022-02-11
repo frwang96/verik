@@ -19,6 +19,7 @@ package io.verik.compiler.cast
 import io.verik.compiler.ast.element.declaration.common.EEnumEntry
 import io.verik.compiler.ast.element.declaration.common.EProperty
 import io.verik.compiler.ast.element.declaration.common.ETypeParameter
+import io.verik.compiler.ast.element.declaration.kt.ECompanionObject
 import io.verik.compiler.ast.element.declaration.kt.EKtClass
 import io.verik.compiler.ast.element.declaration.kt.EKtFunction
 import io.verik.compiler.ast.element.declaration.kt.EKtValueParameter
@@ -35,6 +36,7 @@ import org.jetbrains.kotlin.psi.KtClassOrObject
 import org.jetbrains.kotlin.psi.KtEnumEntry
 import org.jetbrains.kotlin.psi.KtLambdaExpression
 import org.jetbrains.kotlin.psi.KtNamedFunction
+import org.jetbrains.kotlin.psi.KtObjectDeclaration
 import org.jetbrains.kotlin.psi.KtParameter
 import org.jetbrains.kotlin.psi.KtPrimaryConstructor
 import org.jetbrains.kotlin.psi.KtProperty
@@ -86,6 +88,17 @@ object CastIndexerStage : ProjectStage() {
             val descriptor = castContext.sliceClass[classOrObject]!!
             val location = classOrObject.nameIdentifier?.location()
                 ?: classOrObject.getDeclarationKeyword()!!.location()
+
+            if (classOrObject is KtObjectDeclaration && classOrObject.isCompanion()) {
+                val indexedCompanionObject = ECompanionObject(
+                    location,
+                    NullDeclaration.toType(),
+                    ArrayList()
+                )
+                castContext.registerDeclaration(descriptor, indexedCompanionObject)
+                return
+            }
+
             val bodyStartLocation = classOrObject.body?.lBrace?.location()
                 ?: classOrObject.endLocation()
             val bodyEndLocation = classOrObject.endLocation()
@@ -187,7 +200,8 @@ object CastIndexerStage : ProjectStage() {
                 annotationEntries = listOf(),
                 documentationLines = null,
                 initializer = null,
-                isMutable = false
+                isMutable = false,
+                isStatic = false
             )
             castContext.registerDeclaration(descriptor, indexedProperty)
         }

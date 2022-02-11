@@ -14,35 +14,25 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.resolve
+package io.verik.importer.interpret
 
-import io.verik.compiler.test.BaseTest
-import io.verik.compiler.test.findDeclaration
+import io.verik.importer.test.BaseTest
+import io.verik.importer.test.findDeclaration
 import org.junit.jupiter.api.Test
 
-internal class TypeReferenceForwarderStageTest : BaseTest() {
+internal class CompanionObjectInterpreterStageTest : BaseTest() {
 
     @Test
-    fun `forward type not parameterized`() {
+    fun `interpret companion object`() {
         driveElementTest(
             """
-                class C
-                val x = C()
+                class c;
+                    static function void f();
+                    endfunction
+                endclass
             """.trimIndent(),
-            TypeReferenceForwarderStage::class,
-            "Property(x, C, *, 0, 0)"
-        ) { it.findDeclaration("x") }
-    }
-
-    @Test
-    fun `forward type parameterized`() {
-        driveElementTest(
-            """
-                class C<N : `*`>
-                val x = C<`1`>()
-            """.trimIndent(),
-            TypeReferenceForwarderStage::class,
-            "Property(x, C_N_1, *, 0, 0)"
-        ) { it.findDeclaration("x") }
+            CompanionObjectInterpreterStage::class,
+            "KtClass(c, [CompanionObject([SvFunction(*)])], [], [], SimpleDescriptor(Any), 1)"
+        ) { it.findDeclaration("c") }
     }
 }

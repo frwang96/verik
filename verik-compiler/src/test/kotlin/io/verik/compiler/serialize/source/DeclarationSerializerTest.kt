@@ -231,6 +231,24 @@ internal class DeclarationSerializerTest : BaseTest() {
     }
 
     @Test
+    fun `property static`() {
+        driveTextFileTest(
+            """
+                object O {
+                    var x = false
+                }
+            """.trimIndent(),
+            """
+                class O;
+
+                    static logic x = 1'b0;
+
+                endclass : O
+            """.trimIndent()
+        ) { it.nonRootPackageTextFiles[0] }
+    }
+
+    @Test
     fun `property with documentation`() {
         driveTextFileTest(
             """

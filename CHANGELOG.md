@@ -5,12 +5,15 @@
 - Fix function override bugs.
 - Merge expressions with descriptors.
 - Add classes `Queue`, `AssociativeArray`, and `DynamicArray` to mirror SystemVerilog.
+- Static functions as functions of companion objects.
 
 ### Compiler
 - Rename `onr` to `oni`.
 - Support secondary constructors.
 - Replace `ENullExpression` with `ENothingExpression`.
 - Support optional value parameters.
+- Unwrap companion objects.
+- Separately specialize nested classes.
 
 ## [0.1.13]
 ### Importer

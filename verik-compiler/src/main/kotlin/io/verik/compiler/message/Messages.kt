@@ -218,10 +218,6 @@ object Messages {
         "Property assigned as optional must be declared as val"
     )
 
-    val UNRESOLVED_CALL_EXPRESSION_TYPE_ARGUMENTS = ErrorMessageTemplate1<String>(
-        "Type arguments must be explicitly provided: $0"
-    )
-
 //  RESOLVE  ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     val INDETERMINATE_SLICE_WIDTH = ErrorMessageTemplate0(

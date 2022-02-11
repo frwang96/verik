@@ -118,9 +118,9 @@ object DeadDeclarationEliminatorStage : ProjectStage() {
             file.declarations = filter(file.declarations)
         }
 
-        override fun visitSvClass(`class`: ESvClass) {
-            super.visitSvClass(`class`)
-            `class`.declarations = filter(`class`.declarations)
+        override fun visitSvClass(cls: ESvClass) {
+            super.visitSvClass(cls)
+            cls.declarations = filter(cls.declarations)
         }
 
         override fun visitAbstractContainerComponent(abstractContainerComponent: EAbstractContainerComponent) {

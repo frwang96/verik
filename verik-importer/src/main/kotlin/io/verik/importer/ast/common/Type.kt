@@ -16,6 +16,8 @@
 
 package io.verik.importer.ast.common
 
+import io.verik.importer.ast.element.declaration.EKtClass
+import io.verik.importer.ast.element.declaration.ETypeAlias
 import io.verik.importer.core.CardinalConstantDeclaration
 import io.verik.importer.core.Core
 
@@ -34,6 +36,15 @@ class Type(
             false
         } else {
             reference != Core.C_Nothing
+        }
+    }
+
+    fun isNullable(): Boolean {
+        return when (val reference = reference) {
+            is ETypeAlias -> reference.descriptor.type.isNullable()
+            is EKtClass -> reference.superDescriptor.type.isNullable()
+            Core.C_Any -> true
+            else -> false
         }
     }
 

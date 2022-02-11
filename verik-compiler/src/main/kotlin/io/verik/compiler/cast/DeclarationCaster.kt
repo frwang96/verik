@@ -20,6 +20,7 @@ import io.verik.compiler.ast.common.cast
 import io.verik.compiler.ast.element.declaration.common.EEnumEntry
 import io.verik.compiler.ast.element.declaration.common.EProperty
 import io.verik.compiler.ast.element.declaration.common.ETypeParameter
+import io.verik.compiler.ast.element.declaration.kt.ECompanionObject
 import io.verik.compiler.ast.element.declaration.kt.EKtClass
 import io.verik.compiler.ast.element.declaration.kt.EKtFunction
 import io.verik.compiler.ast.element.declaration.kt.EKtValueParameter
@@ -120,6 +121,20 @@ object DeclarationCaster {
             primaryConstructor = primaryConstructor,
         )
         return castedClass
+    }
+
+    fun castCompanionObject(objectDeclaration: KtObjectDeclaration, castContext: CastContext): ECompanionObject {
+        val descriptor = castContext.sliceClass[objectDeclaration]!!
+        val castedCompanionObject = castContext.resolveDeclaration(descriptor, objectDeclaration)
+            .cast<ECompanionObject>(objectDeclaration)
+
+        val type = castContext.castType(descriptor.defaultType, objectDeclaration)
+        val declarations = objectDeclaration.declarations.mapNotNull {
+            castContext.castDeclaration(it)
+        }
+
+        castedCompanionObject.fill(type, declarations)
+        return castedCompanionObject
     }
 
     fun castFunction(function: KtNamedFunction, castContext: CastContext): EKtFunction {

@@ -61,9 +61,9 @@ object ConstantPropertyEliminatorStage : ProjectStage() {
             file.declarations = filterDeclarations(file.declarations)
         }
 
-        override fun visitKtClass(`class`: EKtClass) {
-            super.visitKtClass(`class`)
-            `class`.declarations = filterDeclarations(`class`.declarations)
+        override fun visitKtClass(cls: EKtClass) {
+            super.visitKtClass(cls)
+            cls.declarations = filterDeclarations(cls.declarations)
         }
 
         override fun visitBlockExpression(blockExpression: EBlockExpression) {

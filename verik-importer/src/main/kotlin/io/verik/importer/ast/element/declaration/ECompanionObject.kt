@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,22 +14,24 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.transform.upper
+package io.verik.importer.ast.element.declaration
 
-import io.verik.compiler.test.BaseTest
-import io.verik.compiler.test.findDeclaration
-import org.junit.jupiter.api.Test
+import io.verik.importer.common.Visitor
+import io.verik.importer.message.SourceLocation
 
-internal class UninitializedPropertyTransformerStageTest : BaseTest() {
+class ECompanionObject(
+    override val location: SourceLocation,
+    override var declarations: ArrayList<EDeclaration>
+) : EContainerDeclaration() {
 
-    @Test
-    fun `uninitialized property`() {
-        driveElementTest(
-            """
-                val x: Boolean = nc()
-            """.trimIndent(),
-            UninitializedPropertyTransformerStage::class,
-            "Property(x, Boolean, null, 0, 0)"
-        ) { it.findDeclaration("x") }
+    override val name = "Companion"
+    override var signature: String? = null
+
+    init {
+        declarations.forEach { it.parent = this }
+    }
+
+    override fun accept(visitor: Visitor) {
+        visitor.visitCompanionObject(this)
     }
 }

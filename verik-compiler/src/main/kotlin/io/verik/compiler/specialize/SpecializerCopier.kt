@@ -18,9 +18,11 @@ package io.verik.compiler.specialize
 
 import io.verik.compiler.ast.common.Type
 import io.verik.compiler.ast.element.common.EElement
+import io.verik.compiler.ast.element.declaration.common.EAbstractClass
 import io.verik.compiler.ast.element.declaration.common.EEnumEntry
 import io.verik.compiler.ast.element.declaration.common.EProperty
 import io.verik.compiler.ast.element.declaration.common.ETypeParameter
+import io.verik.compiler.ast.element.declaration.kt.ECompanionObject
 import io.verik.compiler.ast.element.declaration.kt.EKtClass
 import io.verik.compiler.ast.element.declaration.kt.EKtFunction
 import io.verik.compiler.ast.element.declaration.kt.EKtValueParameter
@@ -58,6 +60,8 @@ object SpecializerCopier {
                 copyTypeParameter(element, typeArguments, specializeContext)
             is EKtClass ->
                 copyKtClass(element, typeArguments, specializeContext)
+            is ECompanionObject ->
+                copyCompanionObject(element, typeArguments, specializeContext)
             is EKtFunction ->
                 copyKtFunction(element, typeArguments, specializeContext)
             is EPrimaryConstructor ->
@@ -130,33 +134,50 @@ object SpecializerCopier {
     }
 
     private fun copyKtClass(
-        `class`: EKtClass,
+        cls: EKtClass,
         typeArguments: List<Type>,
-        specializeContext: SpecializeContext,
+        specializeContext: SpecializeContext
     ): EKtClass {
-        val type = `class`.type.copy()
-        val superType = `class`.superType.copy()
-        val declarations = `class`.declarations.map { copy(it, typeArguments, specializeContext) }
-        val typeParameters = `class`.typeParameters.map { copy(it, typeArguments, specializeContext) }
-        val primaryConstructor = `class`.primaryConstructor?.let { copy(it, typeArguments, specializeContext) }
+        val type = cls.type.copy()
+        val superType = cls.superType.copy()
+        val declarations = cls.declarations
+            .filter { it !is EAbstractClass }
+            .map { copy(it, typeArguments, specializeContext) }
+        val typeParameters = cls.typeParameters.map { copy(it, typeArguments, specializeContext) }
+        val primaryConstructor = cls.primaryConstructor?.let { copy(it, typeArguments, specializeContext) }
         val copiedClass = EKtClass(
-            location = `class`.location,
-            bodyStartLocation = `class`.bodyStartLocation,
-            bodyEndLocation = `class`.bodyEndLocation,
-            name = `class`.name,
+            location = cls.location,
+            bodyStartLocation = cls.bodyStartLocation,
+            bodyEndLocation = cls.bodyEndLocation,
+            name = cls.name,
             type = type,
-            annotationEntries = `class`.annotationEntries,
-            documentationLines = `class`.documentationLines,
+            annotationEntries = cls.annotationEntries,
+            documentationLines = cls.documentationLines,
             superType = superType,
             declarations = ArrayList(declarations),
             typeParameters = ArrayList(typeParameters),
-            isEnum = `class`.isEnum,
-            isAbstract = `class`.isAbstract,
-            isObject = `class`.isObject,
+            isEnum = cls.isEnum,
+            isAbstract = cls.isAbstract,
+            isObject = cls.isObject,
             primaryConstructor = primaryConstructor
         )
-        specializeContext.register(`class`, typeArguments, copiedClass)
+        specializeContext.register(cls, typeArguments, copiedClass)
         return copiedClass
+    }
+
+    private fun copyCompanionObject(
+        companionObject: ECompanionObject,
+        typeArguments: List<Type>,
+        specializeContext: SpecializeContext
+    ): ECompanionObject {
+        val type = companionObject.type.copy()
+        val copiedCompanionObject = ECompanionObject(
+            companionObject.location,
+            type,
+            ArrayList()
+        )
+        specializeContext.register(companionObject, typeArguments, copiedCompanionObject)
+        return copiedCompanionObject
     }
 
     private fun copyKtFunction(
@@ -242,7 +263,8 @@ object SpecializerCopier {
             annotationEntries = property.annotationEntries,
             documentationLines = property.documentationLines,
             initializer = initializer,
-            isMutable = property.isMutable
+            isMutable = property.isMutable,
+            isStatic = property.isStatic
         )
         specializeContext.register(property, typeArguments, copiedProperty)
         return copiedProperty

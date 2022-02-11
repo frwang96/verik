@@ -113,7 +113,8 @@ object ExpressionCopier {
                 propertyStatement.property.annotationEntries,
                 propertyStatement.property.documentationLines,
                 initializer,
-                propertyStatement.property.isMutable
+                propertyStatement.property.isMutable,
+                propertyStatement.property.isStatic
             )
             EPropertyStatement(
                 propertyStatement.location,

@@ -43,21 +43,21 @@ object AnnotationEntryCheckerStage : ProjectStage() {
             AnnotationEntries.TASK
         )
 
-        override fun visitKtClass(`class`: EKtClass) {
-            super.visitKtClass(`class`)
-            val isSynthesisTop = `class`.hasAnnotationEntry(AnnotationEntries.SYNTHESIS_TOP)
-            val isSimulationTop = `class`.hasAnnotationEntry(AnnotationEntries.SIMULATION_TOP)
+        override fun visitKtClass(cls: EKtClass) {
+            super.visitKtClass(cls)
+            val isSynthesisTop = cls.hasAnnotationEntry(AnnotationEntries.SYNTHESIS_TOP)
+            val isSimulationTop = cls.hasAnnotationEntry(AnnotationEntries.SIMULATION_TOP)
             if (isSimulationTop && isSynthesisTop)
                 Messages.CONFLICTING_ANNOTATIONS.on(
-                    `class`,
+                    cls,
                     AnnotationEntries.SYNTHESIS_TOP,
                     AnnotationEntries.SIMULATION_TOP
                 )
             if (isSimulationTop || isSynthesisTop) {
-                if (!`class`.type.isSubtype(Core.Vk.C_Module))
-                    Messages.TOP_NOT_MODULE.on(`class`)
-                if (`class`.typeParameters.isNotEmpty())
-                    Messages.TOP_PARAMETERIZED.on(`class`)
+                if (!cls.type.isSubtype(Core.Vk.C_Module))
+                    Messages.TOP_NOT_MODULE.on(cls)
+                if (cls.typeParameters.isNotEmpty())
+                    Messages.TOP_PARAMETERIZED.on(cls)
             }
         }
 

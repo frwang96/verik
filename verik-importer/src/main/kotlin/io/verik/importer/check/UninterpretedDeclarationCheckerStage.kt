@@ -16,6 +16,7 @@
 
 package io.verik.importer.check
 
+import io.verik.importer.ast.element.declaration.ECompanionObject
 import io.verik.importer.ast.element.declaration.EDeclaration
 import io.verik.importer.ast.element.declaration.EEnum
 import io.verik.importer.ast.element.declaration.EEnumEntry
@@ -56,6 +57,7 @@ object UninterpretedDeclarationCheckerStage : ProjectStage() {
                 is EKtPackage -> true
                 is EKtFile -> true
                 is EKtClass -> true
+                is ECompanionObject -> true
                 is EEnum -> true
                 is ETypeAlias -> true
                 is ETypeParameter -> true

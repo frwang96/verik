@@ -23,6 +23,7 @@ import io.verik.compiler.ast.element.declaration.common.EFile
 import io.verik.compiler.ast.element.declaration.common.EPackage
 import io.verik.compiler.ast.element.declaration.common.EProperty
 import io.verik.compiler.ast.element.declaration.common.ETypeParameter
+import io.verik.compiler.ast.element.declaration.kt.ECompanionObject
 import io.verik.compiler.ast.element.declaration.kt.EKtClass
 import io.verik.compiler.ast.element.declaration.kt.EKtFunction
 import io.verik.compiler.ast.element.declaration.kt.EKtValueParameter
@@ -114,11 +115,11 @@ class ElementPrinter : Visitor() {
         }
     }
 
-    override fun visitPackage(`package`: EPackage) {
+    override fun visitPackage(pkg: EPackage) {
         build("Package") {
-            build(`package`.name)
-            build(`package`.files)
-            build(`package`.packageType.toString())
+            build(pkg.name)
+            build(pkg.files)
+            build(pkg.packageType.toString())
         }
     }
 
@@ -150,28 +151,35 @@ class ElementPrinter : Visitor() {
         }
     }
 
-//  CLASS  /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//  Class  /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    override fun visitKtClass(`class`: EKtClass) {
+    override fun visitKtClass(cls: EKtClass) {
         build("KtClass") {
-            build(`class`.name)
-            build(`class`.type.toString())
-            build(`class`.declarations)
-            build(`class`.typeParameters)
-            build(`class`.isEnum)
-            build(`class`.isAbstract)
-            build(`class`.isObject)
-            build(`class`.primaryConstructor)
+            build(cls.name)
+            build(cls.type.toString())
+            build(cls.declarations)
+            build(cls.typeParameters)
+            build(cls.isEnum)
+            build(cls.isAbstract)
+            build(cls.isObject)
+            build(cls.primaryConstructor)
         }
     }
 
-    override fun visitSvClass(`class`: ESvClass) {
+    override fun visitCompanionObject(companionObject: ECompanionObject) {
+        build("CompanionObject") {
+            build(companionObject.type.toString())
+            build(companionObject.declarations)
+        }
+    }
+
+    override fun visitSvClass(cls: ESvClass) {
         build("SvClass") {
-            build(`class`.name)
-            build(`class`.type.toString())
-            build(`class`.declarations)
-            build(`class`.isVirtual)
-            build(`class`.isDeclarationsStatic)
+            build(cls.name)
+            build(cls.type.toString())
+            build(cls.declarations)
+            build(cls.isVirtual)
+            build(cls.isObject)
         }
     }
 
@@ -227,7 +235,7 @@ class ElementPrinter : Visitor() {
         }
     }
 
-//  FUNCTION  //////////////////////////////////////////////////////////////////////////////////////////////////////////
+//  Function  //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     override fun visitKtFunction(function: EKtFunction) {
         build("KtFunction") {
@@ -247,7 +255,7 @@ class ElementPrinter : Visitor() {
             build(function.body)
             build(function.valueParameters)
             build(function.qualifierType.toString())
-            build(function.isConstructor)
+            build(function.isStatic)
         }
     }
 
@@ -300,7 +308,7 @@ class ElementPrinter : Visitor() {
         }
     }
 
-//  PROPERTY  //////////////////////////////////////////////////////////////////////////////////////////////////////////
+//  Property  //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     override fun visitProperty(property: EProperty) {
         build("Property") {
@@ -308,6 +316,7 @@ class ElementPrinter : Visitor() {
             build(property.type.toString())
             build(property.initializer)
             build(property.isMutable)
+            build(property.isStatic)
         }
     }
 
@@ -378,7 +387,7 @@ class ElementPrinter : Visitor() {
         }
     }
 
-//  EXPRESSION  ////////////////////////////////////////////////////////////////////////////////////////////////////////
+//  Expression  ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     override fun visitNothingExpression(nothingExpression: ENothingExpression) {
         build("NothingExpression") {}

@@ -32,17 +32,12 @@ class ESvFunction(
     override var body: EBlockExpression,
     override var valueParameters: ArrayList<ESvValueParameter>,
     val qualifierType: FunctionQualifierType,
-    val isConstructor: Boolean
+    val isStatic: Boolean
 ) : ESvAbstractFunction() {
 
     init {
         body.parent = this
         valueParameters.forEach { it.parent = this }
-    }
-
-    fun isStatic(): Boolean {
-        val parent = parent
-        return isConstructor || (parent is ESvClass && parent.isDeclarationsStatic)
     }
 
     override fun accept(visitor: Visitor) {

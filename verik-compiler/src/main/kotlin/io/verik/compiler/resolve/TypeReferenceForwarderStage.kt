@@ -54,9 +54,9 @@ object TypeReferenceForwarderStage : ProjectStage() {
             typedElement.type = forwardType(typedElement.type, typedElement)
         }
 
-        override fun visitKtClass(`class`: EKtClass) {
-            super.visitKtClass(`class`)
-            `class`.superType = forwardType(`class`.superType, `class`)
+        override fun visitKtClass(cls: EKtClass) {
+            super.visitKtClass(cls)
+            cls.superType = forwardType(cls.superType, cls)
         }
 
         override fun visitCallExpression(callExpression: ECallExpression) {

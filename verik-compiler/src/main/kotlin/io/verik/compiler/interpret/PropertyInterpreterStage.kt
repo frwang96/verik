@@ -18,6 +18,7 @@ package io.verik.compiler.interpret
 
 import io.verik.compiler.ast.element.declaration.common.EDeclaration
 import io.verik.compiler.ast.element.declaration.common.EProperty
+import io.verik.compiler.ast.element.declaration.kt.ECompanionObject
 import io.verik.compiler.ast.element.declaration.sv.EAbstractContainerComponent
 import io.verik.compiler.ast.element.declaration.sv.EClockingBlock
 import io.verik.compiler.ast.element.declaration.sv.EClockingBlockInstantiation
@@ -26,6 +27,7 @@ import io.verik.compiler.ast.element.declaration.sv.EInjectedProperty
 import io.verik.compiler.ast.element.declaration.sv.EModulePort
 import io.verik.compiler.ast.element.declaration.sv.EModulePortInstantiation
 import io.verik.compiler.ast.element.declaration.sv.EPort
+import io.verik.compiler.ast.element.declaration.sv.ESvClass
 import io.verik.compiler.ast.element.expression.common.ECallExpression
 import io.verik.compiler.ast.element.expression.common.EExpression
 import io.verik.compiler.ast.element.expression.common.EReferenceExpression
@@ -54,6 +56,9 @@ object PropertyInterpreterStage : ProjectStage() {
         private fun interpret(property: EProperty): EDeclaration? {
             interpretInjectedProperty(property)?.let { return it }
             interpretAbstractComponentInstantiation(property)?.let { return it }
+
+            val parent = property.parent
+            property.isStatic = (parent is ESvClass && parent.isObject) || parent is ECompanionObject
             return null
         }
 
