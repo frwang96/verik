@@ -39,6 +39,16 @@ class SerializeContext(
         NameSerializer.serializeName(declaration, this)
     }
 
+    fun <E : EElement> serializeJoin(entries: List<E>) {
+        if (entries.isNotEmpty()) {
+            serialize(entries[0])
+            entries.drop(1).forEach {
+                sourceBuilder.append(", ")
+                serialize(it)
+            }
+        }
+    }
+
     fun <E : EElement> serializeJoinAppendLine(entries: List<E>) {
         if (entries.isNotEmpty()) {
             serialize(entries[0])

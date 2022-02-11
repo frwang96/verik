@@ -48,4 +48,17 @@ internal class CompanionObjectInterpreterStageTest : BaseTest() {
             "KtClass(c, [CompanionObject([Property(*)])], [], [], SimpleDescriptor(Any), 1)"
         ) { it.findDeclaration("c") }
     }
+
+    @Test
+    fun `interpret companion object property not supported`() {
+        driveMessageTest(
+            """
+                class c #(type T);
+                    static logic x;
+                endclass
+            """.trimIndent(),
+            false,
+            "Parameterized static property is not supported: x"
+        )
+    }
 }

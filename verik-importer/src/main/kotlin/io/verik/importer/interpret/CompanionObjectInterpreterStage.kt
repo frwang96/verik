@@ -25,6 +25,7 @@ import io.verik.importer.ast.element.declaration.ESvConstructor
 import io.verik.importer.common.TreeVisitor
 import io.verik.importer.main.ProjectContext
 import io.verik.importer.main.ProjectStage
+import io.verik.importer.message.Messages
 
 object CompanionObjectInterpreterStage : ProjectStage() {
 
@@ -36,11 +37,16 @@ object CompanionObjectInterpreterStage : ProjectStage() {
 
         override fun visitKtClass(cls: EKtClass) {
             super.visitKtClass(cls)
+            val isParameterized = cls.typeParameters.isNotEmpty()
             val declarations = ArrayList<EDeclaration>()
             val companionObjectDeclarations = ArrayList<EDeclaration>()
             cls.declarations.forEach {
                 if (isCompanionObjectDeclaration(it)) {
-                    companionObjectDeclarations.add(it)
+                    if (isParameterized && it is EProperty) {
+                        Messages.PARAMETERIZED_STATIC_PROPERTY.on(it, it.name)
+                    } else {
+                        companionObjectDeclarations.add(it)
+                    }
                 } else {
                     declarations.add(it)
                 }
