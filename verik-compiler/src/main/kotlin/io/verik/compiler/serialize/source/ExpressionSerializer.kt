@@ -138,8 +138,7 @@ object ExpressionSerializer {
 
     fun serializeScopeExpression(scopeExpression: EScopeExpression, serializeContext: SerializeContext) {
         val serializedType = TypeSerializer.serialize(scopeExpression.scope, scopeExpression)
-        serializedType.checkNoPackedDimension(scopeExpression)
-        serializedType.checkNoUnpackedDimension(scopeExpression)
+        serializedType.checkNoVariableDimension(scopeExpression)
         serializeContext.append(serializedType.base)
     }
 
@@ -409,8 +408,8 @@ object ExpressionSerializer {
 
     private fun serializePropertyInline(property: EProperty, serializeContext: SerializeContext) {
         val serializedType = TypeSerializer.serialize(property.type, property)
-        serializedType.checkNoUnpackedDimension(property)
-        serializeContext.append(serializedType.getBaseAndPackedDimension() + " ")
+        serializedType.checkNoVariableDimension(property)
+        serializeContext.append("${serializedType.base} ")
         serializeContext.append(property.name)
         val initializer = property.initializer
         if (initializer != null) {

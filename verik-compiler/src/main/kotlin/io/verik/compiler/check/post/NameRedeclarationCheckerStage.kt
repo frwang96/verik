@@ -27,7 +27,8 @@ import io.verik.compiler.message.Messages
 object NameRedeclarationCheckerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
-        projectContext.project.accept(NameRedeclarationCheckerVisitor)
+        projectContext.project.regularNonRootPackages.forEach { it.accept(NameRedeclarationCheckerVisitor) }
+        projectContext.project.regularRootPackage.accept(NameRedeclarationCheckerVisitor)
     }
 
     class DeclarationSet {

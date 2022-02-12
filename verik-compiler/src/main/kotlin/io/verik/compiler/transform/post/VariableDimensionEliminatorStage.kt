@@ -25,12 +25,12 @@ import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 
-object UnpackedTypeDefinitionTransformerStage : ProjectStage() {
+object VariableDimensionEliminatorStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
-        val unpackedTypeDefinitionTransformerVisitor = UnpackedTypeDefinitionTransformerVisitor()
-        projectContext.project.accept(unpackedTypeDefinitionTransformerVisitor)
-        unpackedTypeDefinitionTransformerVisitor.typeDefinitionEntries.forEach {
+        val variableDimensionEliminatorVisitor = VariableDimensionEliminatorVisitor()
+        projectContext.project.accept(variableDimensionEliminatorVisitor)
+        variableDimensionEliminatorVisitor.typeDefinitionEntries.forEach {
             val parent = it.function.parent
             if (parent is ResizableDeclarationContainer) {
                 parent.insertChildBefore(it.function, it.typeDefinition)
@@ -40,7 +40,7 @@ object UnpackedTypeDefinitionTransformerStage : ProjectStage() {
         }
     }
 
-    private class UnpackedTypeDefinitionTransformerVisitor : TreeVisitor() {
+    private class VariableDimensionEliminatorVisitor : TreeVisitor() {
 
         val typeDefinitionEntries = ArrayList<TypeDefinitionEntry>()
 

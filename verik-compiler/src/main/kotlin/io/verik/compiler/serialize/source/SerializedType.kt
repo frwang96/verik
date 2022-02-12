@@ -21,25 +21,13 @@ import io.verik.compiler.message.Messages
 
 class SerializedType(
     val base: String,
-    val packedDimension: String?,
-    val unpackedDimension: String?
+    val variableDimension: String? = null,
+    val isVirtual: Boolean = false
 ) {
 
-    constructor(base: String) : this(base, null, null)
-
-    fun getBaseAndPackedDimension(): String {
-        return if (packedDimension != null) {
-            "$base $packedDimension"
-        } else base
-    }
-
-    fun checkNoPackedDimension(element: EElement) {
-        if (packedDimension != null)
-            Messages.INTERNAL_ERROR.on(element, "Unexpected type packed dimension: $packedDimension")
-    }
-
-    fun checkNoUnpackedDimension(element: EElement) {
-        if (unpackedDimension != null)
-            Messages.INTERNAL_ERROR.on(element, "Unexpected type unpacked dimension: $unpackedDimension")
+    fun checkNoVariableDimension(element: EElement) {
+        if (variableDimension != null) {
+            Messages.INTERNAL_ERROR.on(element, "Unexpected variable dimension on type: $variableDimension")
+        }
     }
 }

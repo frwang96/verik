@@ -48,8 +48,8 @@ object DeclarationSerializer {
 
     fun serializeTypeDefinition(typeDefinition: ETypeDefinition, serializeContext: SerializeContext) {
         val serializedType = TypeSerializer.serialize(typeDefinition.type, typeDefinition)
-        serializeContext.append("typedef ${serializedType.getBaseAndPackedDimension()} ")
-        serializeContext.appendLine("${typeDefinition.name} ${serializedType.unpackedDimension};")
+        serializeContext.append("typedef ${serializedType.base} ")
+        serializeContext.appendLine("${typeDefinition.name} ${serializedType.variableDimension};")
     }
 
     fun serializeInjectedProperty(injectedProperty: EInjectedProperty, serializeContext: SerializeContext) {
@@ -142,8 +142,8 @@ object DeclarationSerializer {
             else -> {}
         }
         val serializedType = TypeSerializer.serialize(function.type, function)
-        serializedType.checkNoUnpackedDimension(function)
-        serializeContext.append("function automatic ${serializedType.getBaseAndPackedDimension()} ${function.name}")
+        serializedType.checkNoVariableDimension(function)
+        serializeContext.append("function automatic ${serializedType.base} ${function.name}")
         serializeValueParameterList(function, serializeContext)
         if (function.qualifierType != FunctionQualifierType.PURE_VIRTUAL) {
             serializeContext.indent {
@@ -200,9 +200,7 @@ object DeclarationSerializer {
 
     fun serializeProperty(property: EProperty, serializeContext: SerializeContext) {
         if (property.isStatic) serializeContext.append("static ")
-        if (TypeSerializer.isVirtual(property.type))
-            serializeContext.append("virtual ")
-        serializePropertyTypeAndName(property, serializeContext)
+        serializePropertyTypeAndName(property, true, serializeContext)
         val initializer = property.initializer
         if (initializer != null) {
             serializeContext.append(" = ")
@@ -222,8 +220,7 @@ object DeclarationSerializer {
         serializeContext: SerializeContext
     ) {
         val serializedType = TypeSerializer.serialize(componentInstantiation.type, componentInstantiation)
-        serializedType.checkNoPackedDimension(componentInstantiation)
-        serializedType.checkNoUnpackedDimension(componentInstantiation)
+        serializedType.checkNoVariableDimension(componentInstantiation)
         serializeContext.append("${serializedType.base} ${componentInstantiation.name} (")
         if (componentInstantiation.valueArguments.isNotEmpty()) {
             serializeContext.appendLine()
@@ -298,9 +295,7 @@ object DeclarationSerializer {
             true -> serializeContext.append("input ")
             false -> serializeContext.append("output ")
         }
-        if (TypeSerializer.isVirtual(valueParameter.type))
-            serializeContext.append("virtual ")
-        serializePropertyTypeAndName(valueParameter, serializeContext)
+        serializePropertyTypeAndName(valueParameter, true, serializeContext)
         val expression = valueParameter.expression
         if (expression != null) {
             serializeContext.append(" = ")
@@ -310,7 +305,7 @@ object DeclarationSerializer {
 
     fun serializePort(port: EPort, serializeContext: SerializeContext) {
         serializePortType(port.portType, serializeContext)
-        serializePropertyTypeAndName(port, serializeContext)
+        serializePropertyTypeAndName(port, false, serializeContext)
     }
 
     private fun serializePortList(
@@ -343,14 +338,19 @@ object DeclarationSerializer {
 
     private fun serializePropertyTypeAndName(
         abstractProperty: EAbstractProperty,
+        isSerializeVirtual: Boolean,
         serializeContext: SerializeContext
     ) {
         val serializedType = TypeSerializer.serialize(abstractProperty.type, abstractProperty)
-        serializeContext.append("${serializedType.getBaseAndPackedDimension()} ")
+        if (isSerializeVirtual && serializedType.isVirtual) {
+            serializeContext.append("virtual ")
+        }
+        serializeContext.append("${serializedType.base} ")
         serializeContext.align()
         serializeContext.append(abstractProperty.name)
-        if (serializedType.unpackedDimension != null)
-            serializeContext.append(" ${serializedType.unpackedDimension}")
+        if (serializedType.variableDimension != null) {
+            serializeContext.append(" ${serializedType.variableDimension}")
+        }
     }
 
     private fun serializeValueParameterList(

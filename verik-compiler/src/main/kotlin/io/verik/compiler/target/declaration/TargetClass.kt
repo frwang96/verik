@@ -59,7 +59,7 @@ object TargetClass : TargetScope(TargetPackage) {
 
         override fun serializeType(typeArguments: List<Type>, element: EElement): SerializedType {
             val value = typeArguments[0].asCardinalValue(element)
-            return SerializedType("logic", "[${value - 1}:0]", null)
+            return SerializedType("logic [${value - 1}:0]")
         }
     }
 
@@ -67,7 +67,7 @@ object TargetClass : TargetScope(TargetPackage) {
 
         override fun serializeType(typeArguments: List<Type>, element: EElement): SerializedType {
             val value = typeArguments[0].asCardinalValue(element)
-            return SerializedType("logic signed", "[${value - 1}:0]", null)
+            return SerializedType("logic signed [${value - 1}:0]")
         }
     }
 
@@ -75,10 +75,17 @@ object TargetClass : TargetScope(TargetPackage) {
 
         override fun serializeType(typeArguments: List<Type>, element: EElement): SerializedType {
             val serializedType = TypeSerializer.serialize(typeArguments[1], element)
-            var packedDimension = "[${typeArguments[0].asCardinalValue(element) - 1}:0]"
-            if (serializedType.packedDimension != null)
-                packedDimension += serializedType.packedDimension
-            return SerializedType(serializedType.base, packedDimension, serializedType.unpackedDimension)
+            val packedDimension = "[${typeArguments[0].asCardinalValue(element) - 1}:0]"
+            val index = serializedType.base.indexOfFirst { it == '[' }
+            return if (index == -1) {
+                SerializedType("${serializedType.base} $packedDimension", serializedType.variableDimension)
+            } else {
+                val base = serializedType.base
+                SerializedType(
+                    base.substring(0, index) + packedDimension + base.substring(index),
+                    serializedType.variableDimension
+                )
+            }
         }
     }
 
@@ -86,10 +93,11 @@ object TargetClass : TargetScope(TargetPackage) {
 
         override fun serializeType(typeArguments: List<Type>, element: EElement): SerializedType {
             val serializedType = TypeSerializer.serialize(typeArguments[1], element)
-            var unpackedDimension = "[${typeArguments[0].asCardinalValue(element) - 1}:0]"
-            if (serializedType.unpackedDimension != null)
-                unpackedDimension += serializedType.unpackedDimension
-            return SerializedType(serializedType.base, serializedType.packedDimension, unpackedDimension)
+            val unpackedDimension = "[${typeArguments[0].asCardinalValue(element) - 1}:0]"
+            return SerializedType(
+                serializedType.base,
+                unpackedDimension + (serializedType.variableDimension ?: "")
+            )
         }
     }
 

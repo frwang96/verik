@@ -36,7 +36,9 @@ object TypeSerializer {
             is TargetClassDeclaration -> reference.serializeType(type.arguments, element)
             is EPackage -> SerializedType(reference.name)
             is ETypeDefinition -> SerializedType(reference.name)
-            is EAbstractContainerComponent -> SerializedType(reference.name)
+            is EAbstractContainerComponent -> {
+                SerializedType(reference.name, null, reference is EModuleInterface)
+            }
             is EModulePort -> {
                 val parentModuleInterface = reference.parentModuleInterface
                 if (parentModuleInterface != null) {
@@ -56,9 +58,5 @@ object TypeSerializer {
                 Messages.INTERNAL_ERROR.on(element, "Unable to serialize type: $type")
             }
         }
-    }
-
-    fun isVirtual(type: Type): Boolean {
-        return type.reference is EModuleInterface
     }
 }

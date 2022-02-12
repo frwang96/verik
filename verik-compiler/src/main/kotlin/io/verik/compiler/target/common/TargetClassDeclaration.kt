@@ -39,12 +39,13 @@ class CompositeTargetClassDeclaration(
     override val contentEpilog: String
 ) : TargetClassDeclaration(), CompositeTarget {
 
+    // TODO track type parameter names
     override fun serializeType(typeArguments: List<Type>, element: EElement): SerializedType {
         val base = "${TargetPackage.name}::$name"
         return if (typeArguments.isNotEmpty()) {
             val serializedTypeArguments = typeArguments.map { TypeSerializer.serialize(it, element) }
-            serializedTypeArguments.forEach { it.checkNoUnpackedDimension(element) }
-            val serializedTypeArgumentString = serializedTypeArguments.joinToString { it.getBaseAndPackedDimension() }
+            serializedTypeArguments.forEach { it.checkNoVariableDimension(element) }
+            val serializedTypeArgumentString = serializedTypeArguments.joinToString { it.base }
             SerializedType("$base#($serializedTypeArgumentString)")
         } else SerializedType(base)
     }

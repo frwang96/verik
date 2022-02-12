@@ -46,7 +46,7 @@ object TypeParameterSubstitutorSubstage : SpecializerSubstage() {
             TypeParameterSubstitutorVisitor(typeParameters, typeParameterBinding.typeArguments)
         declaration.accept(typeParameterSubstitutorVisitor)
 
-        if (typeParameters.isNotEmpty()) {
+        if (typeParameters.isNotEmpty() && !typeParameterBinding.declaration.isImported()) {
             val typeParameterStrings = typeParameters
                 .zip(typeParameterBinding.typeArguments)
                 .map { (typeParameter, typeArgument) -> getTypeArgumentString(typeParameter, typeArgument) }
