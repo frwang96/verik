@@ -88,7 +88,7 @@ internal class TargetClassTest : BaseTest() {
                 var x: ArrayList<Boolean> = nc()
             """.trimIndent(),
             """
-                verik_pkg::ArrayList#(logic) x;
+                verik_pkg::ArrayList#(.E(logic)) x;
             """.trimIndent()
         ) { it.nonRootPackageTextFiles[0] }
     }

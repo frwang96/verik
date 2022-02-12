@@ -118,6 +118,7 @@ object TargetClass : TargetScope(TargetPackage) {
     val C_ArrayList = CompositeTargetClassDeclaration(
         parent,
         "ArrayList",
+        listOf("E"),
         "class ArrayList #(type E = int);",
         "E queue [${'$'}];",
         "endclass : ArrayList"

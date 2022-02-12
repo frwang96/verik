@@ -91,34 +91,34 @@ object DeclarationCaster {
         val annotationEntries = castAnnotationEntries(classOrObject.annotationEntries, castContext)
         val documentationLines = castDocumentationLines(classOrObject.docComment)
         val superType = castContext.castType(descriptor.getSuperClassOrAny().defaultType, classOrObject)
+        val typeParameters = classOrObject.typeParameters.mapNotNull {
+            castContext.castTypeParameter(it)
+        }
         val declarations = classOrObject.declarations.mapNotNull {
             castContext.castDeclaration(it)
         }
-        val typeParameters = classOrObject.typeParameters.mapNotNull {
-            castContext.castTypeParameter(it)
+        val primaryConstructor = when {
+            classOrObject.hasExplicitPrimaryConstructor() ->
+                castContext.castPrimaryConstructor(classOrObject.primaryConstructor!!)
+            classOrObject.hasPrimaryConstructor() && classOrObject !is KtObjectDeclaration ->
+                castImplicitPrimaryConstructor(classOrObject, castContext)
+            else -> null
         }
         val isEnum = classOrObject.hasModifier(KtTokens.ENUM_KEYWORD)
         val isAbstract = classOrObject.hasModifier(KtTokens.ABSTRACT_KEYWORD)
         val isObject = classOrObject is KtObjectDeclaration
-        val primaryConstructor = when {
-            classOrObject.hasExplicitPrimaryConstructor() ->
-                castContext.castPrimaryConstructor(classOrObject.primaryConstructor!!)
-            classOrObject.hasPrimaryConstructor() && !isObject ->
-                castImplicitPrimaryConstructor(classOrObject, castContext)
-            else -> null
-        }
 
         castedClass.fill(
             type = type,
             annotationEntries = annotationEntries,
             documentationLines = documentationLines,
             superType = superType,
-            declarations = declarations,
             typeParameters = typeParameters,
+            declarations = declarations,
+            primaryConstructor = primaryConstructor,
             isEnum = isEnum,
             isAbstract = isAbstract,
             isObject = isObject,
-            primaryConstructor = primaryConstructor,
         )
         return castedClass
     }

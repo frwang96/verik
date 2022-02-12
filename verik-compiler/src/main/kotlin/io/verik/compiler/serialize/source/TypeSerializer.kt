@@ -23,6 +23,7 @@ import io.verik.compiler.ast.element.declaration.common.EPackage
 import io.verik.compiler.ast.element.declaration.sv.EAbstractContainerComponent
 import io.verik.compiler.ast.element.declaration.sv.EModuleInterface
 import io.verik.compiler.ast.element.declaration.sv.EModulePort
+import io.verik.compiler.ast.element.declaration.sv.ESvClass
 import io.verik.compiler.ast.element.declaration.sv.ETypeDefinition
 import io.verik.compiler.message.Messages
 import io.verik.compiler.target.common.TargetClassDeclaration
@@ -47,16 +48,31 @@ object TypeSerializer {
                     Messages.INTERNAL_ERROR.on(element, "Module port has no parent module interface")
                 }
             }
-            is EAbstractClass -> {
-                val elementPackage = element.getParentPackage()
-                val referencePackage = reference.getParentPackage()
-                if (!referencePackage.packageType.isRoot() && referencePackage != elementPackage) {
-                    SerializedType("${referencePackage.name}::${reference.name}")
-                } else SerializedType(reference.name)
-            }
+            is EAbstractClass -> serializeAbstractClass(reference, element)
             else -> {
                 Messages.INTERNAL_ERROR.on(element, "Unable to serialize type: $type")
             }
+        }
+    }
+
+    private fun serializeAbstractClass(abstractClass: EAbstractClass, element: EElement): SerializedType {
+        val elementPackage = element.getParentPackage()
+        val referencePackage = abstractClass.getParentPackage()
+        val base = if (!referencePackage.packageType.isRoot() && referencePackage != elementPackage) {
+            "${referencePackage.name}::${abstractClass.name}"
+        } else abstractClass.name
+        return if (abstractClass is ESvClass &&
+            abstractClass.isImported() &&
+            abstractClass.typeParameters.isNotEmpty()
+        ) {
+            val typeArgumentString = abstractClass.typeParameters.joinToString {
+                val serializedType = serialize(it.type, element)
+                serializedType.checkNoVariableDimension(element)
+                ".${it.name}(${serializedType.base})"
+            }
+            SerializedType("$base #($typeArgumentString)")
+        } else {
+            SerializedType(base)
         }
     }
 }

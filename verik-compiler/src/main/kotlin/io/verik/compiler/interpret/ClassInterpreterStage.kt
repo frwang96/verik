@@ -104,17 +104,18 @@ object ClassInterpreterStage : ProjectStage() {
                 }
             }
             val interpretedClass = ESvClass(
-                cls.location,
-                cls.bodyStartLocation,
-                cls.bodyEndLocation,
-                cls.name,
-                cls.type,
-                cls.annotationEntries,
-                cls.documentationLines,
-                cls.superType,
-                declarations,
-                cls.isAbstract,
-                cls.isObject
+                location = cls.location,
+                bodyStartLocation = cls.bodyStartLocation,
+                bodyEndLocation = cls.bodyEndLocation,
+                name = cls.name,
+                type = cls.type,
+                annotationEntries = cls.annotationEntries,
+                documentationLines = cls.documentationLines,
+                superType = cls.superType,
+                typeParameters = cls.typeParameters,
+                declarations = declarations,
+                isVirtual = cls.isAbstract,
+                isObject = cls.isObject
             )
             referenceUpdater.replace(cls, interpretedClass)
         }

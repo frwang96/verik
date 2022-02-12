@@ -100,12 +100,12 @@ object SpecializerStage : ProjectStage() {
                         annotationEntries = listOf(),
                         documentationLines = null,
                         superType = Core.Kt.C_Any.toType(),
-                        declarations = ArrayList(classDeclarations),
                         typeParameters = ArrayList(),
+                        declarations = ArrayList(classDeclarations),
+                        primaryConstructor = null,
                         isEnum = false,
                         isAbstract = false,
-                        isObject = false,
-                        primaryConstructor = null
+                        isObject = false
                     )
                     specializeContext.register(declaration, listOf(), cls)
                     listOf(cls) + declarations

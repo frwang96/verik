@@ -157,12 +157,13 @@ class ElementPrinter : Visitor() {
         build("KtClass") {
             build(cls.name)
             build(cls.type.toString())
-            build(cls.declarations)
+            build(cls.superType.toString())
             build(cls.typeParameters)
+            build(cls.declarations)
+            build(cls.primaryConstructor)
             build(cls.isEnum)
             build(cls.isAbstract)
             build(cls.isObject)
-            build(cls.primaryConstructor)
         }
     }
 
@@ -177,6 +178,7 @@ class ElementPrinter : Visitor() {
         build("SvClass") {
             build(cls.name)
             build(cls.type.toString())
+            build(cls.typeParameters)
             build(cls.declarations)
             build(cls.isVirtual)
             build(cls.isObject)
