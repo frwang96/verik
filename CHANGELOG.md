@@ -14,6 +14,7 @@
 - Support optional value parameters.
 - Unwrap companion objects.
 - Separately specialize nested classes.
+- Support type parameterized imported classes.
 
 ## [0.1.13]
 ### Importer

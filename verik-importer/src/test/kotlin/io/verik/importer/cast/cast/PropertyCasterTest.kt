@@ -24,27 +24,40 @@ import org.junit.jupiter.api.Test
 internal class PropertyCasterTest : BaseTest() {
 
     @Test
-    fun `cast property from dataDeclaration single`() {
+    fun `cast property from classProperty`() {
         driveCasterTest(
-            SystemVerilogParser.DataDeclarationContext::class,
+            SystemVerilogParser.ClassPropertyContext::class,
             """
-                logic x;
+                class c;
+                    static logic x;
+                endclass
             """.trimIndent(),
-            "Property(x, SimpleDescriptor(Boolean))"
+            "Property(x, SimpleDescriptor(Boolean), 1, 1)"
         ) { it.findDeclaration("x") }
     }
 
     @Test
-    fun `cast property from dataDeclaration multiple`() {
+    fun `cast property from dataDeclarationData single`() {
         driveCasterTest(
-            SystemVerilogParser.DataDeclarationContext::class,
+            SystemVerilogParser.DataDeclarationDataContext::class,
+            """
+                const logic x;
+            """.trimIndent(),
+            "Property(x, SimpleDescriptor(Boolean), 0, 0)"
+        ) { it.findDeclaration("x") }
+    }
+
+    @Test
+    fun `cast property from dataDeclarationData multiple`() {
+        driveCasterTest(
+            SystemVerilogParser.DataDeclarationDataContext::class,
             """
                 logic x, y;
             """.trimIndent(),
             """
                 Project([
-                    Property(x, SimpleDescriptor(Boolean)),
-                    Property(y, SimpleDescriptor(Boolean))
+                    Property(x, SimpleDescriptor(Boolean), 0, 1),
+                    Property(y, SimpleDescriptor(Boolean), 0, 1)
                 ])
             """.trimIndent()
         ) { it }

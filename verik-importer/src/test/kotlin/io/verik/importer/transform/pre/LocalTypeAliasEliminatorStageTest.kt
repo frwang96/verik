@@ -32,7 +32,7 @@ internal class LocalTypeAliasEliminatorStageTest : BaseTest() {
                 endclass
             """.trimIndent(),
             LocalTypeAliasEliminatorStage::class,
-            "Property(x, SimpleDescriptor(Boolean))"
+            "Property(x, SimpleDescriptor(Boolean), 0, 1)"
         ) { it.findDeclaration("x") }
     }
 }

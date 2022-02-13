@@ -23,7 +23,7 @@ import org.junit.jupiter.api.Test
 internal class CompanionObjectInterpreterStageTest : BaseTest() {
 
     @Test
-    fun `interpret companion object`() {
+    fun `interpret companion object function`() {
         driveElementTest(
             """
                 class c;
@@ -34,5 +34,31 @@ internal class CompanionObjectInterpreterStageTest : BaseTest() {
             CompanionObjectInterpreterStage::class,
             "KtClass(c, [CompanionObject([SvFunction(*)])], [], [], SimpleDescriptor(Any), 1)"
         ) { it.findDeclaration("c") }
+    }
+
+    @Test
+    fun `interpret companion object property`() {
+        driveElementTest(
+            """
+                class c;
+                    static logic x;
+                endclass
+            """.trimIndent(),
+            CompanionObjectInterpreterStage::class,
+            "KtClass(c, [CompanionObject([Property(*)])], [], [], SimpleDescriptor(Any), 1)"
+        ) { it.findDeclaration("c") }
+    }
+
+    @Test
+    fun `interpret companion object property not supported`() {
+        driveMessageTest(
+            """
+                class c #(type T);
+                    static logic x;
+                endclass
+            """.trimIndent(),
+            false,
+            "Parameterized static property is not supported: x"
+        )
     }
 }

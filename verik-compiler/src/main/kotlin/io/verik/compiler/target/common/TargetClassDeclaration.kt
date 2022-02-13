@@ -18,6 +18,7 @@ package io.verik.compiler.target.common
 
 import io.verik.compiler.ast.common.Type
 import io.verik.compiler.ast.element.common.EElement
+import io.verik.compiler.message.Messages
 import io.verik.compiler.serialize.source.SerializedType
 import io.verik.compiler.serialize.source.TypeSerializer
 
@@ -34,6 +35,7 @@ abstract class PrimitiveTargetClassDeclaration(
 class CompositeTargetClassDeclaration(
     override val parent: TargetDeclaration,
     override var name: String,
+    private val typeParameterNames: List<String>,
     override val contentProlog: String,
     override val contentBody: String,
     override val contentEpilog: String
@@ -41,11 +43,20 @@ class CompositeTargetClassDeclaration(
 
     override fun serializeType(typeArguments: List<Type>, element: EElement): SerializedType {
         val base = "${TargetPackage.name}::$name"
+        if (typeArguments.size != typeParameterNames.size) {
+            val expected = typeParameterNames.size
+            val actual = typeArguments.size
+            Messages.INTERNAL_ERROR.on(element, "Incorrect number of type arguments: Expected $expected actual $actual")
+        }
         return if (typeArguments.isNotEmpty()) {
             val serializedTypeArguments = typeArguments.map { TypeSerializer.serialize(it, element) }
-            serializedTypeArguments.forEach { it.checkNoUnpackedDimension(element) }
-            val serializedTypeArgumentString = serializedTypeArguments.joinToString { it.getBaseAndPackedDimension() }
-            SerializedType("$base#($serializedTypeArgumentString)")
+            serializedTypeArguments.forEach { it.checkNoVariableDimension(element) }
+            val serializedTypeArgumentsString = typeParameterNames
+                .zip(serializedTypeArguments)
+                .joinToString { (typeParameterName, serializedTypeArgument) ->
+                    ".$typeParameterName(${serializedTypeArgument.base})"
+                }
+            SerializedType("$base#($serializedTypeArgumentsString)")
         } else SerializedType(base)
     }
 }

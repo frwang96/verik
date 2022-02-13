@@ -113,7 +113,7 @@ internal class FunctionInterpreterStageTest : BaseTest() {
                 fun t() {}
             """.trimIndent(),
             FunctionInterpreterStage::class,
-            "Task(t, *, [])"
+            "Task(t, *, [], [])"
         ) { it.findDeclaration("t") }
     }
 
@@ -125,7 +125,7 @@ internal class FunctionInterpreterStageTest : BaseTest() {
                 fun t(): Boolean { return false }
             """.trimIndent(),
             FunctionInterpreterStage::class,
-            "Task(t, *, [SvValueParameter(<tmp>, Boolean, null, 0)])"
+            "Task(t, *, [], [SvValueParameter(<tmp>, Boolean, null, 0)])"
         ) { it.findDeclaration("t") }
     }
 
@@ -136,7 +136,7 @@ internal class FunctionInterpreterStageTest : BaseTest() {
                 fun f() {}
             """.trimIndent(),
             FunctionInterpreterStage::class,
-            "SvFunction(f, Unit, *, [], REGULAR, 0)"
+            "SvFunction(f, Unit, *, [], [], REGULAR, 0)"
         ) { it.findDeclaration("f") }
     }
 
@@ -149,7 +149,7 @@ internal class FunctionInterpreterStageTest : BaseTest() {
                 }
             """.trimIndent(),
             FunctionInterpreterStage::class,
-            "SvFunction(f, Unit, *, [], VIRTUAL, 0)"
+            "SvFunction(f, Unit, *, [], [], VIRTUAL, 0)"
         ) { it.findDeclaration("f") }
     }
 
@@ -162,7 +162,7 @@ internal class FunctionInterpreterStageTest : BaseTest() {
                 }
             """.trimIndent(),
             FunctionInterpreterStage::class,
-            "SvFunction(f, Unit, *, [], REGULAR, 1)"
+            "SvFunction(f, Unit, *, [], [], REGULAR, 1)"
         ) { it.findDeclaration("f") }
     }
 }

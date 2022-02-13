@@ -76,9 +76,7 @@ internal class DeclarationSerializerTest : BaseTest() {
                 endmodule
             """.trimIndent(),
             """
-                class m<
-                    T
-                > : Module()
+                class m<T> : Module()
             """.trimIndent()
         )
     }
@@ -203,6 +201,27 @@ internal class DeclarationSerializerTest : BaseTest() {
                 fun f(
                     x: c?
                 ): c? = imported()
+            """.trimIndent()
+        )
+    }
+
+    @Test
+    fun `serialize function parameterized`() {
+        driveTextFileTest(
+            """
+                class c #(type T);
+                    static function void f();
+                    endfunction
+                endclass
+            """.trimIndent(),
+            """
+                open class c<T> {
+
+                    companion object {
+
+                        fun <T> f(): Unit = imported()
+                    }
+                }
             """.trimIndent()
         )
     }

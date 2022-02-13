@@ -72,9 +72,7 @@ object DeadDeclarationEliminatorStage : ProjectStage() {
         private fun addType(type: Type) {
             type.arguments.forEach { addType(it) }
             val reference = type.reference
-            if (reference is EDeclaration) {
-                addDeclaration(reference)
-            }
+            if (reference is EDeclaration) addDeclaration(reference)
         }
 
         private fun addDeclaration(declaration: EDeclaration) {
@@ -90,13 +88,12 @@ object DeadDeclarationEliminatorStage : ProjectStage() {
             addType(typedElement.type)
             if (typedElement is EReceiverExpression) {
                 val reference = typedElement.reference
-                if (reference is EDeclaration) {
-                    addDeclaration(reference)
-                }
+                if (reference is EDeclaration) addDeclaration(reference)
             }
         }
 
         override fun visitAbstractContainerClass(abstractContainerClass: EAbstractContainerClass) {
+            addType(abstractContainerClass.superType)
             abstractContainerClass.declarations.forEach { addDeclaration(it) }
         }
 

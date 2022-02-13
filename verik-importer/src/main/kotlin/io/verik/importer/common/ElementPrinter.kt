@@ -201,6 +201,8 @@ class ElementPrinter : Visitor() {
         build("Property") {
             build(property.name)
             build(property.descriptor)
+            build(property.isStatic)
+            build(property.isMutable)
         }
     }
 

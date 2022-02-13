@@ -26,6 +26,8 @@ class SpecializeContext {
 
     private val originalDeclarations = HashSet<EDeclaration>()
     private val referenceForwardingMap = HashMap<TypeParameterBinding, EDeclaration>()
+    private val indexMap = HashMap<TypeParameterBinding, Int>()
+    private var index = 0
 
     fun register(declaration: EDeclaration, typeArguments: List<Type>, copiedDeclaration: EDeclaration) {
         originalDeclarations.add(declaration)
@@ -33,7 +35,8 @@ class SpecializeContext {
         if (typeParameterBinding in referenceForwardingMap) {
             Messages.INTERNAL_ERROR.on(declaration, "Declaration has already been added to reference forwarding map")
         }
-        referenceForwardingMap[TypeParameterBinding(declaration, typeArguments)] = copiedDeclaration
+        referenceForwardingMap[typeParameterBinding] = copiedDeclaration
+        indexMap[typeParameterBinding] = index++
     }
 
     fun contains(typeParameterBinding: TypeParameterBinding): Boolean {
@@ -48,15 +51,18 @@ class SpecializeContext {
     }
 
     fun getTypeParameterBindings(declaration: EDeclaration): List<TypeParameterBinding> {
-        val typeParameterBindings = ArrayList<TypeParameterBinding>()
+        val typeParameterBindings = ArrayList<Pair<Int, TypeParameterBinding>>()
         referenceForwardingMap.forEach { (typeParameterBinding, specializedDeclaration) ->
             if (typeParameterBinding.declaration == declaration) {
+                val index = indexMap[typeParameterBinding]!!
                 typeParameterBindings.add(
-                    TypeParameterBinding(specializedDeclaration, typeParameterBinding.typeArguments)
+                    Pair(index, TypeParameterBinding(specializedDeclaration, typeParameterBinding.typeArguments))
                 )
             }
         }
         return typeParameterBindings
+            .sortedBy { it.first }
+            .map { it.second }
     }
 
     fun getOriginalDeclarations(): Set<EDeclaration> {

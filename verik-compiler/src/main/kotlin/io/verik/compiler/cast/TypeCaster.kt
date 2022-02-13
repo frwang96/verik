@@ -21,6 +21,7 @@ import io.verik.compiler.core.common.Core
 import io.verik.compiler.message.Messages
 import org.jetbrains.kotlin.builtins.getReturnTypeFromFunctionType
 import org.jetbrains.kotlin.builtins.isFunctionType
+import org.jetbrains.kotlin.descriptors.ClassConstructorDescriptor
 import org.jetbrains.kotlin.psi.KtElement
 import org.jetbrains.kotlin.psi.KtExpression
 import org.jetbrains.kotlin.psi.KtNullableType
@@ -57,8 +58,16 @@ object TypeCaster {
         val userType = if (typeElement is KtNullableType) {
             typeElement.innerType as KtUserType // ignore nullable type for now
         } else typeElement as KtUserType
-        val referenceTarget = castContext.sliceReferenceTarget[userType.referenceExpression!!]!!
-        val declaration = castContext.resolveDeclaration(referenceTarget, typeReference)
+        val declaration = when (
+            val declarationDescriptor = castContext.sliceReferenceTarget[userType.referenceExpression!!]!!
+        ) {
+            is ClassConstructorDescriptor -> {
+                castContext.resolveDeclaration(declarationDescriptor.constructedClass, typeReference)
+            }
+            else -> {
+                castContext.resolveDeclaration(declarationDescriptor, typeReference)
+            }
+        }
         val arguments = userType.typeArgumentsAsTypes.map { cast(castContext, it) }
         return Type(declaration, ArrayList(arguments))
     }

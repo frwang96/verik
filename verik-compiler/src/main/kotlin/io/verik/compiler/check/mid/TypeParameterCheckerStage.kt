@@ -17,6 +17,7 @@
 package io.verik.compiler.check.mid
 
 import io.verik.compiler.ast.element.declaration.common.EFile
+import io.verik.compiler.ast.element.declaration.kt.ECompanionObject
 import io.verik.compiler.ast.element.declaration.kt.EKtFunction
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
@@ -32,8 +33,11 @@ object TypeParameterCheckerStage : ProjectStage() {
     private object TypeParameterCheckerVisitor : TreeVisitor() {
 
         override fun visitKtFunction(function: EKtFunction) {
-            if (function.parent !is EFile && function.typeParameters.isNotEmpty()) {
-                Messages.PARAMETERIZED_FUNCTION_NOT_TOP.on(function, function.name)
+            if (function.typeParameters.isNotEmpty()) {
+                val parent = function.parent
+                if (parent !is EFile && parent !is ECompanionObject) {
+                    Messages.PARAMETERIZED_FUNCTION_NOT_TOP.on(function, function.name)
+                }
             }
         }
     }

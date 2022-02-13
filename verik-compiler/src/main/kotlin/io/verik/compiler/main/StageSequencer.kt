@@ -87,7 +87,7 @@ import io.verik.compiler.transform.post.StructLiteralTransformerStage
 import io.verik.compiler.transform.post.TemporaryDeclarationRenameStage
 import io.verik.compiler.transform.post.TypeReferenceTransformerStage
 import io.verik.compiler.transform.post.UnaryExpressionTransformerStage
-import io.verik.compiler.transform.post.UnpackedTypeDefinitionTransformerStage
+import io.verik.compiler.transform.post.VariableDimensionEliminatorStage
 import io.verik.compiler.transform.pre.ArrayAccessExpressionReducerStage
 import io.verik.compiler.transform.pre.AssignmentOperatorReducerStage
 import io.verik.compiler.transform.pre.BinaryExpressionReducerStage
@@ -189,7 +189,7 @@ object StageSequencer {
         stageSequence.add(StageType.LOWER_TRANSFORM, ExpressionExtractorStage)
         stageSequence.add(StageType.LOWER_TRANSFORM, BlockExpressionReducerStage)
         stageSequence.add(StageType.LOWER_TRANSFORM, ProceduralBlockEliminatorStage)
-        stageSequence.add(StageType.LOWER_TRANSFORM, UnpackedTypeDefinitionTransformerStage)
+        stageSequence.add(StageType.LOWER_TRANSFORM, VariableDimensionEliminatorStage)
 
         stageSequence.add(StageType.REORDER, PropertyStatementReordererStage)
         stageSequence.add(StageType.REORDER, DeadDeclarationEliminatorStage)

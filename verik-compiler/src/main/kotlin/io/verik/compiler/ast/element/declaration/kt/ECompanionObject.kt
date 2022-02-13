@@ -19,6 +19,7 @@ package io.verik.compiler.ast.element.declaration.kt
 import io.verik.compiler.ast.common.Type
 import io.verik.compiler.ast.element.declaration.common.EAbstractContainerClass
 import io.verik.compiler.ast.element.declaration.common.EDeclaration
+import io.verik.compiler.ast.element.declaration.common.ETypeParameter
 import io.verik.compiler.ast.property.AnnotationEntry
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.core.common.Core
@@ -36,6 +37,7 @@ class ECompanionObject(
     override var annotationEntries: List<AnnotationEntry> = listOf()
     override var documentationLines: List<String>? = null
     override var superType = Core.Kt.C_Any.toType()
+    override var typeParameters: ArrayList<ETypeParameter> = ArrayList()
 
     init {
         declarations.forEach { it.parent = this }

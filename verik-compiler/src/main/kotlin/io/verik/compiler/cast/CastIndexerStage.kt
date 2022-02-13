@@ -124,12 +124,12 @@ object CastIndexerStage : ProjectStage() {
                 annotationEntries = listOf(),
                 documentationLines = null,
                 superType = NullDeclaration.toType(),
-                declarations = ArrayList(),
                 typeParameters = ArrayList(),
+                declarations = ArrayList(),
+                primaryConstructor = null,
                 isEnum = false,
                 isAbstract = false,
-                isObject = false,
-                primaryConstructor = null
+                isObject = false
             )
             castContext.registerDeclaration(descriptor, indexedClass)
         }

@@ -19,6 +19,7 @@ package io.verik.compiler.specialize
 import io.verik.compiler.ast.common.Type
 import io.verik.compiler.ast.common.cast
 import io.verik.compiler.ast.element.common.ETypedElement
+import io.verik.compiler.ast.element.declaration.common.EAbstractClass
 import io.verik.compiler.ast.element.declaration.common.EDeclaration
 import io.verik.compiler.ast.element.declaration.common.EFile
 import io.verik.compiler.ast.element.declaration.kt.ECompanionObject
@@ -45,6 +46,9 @@ object SpecializerIndexer {
         override fun visitTypedElement(typedElement: ETypedElement) {
             super.visitTypedElement(typedElement)
             addType(typedElement.type)
+            when (typedElement) {
+                is EAbstractClass -> addType(typedElement.superType)
+            }
         }
 
         override fun visitReferenceExpression(referenceExpression: EReferenceExpression) {

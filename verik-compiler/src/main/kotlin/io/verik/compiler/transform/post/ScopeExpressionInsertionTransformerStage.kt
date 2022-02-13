@@ -48,7 +48,7 @@ object ScopeExpressionInsertionTransformerStage : ProjectStage() {
         private var parentClass: EAbstractClass? = null
 
         private fun getScopeExpression(receiverExpression: EReceiverExpression): EExpression? {
-            when (val reference = receiverExpression.reference) {
+            return when (val reference = receiverExpression.reference) {
                 is TargetDeclaration -> {
                     if (reference is CompositeTargetFunctionDeclaration) {
                         val scope = if (reference.isConstructor) {
@@ -56,45 +56,71 @@ object ScopeExpressionInsertionTransformerStage : ProjectStage() {
                         } else {
                             reference.parent.toType()
                         }
-                        return EScopeExpression(receiverExpression.location, scope)
-                    }
+                        EScopeExpression(receiverExpression.location, scope, listOf())
+                    } else null
                 }
                 is EElement -> {
-                    when (val parent = reference.parent) {
-                        is EFile -> {
-                            val pkg = parent.parent
-                            if (pkg is EPackage && !pkg.packageType.isRoot() && pkg != parentPackage) {
-                                return EScopeExpression(receiverExpression.location, pkg.toType())
-                            }
-                        }
-                        is ESvClass -> {
-                            if (parent != parentClass) {
-                                if (reference is ESvFunction && reference.isStatic)
-                                    return EScopeExpression(receiverExpression.location, parent.toType())
-                                if (reference is EProperty && reference.isStatic)
-                                    return EScopeExpression(receiverExpression.location, parent.toType())
-                            }
-                        }
-                        is EModule -> {
-                            if (parent.isSimulationTop && parent != parentClass) {
-                                val referenceExpression = EReferenceExpression(
-                                    receiverExpression.location,
-                                    Target.C_Void.toType(),
-                                    Target.P_root,
-                                    null
-                                )
-                                return EReferenceExpression(
-                                    receiverExpression.location,
-                                    parent.toType(),
-                                    parent,
-                                    referenceExpression
-                                )
-                            }
-                        }
+                    return when (val parent = reference.parent) {
+                        is EFile -> getScopeExpressionFromFile(receiverExpression, parent)
+                        is ESvClass -> getScopeExpressionFromClass(receiverExpression, parent)
+                        is EModule -> getScopeExpressionFromModule(receiverExpression, parent)
+                        else -> null
                     }
                 }
+                else -> null
             }
-            return null
+        }
+
+        private fun getScopeExpressionFromFile(
+            receiverExpression: EReceiverExpression,
+            file: EFile,
+        ): EScopeExpression? {
+            val pkg = file.getParentPackage()
+            return if (!pkg.packageType.isRoot() && pkg != parentPackage) {
+                EScopeExpression(receiverExpression.location, pkg.toType(), listOf())
+            } else null
+        }
+
+        private fun getScopeExpressionFromClass(
+            receiverExpression: EReceiverExpression,
+            cls: ESvClass,
+        ): EScopeExpression? {
+            return if (cls != parentClass) {
+                when (val reference = receiverExpression.reference) {
+                    is ESvFunction -> {
+                        if (reference.isStatic) {
+                            val typeParameters = if (reference.isImported()) reference.typeParameters else listOf()
+                            EScopeExpression(receiverExpression.location, cls.toType(), typeParameters)
+                        } else null
+                    }
+                    is EProperty -> {
+                        if (reference.isStatic) {
+                            EScopeExpression(receiverExpression.location, cls.toType(), listOf())
+                        } else null
+                    }
+                    else -> null
+                }
+            } else null
+        }
+
+        private fun getScopeExpressionFromModule(
+            receiverExpression: EReceiverExpression,
+            module: EModule
+        ): EReferenceExpression? {
+            return if (module.isSimulationTop && module != parentClass) {
+                val referenceExpression = EReferenceExpression(
+                    receiverExpression.location,
+                    Target.C_Void.toType(),
+                    Target.P_root,
+                    null
+                )
+                EReferenceExpression(
+                    receiverExpression.location,
+                    module.toType(),
+                    module,
+                    referenceExpression
+                )
+            } else null
         }
 
         override fun visitPackage(pkg: EPackage) {

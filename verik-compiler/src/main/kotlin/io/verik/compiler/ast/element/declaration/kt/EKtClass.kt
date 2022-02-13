@@ -17,7 +17,6 @@
 package io.verik.compiler.ast.element.declaration.kt
 
 import io.verik.compiler.ast.common.Type
-import io.verik.compiler.ast.common.TypeParameterized
 import io.verik.compiler.ast.element.declaration.common.EAbstractContainerClass
 import io.verik.compiler.ast.element.declaration.common.EDeclaration
 import io.verik.compiler.ast.element.declaration.common.ETypeParameter
@@ -35,46 +34,45 @@ class EKtClass(
     override var annotationEntries: List<AnnotationEntry>,
     override var documentationLines: List<String>?,
     override var superType: Type,
-    override var declarations: ArrayList<EDeclaration>,
     override var typeParameters: ArrayList<ETypeParameter>,
+    override var declarations: ArrayList<EDeclaration>,
+    var primaryConstructor: EPrimaryConstructor?,
     var isEnum: Boolean,
     var isAbstract: Boolean,
-    var isObject: Boolean,
-    var primaryConstructor: EPrimaryConstructor?
-) : EAbstractContainerClass(), TypeParameterized {
+    var isObject: Boolean
+) : EAbstractContainerClass() {
 
     init {
-        declarations.forEach { it.parent = this }
         typeParameters.forEach { it.parent = this }
+        declarations.forEach { it.parent = this }
         primaryConstructor?.parent = this
     }
 
-    @Suppress("DuplicatedCode")
     fun fill(
         type: Type,
         annotationEntries: List<AnnotationEntry>,
         documentationLines: List<String>?,
         superType: Type,
-        declarations: List<EDeclaration>,
         typeParameters: List<ETypeParameter>,
+        declarations: List<EDeclaration>,
+        primaryConstructor: EPrimaryConstructor?,
         isEnum: Boolean,
         isAbstract: Boolean,
-        isObject: Boolean,
-        primaryConstructor: EPrimaryConstructor?
+        isObject: Boolean
     ) {
-        declarations.forEach { it.parent = this }
         typeParameters.forEach { it.parent = this }
+        declarations.forEach { it.parent = this }
         primaryConstructor?.parent = this
         this.type = type
         this.annotationEntries = annotationEntries
         this.documentationLines = documentationLines
         this.superType = superType
-        this.declarations = ArrayList(declarations)
         this.typeParameters = ArrayList(typeParameters)
+        this.declarations = ArrayList(declarations)
+        this.primaryConstructor = primaryConstructor
         this.isEnum = isEnum
         this.isAbstract = isAbstract
         this.isObject = isObject
-        this.primaryConstructor = primaryConstructor
     }
 
     override fun accept(visitor: Visitor) {
@@ -83,7 +81,6 @@ class EKtClass(
 
     override fun acceptChildren(visitor: TreeVisitor) {
         super.acceptChildren(visitor)
-        typeParameters.forEach { it.accept(visitor) }
         primaryConstructor?.accept(visitor)
     }
 }

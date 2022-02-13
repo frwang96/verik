@@ -31,9 +31,9 @@ internal class ConstructorDesugarTransformerStageTest : BaseTest() {
             ConstructorDesugarTransformerStage::class,
             """
                 KtClass(
-                    C, C,
+                    C, C, Any, [],
                     [SecondaryConstructor(C, C, BlockExpression(Unit, []), [], null)],
-                    [], 0, 0, 0, null
+                    null, 0, 0, 0
                 )
             """.trimIndent()
         ) { it.findDeclaration("C") }
@@ -59,10 +59,10 @@ internal class ConstructorDesugarTransformerStageTest : BaseTest() {
             ConstructorDesugarTransformerStage::class,
             """
                 KtClass(
-                    C, C, [
+                    C, C, Any, [], [
                         Property(x, Int, null, 0, 0),
                         SecondaryConstructor(C, C, $blockExpression, [KtValueParameter(*)], null)
-                    ], [], 0, 0, 0, null
+                    ], null, 0, 0, 0
                 )
             """.trimIndent()
         ) { it.findDeclaration("C") }

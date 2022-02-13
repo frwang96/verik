@@ -31,7 +31,7 @@ internal class ReferenceResolverStageTest : BaseTest() {
                 c x;
             """.trimIndent(),
             ReferenceResolverStage::class,
-            "Property(x, ReferenceDescriptor(Nothing, c, c, []))"
+            "Property(x, ReferenceDescriptor(Nothing, c, c, []), 0, 1)"
         ) { it.findDeclaration("x") }
     }
 
@@ -43,7 +43,7 @@ internal class ReferenceResolverStageTest : BaseTest() {
                 t x;
             """.trimIndent(),
             ReferenceResolverStage::class,
-            "Property(x, ReferenceDescriptor(Nothing, t, t, []))"
+            "Property(x, ReferenceDescriptor(Nothing, t, t, []), 0, 1)"
         ) { it.findDeclaration("x") }
     }
 
@@ -56,7 +56,7 @@ internal class ReferenceResolverStageTest : BaseTest() {
                 endclass
             """.trimIndent(),
             ReferenceResolverStage::class,
-            "Property(x, ReferenceDescriptor(Nothing, T, T, []))"
+            "Property(x, ReferenceDescriptor(Nothing, T, T, []), 0, 1)"
         ) { it.findDeclaration("x") }
     }
 }

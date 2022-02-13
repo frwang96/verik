@@ -30,7 +30,7 @@ internal class DescriptorCasterTest : BaseTest() {
             """
                 logic x;
             """.trimIndent(),
-            "Property(x, SimpleDescriptor(Boolean))"
+            "Property(x, SimpleDescriptor(Boolean), 0, 1)"
         ) { it.findDeclaration("x") }
     }
 
@@ -41,7 +41,7 @@ internal class DescriptorCasterTest : BaseTest() {
             """
                 t x;
             """.trimIndent(),
-            "Property(x, ReferenceDescriptor(Nothing, t, Nothing, []))"
+            "Property(x, ReferenceDescriptor(Nothing, t, Nothing, []), 0, 1)"
         ) { it.findDeclaration("x") }
     }
 
@@ -52,7 +52,7 @@ internal class DescriptorCasterTest : BaseTest() {
             """
                 int x;
             """.trimIndent(),
-            "Property(x, SimpleDescriptor(Int))"
+            "Property(x, SimpleDescriptor(Int), 0, 1)"
         ) { it.findDeclaration("x") }
     }
 
@@ -63,7 +63,7 @@ internal class DescriptorCasterTest : BaseTest() {
             """
                 x;
             """.trimIndent(),
-            "Property(x, SimpleDescriptor(Boolean))"
+            "Property(x, SimpleDescriptor(Boolean), 0, 1)"
         ) { it.findDeclaration("x") }
     }
 
@@ -78,7 +78,7 @@ internal class DescriptorCasterTest : BaseTest() {
                 Property(
                     x, RangeDimensionDescriptor(
                         Nothing, SimpleDescriptor(Int), LiteralDescriptor(*), LiteralDescriptor(*), 0
-                    )
+                    ), 0, 1
                 )
             """.trimIndent()
         ) { it.findDeclaration("x") }
@@ -91,7 +91,7 @@ internal class DescriptorCasterTest : BaseTest() {
             """
                 int x [8];
             """.trimIndent(),
-            "Property(x, IndexDimensionDescriptor(Nothing, SimpleDescriptor(Int), LiteralDescriptor(Nothing, 8)))"
+            "Property(x, IndexDimensionDescriptor(Nothing, SimpleDescriptor(Int), LiteralDescriptor(Nothing, 8)), 0, 1)"
         ) { it.findDeclaration("x") }
     }
 
@@ -102,7 +102,7 @@ internal class DescriptorCasterTest : BaseTest() {
             """
                 logic [1:0] x;
             """.trimIndent(),
-            "Property(x, BitDescriptor(Nothing, LiteralDescriptor(*), LiteralDescriptor(*), 0))"
+            "Property(x, BitDescriptor(Nothing, LiteralDescriptor(*), LiteralDescriptor(*), 0), 0, 1)"
         ) { it.findDeclaration("x") }
     }
 
@@ -116,7 +116,8 @@ internal class DescriptorCasterTest : BaseTest() {
             """
                 Property(
                     x,
-                    RangeDimensionDescriptor(Nothing, BitDescriptor(*), LiteralDescriptor(*), LiteralDescriptor(*), 1)
+                    RangeDimensionDescriptor(Nothing, BitDescriptor(*), LiteralDescriptor(*), LiteralDescriptor(*), 1),
+                    0, 1
                 )
             """.trimIndent()
         ) { it.findDeclaration("x") }
@@ -129,7 +130,7 @@ internal class DescriptorCasterTest : BaseTest() {
             """
                 logic x [int];
             """.trimIndent(),
-            "Property(x, IndexDimensionDescriptor(Nothing, SimpleDescriptor(Boolean), SimpleDescriptor(Int)))"
+            "Property(x, IndexDimensionDescriptor(Nothing, SimpleDescriptor(Boolean), SimpleDescriptor(Int)), 0, 1)"
         ) { it.findDeclaration("x") }
     }
 
@@ -140,7 +141,7 @@ internal class DescriptorCasterTest : BaseTest() {
             """
                 logic x [$];
             """.trimIndent(),
-            "Property(x, ArrayDimensionDescriptor(Nothing, SimpleDescriptor(*), 1))"
+            "Property(x, ArrayDimensionDescriptor(Nothing, SimpleDescriptor(*), 1), 0, 1)"
         ) { it.findDeclaration("x") }
     }
 
@@ -151,7 +152,7 @@ internal class DescriptorCasterTest : BaseTest() {
             """
                 logic x [];
             """.trimIndent(),
-            "Property(x, ArrayDimensionDescriptor(Nothing, SimpleDescriptor(*), 0))"
+            "Property(x, ArrayDimensionDescriptor(Nothing, SimpleDescriptor(*), 0), 0, 1)"
         ) { it.findDeclaration("x") }
     }
 
@@ -162,7 +163,12 @@ internal class DescriptorCasterTest : BaseTest() {
             """
                 logic [N:0] x;
             """.trimIndent(),
-            "Property(x, BitDescriptor(Nothing, ReferenceDescriptor(Nothing, N, Nothing, []), LiteralDescriptor(*), 0))"
+            """
+                Property(
+                    x, BitDescriptor(Nothing, ReferenceDescriptor(Nothing, N, Nothing, []), LiteralDescriptor(*), 0),
+                    0, 1
+                )
+            """.trimIndent()
         ) { it.findDeclaration("x") }
     }
 
@@ -176,7 +182,7 @@ internal class DescriptorCasterTest : BaseTest() {
             """
                 Property(
                     x, ReferenceDescriptor(Nothing, c, Nothing,
-                    [TypeArgument(null, ReferenceDescriptor(Nothing, d, Nothing, []))])
+                    [TypeArgument(null, ReferenceDescriptor(Nothing, d, Nothing, []))]), 0, 1
                 )
             """.trimIndent()
         ) { it.findDeclaration("x") }

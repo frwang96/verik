@@ -17,15 +17,17 @@
 package io.verik.compiler.ast.element.declaration.common
 
 import io.verik.compiler.ast.common.ResizableDeclarationContainer
+import io.verik.compiler.ast.common.TypeParameterized
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.replaceIfContains
 import io.verik.compiler.message.Messages
 
-abstract class EAbstractContainerClass : EAbstractClass(), ResizableDeclarationContainer {
+abstract class EAbstractContainerClass : EAbstractClass(), ResizableDeclarationContainer, TypeParameterized {
 
     abstract var declarations: ArrayList<EDeclaration>
 
     override fun acceptChildren(visitor: TreeVisitor) {
+        typeParameters.forEach { it.accept(visitor) }
         declarations.forEach { it.accept(visitor) }
     }
 

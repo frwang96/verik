@@ -51,7 +51,7 @@ internal class DeclarationCasterTest : BaseTest() {
                 class C
             """.trimIndent(),
             CasterStage::class,
-            "KtClass(C, C, [], [], 0, 0, 0, PrimaryConstructor(C, C, [], null))"
+            "KtClass(C, C, Any, [], [], PrimaryConstructor(C, C, [], null), 0, 0, 0)"
         ) { it.findDeclaration("C") }
     }
 
@@ -66,10 +66,9 @@ internal class DeclarationCasterTest : BaseTest() {
             CasterStage::class,
             """
                 KtClass(
-                    C, C,
-                    [KtClass(D, D, [], [], 0, 0, 0, PrimaryConstructor(D, D, [], null))],
-                    [], 0, 0, 0,
-                    PrimaryConstructor(C, C, [], null)
+                    C, C, Any, [],
+                    [KtClass(D, D, Any, [], [], PrimaryConstructor(D, D, [], null), 0, 0, 0)],
+                    PrimaryConstructor(C, C, [], null), 0, 0, 0
                 )
             """.trimIndent()
         ) { it.findDeclaration("C") }
@@ -86,10 +85,9 @@ internal class DeclarationCasterTest : BaseTest() {
             CasterStage::class,
             """
                 KtClass(
-                    C, C,
+                    C, C, Any, [],
                     [KtFunction(f, Unit, *, [], [], 0)],
-                    [], 0, 0, 0,
-                    PrimaryConstructor(C, C, [], null)
+                    PrimaryConstructor(C, C, [], null), 0, 0, 0
                 )
             """.trimIndent()
         ) { it.findDeclaration("C") }
@@ -106,10 +104,9 @@ internal class DeclarationCasterTest : BaseTest() {
             CasterStage::class,
             """
                 KtClass(
-                    C, C,
+                    C, C, Any, [],
                     [Property(x, Boolean, ConstantExpression(*), 0, 0)],
-                    [], 0, 0, 0,
-                    PrimaryConstructor(C, C, [], null)
+                    PrimaryConstructor(C, C, [], null), 0, 0, 0
                 )
             """.trimIndent()
         ) { it.findDeclaration("C") }
@@ -122,7 +119,7 @@ internal class DeclarationCasterTest : BaseTest() {
                 class C { companion object }
             """.trimIndent(),
             CasterStage::class,
-            "KtClass(C, C, [CompanionObject(Companion, [])], [], 0, 0, 0, PrimaryConstructor(C, C, [], null))"
+            "KtClass(C, C, Any, [], [CompanionObject(Companion, [])], PrimaryConstructor(C, C, [], null), 0, 0, 0)"
         ) { it.findDeclaration("C") }
     }
 
@@ -135,10 +132,8 @@ internal class DeclarationCasterTest : BaseTest() {
             CasterStage::class,
             """
                 KtClass(
-                    C, C<T>, [],
-                    [TypeParameter(T, Any)],
-                    0, 0, 0,
-                    PrimaryConstructor(C, C<T>, [], null)
+                    C, C<T>, Any, [TypeParameter(T, Any)], [],
+                    PrimaryConstructor(C, C<T>, [], null), 0, 0, 0
                 )
             """.trimIndent()
         ) { it.findDeclaration("C") }
@@ -148,37 +143,39 @@ internal class DeclarationCasterTest : BaseTest() {
     fun `class with primary constructor`() {
         driveElementTest(
             """
-                open class C(x: Int)
-                class D : C(0)
+                open class C0<T>(x: Int)
+                class C1 : C0<Int>(0)
             """.trimIndent(),
             CasterStage::class,
             """
                 KtClass(
-                    D, D, [], [], 0, 0, 0,
-                    PrimaryConstructor(D, D, [], CallExpression(C, C, null, [ConstantExpression(*)], []))
+                    C1, C1, C0<Int>, [], [],
+                    PrimaryConstructor(C1, C1, [], CallExpression(C0<Int>, C0, null, [ConstantExpression(*)], [Int])),
+                    0, 0, 0
                 )
             """.trimIndent()
-        ) { it.findDeclaration("D") }
+        ) { it.findDeclaration("C1") }
     }
 
     @Test
     fun `class with secondary constructor`() {
         driveElementTest(
             """
-                class C {
+                open class C0<T>(x: Int)
+                class C1 : C0<Int> {
                     @Suppress("ConvertSecondaryConstructorToPrimary")
-                    constructor(x: Int) { println() }
+                    constructor(x: Int): super(0)
                 }
             """.trimIndent(),
             CasterStage::class,
             """
                 KtClass(
-                    C, C,
-                    [SecondaryConstructor(C, C, BlockExpression(*), [KtValueParameter(x, Int, null, 0, 0)], null)],
-                    [], 0, 0, 0, null
+                    C1, C1, C0<Int>, [],
+                    [SecondaryConstructor(C1, C1, BlockExpression(*), [KtValueParameter(x, Int, null, 0, 0)], null)],
+                    null, 0, 0, 0
                 )
             """.trimIndent()
-        ) { it.findDeclaration("C") }
+        ) { it.findDeclaration("C1") }
     }
 
     @Test
@@ -188,7 +185,7 @@ internal class DeclarationCasterTest : BaseTest() {
                 enum class E { A }
             """.trimIndent(),
             CasterStage::class,
-            "KtClass(E, E, [EnumEntry(A, E)], [], 1, 0, 0, PrimaryConstructor(E, E, [], null))"
+            "KtClass(E, E, Enum, [], [EnumEntry(A, E)], PrimaryConstructor(E, E, [], null), 1, 0, 0)"
         ) { it.findDeclaration("E") }
     }
 
@@ -199,7 +196,7 @@ internal class DeclarationCasterTest : BaseTest() {
                 object O
             """.trimIndent(),
             CasterStage::class,
-            "KtClass(O, O, [], [], 0, 0, 1, null)"
+            "KtClass(O, O, Any, [], [], null, 0, 0, 1)"
         ) { it.findDeclaration("O") }
     }
 

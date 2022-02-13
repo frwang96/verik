@@ -20,10 +20,12 @@ import io.verik.compiler.ast.common.Type
 import io.verik.compiler.ast.element.declaration.common.EDeclaration
 import io.verik.compiler.ast.element.declaration.common.EEnumEntry
 import io.verik.compiler.ast.element.declaration.common.EFile
+import io.verik.compiler.ast.element.declaration.kt.ECompanionObject
 import io.verik.compiler.ast.element.declaration.kt.EKtAbstractFunction
 import io.verik.compiler.ast.element.declaration.kt.EKtClass
 import io.verik.compiler.ast.element.declaration.kt.EKtFunction
 import io.verik.compiler.ast.element.declaration.kt.EPrimaryConstructor
+import io.verik.compiler.ast.element.declaration.kt.ESecondaryConstructor
 import io.verik.compiler.ast.element.expression.common.ECallExpression
 import io.verik.compiler.ast.element.expression.common.EExpression
 import io.verik.compiler.ast.element.expression.common.EReceiverExpression
@@ -75,7 +77,11 @@ object ExpressionReferenceForwarder {
         specializeContext: SpecializeContext
     ): Boolean {
         val receiverExpression = entry.receiverExpression
-        val isTopLevel = reference.parent is EFile || reference is EPrimaryConstructor || reference is EEnumEntry
+        val isTopLevel = reference.parent is EFile ||
+            reference.parent is ECompanionObject ||
+            reference is EPrimaryConstructor ||
+            reference is ESecondaryConstructor ||
+            reference is EEnumEntry
         return if (isTopLevel) {
             if (receiverExpression is ECallExpression && reference is EKtAbstractFunction) {
                 val typeArguments = receiverExpression.typeArguments

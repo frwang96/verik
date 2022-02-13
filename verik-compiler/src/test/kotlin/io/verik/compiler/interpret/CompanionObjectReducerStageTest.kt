@@ -31,7 +31,12 @@ internal class CompanionObjectReducerStageTest : BaseTest() {
                 }
             """.trimIndent(),
             CompanionObjectReducerStage::class,
-            "SvClass(C, C, [SvFunction(*), SvFunction(*), Property(x, Boolean, ConstantExpression(*), 1, 1)], 0, 0)"
+            """
+                SvClass(
+                    C, C, [],
+                    [SvFunction(*), SvFunction(*), Property(x, Boolean, ConstantExpression(*), 1, 1)], 0, 0
+                )
+            """.trimIndent()
         ) { it.findDeclaration("C") }
     }
 }

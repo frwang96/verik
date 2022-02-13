@@ -25,6 +25,19 @@ import io.verik.importer.common.ElementCopier
 
 object PropertyCaster {
 
+    fun castPropertiesFromClassProperty(
+        ctx: SystemVerilogParser.ClassPropertyContext,
+        castContext: CastContext
+    ): EContainerElement {
+        val declarations = castContext.castDeclarations(ctx.dataDeclaration())
+        val isStatic = ctx.propertyQualifier().any { it.text == "static" }
+        declarations.forEach {
+            it.signature = SignatureBuilder.buildSignature(ctx, it.name)
+            if (it is EProperty) it.isStatic = isStatic
+        }
+        return EContainerElement(castContext.getLocation(ctx), declarations)
+    }
+
     fun castPropertiesFromDataDeclarationData(
         ctx: SystemVerilogParser.DataDeclarationDataContext,
         castContext: CastContext
@@ -50,6 +63,7 @@ object PropertyCaster {
                 name,
                 signature,
                 descriptor,
+                false,
                 isMutable
             )
         }

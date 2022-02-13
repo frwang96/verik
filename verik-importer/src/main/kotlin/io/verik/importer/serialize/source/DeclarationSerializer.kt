@@ -41,10 +41,8 @@ object DeclarationSerializer {
         serializeContext.append("class ")
         serializeContext.serializeName(cls)
         if (cls.typeParameters.isNotEmpty()) {
-            serializeContext.appendLine("<")
-            serializeContext.indent {
-                serializeContext.serializeJoinAppendLine(cls.typeParameters)
-            }
+            serializeContext.append("<")
+            serializeContext.serializeJoin(cls.typeParameters)
             serializeContext.append(">")
         }
         if (cls.valueParameters.isNotEmpty()) {
@@ -122,6 +120,15 @@ object DeclarationSerializer {
             function.isOpen -> serializeContext.append("open ")
         }
         serializeContext.append("fun ")
+        val companionObject = function.parent
+        if (companionObject is ECompanionObject) {
+            val cls = companionObject.parentNotNull().cast<EKtClass>()
+            if (cls.typeParameters.isNotEmpty()) {
+                serializeContext.append("<")
+                serializeContext.serializeJoin(cls.typeParameters)
+                serializeContext.append("> ")
+            }
+        }
         serializeContext.serializeName(function)
         if (function.valueParameters.isNotEmpty()) {
             serializeContext.appendLine("(")
@@ -190,6 +197,26 @@ object DeclarationSerializer {
         serializeContext.serializeName(enumEntry)
     }
 
+    private fun serializeDocs(declaration: EDeclaration, serializeContext: SerializeContext) {
+        serializeContext.appendLine("/**")
+        val locationLine = declaration.location.line
+        val locationStringShort = "${declaration.location.path.fileName}:$locationLine"
+        val locationStringLong = "${declaration.location.path}:$locationLine"
+        serializeContext.appendLine(" * $locationStringShort")
+        serializeContext.appendLine(" * []($locationStringLong)")
+
+        val signature = declaration.signature
+        if (signature != null && signature.isNotBlank()) {
+            serializeContext.appendLine(" *")
+            serializeContext.appendLine(" *  ```")
+            signature.lines().forEach {
+                serializeContext.appendLine(" *  $it")
+            }
+            serializeContext.appendLine(" *  ```")
+        }
+        serializeContext.appendLine(" */")
+    }
+
     private fun serializeSuperConstructorCall(descriptor: EDescriptor, serializeContext: SerializeContext) {
         val declaration = descriptor.type.reference
         val constructor = if (declaration is EKtClass) declaration.getConstructor() else null
@@ -213,25 +240,5 @@ object DeclarationSerializer {
         } else {
             serializeContext.append("()")
         }
-    }
-
-    private fun serializeDocs(declaration: EDeclaration, serializeContext: SerializeContext) {
-        serializeContext.appendLine("/**")
-        val locationLine = declaration.location.line
-        val locationStringShort = "${declaration.location.path.fileName}:$locationLine"
-        val locationStringLong = "${declaration.location.path}:$locationLine"
-        serializeContext.appendLine(" * $locationStringShort")
-        serializeContext.appendLine(" * []($locationStringLong)")
-
-        val signature = declaration.signature
-        if (signature != null && signature.isNotBlank()) {
-            serializeContext.appendLine(" *")
-            serializeContext.appendLine(" *  ```")
-            signature.lines().forEach {
-                serializeContext.appendLine(" *  $it")
-            }
-            serializeContext.appendLine(" *  ```")
-        }
-        serializeContext.appendLine(" */")
     }
 }

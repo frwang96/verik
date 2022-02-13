@@ -34,7 +34,13 @@ package imported.test_pkg
 
 import io.verik.core.*
 
-class C1
+class C1<T> {
+
+    companion object {
+
+        fun <T> f0(): Boolean = imported()
+    }
+}
 
 // Test.kt /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -52,6 +58,7 @@ object M : Module() {
     fun f() {
         val x1 = x0
         val c0 = C0()
-        val c1 = C1()
+        val c1 = C1<Int>()
+        val x2 = C1.f0<Int>()
     }
 }

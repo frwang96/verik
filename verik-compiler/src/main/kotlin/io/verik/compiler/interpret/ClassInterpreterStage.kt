@@ -31,6 +31,7 @@ import io.verik.compiler.ast.element.expression.common.EReferenceExpression
 import io.verik.compiler.ast.element.expression.common.EReturnStatement
 import io.verik.compiler.ast.element.expression.common.ESuperExpression
 import io.verik.compiler.ast.property.FunctionQualifierType
+import io.verik.compiler.common.ExpressionCopier
 import io.verik.compiler.common.ReferenceUpdater
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core
@@ -74,6 +75,7 @@ object ClassInterpreterStage : ProjectStage() {
                 annotationEntries = listOf(),
                 documentationLines = null,
                 body = secondaryConstructor.body,
+                typeParameters = ArrayList(),
                 valueParameters = ArrayList(valueParameters),
                 qualifierType = FunctionQualifierType.REGULAR,
                 isStatic = false
@@ -104,17 +106,18 @@ object ClassInterpreterStage : ProjectStage() {
                 }
             }
             val interpretedClass = ESvClass(
-                cls.location,
-                cls.bodyStartLocation,
-                cls.bodyEndLocation,
-                cls.name,
-                cls.type,
-                cls.annotationEntries,
-                cls.documentationLines,
-                cls.superType,
-                declarations,
-                cls.isAbstract,
-                cls.isObject
+                location = cls.location,
+                bodyStartLocation = cls.bodyStartLocation,
+                bodyEndLocation = cls.bodyEndLocation,
+                name = cls.name,
+                type = cls.type,
+                annotationEntries = cls.annotationEntries,
+                documentationLines = cls.documentationLines,
+                superType = cls.superType,
+                typeParameters = cls.typeParameters,
+                declarations = declarations,
+                isVirtual = cls.isAbstract,
+                isObject = cls.isObject
             )
             referenceUpdater.replace(cls, interpretedClass)
         }
@@ -218,6 +221,7 @@ object ClassInterpreterStage : ProjectStage() {
                     Core.Kt.C_Unit.toType(),
                     statements
                 ),
+                typeParameters = ArrayList(),
                 valueParameters = ArrayList(valueParameters),
                 qualifierType = FunctionQualifierType.REGULAR,
                 isStatic = true
@@ -228,12 +232,13 @@ object ClassInterpreterStage : ProjectStage() {
     }
 
     private fun interpretValueParameter(valueParameter: EKtValueParameter): ESvValueParameter {
+        val expression = valueParameter.expression?.let { ExpressionCopier.deepCopy(it) }
         return ESvValueParameter(
             location = valueParameter.location,
             name = valueParameter.name,
             type = valueParameter.type.copy(),
             annotationEntries = valueParameter.annotationEntries,
-            expression = valueParameter.expression,
+            expression = expression,
             isInput = true
         )
     }

@@ -146,6 +146,7 @@ object FunctionInterpreterStage : ProjectStage() {
                 function.annotationEntries,
                 function.documentationLines,
                 function.body,
+                function.typeParameters,
                 valueParameters
             )
         }
@@ -172,6 +173,7 @@ object FunctionInterpreterStage : ProjectStage() {
                 function.annotationEntries,
                 function.documentationLines,
                 function.body,
+                function.typeParameters,
                 ArrayList(valueParameters),
                 qualifierType,
                 isStatic

@@ -17,6 +17,7 @@
 package io.verik.compiler.ast.element.expression.sv
 
 import io.verik.compiler.ast.common.Type
+import io.verik.compiler.ast.element.declaration.common.ETypeParameter
 import io.verik.compiler.ast.element.expression.common.EExpression
 import io.verik.compiler.ast.property.SerializationType
 import io.verik.compiler.common.TreeVisitor
@@ -26,7 +27,8 @@ import io.verik.compiler.target.common.Target
 
 class EScopeExpression(
     override val location: SourceLocation,
-    val scope: Type
+    val scope: Type,
+    val typeParameters: List<ETypeParameter>
 ) : EExpression() {
 
     override var type = Target.C_Void.toType()

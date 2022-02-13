@@ -157,12 +157,13 @@ class ElementPrinter : Visitor() {
         build("KtClass") {
             build(cls.name)
             build(cls.type.toString())
-            build(cls.declarations)
+            build(cls.superType.toString())
             build(cls.typeParameters)
+            build(cls.declarations)
+            build(cls.primaryConstructor)
             build(cls.isEnum)
             build(cls.isAbstract)
             build(cls.isObject)
-            build(cls.primaryConstructor)
         }
     }
 
@@ -177,6 +178,7 @@ class ElementPrinter : Visitor() {
         build("SvClass") {
             build(cls.name)
             build(cls.type.toString())
+            build(cls.typeParameters)
             build(cls.declarations)
             build(cls.isVirtual)
             build(cls.isObject)
@@ -253,6 +255,7 @@ class ElementPrinter : Visitor() {
             build(function.name)
             build(function.type.toString())
             build(function.body)
+            build(function.typeParameters)
             build(function.valueParameters)
             build(function.qualifierType.toString())
             build(function.isStatic)
@@ -263,6 +266,7 @@ class ElementPrinter : Visitor() {
         build("Task") {
             build(task.name)
             build(task.body)
+            build(task.typeParameters)
             build(task.valueParameters)
         }
     }
@@ -470,6 +474,7 @@ class ElementPrinter : Visitor() {
         build("ScopeExpression") {
             build(scopeExpression.type.toString())
             build(scopeExpression.scope.toString())
+            build(scopeExpression.typeParameters.map { it.type.toString() })
         }
     }
 

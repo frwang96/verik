@@ -31,7 +31,7 @@ internal class DescriptorResolverStageTest : BaseTest() {
                 c #(1) x;
             """.trimIndent(),
             DescriptorResolverStage::class,
-            "Property(x, ReferenceDescriptor(c<`1`>, c, c, [TypeArgument(null, LiteralDescriptor(`1`, 1))]))"
+            "Property(x, ReferenceDescriptor(c<`1`>, c, c, [TypeArgument(null, LiteralDescriptor(`1`, 1))]), 0, 1)"
         ) { it.findDeclaration("x") }
     }
 
@@ -42,7 +42,7 @@ internal class DescriptorResolverStageTest : BaseTest() {
                 logic [1:0] x;
             """.trimIndent(),
             DescriptorResolverStage::class,
-            "Property(x, BitDescriptor(Ubit<ADD<SUB<`1`, `0`>, `1`>>, *, *, *))"
+            "Property(x, BitDescriptor(Ubit<ADD<SUB<`1`, `0`>, `1`>>, *, *, *), 0, 1)"
         ) { it.findDeclaration("x") }
     }
 
@@ -56,7 +56,7 @@ internal class DescriptorResolverStageTest : BaseTest() {
             """.trimIndent(),
             DescriptorResolverStage::class,
             """
-                Property(x, ReferenceDescriptor(c<Int>, c, c, [TypeArgument(null, SimpleDescriptor(Int))]))
+                Property(x, ReferenceDescriptor(c<Int>, c, c, [TypeArgument(null, SimpleDescriptor(Int))]), 0, 1)
             """.trimIndent()
         ) { it.findDeclaration("x") }
     }
@@ -71,7 +71,7 @@ internal class DescriptorResolverStageTest : BaseTest() {
             """.trimIndent(),
             DescriptorResolverStage::class,
             """
-                Property(x, ReferenceDescriptor(c<Int, Int>, c, c, []))
+                Property(x, ReferenceDescriptor(c<Int, Int>, c, c, []), 0, 1)
             """.trimIndent()
         ) { it.findDeclaration("x") }
     }
@@ -83,7 +83,7 @@ internal class DescriptorResolverStageTest : BaseTest() {
                 logic x [$];
             """.trimIndent(),
             DescriptorResolverStage::class,
-            "Property(x, ArrayDimensionDescriptor(Queue<Boolean>, SimpleDescriptor(*), 1))"
+            "Property(x, ArrayDimensionDescriptor(Queue<Boolean>, SimpleDescriptor(*), 1), 0, 1)"
         ) { it.findDeclaration("x") }
     }
 
@@ -97,7 +97,8 @@ internal class DescriptorResolverStageTest : BaseTest() {
             """
                 Property(
                     x,
-                    IndexDimensionDescriptor(AssociativeArray<Int, Boolean>, SimpleDescriptor(*), SimpleDescriptor(*))
+                    IndexDimensionDescriptor(AssociativeArray<Int, Boolean>, SimpleDescriptor(*), SimpleDescriptor(*)),
+                    0, 1
                 )
             """.trimIndent()
         ) { it.findDeclaration("x") }
@@ -112,8 +113,9 @@ internal class DescriptorResolverStageTest : BaseTest() {
             DescriptorResolverStage::class,
             """
                 Property(
-                    x,
-                    RangeDimensionDescriptor(Packed<ADD<SUB<`3`, `0`>, `1`>, Ubit<ADD<SUB<`1`, `0`>, `1`>>>, *, *, *, 1)
+                    x, RangeDimensionDescriptor(
+                        Packed<ADD<SUB<`3`, `0`>, `1`>, Ubit<ADD<SUB<`1`, `0`>, `1`>>>, *, *, *, 1
+                    ), 0, 1
                 )
             """.trimIndent()
         ) { it.findDeclaration("x") }

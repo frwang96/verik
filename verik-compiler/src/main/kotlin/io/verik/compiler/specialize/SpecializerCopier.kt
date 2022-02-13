@@ -140,10 +140,10 @@ object SpecializerCopier {
     ): EKtClass {
         val type = cls.type.copy()
         val superType = cls.superType.copy()
+        val typeParameters = cls.typeParameters.map { copy(it, typeArguments, specializeContext) }
         val declarations = cls.declarations
             .filter { it !is EAbstractClass }
             .map { copy(it, typeArguments, specializeContext) }
-        val typeParameters = cls.typeParameters.map { copy(it, typeArguments, specializeContext) }
         val primaryConstructor = cls.primaryConstructor?.let { copy(it, typeArguments, specializeContext) }
         val copiedClass = EKtClass(
             location = cls.location,
@@ -154,12 +154,12 @@ object SpecializerCopier {
             annotationEntries = cls.annotationEntries,
             documentationLines = cls.documentationLines,
             superType = superType,
-            declarations = ArrayList(declarations),
             typeParameters = ArrayList(typeParameters),
+            declarations = ArrayList(declarations),
+            primaryConstructor = primaryConstructor,
             isEnum = cls.isEnum,
             isAbstract = cls.isAbstract,
-            isObject = cls.isObject,
-            primaryConstructor = primaryConstructor
+            isObject = cls.isObject
         )
         specializeContext.register(cls, typeArguments, copiedClass)
         return copiedClass

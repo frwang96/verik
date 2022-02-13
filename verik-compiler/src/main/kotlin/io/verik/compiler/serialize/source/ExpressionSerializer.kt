@@ -138,9 +138,20 @@ object ExpressionSerializer {
 
     fun serializeScopeExpression(scopeExpression: EScopeExpression, serializeContext: SerializeContext) {
         val serializedType = TypeSerializer.serialize(scopeExpression.scope, scopeExpression)
-        serializedType.checkNoPackedDimension(scopeExpression)
-        serializedType.checkNoUnpackedDimension(scopeExpression)
+        serializedType.checkNoVariableDimension(scopeExpression)
         serializeContext.append(serializedType.base)
+        if (scopeExpression.typeParameters.isNotEmpty()) {
+            val typeArgumentString = scopeExpression.typeParameters.joinToString {
+                val typeArgumentSerializedType = TypeSerializer.serialize(it.type, scopeExpression)
+                typeArgumentSerializedType.checkNoVariableDimension(scopeExpression)
+                if (typeArgumentSerializedType.isVirtual) {
+                    ".${it.name}(virtual ${typeArgumentSerializedType.base})"
+                } else {
+                    ".${it.name}(${typeArgumentSerializedType.base})"
+                }
+            }
+            serializeContext.append(" #($typeArgumentString)")
+        }
     }
 
     fun serializeConstantExpression(constantExpression: EConstantExpression, serializeContext: SerializeContext) {
@@ -409,8 +420,8 @@ object ExpressionSerializer {
 
     private fun serializePropertyInline(property: EProperty, serializeContext: SerializeContext) {
         val serializedType = TypeSerializer.serialize(property.type, property)
-        serializedType.checkNoUnpackedDimension(property)
-        serializeContext.append(serializedType.getBaseAndPackedDimension() + " ")
+        serializedType.checkNoVariableDimension(property)
+        serializeContext.append("${serializedType.base} ")
         serializeContext.append(property.name)
         val initializer = property.initializer
         if (initializer != null) {
