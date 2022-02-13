@@ -255,6 +255,7 @@ class ElementPrinter : Visitor() {
             build(function.name)
             build(function.type.toString())
             build(function.body)
+            build(function.typeParameters)
             build(function.valueParameters)
             build(function.qualifierType.toString())
             build(function.isStatic)
@@ -265,6 +266,7 @@ class ElementPrinter : Visitor() {
         build("Task") {
             build(task.name)
             build(task.body)
+            build(task.typeParameters)
             build(task.valueParameters)
         }
     }
@@ -472,6 +474,7 @@ class ElementPrinter : Visitor() {
         build("ScopeExpression") {
             build(scopeExpression.type.toString())
             build(scopeExpression.scope.toString())
+            build(scopeExpression.typeParameters.map { it.type.toString() })
         }
     }
 

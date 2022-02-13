@@ -17,6 +17,7 @@
 package io.verik.compiler.ast.element.declaration.sv
 
 import io.verik.compiler.ast.common.Type
+import io.verik.compiler.ast.element.declaration.common.ETypeParameter
 import io.verik.compiler.ast.element.expression.common.EBlockExpression
 import io.verik.compiler.ast.property.AnnotationEntry
 import io.verik.compiler.ast.property.FunctionQualifierType
@@ -30,6 +31,7 @@ class ESvFunction(
     override var annotationEntries: List<AnnotationEntry>,
     override var documentationLines: List<String>?,
     override var body: EBlockExpression,
+    override var typeParameters: ArrayList<ETypeParameter>,
     override var valueParameters: ArrayList<ESvValueParameter>,
     val qualifierType: FunctionQualifierType,
     val isStatic: Boolean
@@ -37,6 +39,7 @@ class ESvFunction(
 
     init {
         body.parent = this
+        typeParameters.forEach { it.parent = this }
         valueParameters.forEach { it.parent = this }
     }
 

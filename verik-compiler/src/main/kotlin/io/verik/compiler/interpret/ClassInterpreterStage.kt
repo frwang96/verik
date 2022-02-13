@@ -74,6 +74,7 @@ object ClassInterpreterStage : ProjectStage() {
                 annotationEntries = listOf(),
                 documentationLines = null,
                 body = secondaryConstructor.body,
+                typeParameters = ArrayList(),
                 valueParameters = ArrayList(valueParameters),
                 qualifierType = FunctionQualifierType.REGULAR,
                 isStatic = false
@@ -219,6 +220,7 @@ object ClassInterpreterStage : ProjectStage() {
                     Core.Kt.C_Unit.toType(),
                     statements
                 ),
+                typeParameters = ArrayList(),
                 valueParameters = ArrayList(valueParameters),
                 qualifierType = FunctionQualifierType.REGULAR,
                 isStatic = true

@@ -35,7 +35,7 @@ internal class ScopeExpressionInsertionTransformerStageTest : BaseTest() {
                 CallExpression(
                     ArrayList<Boolean>,
                     __new,
-                    ScopeExpression(Void, ArrayList<Boolean>),
+                    ScopeExpression(Void, ArrayList<Boolean>, []),
                     [],
                     [Boolean]
                 )
@@ -55,7 +55,7 @@ internal class ScopeExpressionInsertionTransformerStageTest : BaseTest() {
                 }
             """.trimIndent(),
             ScopeExpressionInsertionTransformerStage::class,
-            "ReferenceExpression(Boolean, x, ScopeExpression(Void, test_pkg))"
+            "ReferenceExpression(Boolean, x, ScopeExpression(Void, test_pkg, []))"
         ) { it.findExpression("f") }
     }
 
@@ -73,44 +73,42 @@ internal class ScopeExpressionInsertionTransformerStageTest : BaseTest() {
                 }
             """.trimIndent(),
             ScopeExpressionInsertionTransformerStage::class,
-            "ReferenceExpression(Boolean, x, ScopeExpression(Void, O))"
+            "ReferenceExpression(Boolean, x, ScopeExpression(Void, O, []))"
         ) { it.findExpression("f") }
     }
 
     @Test
-    fun `reference module`() {
+    fun `reference object property`() {
         driveElementTest(
             """
-                @SimTop
-                object M : Module() {
-                    val x: Boolean = nc()
+                object O {
+                    var x = false
                 }
-                class N : Module() {
-                    fun f() {
-                        M.x
-                    }
+                fun f() {
+                    O.x
                 }
             """.trimIndent(),
             ScopeExpressionInsertionTransformerStage::class,
-            "ReferenceExpression(Boolean, x, ReferenceExpression(M, M, ReferenceExpression(Void, ${'$'}root, null)))"
+            "ReferenceExpression(Boolean, x, ScopeExpression(Void, O, []))"
         ) { it.findExpression("f") }
     }
 
     @Test
-    fun `reference module parent`() {
+    fun `reference module property`() {
         driveElementTest(
             """
                 @SimTop
-                object M : Module() {
-                    @Suppress("MemberVisibilityCanBePrivate")
+                object M0 : Module() {
                     val x: Boolean = nc()
+                }
+                class M1 : Module() {
                     fun f() {
-                        x
+                        M0.x
                     }
                 }
             """.trimIndent(),
             ScopeExpressionInsertionTransformerStage::class,
-            "ReferenceExpression(Boolean, x, null)"
+            "ReferenceExpression(Boolean, x, ReferenceExpression(M0, M0, ReferenceExpression(Void, ${'$'}root, null)))"
         ) { it.findExpression("f") }
     }
 }

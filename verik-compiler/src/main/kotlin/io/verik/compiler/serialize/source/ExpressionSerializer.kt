@@ -140,6 +140,14 @@ object ExpressionSerializer {
         val serializedType = TypeSerializer.serialize(scopeExpression.scope, scopeExpression)
         serializedType.checkNoVariableDimension(scopeExpression)
         serializeContext.append(serializedType.base)
+        if (scopeExpression.typeParameters.isNotEmpty()) {
+            val typeArgumentString = scopeExpression.typeParameters.joinToString {
+                val typeArgumentSerializedType = TypeSerializer.serialize(it.type, scopeExpression)
+                typeArgumentSerializedType.checkNoVariableDimension(scopeExpression)
+                ".${it.name}(${typeArgumentSerializedType.base})"
+            }
+            serializeContext.append(" #($typeArgumentString)")
+        }
     }
 
     fun serializeConstantExpression(constantExpression: EConstantExpression, serializeContext: SerializeContext) {

@@ -16,15 +16,17 @@
 
 package io.verik.compiler.ast.element.declaration.sv
 
+import io.verik.compiler.ast.common.TypeParameterized
 import io.verik.compiler.ast.element.declaration.common.EAbstractFunction
 import io.verik.compiler.common.TreeVisitor
 
-abstract class ESvAbstractFunction : EAbstractFunction() {
+abstract class ESvAbstractFunction : EAbstractFunction(), TypeParameterized {
 
     abstract var valueParameters: ArrayList<ESvValueParameter>
 
     override fun acceptChildren(visitor: TreeVisitor) {
         super.acceptChildren(visitor)
+        typeParameters.forEach { it.accept(visitor) }
         valueParameters.forEach { it.accept(visitor) }
     }
 }
