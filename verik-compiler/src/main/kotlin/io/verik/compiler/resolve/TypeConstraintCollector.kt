@@ -22,6 +22,7 @@ import io.verik.compiler.ast.element.declaration.common.EDeclaration
 import io.verik.compiler.ast.element.declaration.common.EProperty
 import io.verik.compiler.ast.element.declaration.kt.EKtAbstractFunction
 import io.verik.compiler.ast.element.declaration.kt.EKtFunction
+import io.verik.compiler.ast.element.declaration.kt.EKtValueParameter
 import io.verik.compiler.ast.element.expression.common.EBlockExpression
 import io.verik.compiler.ast.element.expression.common.ECallExpression
 import io.verik.compiler.ast.element.expression.common.EExpression
@@ -135,6 +136,20 @@ object TypeConstraintCollector {
                         TypeConstraintKind.EQ_INOUT,
                         TypeAdapter.ofElement(property),
                         TypeAdapter.ofElement(initializer)
+                    )
+                )
+            }
+        }
+
+        override fun visitKtValueParameter(valueParameter: EKtValueParameter) {
+            super.visitKtValueParameter(valueParameter)
+            val expression = valueParameter.expression
+            if (expression != null) {
+                typeConstraints.add(
+                    TypeConstraint(
+                        TypeConstraintKind.EQ_INOUT,
+                        TypeAdapter.ofElement(valueParameter),
+                        TypeAdapter.ofElement(expression)
                     )
                 )
             }

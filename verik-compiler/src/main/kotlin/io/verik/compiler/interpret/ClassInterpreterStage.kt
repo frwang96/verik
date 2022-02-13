@@ -31,6 +31,7 @@ import io.verik.compiler.ast.element.expression.common.EReferenceExpression
 import io.verik.compiler.ast.element.expression.common.EReturnStatement
 import io.verik.compiler.ast.element.expression.common.ESuperExpression
 import io.verik.compiler.ast.property.FunctionQualifierType
+import io.verik.compiler.common.ExpressionCopier
 import io.verik.compiler.common.ReferenceUpdater
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core
@@ -231,12 +232,13 @@ object ClassInterpreterStage : ProjectStage() {
     }
 
     private fun interpretValueParameter(valueParameter: EKtValueParameter): ESvValueParameter {
+        val expression = valueParameter.expression?.let { ExpressionCopier.deepCopy(it) }
         return ESvValueParameter(
             location = valueParameter.location,
             name = valueParameter.name,
             type = valueParameter.type.copy(),
             annotationEntries = valueParameter.annotationEntries,
-            expression = valueParameter.expression,
+            expression = expression,
             isInput = true
         )
     }

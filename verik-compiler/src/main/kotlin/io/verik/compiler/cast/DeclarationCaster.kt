@@ -16,6 +16,7 @@
 
 package io.verik.compiler.cast
 
+import io.verik.compiler.ast.common.Type
 import io.verik.compiler.ast.common.cast
 import io.verik.compiler.ast.element.declaration.common.EEnumEntry
 import io.verik.compiler.ast.element.declaration.common.EProperty
@@ -32,8 +33,6 @@ import io.verik.compiler.ast.element.expression.common.ECallExpression
 import io.verik.compiler.ast.property.AnnotationEntry
 import io.verik.compiler.common.location
 import io.verik.compiler.core.common.Core
-import io.verik.compiler.core.common.CoreConstructorDeclaration
-import io.verik.compiler.message.Messages
 import org.jetbrains.kotlin.kdoc.psi.api.KDoc
 import org.jetbrains.kotlin.lexer.KtTokens
 import org.jetbrains.kotlin.psi.KtAnnotationEntry
@@ -50,7 +49,6 @@ import org.jetbrains.kotlin.psi.KtSuperTypeListEntry
 import org.jetbrains.kotlin.psi.KtTypeAlias
 import org.jetbrains.kotlin.psi.KtTypeParameter
 import org.jetbrains.kotlin.resolve.descriptorUtil.classValueType
-import org.jetbrains.kotlin.resolve.descriptorUtil.getSuperClassOrAny
 import org.jetbrains.kotlin.types.typeUtil.isNullableAny
 import org.jetbrains.kotlin.types.typeUtil.representativeUpperBound
 
@@ -90,7 +88,7 @@ object DeclarationCaster {
         val type = castContext.castType(descriptor.defaultType, classOrObject)
         val annotationEntries = castAnnotationEntries(classOrObject.annotationEntries, castContext)
         val documentationLines = castDocumentationLines(classOrObject.docComment)
-        val superType = castContext.castType(descriptor.getSuperClassOrAny().defaultType, classOrObject)
+        val superType = castSuperType(classOrObject, castContext)
         val typeParameters = classOrObject.typeParameters.mapNotNull {
             castContext.castTypeParameter(it)
         }
@@ -322,6 +320,17 @@ object DeclarationCaster {
         return castedPrimaryConstructor
     }
 
+    private fun castSuperType(
+        classOrObject: KtClassOrObject,
+        castContext: CastContext
+    ): Type {
+        if (classOrObject.hasModifier(KtTokens.ENUM_KEYWORD)) return Core.Kt.C_Enum.toType()
+        val superTypeListEntry = classOrObject.superTypeListEntries.firstOrNull()
+        return if (superTypeListEntry != null) {
+            castContext.castType(superTypeListEntry.typeReference!!)
+        } else Core.Kt.C_Any.toType()
+    }
+
     private fun castSuperTypeCallExpression(
         superTypeListEntries: List<KtSuperTypeListEntry>,
         castContext: CastContext
@@ -343,15 +352,8 @@ object DeclarationCaster {
             superTypeCallEntry.calleeExpression.constructorReferenceExpression!!
         ]!!
         val declaration = castContext.resolveDeclaration(descriptor, superTypeCallEntry)
-        val type = when (declaration) {
-            is CoreConstructorDeclaration -> declaration.parent.toType()
-            is EPrimaryConstructor -> declaration.type.copy()
-            is ESecondaryConstructor -> declaration.type.copy()
-            else -> Messages.INTERNAL_ERROR.on(
-                superTypeCallEntry,
-                "Unexpected constructor reference: ${declaration::class.simpleName}"
-            )
-        }
+        val type = castContext.castType(superTypeCallEntry.typeReference!!)
+        val typeArguments = type.arguments.map { it.copy() }
         val valueArguments = CallExpressionCaster.castValueArguments(superTypeCallEntry.calleeExpression, castContext)
         return ECallExpression(
             location,
@@ -359,7 +361,7 @@ object DeclarationCaster {
             declaration,
             null,
             valueArguments,
-            ArrayList()
+            ArrayList(typeArguments)
         )
     }
 }

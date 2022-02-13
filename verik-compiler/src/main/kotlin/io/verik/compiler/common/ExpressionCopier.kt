@@ -22,6 +22,7 @@ import io.verik.compiler.ast.element.expression.common.ECallExpression
 import io.verik.compiler.ast.element.expression.common.EConstantExpression
 import io.verik.compiler.ast.element.expression.common.EExpression
 import io.verik.compiler.ast.element.expression.common.EIfExpression
+import io.verik.compiler.ast.element.expression.common.ENothingExpression
 import io.verik.compiler.ast.element.expression.common.EPropertyStatement
 import io.verik.compiler.ast.element.expression.common.EReferenceExpression
 import io.verik.compiler.ast.element.expression.kt.EIsExpression
@@ -51,6 +52,7 @@ object ExpressionCopier {
 
     private fun <E : EExpression> copy(expression: E, isDeepCopy: Boolean, location: SourceLocation?): E {
         val copiedExpression: EExpression = when (expression) {
+            is ENothingExpression -> copyNothingExpression(expression, location)
             is EBlockExpression -> copyBlockExpression(expression, isDeepCopy, location)
             is EPropertyStatement -> copyPropertyStatement(expression, isDeepCopy, location)
             is EKtBinaryExpression -> copyKtBinaryExpression(expression, isDeepCopy, location)
@@ -72,6 +74,13 @@ object ExpressionCopier {
         return copiedExpression as E
     }
 
+    private fun copyNothingExpression(
+        nothingExpression: ENothingExpression,
+        location: SourceLocation?
+    ): ENothingExpression {
+        return ENothingExpression(location ?: nothingExpression.location)
+    }
+
     private fun copyBlockExpression(
         blockExpression: EBlockExpression,
         isDeepCopy: Boolean,
@@ -81,14 +90,14 @@ object ExpressionCopier {
             val type = blockExpression.type.copy()
             val statements = blockExpression.statements.map { copy(it, true, location) }
             EBlockExpression(
-                blockExpression.location,
+                location ?: blockExpression.location,
                 blockExpression.endLocation,
                 type,
                 ArrayList(statements)
             )
         } else {
             EBlockExpression(
-                blockExpression.location,
+                location ?: blockExpression.location,
                 blockExpression.endLocation,
                 blockExpression.type,
                 blockExpression.statements
@@ -106,7 +115,7 @@ object ExpressionCopier {
             val initializer = propertyStatement.property.initializer?.let { copy(it, true, location) }
             // TODO replace references to property
             val property = EProperty(
-                propertyStatement.property.location,
+                location ?: propertyStatement.property.location,
                 propertyStatement.property.endLocation,
                 propertyStatement.property.name,
                 type,
@@ -117,12 +126,12 @@ object ExpressionCopier {
                 propertyStatement.property.isStatic
             )
             EPropertyStatement(
-                propertyStatement.location,
+                location ?: propertyStatement.location,
                 property
             )
         } else {
             EPropertyStatement(
-                propertyStatement.location,
+                location ?: propertyStatement.location,
                 propertyStatement.property
             )
         }
@@ -146,7 +155,7 @@ object ExpressionCopier {
             )
         } else {
             EKtBinaryExpression(
-                binaryExpression.location,
+                location ?: binaryExpression.location,
                 binaryExpression.type,
                 binaryExpression.left,
                 binaryExpression.right,
@@ -173,7 +182,7 @@ object ExpressionCopier {
             )
         } else {
             ESvBinaryExpression(
-                binaryExpression.location,
+                location ?: binaryExpression.location,
                 binaryExpression.type,
                 binaryExpression.left,
                 binaryExpression.right,
@@ -198,7 +207,7 @@ object ExpressionCopier {
             )
         } else {
             EReferenceExpression(
-                referenceExpression.location,
+                location ?: referenceExpression.location,
                 referenceExpression.type,
                 referenceExpression.reference,
                 referenceExpression.receiver
@@ -226,7 +235,7 @@ object ExpressionCopier {
             )
         } else {
             ECallExpression(
-                callExpression.location,
+                location ?: callExpression.location,
                 callExpression.type,
                 callExpression.reference,
                 callExpression.receiver,
@@ -250,7 +259,7 @@ object ExpressionCopier {
             )
         } else {
             EConstantExpression(
-                constantExpression.location,
+                location ?: constantExpression.location,
                 constantExpression.type,
                 constantExpression.value
             )
@@ -270,12 +279,12 @@ object ExpressionCopier {
                 }
             }
             EStringTemplateExpression(
-                stringTemplateExpression.location,
+                location ?: stringTemplateExpression.location,
                 entries
             )
         } else {
             EStringTemplateExpression(
-                stringTemplateExpression.location,
+                location ?: stringTemplateExpression.location,
                 stringTemplateExpression.entries
             )
         }
@@ -298,7 +307,7 @@ object ExpressionCopier {
             )
         } else {
             EKtArrayAccessExpression(
-                arrayAccessExpression.location,
+                location ?: arrayAccessExpression.location,
                 arrayAccessExpression.type,
                 arrayAccessExpression.array,
                 arrayAccessExpression.indices
@@ -315,13 +324,13 @@ object ExpressionCopier {
             val type = concatenationExpression.type.copy()
             val expressions = concatenationExpression.expressions.map { copy(it, true, location) }
             EConcatenationExpression(
-                concatenationExpression.location,
+                location ?: concatenationExpression.location,
                 type,
                 ArrayList(expressions)
             )
         } else {
             EConcatenationExpression(
-                concatenationExpression.location,
+                location ?: concatenationExpression.location,
                 concatenationExpression.type,
                 concatenationExpression.expressions
             )
@@ -343,7 +352,7 @@ object ExpressionCopier {
             )
         } else {
             EStreamingExpression(
-                streamingExpression.location,
+                location ?: streamingExpression.location,
                 streamingExpression.type,
                 streamingExpression.expression
             )
@@ -359,7 +368,7 @@ object ExpressionCopier {
             val expression = copy(isExpression.expression, true, location)
             val castType = isExpression.castType.copy()
             EIsExpression(
-                isExpression.location,
+                location ?: isExpression.location,
                 expression,
                 isExpression.property,
                 isExpression.isNegated,
@@ -367,7 +376,7 @@ object ExpressionCopier {
             )
         } else {
             EIsExpression(
-                isExpression.location,
+                location ?: isExpression.location,
                 isExpression.expression,
                 isExpression.property,
                 isExpression.isNegated,
@@ -387,7 +396,7 @@ object ExpressionCopier {
             val thenExpression = ifExpression.thenExpression?.let { copy(it, true, location) }
             val elseExpression = ifExpression.elseExpression?.let { copy(it, true, location) }
             EIfExpression(
-                ifExpression.location,
+                location ?: ifExpression.location,
                 type,
                 condition,
                 thenExpression,
@@ -395,7 +404,7 @@ object ExpressionCopier {
             )
         } else {
             EIfExpression(
-                ifExpression.location,
+                location ?: ifExpression.location,
                 ifExpression.type,
                 ifExpression.condition,
                 ifExpression.elseExpression,
@@ -423,7 +432,7 @@ object ExpressionCopier {
             )
         } else {
             EInlineIfExpression(
-                inlineIfExpression.location,
+                location ?: inlineIfExpression.location,
                 inlineIfExpression.type,
                 inlineIfExpression.condition,
                 inlineIfExpression.thenExpression,
@@ -446,7 +455,7 @@ object ExpressionCopier {
                 WhenEntry(ArrayList(conditions), body)
             }
             return EWhenExpression(
-                whenExpression.location,
+                location ?: whenExpression.location,
                 whenExpression.endLocation,
                 type,
                 subject,
@@ -454,7 +463,7 @@ object ExpressionCopier {
             )
         } else {
             EWhenExpression(
-                whenExpression.location,
+                location ?: whenExpression.location,
                 whenExpression.endLocation,
                 whenExpression.type,
                 whenExpression.subject,
