@@ -144,7 +144,11 @@ object ExpressionSerializer {
             val typeArgumentString = scopeExpression.typeParameters.joinToString {
                 val typeArgumentSerializedType = TypeSerializer.serialize(it.type, scopeExpression)
                 typeArgumentSerializedType.checkNoVariableDimension(scopeExpression)
-                ".${it.name}(${typeArgumentSerializedType.base})"
+                if (typeArgumentSerializedType.isVirtual) {
+                    ".${it.name}(virtual ${typeArgumentSerializedType.base})"
+                } else {
+                    ".${it.name}(${typeArgumentSerializedType.base})"
+                }
             }
             serializeContext.append(" #($typeArgumentString)")
         }

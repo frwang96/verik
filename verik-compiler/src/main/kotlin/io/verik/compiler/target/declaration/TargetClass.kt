@@ -101,6 +101,34 @@ object TargetClass : TargetScope(TargetPackage) {
         }
     }
 
+    val C_Queue = object : PrimitiveTargetClassDeclaration(parent, "Queue") {
+
+        override fun serializeType(typeArguments: List<Type>, element: EElement): SerializedType {
+            val serializedType = TypeSerializer.serialize(typeArguments[0], element)
+            serializedType.checkNoVariableDimension(element)
+            return SerializedType(serializedType.base, "[$]")
+        }
+    }
+
+    val C_DynamicArray = object : PrimitiveTargetClassDeclaration(parent, "DynamicArray") {
+
+        override fun serializeType(typeArguments: List<Type>, element: EElement): SerializedType {
+            val serializedType = TypeSerializer.serialize(typeArguments[0], element)
+            serializedType.checkNoVariableDimension(element)
+            return SerializedType(serializedType.base, "[]")
+        }
+    }
+
+    val C_AssociativeArray = object : PrimitiveTargetClassDeclaration(parent, "AssociativeArray") {
+
+        override fun serializeType(typeArguments: List<Type>, element: EElement): SerializedType {
+            val serializedTypes = typeArguments.map { TypeSerializer.serialize(it, element) }
+            serializedTypes[0].checkNoVariableDimension(element)
+            serializedTypes[1].checkNoVariableDimension(element)
+            return SerializedType(serializedTypes[1].base, "[${serializedTypes[0].base}]")
+        }
+    }
+
     val C_Time = object : PrimitiveTargetClassDeclaration(parent, "Time") {
 
         override fun serializeType(typeArguments: List<Type>, element: EElement): SerializedType {

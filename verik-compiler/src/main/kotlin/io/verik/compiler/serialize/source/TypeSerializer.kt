@@ -68,7 +68,11 @@ object TypeSerializer {
             val typeArgumentString = abstractClass.typeParameters.joinToString {
                 val serializedType = serialize(it.type, element)
                 serializedType.checkNoVariableDimension(element)
-                ".${it.name}(${serializedType.base})"
+                if (serializedType.isVirtual) {
+                    ".${it.name}(virtual ${serializedType.base})"
+                } else {
+                    ".${it.name}(${serializedType.base})"
+                }
             }
             SerializedType("$base #($typeArgumentString)")
         } else {

@@ -82,6 +82,42 @@ internal class TargetClassTest : BaseTest() {
     }
 
     @Test
+    fun `serialize type Queue`() {
+        driveTextFileTest(
+            """
+                var x: Queue<Int> = nc()
+            """.trimIndent(),
+            """
+                int x [$];
+            """.trimIndent()
+        ) { it.nonRootPackageTextFiles[0] }
+    }
+
+    @Test
+    fun `serialize type DynamicArray`() {
+        driveTextFileTest(
+            """
+                var x: DynamicArray<Int> = nc()
+            """.trimIndent(),
+            """
+                int x [];
+            """.trimIndent()
+        ) { it.nonRootPackageTextFiles[0] }
+    }
+
+    @Test
+    fun `serialize type AssociativeArray`() {
+        driveTextFileTest(
+            """
+                var x: AssociativeArray<String, Int> = nc()
+            """.trimIndent(),
+            """
+                int x [string];
+            """.trimIndent()
+        ) { it.nonRootPackageTextFiles[0] }
+    }
+
+    @Test
     fun `serialize type ArrayList`() {
         driveTextFileTest(
             """
