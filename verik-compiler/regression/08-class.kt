@@ -26,6 +26,7 @@ object M : Module() {
     val x0 = C0()
     val x1 = C1()
     val x2 = C2<Int>()
+    val x3 = C3()
 
     @Run
     fun f0() {
@@ -50,4 +51,9 @@ class C2<T> {
 
         var x5 = false
     }
+}
+
+class C3: C0 {
+
+    constructor(): super()
 }

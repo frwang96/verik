@@ -21,7 +21,7 @@ import io.verik.compiler.core.common.Core
 import io.verik.compiler.message.Messages
 import org.jetbrains.kotlin.builtins.getReturnTypeFromFunctionType
 import org.jetbrains.kotlin.builtins.isFunctionType
-import org.jetbrains.kotlin.descriptors.ClassConstructorDescriptor
+import org.jetbrains.kotlin.descriptors.ConstructorDescriptor
 import org.jetbrains.kotlin.psi.KtElement
 import org.jetbrains.kotlin.psi.KtExpression
 import org.jetbrains.kotlin.psi.KtNullableType
@@ -61,7 +61,7 @@ object TypeCaster {
         val declaration = when (
             val declarationDescriptor = castContext.sliceReferenceTarget[userType.referenceExpression!!]!!
         ) {
-            is ClassConstructorDescriptor -> {
+            is ConstructorDescriptor -> {
                 castContext.resolveDeclaration(declarationDescriptor.constructedClass, typeReference)
             }
             else -> {

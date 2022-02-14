@@ -163,13 +163,15 @@ class CastContext(
     }
 
     private fun unwrapDeclarationDescriptor(declarationDescriptor: DeclarationDescriptor): DeclarationDescriptor {
-        val packageQualifiedName = declarationDescriptor.findPackage().fqName.asString()
-        return if (packageQualifiedName == CorePackage.KT_COLLECTIONS.name) {
-            when (declarationDescriptor) {
-                is TypeAliasConstructorDescriptorImpl -> declarationDescriptor.underlyingConstructorDescriptor
-                is DeserializedTypeAliasDescriptor -> declarationDescriptor.classDescriptor!!
-                else -> declarationDescriptor
+        return when (declarationDescriptor) {
+            is TypeAliasConstructorDescriptorImpl -> declarationDescriptor.underlyingConstructorDescriptor
+            is DeserializedTypeAliasDescriptor -> {
+                val packageQualifiedName = declarationDescriptor.findPackage().fqName.asString()
+                if (packageQualifiedName == CorePackage.KT_COLLECTIONS.name) {
+                    declarationDescriptor.classDescriptor!!
+                } else declarationDescriptor
             }
-        } else declarationDescriptor
+            else -> declarationDescriptor
+        }
     }
 }

@@ -51,11 +51,20 @@ class C2_T_Int;
 
 endclass : C2_T_Int
 
+class C3 extends C0;
+
+    function new();
+        super.new();
+    endfunction : new
+
+endclass : C3
+
 module M;
 
     C0       x0 = C0::new();
     C1       x1 = C1::new();
     C2_T_Int x2 = C2_T_Int::new();
+    C3       x3 = C3::new();
 
     initial begin : f0
         $display($sformatf("%b", C0::x4));

@@ -75,7 +75,9 @@ object DeclarationSerializer {
         serializeContext.append("class ${cls.name}")
         val superType = cls.superType
         if (superType.reference != Core.Kt.C_Any) {
-            serializeContext.append(" extends ${superType.reference.name}")
+            val serializedSuperType = TypeSerializer.serialize(superType, cls)
+            serializedSuperType.checkNoVariableDimension(cls)
+            serializeContext.append(" extends ${serializedSuperType.base}")
         }
         serializeContext.appendLine(";")
         serializeContext.indent {

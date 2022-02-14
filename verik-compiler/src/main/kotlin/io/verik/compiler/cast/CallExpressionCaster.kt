@@ -21,7 +21,7 @@ import io.verik.compiler.ast.element.expression.common.EExpression
 import io.verik.compiler.ast.element.expression.common.ENothingExpression
 import io.verik.compiler.common.location
 import org.jetbrains.kotlin.descriptors.CallableDescriptor
-import org.jetbrains.kotlin.psi.KtCallExpression
+import org.jetbrains.kotlin.psi.KtCallElement
 import org.jetbrains.kotlin.psi.KtExpression
 import org.jetbrains.kotlin.resolve.calls.components.isVararg
 
@@ -48,7 +48,7 @@ object CallExpressionCaster {
         return valueArguments
     }
 
-    fun castTypeArguments(expression: KtCallExpression, castContext: CastContext): ArrayList<Type> {
+    fun castTypeArguments(expression: KtCallElement, castContext: CastContext): ArrayList<Type> {
         val call = castContext.sliceCall[expression.calleeExpression!!]!!
         return if (call.typeArgumentList != null) {
             val typeArguments = call.typeArguments.map {
