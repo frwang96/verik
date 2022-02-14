@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,44 +20,42 @@ import io.verik.compiler.test.BaseTest
 import io.verik.compiler.test.findDeclaration
 import org.junit.jupiter.api.Test
 
-internal class ClassInterpreterStageTest : BaseTest() {
+internal class ConstructorInterpreterStageTest : BaseTest() {
 
     @Test
-    fun `class simple`() {
+    fun `constructor with parameter`() {
         driveElementTest(
             """
-                class C
+                class C(x: Int)
             """.trimIndent(),
-            ClassInterpreterStage::class,
+            ConstructorInterpreterStage::class,
             """
                 SvClass(
                     C, C, [],
-                    [SecondaryConstructor(C, C, BlockExpression(*), [], null)],
+                    [SvConstructor(C, BlockExpression(*), [SvValueParameter(x, Int, null, 1)])],
                     0, 0
                 )
-            """.trimIndent(),
+            """.trimIndent()
         ) { it.findDeclaration("C") }
     }
 
     @Test
-    fun `class abstract`() {
+    fun `constructor with super type call expression`() {
         driveElementTest(
             """
-                abstract class C
+                open class C
+                class D : C()
             """.trimIndent(),
-            ClassInterpreterStage::class,
-            "SvClass(C, C, [], [SecondaryConstructor(C, C, BlockExpression(*), [], null)], 1, 0)"
-        ) { it.findDeclaration("C") }
-    }
-
-    @Test
-    fun `class declarations static`() {
-        driveElementTest(
+            ConstructorInterpreterStage::class,
             """
-                object O
-            """.trimIndent(),
-            ClassInterpreterStage::class,
-            "SvClass(O, O, [], [], 0, 1)"
-        ) { it.findDeclaration("O") }
+                SvClass(
+                    D, D, [],
+                    [SvConstructor(
+                        D, BlockExpression(Unit, [CallExpression(Unit, new, SuperExpression(C), [], [])]), []
+                    )],
+                    0, 0
+                )
+            """.trimIndent()
+        ) { it.findDeclaration("D") }
     }
 }

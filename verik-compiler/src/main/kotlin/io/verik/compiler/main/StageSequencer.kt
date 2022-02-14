@@ -49,12 +49,13 @@ import io.verik.compiler.evaluate.ExpressionEvaluatorStage
 import io.verik.compiler.interpret.ClassInterpreterStage
 import io.verik.compiler.interpret.CompanionObjectReducerStage
 import io.verik.compiler.interpret.ComponentInterpreterStage
-import io.verik.compiler.interpret.ConstructorDesugarTransformerStage
+import io.verik.compiler.interpret.ConstructorInterpreterStage
 import io.verik.compiler.interpret.EnumInterpreterStage
 import io.verik.compiler.interpret.FileSplitterStage
 import io.verik.compiler.interpret.FunctionInterpreterStage
 import io.verik.compiler.interpret.FunctionLiteralInterpreterStage
 import io.verik.compiler.interpret.ModulePortParentResolverStage
+import io.verik.compiler.interpret.PrimaryConstructorReducerStage
 import io.verik.compiler.interpret.PropertyInterpreterStage
 import io.verik.compiler.interpret.StructInterpreterStage
 import io.verik.compiler.kotlin.KotlinCompilerAnalyzerStage
@@ -166,9 +167,10 @@ object StageSequencer {
         stageSequence.add(StageType.INTERPRET, EnumInterpreterStage)
         stageSequence.add(StageType.INTERPRET, StructInterpreterStage)
         stageSequence.add(StageType.INTERPRET, ComponentInterpreterStage)
-        stageSequence.add(StageType.INTERPRET, ConstructorDesugarTransformerStage)
+        stageSequence.add(StageType.INTERPRET, PrimaryConstructorReducerStage)
         stageSequence.add(StageType.INTERPRET, ClassInterpreterStage)
         stageSequence.add(StageType.INTERPRET, FunctionInterpreterStage)
+        stageSequence.add(StageType.INTERPRET, ConstructorInterpreterStage)
         stageSequence.add(StageType.INTERPRET, PropertyInterpreterStage)
         stageSequence.add(StageType.INTERPRET, FunctionLiteralInterpreterStage)
         stageSequence.add(StageType.INTERPRET, CompanionObjectReducerStage)

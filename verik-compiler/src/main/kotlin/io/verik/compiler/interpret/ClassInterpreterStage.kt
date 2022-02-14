@@ -16,85 +16,28 @@
 
 package io.verik.compiler.interpret
 
-import io.verik.compiler.ast.element.declaration.common.EDeclaration
 import io.verik.compiler.ast.element.declaration.kt.EKtClass
-import io.verik.compiler.ast.element.declaration.kt.ESecondaryConstructor
 import io.verik.compiler.ast.element.declaration.sv.ESvClass
-import io.verik.compiler.ast.element.declaration.sv.ESvConstructor
-import io.verik.compiler.ast.element.declaration.sv.ESvValueParameter
-import io.verik.compiler.ast.element.expression.common.ECallExpression
-import io.verik.compiler.ast.element.expression.common.ESuperExpression
 import io.verik.compiler.common.ReferenceUpdater
 import io.verik.compiler.common.TreeVisitor
-import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
-import io.verik.compiler.message.Messages
 
 object ClassInterpreterStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
         val referenceUpdater = ReferenceUpdater(projectContext)
-        val constructorIndexerVisitor = ConstructorIndexerVisitor(referenceUpdater)
-        projectContext.project.accept(constructorIndexerVisitor)
-        val classInterpreterVisitor = ClassInterpreterVisitor(
-            referenceUpdater,
-            constructorIndexerVisitor.constructorMap
-        )
+        val classInterpreterVisitor = ClassInterpreterVisitor(referenceUpdater)
         projectContext.project.accept(classInterpreterVisitor)
         referenceUpdater.flush()
     }
 
-    private class ConstructorIndexerVisitor(
-        private val referenceUpdater: ReferenceUpdater
-    ) : TreeVisitor() {
-
-        val constructorMap = HashMap<ESecondaryConstructor, ESvConstructor>()
-
-        override fun visitSecondaryConstructor(secondaryConstructor: ESecondaryConstructor) {
-            super.visitSecondaryConstructor(secondaryConstructor)
-            val valueParameters = ArrayList<ESvValueParameter>()
-            secondaryConstructor.valueParameters.forEach {
-                val valueParameter = ESvValueParameter(
-                    location = it.location,
-                    name = it.name,
-                    type = it.type,
-                    annotationEntries = it.annotationEntries,
-                    expression = it.expression,
-                    isInput = true
-                )
-                valueParameters.add(valueParameter)
-                referenceUpdater.update(it, valueParameter)
-            }
-            val constructor = ESvConstructor(
-                location = secondaryConstructor.location,
-                type = secondaryConstructor.type,
-                annotationEntries = secondaryConstructor.annotationEntries,
-                documentationLines = secondaryConstructor.documentationLines,
-                body = secondaryConstructor.body,
-                valueParameters = ArrayList(valueParameters)
-            )
-            constructorMap[secondaryConstructor] = constructor
-        }
-    }
-
     private class ClassInterpreterVisitor(
-        private val referenceUpdater: ReferenceUpdater,
-        private val constructorMap: HashMap<ESecondaryConstructor, ESvConstructor>
+        private val referenceUpdater: ReferenceUpdater
     ) : TreeVisitor() {
 
         override fun visitKtClass(cls: EKtClass) {
             super.visitKtClass(cls)
-            val declarations = ArrayList<EDeclaration>()
-            cls.declarations.forEach {
-                if (it is ESecondaryConstructor) {
-                    val constructor = interpretConstructor(it)
-                    constructor.parent = cls
-                    declarations.add(constructor)
-                } else {
-                    declarations.add(it)
-                }
-            }
             val interpretedClass = ESvClass(
                 location = cls.location,
                 bodyStartLocation = cls.bodyStartLocation,
@@ -105,40 +48,11 @@ object ClassInterpreterStage : ProjectStage() {
                 documentationLines = cls.documentationLines,
                 superType = cls.superType,
                 typeParameters = cls.typeParameters,
-                declarations = declarations,
+                declarations = cls.declarations,
                 isVirtual = cls.isAbstract,
                 isObject = cls.isObject
             )
             referenceUpdater.replace(cls, interpretedClass)
-        }
-
-        private fun interpretConstructor(secondaryConstructor: ESecondaryConstructor): ESvConstructor {
-            val constructor = constructorMap[secondaryConstructor]
-                ?: Messages.INTERNAL_ERROR.on(secondaryConstructor, "Constructor not found")
-            val superTypeCallExpression = secondaryConstructor.superTypeCallExpression
-            if (superTypeCallExpression != null) {
-                val reference = superTypeCallExpression.reference
-                if (reference is ESecondaryConstructor) {
-                    val delegatedConstructor = constructorMap[reference]
-                        ?: Messages.INTERNAL_ERROR.on(reference, "Constructor not found")
-                    val superExpression = ESuperExpression(
-                        secondaryConstructor.location,
-                        reference.type.copy()
-                    )
-                    val callExpression = ECallExpression(
-                        secondaryConstructor.location,
-                        Core.Kt.C_Unit.toType(),
-                        delegatedConstructor,
-                        superExpression,
-                        superTypeCallExpression.valueArguments,
-                        ArrayList()
-                    )
-                    callExpression.parent = constructor.body
-                    constructor.body.statements.add(0, callExpression)
-                }
-            }
-            referenceUpdater.replace(secondaryConstructor, constructor)
-            return constructor
         }
     }
 }
