@@ -20,7 +20,7 @@
 
 import io.verik.core.*
 
-@SimTop
+@EntryPoint
 object M : Module() {
 
     var x0: Boolean = nc()

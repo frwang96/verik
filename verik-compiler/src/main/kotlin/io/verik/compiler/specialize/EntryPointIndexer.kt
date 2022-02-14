@@ -17,7 +17,6 @@
 package io.verik.compiler.specialize
 
 import io.verik.compiler.ast.common.TypeParameterized
-import io.verik.compiler.ast.element.declaration.common.EAbstractClass
 import io.verik.compiler.ast.element.declaration.common.EDeclaration
 import io.verik.compiler.ast.element.declaration.common.EFile
 import io.verik.compiler.ast.element.declaration.kt.ECompanionObject
@@ -30,39 +29,40 @@ import io.verik.compiler.main.ProjectContext
 object EntryPointIndexer {
 
     fun getEntryPoints(projectContext: ProjectContext): List<EDeclaration> {
-        return if (projectContext.config.enableDeadCodeElimination) {
-            val entryPoints = ArrayList<EDeclaration>()
-            projectContext.project.files().forEach { file ->
-                file.declarations.forEach {
-                    if (it is EKtClass && it.typeParameters.isEmpty()) {
-                        val isSynthesisTop = it.hasAnnotationEntry(AnnotationEntries.SYNTHESIS_TOP)
-                        val isSimulationTop = it.hasAnnotationEntry(AnnotationEntries.SIMULATION_TOP)
-                        if (isSynthesisTop || isSimulationTop) {
-                            val entryPointNames = projectContext.config.entryPoints
-                            if (entryPointNames.isEmpty() || it.name in entryPointNames) {
-                                entryPoints.add(it)
-                            }
-                        }
-                    }
-                }
-            }
-            entryPoints
-        } else {
-            val entryPointIndexerVisitor = EntryPointIndexerVisitor()
-            projectContext.project.accept(entryPointIndexerVisitor)
-            entryPointIndexerVisitor.entryPoints
-        }
+        val entryPointIndexerVisitor = EntryPointIndexerVisitor(
+            projectContext.config.enableDeadCodeElimination,
+            projectContext.config.entryPoints
+        )
+        projectContext.project.accept(entryPointIndexerVisitor)
+        return entryPointIndexerVisitor.entryPoints
     }
 
-    private class EntryPointIndexerVisitor : TreeVisitor() {
+    private class EntryPointIndexerVisitor(
+        private val enableDeadCodeElimination: Boolean,
+        private val entryPointNames: List<String>
+    ) : TreeVisitor() {
 
         val entryPoints = ArrayList<EDeclaration>()
 
         private fun addDeclaration(declaration: EDeclaration) {
-            if (declaration !is TypeParameterized) {
+            if (isEntryPoint(declaration)) {
                 entryPoints.add(declaration)
-            } else if (declaration !is ETypeAlias && declaration.typeParameters.isEmpty()) {
-                entryPoints.add(declaration)
+            }
+        }
+
+        private fun isEntryPoint(declaration: EDeclaration): Boolean {
+            return if (enableDeadCodeElimination) {
+                if (declaration.hasAnnotationEntry(AnnotationEntries.ENTRY_POINT)) {
+                    when {
+                        declaration is TypeParameterized && declaration.typeParameters.isNotEmpty() -> false
+                        entryPointNames.isEmpty() || declaration.name in entryPointNames -> true
+                        else -> false
+                    }
+                } else false
+            } else when {
+                declaration is TypeParameterized && declaration.typeParameters.isNotEmpty() -> false
+                declaration is ETypeAlias -> false
+                else -> true
             }
         }
 
@@ -74,7 +74,7 @@ object EntryPointIndexer {
         override fun visitKtClass(cls: EKtClass) {
             super.visitKtClass(cls)
             cls.declarations
-                .filterIsInstance<EAbstractClass>()
+                .filterIsInstance<EKtClass>()
                 .forEach { addDeclaration(it) }
         }
 

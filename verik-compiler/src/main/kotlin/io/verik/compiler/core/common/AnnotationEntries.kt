@@ -22,10 +22,9 @@ import kotlin.reflect.full.declaredMemberProperties
 
 object AnnotationEntries {
 
-    val MAKE = AnnotationEntry("io.verik.core.Make")
+    val ENTRY_POINT = AnnotationEntry("io.verik.core.EntryPoint")
 
-    val SYNTHESIS_TOP = AnnotationEntry("io.verik.core.SynthTop")
-    val SIMULATION_TOP = AnnotationEntry("io.verik.core.SimTop")
+    val MAKE = AnnotationEntry("io.verik.core.Make")
 
     val IN = AnnotationEntry("io.verik.core.In")
     val OUT = AnnotationEntry("io.verik.core.Out")

@@ -16,9 +16,7 @@
 
 package io.verik.compiler.serialize.general
 
-import io.verik.compiler.ast.element.declaration.sv.EModule
 import io.verik.compiler.common.TextFile
-import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 
@@ -33,34 +31,16 @@ object ConfigFileSerializerStage : ProjectStage() {
             FileHeaderBuilder.HeaderStyle.TEXT
         )
 
-        val synthesisTopNames = ArrayList<String>()
-        val simulationTopNames = ArrayList<String>()
-        val moduleVisitor = object : TreeVisitor() {
-            override fun visitModule(module: EModule) {
-                super.visitModule(module)
-                if (module.isSynthesisTop)
-                    synthesisTopNames.add(module.name)
-                if (module.isSimulationTop)
-                    simulationTopNames.add(module.name)
-            }
-        }
-        projectContext.project.accept(moduleVisitor)
-
         val builder = StringBuilder()
         builder.append(fileHeader)
         builder.appendLine("timescale: ${projectContext.config.timescale}")
-        if (synthesisTopNames.isNotEmpty()) {
-            builder.appendLine("synthesisTop:")
-            synthesisTopNames.forEach {
+        if (projectContext.config.entryPoints.isNotEmpty()) {
+            builder.appendLine("entryPoints:")
+            projectContext.config.entryPoints.forEach {
                 builder.appendLine("  - $it")
             }
         }
-        if (simulationTopNames.isNotEmpty()) {
-            builder.appendLine("simulationTop:")
-            simulationTopNames.forEach {
-                builder.appendLine("  - $it")
-            }
-        }
+        builder.appendLine("enableDeadCodeElimination: ${projectContext.config.enableDeadCodeElimination}")
         projectContext.outputContext.configTextFile = TextFile(outputPath, builder.toString())
     }
 }

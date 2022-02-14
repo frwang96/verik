@@ -107,7 +107,7 @@ object ScopeExpressionInsertionTransformerStage : ProjectStage() {
             receiverExpression: EReceiverExpression,
             module: EModule
         ): EReferenceExpression? {
-            return if (module.isSimulationTop && module != parentClass) {
+            return if (module != parentClass) {
                 val referenceExpression = EReferenceExpression(
                     receiverExpression.location,
                     Target.C_Void.toType(),

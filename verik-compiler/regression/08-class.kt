@@ -20,7 +20,7 @@
 
 import io.verik.core.*
 
-@SimTop
+@EntryPoint
 object M : Module() {
 
     val x0 = C0()

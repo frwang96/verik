@@ -18,7 +18,6 @@ package io.verik.compiler.check.mid
 
 import io.verik.compiler.ast.element.declaration.kt.EKtClass
 import io.verik.compiler.common.TreeVisitor
-import io.verik.compiler.core.common.AnnotationEntries
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
@@ -34,35 +33,20 @@ object ObjectCheckerStage : ProjectStage() {
 
         override fun visitKtClass(cls: EKtClass) {
             super.visitKtClass(cls)
-            when {
-                cls.type.isSubtype(Core.Vk.C_Struct) -> {
-                    if (cls.isObject)
+            if (cls.isObject) {
+                when {
+                    cls.type.isSubtype(Core.Vk.C_Struct) -> {
                         Messages.EXPECTED_NOT_OBJECT.on(cls, "Struct", cls.name)
-                }
-                cls.type.isSubtype(Core.Vk.C_Module) -> {
-                    val isSynthesisTop = cls.hasAnnotationEntry(AnnotationEntries.SYNTHESIS_TOP)
-                    val isSimulationTop = cls.hasAnnotationEntry(AnnotationEntries.SIMULATION_TOP)
-                    if (cls.isObject) {
-                        if (isSynthesisTop)
-                            Messages.EXPECTED_NOT_OBJECT.on(cls, "Synthesis top", cls.name)
-                        if (!isSynthesisTop && !isSimulationTop)
-                            Messages.EXPECTED_NOT_OBJECT.on(cls, "Module", cls.name)
-                    } else {
-                        if (isSimulationTop)
-                            Messages.EXPECTED_OBJECT.on(cls, "Simulation top", cls.name)
                     }
-                }
-                cls.type.isSubtype(Core.Vk.C_ModuleInterface) -> {
-                    if (cls.isObject)
+                    cls.type.isSubtype(Core.Vk.C_ModuleInterface) -> {
                         Messages.EXPECTED_NOT_OBJECT.on(cls, "Module interface", cls.name)
-                }
-                cls.type.isSubtype(Core.Vk.C_ModulePort) -> {
-                    if (cls.isObject)
+                    }
+                    cls.type.isSubtype(Core.Vk.C_ModulePort) -> {
                         Messages.EXPECTED_NOT_OBJECT.on(cls, "Module port", cls.name)
-                }
-                cls.type.isSubtype(Core.Vk.C_ClockingBlock) -> {
-                    if (cls.isObject)
+                    }
+                    cls.type.isSubtype(Core.Vk.C_ClockingBlock) -> {
                         Messages.EXPECTED_NOT_OBJECT.on(cls, "Clocking block", cls.name)
+                    }
                 }
             }
         }

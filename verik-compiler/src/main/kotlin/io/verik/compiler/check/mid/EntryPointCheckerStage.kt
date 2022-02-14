@@ -16,10 +16,9 @@
 
 package io.verik.compiler.check.mid
 
-import io.verik.compiler.ast.element.declaration.kt.EKtClass
+import io.verik.compiler.ast.element.declaration.common.EDeclaration
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.AnnotationEntries
-import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
@@ -31,8 +30,9 @@ object EntryPointCheckerStage : ProjectStage() {
         val entryPointCheckerVisitor = EntryPointCheckerVisitor()
         projectContext.project.accept(entryPointCheckerVisitor)
         projectContext.config.entryPoints.forEach {
-            if (it !in entryPointCheckerVisitor.names)
-                Messages.MISSING_ENTRY_POINT.on(SourceLocation.NULL, it)
+            if (it !in entryPointCheckerVisitor.names) {
+                Messages.ENTRY_POINT_NOT_FOUND.on(SourceLocation.NULL, it)
+            }
         }
     }
 
@@ -40,13 +40,10 @@ object EntryPointCheckerStage : ProjectStage() {
 
         val names = ArrayList<String>()
 
-        override fun visitKtClass(cls: EKtClass) {
-            super.visitKtClass(cls)
-            if (cls.type.isSubtype(Core.Vk.C_Module)) {
-                val isSynthesisTop = cls.hasAnnotationEntry(AnnotationEntries.SYNTHESIS_TOP)
-                val isSimulationTop = cls.hasAnnotationEntry(AnnotationEntries.SIMULATION_TOP)
-                if (isSynthesisTop || isSimulationTop)
-                    names.add(cls.name)
+        override fun visitDeclaration(declaration: EDeclaration) {
+            super.visitDeclaration(declaration)
+            if (declaration.hasAnnotationEntry(AnnotationEntries.ENTRY_POINT)) {
+                names.add(declaration.name)
             }
         }
     }

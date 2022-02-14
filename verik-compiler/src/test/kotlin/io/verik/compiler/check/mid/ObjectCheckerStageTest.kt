@@ -31,28 +31,4 @@ internal class ObjectCheckerStageTest : BaseTest() {
             "Struct must not be declared as object: S"
         )
     }
-
-    @Test
-    fun `module simulation top illegal`() {
-        driveMessageTest(
-            """
-                @SimTop
-                class M: Module()
-            """.trimIndent(),
-            true,
-            "Simulation top must be declared as object: M"
-        )
-    }
-
-    @Test
-    fun `module synthesis top illegal`() {
-        driveMessageTest(
-            """
-                @SynthTop
-                object M: Module()
-            """.trimIndent(),
-            true,
-            "Synthesis top must not be declared as object: M"
-        )
-    }
 }

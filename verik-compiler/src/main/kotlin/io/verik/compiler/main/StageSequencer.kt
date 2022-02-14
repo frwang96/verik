@@ -61,7 +61,6 @@ import io.verik.compiler.interpret.StructInterpreterStage
 import io.verik.compiler.kotlin.KotlinCompilerAnalyzerStage
 import io.verik.compiler.kotlin.KotlinCompilerParserStage
 import io.verik.compiler.kotlin.KotlinEnvironmentBuilderStage
-import io.verik.compiler.reorder.DeadDeclarationEliminatorStage
 import io.verik.compiler.reorder.DependencyReordererStage
 import io.verik.compiler.reorder.PropertyStatementReordererStage
 import io.verik.compiler.resolve.SliceResolverStage
@@ -196,7 +195,6 @@ object StageSequencer {
         stageSequence.add(StageType.LOWER_TRANSFORM, VariableDimensionEliminatorStage)
 
         stageSequence.add(StageType.REORDER, PropertyStatementReordererStage)
-        stageSequence.add(StageType.REORDER, DeadDeclarationEliminatorStage)
         stageSequence.add(StageType.REORDER, DependencyReordererStage)
 
         stageSequence.add(StageType.POST_TRANSFORM, TypeReferenceTransformerStage)
