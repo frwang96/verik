@@ -15,6 +15,7 @@
 - Unwrap companion objects.
 - Separately specialize nested classes.
 - Support type parameterized imported classes.
+- Remove support for constructor overloading.
 
 ## [0.1.13]
 ### Importer

@@ -140,6 +140,7 @@ object FunctionInterpreterStage : ProjectStage() {
                 )
                 valueParameters.add(valueParameter)
             }
+            val isStatic = isStatic(function)
             return ETask(
                 function.location,
                 function.name,
@@ -147,14 +148,15 @@ object FunctionInterpreterStage : ProjectStage() {
                 function.documentationLines,
                 function.body,
                 function.typeParameters,
-                valueParameters
+                valueParameters,
+                isStatic
             )
         }
 
         private fun getFunction(function: EKtFunction): ESvFunction {
             val valueParameters = getValueParameters(function.valueParameters, referenceUpdater)
             val parent = function.parent
-            val isStatic = (parent is ESvClass && parent.isObject) || parent is ECompanionObject
+            val isStatic = isStatic(function)
             val qualifierType = when {
                 function.isAbstract -> FunctionQualifierType.PURE_VIRTUAL
                 parent is ESvClass -> {
@@ -175,8 +177,8 @@ object FunctionInterpreterStage : ProjectStage() {
                 function.body,
                 function.typeParameters,
                 ArrayList(valueParameters),
-                qualifierType,
-                isStatic
+                isStatic,
+                qualifierType
             )
         }
 
@@ -196,6 +198,11 @@ object FunctionInterpreterStage : ProjectStage() {
                 referenceUpdater.update(it, valueParameter)
                 valueParameter
             }
+        }
+
+        private fun isStatic(declaration: EDeclaration): Boolean {
+            val parent = declaration.parent
+            return (parent is ESvClass && parent.isObject) || parent is ECompanionObject
         }
     }
 }

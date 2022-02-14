@@ -14,29 +14,23 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.interpret
+package io.verik.compiler.check.mid
 
 import io.verik.compiler.test.BaseTest
-import io.verik.compiler.test.findDeclaration
 import org.junit.jupiter.api.Test
 
-internal class CompanionObjectReducerStageTest : BaseTest() {
+internal class ConstructorCheckerStageTest : BaseTest() {
 
     @Test
-    fun `reduce companion object`() {
-        driveElementTest(
+    fun `multiple constructors illegal`() {
+        driveMessageTest(
             """
-                class C {
-                    companion object { var x = false }
+                class C() {
+                    constructor(x: Int) : this()
                 }
             """.trimIndent(),
-            CompanionObjectReducerStage::class,
-            """
-                SvClass(
-                    C, C, [],
-                    [SvConstructor(*), Property(x, Boolean, ConstantExpression(*), 1, 1)], 0, 0
-                )
-            """.trimIndent()
-        ) { it.findDeclaration("C") }
+            true,
+            "Multiple constructors are not permitted"
+        )
     }
 }

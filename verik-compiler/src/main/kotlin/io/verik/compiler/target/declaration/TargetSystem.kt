@@ -39,7 +39,6 @@ object TargetSystem : TargetScope(TargetPackage) {
     val F_warning = PrimitiveTargetFunctionDeclaration(parent, "\$warning")
     val F_info = PrimitiveTargetFunctionDeclaration(parent, "\$info")
     val F_finish = PrimitiveTargetFunctionDeclaration(parent, "\$finish")
-    val F_new = PrimitiveTargetFunctionDeclaration(parent, "new")
     val F_wait = PrimitiveTargetFunctionDeclaration(parent, "wait")
     val F_name = PrimitiveTargetFunctionDeclaration(parent, "name")
 

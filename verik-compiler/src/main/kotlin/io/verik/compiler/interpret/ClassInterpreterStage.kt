@@ -17,76 +17,70 @@
 package io.verik.compiler.interpret
 
 import io.verik.compiler.ast.element.declaration.common.EDeclaration
-import io.verik.compiler.ast.element.declaration.common.EProperty
 import io.verik.compiler.ast.element.declaration.kt.EKtClass
-import io.verik.compiler.ast.element.declaration.kt.EKtValueParameter
 import io.verik.compiler.ast.element.declaration.kt.ESecondaryConstructor
 import io.verik.compiler.ast.element.declaration.sv.ESvClass
-import io.verik.compiler.ast.element.declaration.sv.ESvFunction
+import io.verik.compiler.ast.element.declaration.sv.ESvConstructor
 import io.verik.compiler.ast.element.declaration.sv.ESvValueParameter
-import io.verik.compiler.ast.element.expression.common.EBlockExpression
 import io.verik.compiler.ast.element.expression.common.ECallExpression
-import io.verik.compiler.ast.element.expression.common.EPropertyStatement
-import io.verik.compiler.ast.element.expression.common.EReferenceExpression
-import io.verik.compiler.ast.element.expression.common.EReturnStatement
 import io.verik.compiler.ast.element.expression.common.ESuperExpression
-import io.verik.compiler.ast.property.FunctionQualifierType
-import io.verik.compiler.common.ExpressionCopier
 import io.verik.compiler.common.ReferenceUpdater
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
-import io.verik.compiler.target.common.Target
 
 object ClassInterpreterStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
         val referenceUpdater = ReferenceUpdater(projectContext)
-        val initializerIndexerVisitor = InitializerIndexerVisitor(referenceUpdater)
-        projectContext.project.accept(initializerIndexerVisitor)
+        val constructorIndexerVisitor = ConstructorIndexerVisitor(referenceUpdater)
+        projectContext.project.accept(constructorIndexerVisitor)
         val classInterpreterVisitor = ClassInterpreterVisitor(
             referenceUpdater,
-            initializerIndexerVisitor.initializerMap
+            constructorIndexerVisitor.constructorMap
         )
         projectContext.project.accept(classInterpreterVisitor)
         referenceUpdater.flush()
     }
 
-    private class InitializerIndexerVisitor(
+    private class ConstructorIndexerVisitor(
         private val referenceUpdater: ReferenceUpdater
     ) : TreeVisitor() {
 
-        val initializerMap = HashMap<ESecondaryConstructor, ESvFunction>()
+        val constructorMap = HashMap<ESecondaryConstructor, ESvConstructor>()
 
         override fun visitSecondaryConstructor(secondaryConstructor: ESecondaryConstructor) {
             super.visitSecondaryConstructor(secondaryConstructor)
             val valueParameters = ArrayList<ESvValueParameter>()
             secondaryConstructor.valueParameters.forEach {
-                val valueParameter = interpretValueParameter(it)
+                val valueParameter = ESvValueParameter(
+                    location = it.location,
+                    name = it.name,
+                    type = it.type,
+                    annotationEntries = it.annotationEntries,
+                    expression = it.expression,
+                    isInput = true
+                )
                 valueParameters.add(valueParameter)
                 referenceUpdater.update(it, valueParameter)
             }
-            val initializer = ESvFunction(
+            val constructor = ESvConstructor(
                 location = secondaryConstructor.location,
-                name = "__init",
-                type = Core.Kt.C_Unit.toType(),
-                annotationEntries = listOf(),
-                documentationLines = null,
+                type = secondaryConstructor.type,
+                annotationEntries = secondaryConstructor.annotationEntries,
+                documentationLines = secondaryConstructor.documentationLines,
                 body = secondaryConstructor.body,
-                typeParameters = ArrayList(),
-                valueParameters = ArrayList(valueParameters),
-                qualifierType = FunctionQualifierType.REGULAR,
-                isStatic = false
+                valueParameters = ArrayList(valueParameters)
             )
-            initializerMap[secondaryConstructor] = initializer
+            constructorMap[secondaryConstructor] = constructor
         }
     }
 
     private class ClassInterpreterVisitor(
         private val referenceUpdater: ReferenceUpdater,
-        private val initializerMap: HashMap<ESecondaryConstructor, ESvFunction>
+        private val constructorMap: HashMap<ESecondaryConstructor, ESvConstructor>
     ) : TreeVisitor() {
 
         override fun visitKtClass(cls: EKtClass) {
@@ -94,13 +88,9 @@ object ClassInterpreterStage : ProjectStage() {
             val declarations = ArrayList<EDeclaration>()
             cls.declarations.forEach {
                 if (it is ESecondaryConstructor) {
-                    val (constructor, initializer) = interpretConstructorAndInitializer(cls, it)
-                    if (constructor != null) {
-                        constructor.parent = cls
-                        declarations.add(constructor)
-                    }
-                    initializer.parent = cls
-                    declarations.add(initializer)
+                    val constructor = interpretConstructor(it)
+                    constructor.parent = cls
+                    declarations.add(constructor)
                 } else {
                     declarations.add(it)
                 }
@@ -122,18 +112,15 @@ object ClassInterpreterStage : ProjectStage() {
             referenceUpdater.replace(cls, interpretedClass)
         }
 
-        private fun interpretConstructorAndInitializer(
-            cls: EKtClass,
-            secondaryConstructor: ESecondaryConstructor
-        ): Pair<ESvFunction?, ESvFunction> {
-            val initializer = initializerMap[secondaryConstructor]
-                ?: Messages.INTERNAL_ERROR.on(secondaryConstructor, "Initializer not found")
+        private fun interpretConstructor(secondaryConstructor: ESecondaryConstructor): ESvConstructor {
+            val constructor = constructorMap[secondaryConstructor]
+                ?: Messages.INTERNAL_ERROR.on(secondaryConstructor, "Constructor not found")
             val superTypeCallExpression = secondaryConstructor.superTypeCallExpression
             if (superTypeCallExpression != null) {
                 val reference = superTypeCallExpression.reference
                 if (reference is ESecondaryConstructor) {
-                    val delegatedInitializer = initializerMap[reference]
-                        ?: Messages.INTERNAL_ERROR.on(reference, "Initializer not found")
+                    val delegatedConstructor = constructorMap[reference]
+                        ?: Messages.INTERNAL_ERROR.on(reference, "Constructor not found")
                     val superExpression = ESuperExpression(
                         secondaryConstructor.location,
                         reference.type.copy()
@@ -141,105 +128,17 @@ object ClassInterpreterStage : ProjectStage() {
                     val callExpression = ECallExpression(
                         secondaryConstructor.location,
                         Core.Kt.C_Unit.toType(),
-                        delegatedInitializer,
+                        delegatedConstructor,
                         superExpression,
                         superTypeCallExpression.valueArguments,
                         ArrayList()
                     )
-                    val body = initializer.body.cast<EBlockExpression>()
-                    callExpression.parent = body
-                    body.statements.add(0, callExpression)
+                    callExpression.parent = constructor.body
+                    constructor.body.statements.add(0, callExpression)
                 }
             }
-            val constructor = interpretConstructor(cls, secondaryConstructor, initializer)
-            return Pair(constructor, initializer)
-        }
-
-        private fun interpretConstructor(
-            cls: EKtClass,
-            secondaryConstructor: ESecondaryConstructor,
-            initializer: ESvFunction
-        ): ESvFunction? {
-            if (cls.isAbstract)
-                return null
-
-            // TODO better handling of imported constructors
-            val name = if (cls.isImported()) "new" else "__new"
-            val property = EProperty.temporary(
-                secondaryConstructor.location,
-                secondaryConstructor.type.copy(),
-                ECallExpression(
-                    location = secondaryConstructor.location,
-                    type = secondaryConstructor.type.copy(),
-                    reference = Target.F_new,
-                    receiver = null,
-                    valueArguments = ArrayList(),
-                    typeArguments = ArrayList()
-                ),
-                false
-            )
-            val valueParameters = secondaryConstructor.valueParameters.map { interpretValueParameter(it) }
-            val propertyStatement = EPropertyStatement(secondaryConstructor.location, property)
-            val referenceExpression = EReferenceExpression(
-                secondaryConstructor.location,
-                secondaryConstructor.type.copy(),
-                property,
-                null
-            )
-            val valueArguments = valueParameters.map {
-                EReferenceExpression(it.location, it.type.copy(), it, null)
-            }
-            val callExpression = ECallExpression(
-                location = secondaryConstructor.location,
-                type = Core.Kt.C_Unit.toType(),
-                reference = initializer,
-                receiver = referenceExpression,
-                valueArguments = ArrayList(valueArguments),
-                typeArguments = ArrayList()
-            )
-            val returnStatement = EReturnStatement(
-                secondaryConstructor.location,
-                Core.Kt.C_Nothing.toType(),
-                EReferenceExpression(
-                    secondaryConstructor.location,
-                    secondaryConstructor.type.copy(),
-                    property,
-                    null
-                )
-            )
-            val statements = arrayListOf(propertyStatement, callExpression, returnStatement)
-
-            val constructor = ESvFunction(
-                location = secondaryConstructor.location,
-                name = name,
-                type = secondaryConstructor.type,
-                annotationEntries = secondaryConstructor.annotationEntries,
-                documentationLines = secondaryConstructor.documentationLines,
-                body = EBlockExpression(
-                    secondaryConstructor.location,
-                    secondaryConstructor.location,
-                    Core.Kt.C_Unit.toType(),
-                    statements
-                ),
-                typeParameters = ArrayList(),
-                valueParameters = ArrayList(valueParameters),
-                qualifierType = FunctionQualifierType.REGULAR,
-                isStatic = true
-            )
             referenceUpdater.replace(secondaryConstructor, constructor)
             return constructor
         }
-    }
-
-    private fun interpretValueParameter(valueParameter: EKtValueParameter): ESvValueParameter {
-        val expression = valueParameter.expression?.let { ExpressionCopier.deepCopy(it) }
-        return ESvValueParameter(
-            location = valueParameter.location,
-            name = valueParameter.name,
-            type = valueParameter.type.copy(),
-            annotationEntries = valueParameter.annotationEntries,
-            expression = expression,
-            isInput = true
-        )
     }
 }

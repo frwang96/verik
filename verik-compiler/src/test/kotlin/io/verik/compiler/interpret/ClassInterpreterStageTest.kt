@@ -32,10 +32,7 @@ internal class ClassInterpreterStageTest : BaseTest() {
             """
                 SvClass(
                     C, C, [],
-                    [
-                        SvFunction(__new, *, *, [], [], REGULAR, 1),
-                        SvFunction(__init, *, *, [], [], REGULAR, 0)
-                    ],
+                    [SvConstructor(C, BlockExpression(*), [])],
                     0, 0
                 )
             """.trimIndent(),
@@ -52,10 +49,7 @@ internal class ClassInterpreterStageTest : BaseTest() {
             """
                 SvClass(
                     C, C, [],
-                    [
-                        SvFunction(__new, C, *, [], [SvValueParameter(x, Int, null, 1)], REGULAR, 1),
-                        SvFunction(__init, Unit, *, [], [SvValueParameter(x, Int, null, 1)], REGULAR, 0)
-                    ],
+                    [SvConstructor(C, BlockExpression(*), [SvValueParameter(x, Int, null, 1)])],
                     0, 0
                 )
             """.trimIndent()
@@ -74,8 +68,7 @@ internal class ClassInterpreterStageTest : BaseTest() {
                     C, C, [],
                     [
                         Property(x, Int, null, 0, 0),
-                        SvFunction(__new, C, *, [], [SvValueParameter(x, Int, null, 1)], REGULAR, 1),
-                        SvFunction(__init, Unit, *, [], [SvValueParameter(x, Int, null, 1)], REGULAR, 0)
+                        SvConstructor(C, BlockExpression(*), [SvValueParameter(x, Int, null, 1)])
                     ],
                     0, 0
                 )
@@ -94,14 +87,9 @@ internal class ClassInterpreterStageTest : BaseTest() {
             """
                 SvClass(
                     D, D, [],
-                    [
-                        SvFunction(__new, D, *, [], [], REGULAR, 1),
-                        SvFunction(
-                            __init, Unit,
-                            BlockExpression(Unit, [CallExpression(Unit, __init, SuperExpression(C), [], [])]),
-                            [], [], REGULAR, 0
-                        )
-                    ],
+                    [SvConstructor(
+                        D, BlockExpression(Unit, [CallExpression(Unit, new, SuperExpression(C), [], [])]), []
+                    )],
                     0, 0
                 )
             """.trimIndent()
@@ -115,7 +103,7 @@ internal class ClassInterpreterStageTest : BaseTest() {
                 abstract class C
             """.trimIndent(),
             ClassInterpreterStage::class,
-            "SvClass(C, C, [], [SvFunction(__init, Unit, *, [], [], REGULAR, 0)], 1, 0)"
+            "SvClass(C, C, [], [SvConstructor(C, BlockExpression(*), [])], 1, 0)"
         ) { it.findDeclaration("C") }
     }
 

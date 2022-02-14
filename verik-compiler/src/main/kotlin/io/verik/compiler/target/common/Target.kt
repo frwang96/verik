@@ -53,7 +53,6 @@ object Target {
     val F_warning = TargetSystem.F_warning
     val F_info = TargetSystem.F_info
     val F_finish = TargetSystem.F_finish
-    val F_new = TargetSystem.F_new
     val F_wait = TargetSystem.F_wait
     val F_name = TargetSystem.F_name
 

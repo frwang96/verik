@@ -148,6 +148,10 @@ object Messages {
         "Cardinal type expected but found: $0"
     )
 
+    val MULTIPLE_CONSTRUCTORS = ErrorMessageTemplate0(
+        "Multiple constructors are not permitted"
+    )
+
     val EXPECTED_OBJECT = ErrorMessageTemplate2<String, String>(
         "$0 must be declared as object: $1"
     )

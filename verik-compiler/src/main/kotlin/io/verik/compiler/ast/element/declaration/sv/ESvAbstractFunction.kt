@@ -23,6 +23,7 @@ import io.verik.compiler.common.TreeVisitor
 abstract class ESvAbstractFunction : EAbstractFunction(), TypeParameterized {
 
     abstract var valueParameters: ArrayList<ESvValueParameter>
+    abstract val isStatic: Boolean
 
     override fun acceptChildren(visitor: TreeVisitor) {
         super.acceptChildren(visitor)

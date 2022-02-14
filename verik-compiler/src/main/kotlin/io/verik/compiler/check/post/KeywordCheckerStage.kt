@@ -16,9 +16,9 @@
 
 package io.verik.compiler.check.post
 
-import io.verik.compiler.ast.common.Declaration
 import io.verik.compiler.ast.element.common.EElement
-import io.verik.compiler.ast.element.declaration.sv.ESvFunction
+import io.verik.compiler.ast.element.declaration.common.EDeclaration
+import io.verik.compiler.ast.element.declaration.sv.ESvConstructor
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
@@ -34,11 +34,10 @@ object KeywordCheckerStage : ProjectStage() {
 
         override fun visitElement(element: EElement) {
             super.visitElement(element)
-            if (element is Declaration) {
-                if (element.name in keywords)
+            if (element is EDeclaration && element !is ESvConstructor) {
+                if (element.name in keywords) {
                     Messages.KEYWORD_CONFLICT.on(element, element.name)
-                if (element.name == "new" && element !is ESvFunction)
-                    Messages.KEYWORD_CONFLICT.on(element, element.name)
+                }
             }
         }
     }
@@ -172,6 +171,7 @@ object KeywordCheckerStage : ProjectStage() {
         "nand",
         "negedge",
         "nettype",
+        "new",
         "nexttime",
         "nmos",
         "nor",
