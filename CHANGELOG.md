@@ -17,6 +17,7 @@
 - Support type parameterized imported classes.
 - Remove support for constructor overloading.
 - Replace `SimTop` and `SynthTop` with `EntryPoint`.
+- Support initializer blocks.
 
 ## [0.1.13]
 ### Importer

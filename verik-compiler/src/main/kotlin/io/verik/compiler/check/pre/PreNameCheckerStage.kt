@@ -19,6 +19,7 @@ package io.verik.compiler.check.pre
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
+import org.jetbrains.kotlin.psi.KtClassInitializer
 import org.jetbrains.kotlin.psi.KtDeclaration
 import org.jetbrains.kotlin.psi.KtTreeVisitorVoid
 
@@ -36,6 +37,7 @@ object PreNameCheckerStage : ProjectStage() {
 
         override fun visitDeclaration(dcl: KtDeclaration) {
             super.visitDeclaration(dcl)
+            if (dcl is KtClassInitializer) return
             val name = dcl.name!!
             if (!name.matches(nameRegex)) {
                 Messages.ILLEGAL_NAME.on(dcl, name)

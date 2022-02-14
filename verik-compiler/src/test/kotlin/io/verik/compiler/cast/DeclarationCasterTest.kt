@@ -196,6 +196,25 @@ internal class DeclarationCasterTest : BaseTest() {
     }
 
     @Test
+    fun `class with initializer block`() {
+        driveElementTest(
+            """
+                @Suppress("RedundantEmptyInitializerBlock")
+                class C {
+                    init {}
+                }
+            """.trimIndent(),
+            CasterStage::class,
+            """
+                KtClass(
+                    C, C, Any, [], [InitializerBlock(BlockExpression(*))],
+                    PrimaryConstructor(C, C, [], null), 0, 0, 0
+                )
+            """.trimIndent()
+        ) { it.findDeclaration("C") }
+    }
+
+    @Test
     fun `enum class`() {
         driveElementTest(
             """

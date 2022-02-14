@@ -22,6 +22,7 @@ import io.verik.compiler.ast.element.declaration.common.EEnumEntry
 import io.verik.compiler.ast.element.declaration.common.EProperty
 import io.verik.compiler.ast.element.declaration.common.ETypeParameter
 import io.verik.compiler.ast.element.declaration.kt.ECompanionObject
+import io.verik.compiler.ast.element.declaration.kt.EInitializerBlock
 import io.verik.compiler.ast.element.declaration.kt.EKtClass
 import io.verik.compiler.ast.element.declaration.kt.EKtFunction
 import io.verik.compiler.ast.element.declaration.kt.EKtValueParameter
@@ -37,6 +38,7 @@ import org.jetbrains.kotlin.descriptors.ConstructorDescriptor
 import org.jetbrains.kotlin.kdoc.psi.api.KDoc
 import org.jetbrains.kotlin.lexer.KtTokens
 import org.jetbrains.kotlin.psi.KtAnnotationEntry
+import org.jetbrains.kotlin.psi.KtClassInitializer
 import org.jetbrains.kotlin.psi.KtClassOrObject
 import org.jetbrains.kotlin.psi.KtConstructorDelegationCall
 import org.jetbrains.kotlin.psi.KtEnumEntry
@@ -219,6 +221,12 @@ object DeclarationCaster {
             superTypeCallExpression
         )
         return castedSecondaryConstructor
+    }
+
+    fun castInitializerBlock(initializer: KtClassInitializer, castContext: CastContext): EInitializerBlock {
+        val location = initializer.location()
+        val body = castContext.castExpression(initializer.body!!).cast<EBlockExpression>()
+        return EInitializerBlock(location, body)
     }
 
     fun castProperty(property: KtProperty, castContext: CastContext): EProperty {

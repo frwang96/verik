@@ -24,6 +24,7 @@ import io.verik.compiler.ast.element.declaration.common.EPackage
 import io.verik.compiler.ast.element.declaration.common.EProperty
 import io.verik.compiler.ast.element.declaration.common.ETypeParameter
 import io.verik.compiler.ast.element.declaration.kt.ECompanionObject
+import io.verik.compiler.ast.element.declaration.kt.EInitializerBlock
 import io.verik.compiler.ast.element.declaration.kt.EKtClass
 import io.verik.compiler.ast.element.declaration.kt.EKtFunction
 import io.verik.compiler.ast.element.declaration.kt.EKtValueParameter
@@ -289,6 +290,12 @@ class ElementPrinter : Visitor() {
             build(task.typeParameters)
             build(task.valueParameters)
             build(task.isStatic)
+        }
+    }
+
+    override fun visitInitializerBlock(initializerBlock: EInitializerBlock) {
+        build("InitializerBlock") {
+            build(initializerBlock.body)
         }
     }
 
