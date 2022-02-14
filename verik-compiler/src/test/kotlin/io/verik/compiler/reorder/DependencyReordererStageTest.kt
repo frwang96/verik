@@ -25,7 +25,6 @@ internal class DependencyReordererStageTest : BaseTest() {
     fun `package dependency illegal root`() {
         driveMessageTest(
             """
-                @SimTop
                 object M : Module() { var x: Boolean = nc() }
                 class C {
                     fun f() {

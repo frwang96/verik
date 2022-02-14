@@ -48,7 +48,7 @@ object Messages {
         "Invalid timescale: $0"
     )
 
-    val MISSING_ENTRY_POINT = ErrorMessageTemplate1<String>(
+    val ENTRY_POINT_NOT_FOUND = ErrorMessageTemplate1<String>(
         "Entry point not found: $0"
     )
 
@@ -116,12 +116,12 @@ object Messages {
         "Conflicting annotations: @$0 and @$1"
     )
 
-    val TOP_NOT_MODULE = ErrorMessageTemplate0(
-        "Declaration annotated as top must be a module"
+    val INVALID_ENTRY_POINT = ErrorMessageTemplate0(
+        "Invalid entry point"
     )
 
-    val TOP_PARAMETERIZED = ErrorMessageTemplate0(
-        "Type parameters not permitted on declaration annotated as top"
+    val ENTRY_POINT_PARAMETERIZED = ErrorMessageTemplate0(
+        "Type parameters not permitted on entry points"
     )
 
     val PROCEDURAL_ASSIGNMENT_NOT_MUTABLE = ErrorMessageTemplate2<String, String>(
@@ -148,8 +148,8 @@ object Messages {
         "Cardinal type expected but found: $0"
     )
 
-    val EXPECTED_OBJECT = ErrorMessageTemplate2<String, String>(
-        "$0 must be declared as object: $1"
+    val MULTIPLE_CONSTRUCTORS = ErrorMessageTemplate0(
+        "Multiple constructors are not permitted"
     )
 
     val EXPECTED_NOT_OBJECT = ErrorMessageTemplate2<String, String>(

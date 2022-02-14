@@ -97,7 +97,6 @@ internal class ScopeExpressionInsertionTransformerStageTest : BaseTest() {
     fun `reference module property`() {
         driveElementTest(
             """
-                @SimTop
                 object M0 : Module() {
                     val x: Boolean = nc()
                 }

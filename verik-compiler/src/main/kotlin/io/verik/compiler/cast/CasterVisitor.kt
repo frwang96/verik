@@ -24,6 +24,7 @@ import org.jetbrains.kotlin.psi.KtBinaryExpression
 import org.jetbrains.kotlin.psi.KtBinaryExpressionWithTypeRHS
 import org.jetbrains.kotlin.psi.KtBlockExpression
 import org.jetbrains.kotlin.psi.KtCallExpression
+import org.jetbrains.kotlin.psi.KtClassInitializer
 import org.jetbrains.kotlin.psi.KtClassOrObject
 import org.jetbrains.kotlin.psi.KtConstantExpression
 import org.jetbrains.kotlin.psi.KtDoWhileExpression
@@ -84,6 +85,10 @@ class CasterVisitor(private val castContext: CastContext) : KtVisitor<EElement, 
         }
     }
 
+    override fun visitNamedFunction(function: KtNamedFunction, data: Unit?): EElement {
+        return DeclarationCaster.castFunction(function, castContext)
+    }
+
     override fun visitPrimaryConstructor(constructor: KtPrimaryConstructor, data: Unit?): EElement {
         return DeclarationCaster.castPrimaryConstructor(constructor, castContext)
     }
@@ -92,8 +97,8 @@ class CasterVisitor(private val castContext: CastContext) : KtVisitor<EElement, 
         return DeclarationCaster.castSecondaryConstructor(constructor, castContext)
     }
 
-    override fun visitNamedFunction(function: KtNamedFunction, data: Unit?): EElement {
-        return DeclarationCaster.castFunction(function, castContext)
+    override fun visitClassInitializer(initializer: KtClassInitializer, data: Unit?): EElement {
+        return DeclarationCaster.castInitializerBlock(initializer, castContext)
     }
 
     override fun visitProperty(property: KtProperty, data: Unit?): EElement {

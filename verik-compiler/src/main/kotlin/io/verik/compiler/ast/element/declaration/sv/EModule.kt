@@ -31,18 +31,12 @@ class EModule(
     override var annotationEntries: List<AnnotationEntry>,
     override var documentationLines: List<String>?,
     override val ports: List<EPort>,
-    override var declarations: ArrayList<EDeclaration>,
-    val isSynthesisTop: Boolean,
-    val isSimulationTop: Boolean
+    override var declarations: ArrayList<EDeclaration>
 ) : EAbstractContainerComponent() {
 
     init {
         ports.forEach { it.parent = this }
         declarations.forEach { it.parent = this }
-    }
-
-    fun isTop(): Boolean {
-        return isSynthesisTop || isSimulationTop
     }
 
     override fun accept(visitor: Visitor) {

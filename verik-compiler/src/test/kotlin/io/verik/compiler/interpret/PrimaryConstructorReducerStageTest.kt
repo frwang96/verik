@@ -20,15 +20,15 @@ import io.verik.compiler.test.BaseTest
 import io.verik.compiler.test.findDeclaration
 import org.junit.jupiter.api.Test
 
-internal class ConstructorDesugarTransformerStageTest : BaseTest() {
+internal class PrimaryConstructorReducerStageTest : BaseTest() {
 
     @Test
-    fun `desugar primary constructor simple`() {
+    fun `reduce primary constructor simple`() {
         driveElementTest(
             """
                 class C
             """.trimIndent(),
-            ConstructorDesugarTransformerStage::class,
+            PrimaryConstructorReducerStage::class,
             """
                 KtClass(
                     C, C, Any, [],
@@ -40,7 +40,7 @@ internal class ConstructorDesugarTransformerStageTest : BaseTest() {
     }
 
     @Test
-    fun `desugar primary constructor with property`() {
+    fun `reduce primary constructor with property`() {
         val blockExpression = """
             BlockExpression(
                 Unit,
@@ -56,7 +56,7 @@ internal class ConstructorDesugarTransformerStageTest : BaseTest() {
             """
                 class C(val x: Int)
             """.trimIndent(),
-            ConstructorDesugarTransformerStage::class,
+            PrimaryConstructorReducerStage::class,
             """
                 KtClass(
                     C, C, Any, [], [

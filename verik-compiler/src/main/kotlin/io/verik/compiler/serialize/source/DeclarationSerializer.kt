@@ -34,6 +34,7 @@ import io.verik.compiler.ast.element.declaration.sv.EPort
 import io.verik.compiler.ast.element.declaration.sv.EStruct
 import io.verik.compiler.ast.element.declaration.sv.ESvAbstractFunction
 import io.verik.compiler.ast.element.declaration.sv.ESvClass
+import io.verik.compiler.ast.element.declaration.sv.ESvConstructor
 import io.verik.compiler.ast.element.declaration.sv.ESvFunction
 import io.verik.compiler.ast.element.declaration.sv.ESvValueParameter
 import io.verik.compiler.ast.element.declaration.sv.ETask
@@ -74,7 +75,9 @@ object DeclarationSerializer {
         serializeContext.append("class ${cls.name}")
         val superType = cls.superType
         if (superType.reference != Core.Kt.C_Any) {
-            serializeContext.append(" extends ${superType.reference.name}")
+            val serializedSuperType = TypeSerializer.serialize(superType, cls)
+            serializedSuperType.checkNoVariableDimension(cls)
+            serializeContext.append(" extends ${serializedSuperType.base}")
         }
         serializeContext.appendLine(";")
         serializeContext.indent {
@@ -163,6 +166,17 @@ object DeclarationSerializer {
         }
         serializeContext.label(task.body.endLocation) {
             serializeContext.appendLine("endtask : ${task.name}")
+        }
+    }
+
+    fun serializeConstructor(constructor: ESvConstructor, serializeContext: SerializeContext) {
+        serializeContext.append("function new")
+        serializeValueParameterList(constructor, serializeContext)
+        serializeContext.indent {
+            constructor.body.statements.forEach { serializeContext.serializeAsStatement(it) }
+        }
+        serializeContext.label(constructor.body.endLocation) {
+            serializeContext.appendLine("endfunction : new")
         }
     }
 

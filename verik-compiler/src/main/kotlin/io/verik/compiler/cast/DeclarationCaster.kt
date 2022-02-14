@@ -22,6 +22,7 @@ import io.verik.compiler.ast.element.declaration.common.EEnumEntry
 import io.verik.compiler.ast.element.declaration.common.EProperty
 import io.verik.compiler.ast.element.declaration.common.ETypeParameter
 import io.verik.compiler.ast.element.declaration.kt.ECompanionObject
+import io.verik.compiler.ast.element.declaration.kt.EInitializerBlock
 import io.verik.compiler.ast.element.declaration.kt.EKtClass
 import io.verik.compiler.ast.element.declaration.kt.EKtFunction
 import io.verik.compiler.ast.element.declaration.kt.EKtValueParameter
@@ -33,10 +34,13 @@ import io.verik.compiler.ast.element.expression.common.ECallExpression
 import io.verik.compiler.ast.property.AnnotationEntry
 import io.verik.compiler.common.location
 import io.verik.compiler.core.common.Core
+import org.jetbrains.kotlin.descriptors.ConstructorDescriptor
 import org.jetbrains.kotlin.kdoc.psi.api.KDoc
 import org.jetbrains.kotlin.lexer.KtTokens
 import org.jetbrains.kotlin.psi.KtAnnotationEntry
+import org.jetbrains.kotlin.psi.KtClassInitializer
 import org.jetbrains.kotlin.psi.KtClassOrObject
+import org.jetbrains.kotlin.psi.KtConstructorDelegationCall
 import org.jetbrains.kotlin.psi.KtEnumEntry
 import org.jetbrains.kotlin.psi.KtNamedFunction
 import org.jetbrains.kotlin.psi.KtObjectDeclaration
@@ -184,11 +188,11 @@ object DeclarationCaster {
         }
 
         val classOrObject = constructor.parent
-        val superTypeListEntry = if (classOrObject is KtClassOrObject) {
+        val superTypeCallExpression = if (classOrObject is KtClassOrObject) {
             castSuperTypeCallExpression(classOrObject.superTypeListEntries, castContext)
         } else null
 
-        castedPrimaryConstructor.fill(type, valueParameters, superTypeListEntry)
+        castedPrimaryConstructor.fill(type, valueParameters, superTypeCallExpression)
         return castedPrimaryConstructor
     }
 
@@ -205,15 +209,24 @@ object DeclarationCaster {
         val valueParameters = constructor.valueParameters.mapNotNull {
             castContext.castValueParameter(it)
         }
+        val superTypeCallExpression = if (!constructor.hasImplicitDelegationCall()) {
+            castSuperTypeCallExpression(constructor.getDelegationCall(), castContext)
+        } else null
 
         castedSecondaryConstructor.fill(
             type,
             documentationLines,
             body,
             valueParameters,
-            null
+            superTypeCallExpression
         )
         return castedSecondaryConstructor
+    }
+
+    fun castInitializerBlock(initializer: KtClassInitializer, castContext: CastContext): EInitializerBlock {
+        val location = initializer.location()
+        val body = castContext.castExpression(initializer.body!!).cast<EBlockExpression>()
+        return EInitializerBlock(location, body)
     }
 
     fun castProperty(property: KtProperty, castContext: CastContext): EProperty {
@@ -362,6 +375,33 @@ object DeclarationCaster {
             null,
             valueArguments,
             ArrayList(typeArguments)
+        )
+    }
+
+    private fun castSuperTypeCallExpression(
+        constructorDelegationCall: KtConstructorDelegationCall,
+        castContext: CastContext
+    ): ECallExpression {
+        val location = constructorDelegationCall.location()
+        val descriptor = castContext.sliceReferenceTarget[
+            constructorDelegationCall.calleeExpression!!
+        ]!! as ConstructorDescriptor
+        val declaration = castContext.resolveDeclaration(descriptor, constructorDelegationCall)
+        val typeArguments = CallExpressionCaster.castTypeArguments(constructorDelegationCall, castContext)
+        val typeReference = castContext
+            .resolveDeclaration(descriptor.constructedClass, constructorDelegationCall)
+        val type = typeReference.toType(typeArguments.map { it.copy() })
+        val valueArguments = CallExpressionCaster.castValueArguments(
+            constructorDelegationCall.calleeExpression!!,
+            castContext
+        )
+        return ECallExpression(
+            location,
+            type,
+            declaration,
+            null,
+            valueArguments,
+            typeArguments
         )
     }
 }

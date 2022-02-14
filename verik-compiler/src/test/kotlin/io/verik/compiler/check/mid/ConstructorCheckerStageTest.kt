@@ -14,46 +14,23 @@
  * limitations under the License.
  */
 
-// Test.kt /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+package io.verik.compiler.check.mid
 
-@file:Verik
+import io.verik.compiler.test.BaseTest
+import org.junit.jupiter.api.Test
 
-import io.verik.core.*
+internal class ConstructorCheckerStageTest : BaseTest() {
 
-@EntryPoint
-object M : Module() {
-
-    val x0 = C0()
-    val x1 = C1()
-    val x2 = C2<Int>()
-    val x3 = C3()
-
-    @Run
-    fun f0() {
-        println(C0.x4)
-        println(C2.x5)
+    @Test
+    fun `multiple constructors illegal`() {
+        driveMessageTest(
+            """
+                class C() {
+                    constructor(x: Int) : this()
+                }
+            """.trimIndent(),
+            true,
+            "Multiple constructors are not permitted"
+        )
     }
-}
-
-open class C0 {
-
-    companion object {
-
-        var x4 = false
-    }
-}
-
-class C1: C0()
-
-class C2<T> {
-
-    companion object {
-
-        var x5 = false
-    }
-}
-
-class C3: C0 {
-
-    constructor(): super()
 }

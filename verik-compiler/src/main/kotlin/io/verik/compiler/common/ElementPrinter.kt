@@ -24,6 +24,7 @@ import io.verik.compiler.ast.element.declaration.common.EPackage
 import io.verik.compiler.ast.element.declaration.common.EProperty
 import io.verik.compiler.ast.element.declaration.common.ETypeParameter
 import io.verik.compiler.ast.element.declaration.kt.ECompanionObject
+import io.verik.compiler.ast.element.declaration.kt.EInitializerBlock
 import io.verik.compiler.ast.element.declaration.kt.EKtClass
 import io.verik.compiler.ast.element.declaration.kt.EKtFunction
 import io.verik.compiler.ast.element.declaration.kt.EKtValueParameter
@@ -45,6 +46,7 @@ import io.verik.compiler.ast.element.declaration.sv.EModulePortInstantiation
 import io.verik.compiler.ast.element.declaration.sv.EPort
 import io.verik.compiler.ast.element.declaration.sv.EStruct
 import io.verik.compiler.ast.element.declaration.sv.ESvClass
+import io.verik.compiler.ast.element.declaration.sv.ESvConstructor
 import io.verik.compiler.ast.element.declaration.sv.ESvFunction
 import io.verik.compiler.ast.element.declaration.sv.ESvValueParameter
 import io.verik.compiler.ast.element.declaration.sv.ETask
@@ -250,27 +252,6 @@ class ElementPrinter : Visitor() {
         }
     }
 
-    override fun visitSvFunction(function: ESvFunction) {
-        build("SvFunction") {
-            build(function.name)
-            build(function.type.toString())
-            build(function.body)
-            build(function.typeParameters)
-            build(function.valueParameters)
-            build(function.qualifierType.toString())
-            build(function.isStatic)
-        }
-    }
-
-    override fun visitTask(task: ETask) {
-        build("Task") {
-            build(task.name)
-            build(task.body)
-            build(task.typeParameters)
-            build(task.valueParameters)
-        }
-    }
-
     override fun visitPrimaryConstructor(primaryConstructor: EPrimaryConstructor) {
         build("PrimaryConstructor") {
             build(primaryConstructor.name)
@@ -287,6 +268,42 @@ class ElementPrinter : Visitor() {
             build(secondaryConstructor.body)
             build(secondaryConstructor.valueParameters)
             build(secondaryConstructor.superTypeCallExpression)
+        }
+    }
+
+    override fun visitSvFunction(function: ESvFunction) {
+        build("SvFunction") {
+            build(function.name)
+            build(function.type.toString())
+            build(function.body)
+            build(function.typeParameters)
+            build(function.valueParameters)
+            build(function.isStatic)
+            build(function.qualifierType.toString())
+        }
+    }
+
+    override fun visitTask(task: ETask) {
+        build("Task") {
+            build(task.name)
+            build(task.body)
+            build(task.typeParameters)
+            build(task.valueParameters)
+            build(task.isStatic)
+        }
+    }
+
+    override fun visitInitializerBlock(initializerBlock: EInitializerBlock) {
+        build("InitializerBlock") {
+            build(initializerBlock.body)
+        }
+    }
+
+    override fun visitSvConstructor(constructor: ESvConstructor) {
+        build("SvConstructor") {
+            build(constructor.type.toString())
+            build(constructor.body)
+            build(constructor.valueParameters)
         }
     }
 

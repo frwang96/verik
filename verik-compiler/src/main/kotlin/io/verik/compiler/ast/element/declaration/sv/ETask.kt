@@ -30,7 +30,8 @@ class ETask(
     override var documentationLines: List<String>?,
     override var body: EBlockExpression,
     override var typeParameters: ArrayList<ETypeParameter>,
-    override var valueParameters: ArrayList<ESvValueParameter>
+    override var valueParameters: ArrayList<ESvValueParameter>,
+    override val isStatic: Boolean
 ) : ESvAbstractFunction() {
 
     init {

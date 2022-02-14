@@ -17,6 +17,7 @@
 package io.verik.compiler.check.post
 
 import io.verik.compiler.ast.element.declaration.kt.ECompanionObject
+import io.verik.compiler.ast.element.declaration.kt.EInitializerBlock
 import io.verik.compiler.ast.element.declaration.kt.EKtClass
 import io.verik.compiler.ast.element.declaration.kt.EKtFunction
 import io.verik.compiler.ast.element.declaration.kt.EKtValueParameter
@@ -50,7 +51,7 @@ object UntransformedElementCheckerStage : ProjectStage() {
         }
 
         override fun visitCompanionObject(companionObject: ECompanionObject) {
-            Messages.INTERNAL_ERROR.on(companionObject, "Companion object ${companionObject.name} $message")
+            Messages.INTERNAL_ERROR.on(companionObject, "Companion object $message")
         }
 
         override fun visitKtFunction(function: EKtFunction) {
@@ -66,6 +67,10 @@ object UntransformedElementCheckerStage : ProjectStage() {
                 secondaryConstructor,
                 "Secondary constructor ${secondaryConstructor.name} $message"
             )
+        }
+
+        override fun visitInitializerBlock(initializerBlock: EInitializerBlock) {
+            Messages.INTERNAL_ERROR.on(initializerBlock, "Initializer block $message")
         }
 
         override fun visitKtValueParameter(valueParameter: EKtValueParameter) {

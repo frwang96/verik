@@ -22,27 +22,28 @@ import org.junit.jupiter.api.Test
 internal class AnnotationEntryCheckerStageTest : BaseTest() {
 
     @Test
-    fun `class top annotation illegal`() {
+    fun `entry point parameterized`() {
         driveMessageTest(
             """
-                @SimTop
-                class C
+                @EntryPoint
+                class C<T>
             """.trimIndent(),
             true,
-            "Declaration annotated as top must be a module"
+            "Type parameters not permitted on entry points"
         )
     }
 
     @Test
-    fun `class top annotations conflicting`() {
+    fun `entry point invalid`() {
         driveMessageTest(
             """
-                @SynthTop
-                @SimTop
-                class M : Module()
+                class C {
+                    @EntryPoint
+                    fun f() {}
+                }
             """.trimIndent(),
             true,
-            "Conflicting annotations: @SynthTop and @SimTop"
+            "Invalid entry point"
         )
     }
 

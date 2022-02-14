@@ -20,23 +20,42 @@ import io.verik.compiler.test.BaseTest
 import io.verik.compiler.test.findDeclaration
 import org.junit.jupiter.api.Test
 
-internal class CompanionObjectReducerStageTest : BaseTest() {
+internal class ConstructorInterpreterStageTest : BaseTest() {
 
     @Test
-    fun `reduce companion object`() {
+    fun `constructor with parameter`() {
         driveElementTest(
             """
-                class C {
-                    companion object { var x = false }
-                }
+                class C(x: Int)
             """.trimIndent(),
-            CompanionObjectReducerStage::class,
+            ConstructorInterpreterStage::class,
             """
                 SvClass(
                     C, C, [],
-                    [SvConstructor(*), Property(x, Boolean, ConstantExpression(*), 1, 1)], 0, 0
+                    [SvConstructor(C, BlockExpression(*), [SvValueParameter(x, Int, null, 1)])],
+                    0, 0
                 )
             """.trimIndent()
         ) { it.findDeclaration("C") }
+    }
+
+    @Test
+    fun `constructor with super type call expression`() {
+        driveElementTest(
+            """
+                open class C
+                class D : C()
+            """.trimIndent(),
+            ConstructorInterpreterStage::class,
+            """
+                SvClass(
+                    D, D, [],
+                    [SvConstructor(
+                        D, BlockExpression(Unit, [CallExpression(Unit, new, SuperExpression(C), [], [])]), []
+                    )],
+                    0, 0
+                )
+            """.trimIndent()
+        ) { it.findDeclaration("D") }
     }
 }

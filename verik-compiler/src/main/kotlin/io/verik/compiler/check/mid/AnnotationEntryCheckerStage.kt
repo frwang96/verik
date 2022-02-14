@@ -16,14 +16,16 @@
 
 package io.verik.compiler.check.mid
 
+import io.verik.compiler.ast.common.TypeParameterized
+import io.verik.compiler.ast.element.declaration.common.EDeclaration
+import io.verik.compiler.ast.element.declaration.common.EFile
 import io.verik.compiler.ast.element.declaration.common.EProperty
-import io.verik.compiler.ast.element.declaration.kt.EKtClass
+import io.verik.compiler.ast.element.declaration.kt.ECompanionObject
 import io.verik.compiler.ast.element.declaration.kt.EKtFunction
 import io.verik.compiler.ast.element.declaration.kt.EKtValueParameter
 import io.verik.compiler.ast.property.AnnotationEntry
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.AnnotationEntries
-import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
@@ -43,21 +45,17 @@ object AnnotationEntryCheckerStage : ProjectStage() {
             AnnotationEntries.TASK
         )
 
-        override fun visitKtClass(cls: EKtClass) {
-            super.visitKtClass(cls)
-            val isSynthesisTop = cls.hasAnnotationEntry(AnnotationEntries.SYNTHESIS_TOP)
-            val isSimulationTop = cls.hasAnnotationEntry(AnnotationEntries.SIMULATION_TOP)
-            if (isSimulationTop && isSynthesisTop)
-                Messages.CONFLICTING_ANNOTATIONS.on(
-                    cls,
-                    AnnotationEntries.SYNTHESIS_TOP,
-                    AnnotationEntries.SIMULATION_TOP
-                )
-            if (isSimulationTop || isSynthesisTop) {
-                if (!cls.type.isSubtype(Core.Vk.C_Module))
-                    Messages.TOP_NOT_MODULE.on(cls)
-                if (cls.typeParameters.isNotEmpty())
-                    Messages.TOP_PARAMETERIZED.on(cls)
+        override fun visitDeclaration(declaration: EDeclaration) {
+            super.visitDeclaration(declaration)
+            val isEntryPoint = declaration.hasAnnotationEntry(AnnotationEntries.ENTRY_POINT)
+            if (isEntryPoint) {
+                if (declaration is TypeParameterized && declaration.typeParameters.isNotEmpty()) {
+                    Messages.ENTRY_POINT_PARAMETERIZED.on(declaration)
+                }
+                val parent = declaration.parent
+                if (parent !is EFile && parent !is ECompanionObject) {
+                    Messages.INVALID_ENTRY_POINT.on(declaration)
+                }
             }
         }
 

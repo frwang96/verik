@@ -22,8 +22,8 @@ import io.verik.compiler.ast.element.declaration.common.EFile
 import io.verik.compiler.ast.element.declaration.common.EPackage
 import io.verik.compiler.ast.element.declaration.common.EProperty
 import io.verik.compiler.ast.element.declaration.sv.EModule
+import io.verik.compiler.ast.element.declaration.sv.ESvAbstractFunction
 import io.verik.compiler.ast.element.declaration.sv.ESvClass
-import io.verik.compiler.ast.element.declaration.sv.ESvFunction
 import io.verik.compiler.ast.element.expression.common.EExpression
 import io.verik.compiler.ast.element.expression.common.EReceiverExpression
 import io.verik.compiler.ast.element.expression.common.EReferenceExpression
@@ -87,7 +87,7 @@ object ScopeExpressionInsertionTransformerStage : ProjectStage() {
         ): EScopeExpression? {
             return if (cls != parentClass) {
                 when (val reference = receiverExpression.reference) {
-                    is ESvFunction -> {
+                    is ESvAbstractFunction -> {
                         if (reference.isStatic) {
                             val typeParameters = if (reference.isImported()) reference.typeParameters else listOf()
                             EScopeExpression(receiverExpression.location, cls.toType(), typeParameters)
@@ -107,7 +107,7 @@ object ScopeExpressionInsertionTransformerStage : ProjectStage() {
             receiverExpression: EReceiverExpression,
             module: EModule
         ): EReferenceExpression? {
-            return if (module.isSimulationTop && module != parentClass) {
+            return if (module != parentClass) {
                 val referenceExpression = EReferenceExpression(
                     receiverExpression.location,
                     Target.C_Void.toType(),

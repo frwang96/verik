@@ -28,23 +28,22 @@ import io.verik.compiler.ast.element.expression.common.EReferenceExpression
 import io.verik.compiler.ast.element.expression.common.EThisExpression
 import io.verik.compiler.ast.element.expression.kt.EKtBinaryExpression
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
-import io.verik.compiler.common.ExpressionCopier
 import io.verik.compiler.common.ReferenceUpdater
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 
-object ConstructorDesugarTransformerStage : ProjectStage() {
+object PrimaryConstructorReducerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
         val referenceUpdater = ReferenceUpdater(projectContext)
-        val constructorDesugarTransformerVisitor = ConstructorDesugarTransformerVisitor(referenceUpdater)
-        projectContext.project.accept(constructorDesugarTransformerVisitor)
+        val primaryConstructorReducerVisitor = PrimaryConstructorReducerVisitor(referenceUpdater)
+        projectContext.project.accept(primaryConstructorReducerVisitor)
         referenceUpdater.flush()
     }
 
-    private class ConstructorDesugarTransformerVisitor(
+    private class PrimaryConstructorReducerVisitor(
         private val referenceUpdater: ReferenceUpdater
     ) : TreeVisitor() {
 
@@ -53,12 +52,11 @@ object ConstructorDesugarTransformerStage : ProjectStage() {
             val primaryConstructor = cls.primaryConstructor
             if (primaryConstructor != null) {
                 val declarations = ArrayList<EDeclaration>()
-                val properties = desugarValueParameterProperties(primaryConstructor.valueParameters)
+                val properties = getProperties(primaryConstructor.valueParameters)
                 declarations.addAll(properties.filterNotNull())
 
                 val body = getBody(primaryConstructor, properties)
                 val superTypeCallExpression = primaryConstructor.superTypeCallExpression
-                    ?.let { ExpressionCopier.deepCopy(it) }
                 val secondaryConstructor = ESecondaryConstructor(
                     location = primaryConstructor.location,
                     name = primaryConstructor.name,
@@ -77,7 +75,7 @@ object ConstructorDesugarTransformerStage : ProjectStage() {
             }
         }
 
-        private fun desugarValueParameterProperties(valueParameters: List<EKtValueParameter>): List<EProperty?> {
+        private fun getProperties(valueParameters: List<EKtValueParameter>): List<EProperty?> {
             return valueParameters.map {
                 if (it.isPrimaryConstructorProperty) {
                     val isMutable = it.isMutable

@@ -33,6 +33,7 @@ import io.verik.compiler.ast.element.declaration.sv.EModulePortInstantiation
 import io.verik.compiler.ast.element.declaration.sv.EPort
 import io.verik.compiler.ast.element.declaration.sv.EStruct
 import io.verik.compiler.ast.element.declaration.sv.ESvClass
+import io.verik.compiler.ast.element.declaration.sv.ESvConstructor
 import io.verik.compiler.ast.element.declaration.sv.ESvFunction
 import io.verik.compiler.ast.element.declaration.sv.ESvValueParameter
 import io.verik.compiler.ast.element.declaration.sv.ETask
@@ -157,6 +158,10 @@ class SourceSerializerVisitor(
 
     override fun visitTask(task: ETask) {
         DeclarationSerializer.serializeTask(task, serializeContext)
+    }
+
+    override fun visitSvConstructor(constructor: ESvConstructor) {
+        DeclarationSerializer.serializeConstructor(constructor, serializeContext)
     }
 
     override fun visitInitialBlock(initialBlock: EInitialBlock) {

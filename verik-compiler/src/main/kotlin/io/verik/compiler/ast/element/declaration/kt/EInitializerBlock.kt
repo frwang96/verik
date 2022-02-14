@@ -14,36 +14,30 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.element.declaration.sv
+package io.verik.compiler.ast.element.declaration.kt
 
-import io.verik.compiler.ast.common.Type
-import io.verik.compiler.ast.element.declaration.common.ETypeParameter
+import io.verik.compiler.ast.element.declaration.common.EAbstractFunction
 import io.verik.compiler.ast.element.expression.common.EBlockExpression
 import io.verik.compiler.ast.property.AnnotationEntry
-import io.verik.compiler.ast.property.FunctionQualifierType
 import io.verik.compiler.common.Visitor
+import io.verik.compiler.core.common.Core
 import io.verik.compiler.message.SourceLocation
 
-class ESvFunction(
+class EInitializerBlock(
     override val location: SourceLocation,
-    override var name: String,
-    override var type: Type,
-    override var annotationEntries: List<AnnotationEntry>,
-    override var documentationLines: List<String>?,
-    override var body: EBlockExpression,
-    override var typeParameters: ArrayList<ETypeParameter>,
-    override var valueParameters: ArrayList<ESvValueParameter>,
-    override val isStatic: Boolean,
-    val qualifierType: FunctionQualifierType
-) : ESvAbstractFunction() {
+    override var body: EBlockExpression
+) : EAbstractFunction() {
+
+    override var name = "init"
+    override var type = Core.Kt.C_Unit.toType()
+    override var annotationEntries: List<AnnotationEntry> = listOf()
+    override var documentationLines: List<String>? = null
 
     init {
         body.parent = this
-        typeParameters.forEach { it.parent = this }
-        valueParameters.forEach { it.parent = this }
     }
 
     override fun accept(visitor: Visitor) {
-        return visitor.visitSvFunction(this)
+        visitor.visitInitializerBlock(this)
     }
 }

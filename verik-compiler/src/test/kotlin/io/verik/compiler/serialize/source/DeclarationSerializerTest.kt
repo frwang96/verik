@@ -130,15 +130,8 @@ internal class DeclarationSerializerTest : BaseTest() {
             """
                 class C;
                 
-                    static function automatic C __new();
-                        C __0;
-                        __0 = new();
-                        __0.__init();
-                        return __0;
-                    endfunction : __new
-                
-                    function automatic void __init();
-                    endfunction : __init
+                    function new();
+                    endfunction : new
                 
                 endclass : C
             """.trimIndent()

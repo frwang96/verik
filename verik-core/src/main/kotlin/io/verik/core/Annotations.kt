@@ -63,26 +63,11 @@ annotation class Verik
 annotation class Make
 
 /**
- * Annotates the top module of the hierarchy for synthesis.
- *
- *  ```
- *  @SynthTop
- *  class Top : Module()
- *  ```
+ * Annotates that a declaration is eligible to be an entry point. If dead code elimination is enabled, declarations that
+ * are not reachable from any entry point are eliminated.
  */
-@Target(AnnotationTarget.CLASS)
-annotation class SynthTop
-
-/**
- * Annotates the top module of the hierarchy for simulation.
- *
- *  ```
- *  @SimTop
- *  class Top : Module()
- *  ```
- */
-@Target(AnnotationTarget.CLASS)
-annotation class SimTop
+@Target(AnnotationTarget.CLASS, AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY)
+annotation class EntryPoint
 
 /**
  * Annotates input ports of a component. Mutable input ports are declared as var. Immutable input ports are declared as
@@ -125,7 +110,7 @@ annotation class Com
 /**
  * Annotates sequential action blocks or sequentially assigned properties. It is executed when its event expression is
  * triggered and is used to model sequential logic. Sequential action blocks must contain an [on] expression and
- * sequentially assigned properties must contain an [onr] expression to specify their event expressions. They
+ * sequentially assigned properties must contain an [oni] expression to specify their event expressions. They
  * correspond to SystemVerilog always_ff blocks.
  *
  *  ```
@@ -137,7 +122,7 @@ annotation class Com
  *  }
  *
  *  @Seq
- *  var x = onr(posedge(clk)) { !y }
+ *  var x = oni(posedge(clk)) { !y }
  *  ```
  */
 @Target(AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY)

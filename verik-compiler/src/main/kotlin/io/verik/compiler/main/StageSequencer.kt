@@ -22,6 +22,7 @@ import io.verik.compiler.cast.SmartCastReducerStage
 import io.verik.compiler.check.mid.AnnotationEntryCheckerStage
 import io.verik.compiler.check.mid.ArrayAccessMutabilityChecker
 import io.verik.compiler.check.mid.ComponentInstantiationCheckerStage
+import io.verik.compiler.check.mid.ConstructorCheckerStage
 import io.verik.compiler.check.mid.EntryPointCheckerStage
 import io.verik.compiler.check.mid.ObjectCheckerStage
 import io.verik.compiler.check.mid.PortCheckerStage
@@ -48,18 +49,19 @@ import io.verik.compiler.evaluate.ExpressionEvaluatorStage
 import io.verik.compiler.interpret.ClassInterpreterStage
 import io.verik.compiler.interpret.CompanionObjectReducerStage
 import io.verik.compiler.interpret.ComponentInterpreterStage
-import io.verik.compiler.interpret.ConstructorDesugarTransformerStage
+import io.verik.compiler.interpret.ConstructorInterpreterStage
 import io.verik.compiler.interpret.EnumInterpreterStage
 import io.verik.compiler.interpret.FileSplitterStage
 import io.verik.compiler.interpret.FunctionInterpreterStage
 import io.verik.compiler.interpret.FunctionLiteralInterpreterStage
+import io.verik.compiler.interpret.InitializerBlockReducerStage
 import io.verik.compiler.interpret.ModulePortParentResolverStage
+import io.verik.compiler.interpret.PrimaryConstructorReducerStage
 import io.verik.compiler.interpret.PropertyInterpreterStage
 import io.verik.compiler.interpret.StructInterpreterStage
 import io.verik.compiler.kotlin.KotlinCompilerAnalyzerStage
 import io.verik.compiler.kotlin.KotlinCompilerParserStage
 import io.verik.compiler.kotlin.KotlinEnvironmentBuilderStage
-import io.verik.compiler.reorder.DeadDeclarationEliminatorStage
 import io.verik.compiler.reorder.DependencyReordererStage
 import io.verik.compiler.reorder.PropertyStatementReordererStage
 import io.verik.compiler.resolve.SliceResolverStage
@@ -144,6 +146,7 @@ object StageSequencer {
         stageSequence.add(StageType.MID_CHECK, ComponentInstantiationCheckerStage)
         stageSequence.add(StageType.MID_CHECK, TypeParameterCheckerStage)
         stageSequence.add(StageType.MID_CHECK, TypeArgumentTypeCheckerStage)
+        stageSequence.add(StageType.MID_CHECK, ConstructorCheckerStage)
         stageSequence.add(StageType.MID_CHECK, ObjectCheckerStage)
         stageSequence.add(StageType.MID_CHECK, PortCheckerStage)
         stageSequence.add(StageType.MID_CHECK, PortInstantiationCheckerStage)
@@ -164,9 +167,11 @@ object StageSequencer {
         stageSequence.add(StageType.INTERPRET, EnumInterpreterStage)
         stageSequence.add(StageType.INTERPRET, StructInterpreterStage)
         stageSequence.add(StageType.INTERPRET, ComponentInterpreterStage)
-        stageSequence.add(StageType.INTERPRET, ConstructorDesugarTransformerStage)
+        stageSequence.add(StageType.INTERPRET, PrimaryConstructorReducerStage)
         stageSequence.add(StageType.INTERPRET, ClassInterpreterStage)
         stageSequence.add(StageType.INTERPRET, FunctionInterpreterStage)
+        stageSequence.add(StageType.INTERPRET, ConstructorInterpreterStage)
+        stageSequence.add(StageType.INTERPRET, InitializerBlockReducerStage)
         stageSequence.add(StageType.INTERPRET, PropertyInterpreterStage)
         stageSequence.add(StageType.INTERPRET, FunctionLiteralInterpreterStage)
         stageSequence.add(StageType.INTERPRET, CompanionObjectReducerStage)
@@ -192,7 +197,6 @@ object StageSequencer {
         stageSequence.add(StageType.LOWER_TRANSFORM, VariableDimensionEliminatorStage)
 
         stageSequence.add(StageType.REORDER, PropertyStatementReordererStage)
-        stageSequence.add(StageType.REORDER, DeadDeclarationEliminatorStage)
         stageSequence.add(StageType.REORDER, DependencyReordererStage)
 
         stageSequence.add(StageType.POST_TRANSFORM, TypeReferenceTransformerStage)

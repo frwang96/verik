@@ -20,21 +20,22 @@ import io.verik.compiler.test.BaseTest
 import io.verik.compiler.test.findDeclaration
 import org.junit.jupiter.api.Test
 
-internal class CompanionObjectReducerStageTest : BaseTest() {
+internal class InitializerBlockReducerStageTest : BaseTest() {
 
     @Test
-    fun `reduce companion object`() {
+    fun `reduce initializer block`() {
         driveElementTest(
             """
                 class C {
-                    companion object { var x = false }
+                    init {
+                        println()
+                    }
                 }
             """.trimIndent(),
-            CompanionObjectReducerStage::class,
+            InitializerBlockReducerStage::class,
             """
                 SvClass(
-                    C, C, [],
-                    [SvConstructor(*), Property(x, Boolean, ConstantExpression(*), 1, 1)], 0, 0
+                    C, C, [], [SvConstructor(C, BlockExpression(Unit, [CallExpression(*)]), [])], 0, 0
                 )
             """.trimIndent()
         ) { it.findDeclaration("C") }

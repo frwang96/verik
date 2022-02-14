@@ -23,6 +23,7 @@ import io.verik.compiler.ast.element.declaration.common.EEnumEntry
 import io.verik.compiler.ast.element.declaration.common.EProperty
 import io.verik.compiler.ast.element.declaration.common.ETypeParameter
 import io.verik.compiler.ast.element.declaration.kt.ECompanionObject
+import io.verik.compiler.ast.element.declaration.kt.EInitializerBlock
 import io.verik.compiler.ast.element.declaration.kt.EKtClass
 import io.verik.compiler.ast.element.declaration.kt.EKtFunction
 import io.verik.compiler.ast.element.declaration.kt.EKtValueParameter
@@ -68,6 +69,8 @@ object SpecializerCopier {
                 copyPrimaryConstructor(element, typeArguments, specializeContext)
             is ESecondaryConstructor ->
                 copySecondaryConstructor(element, typeArguments, specializeContext)
+            is EInitializerBlock ->
+                copyInitializerBlock(element, typeArguments, specializeContext)
             is EProperty ->
                 copyProperty(element, typeArguments, specializeContext)
             is EEnumEntry ->
@@ -246,6 +249,15 @@ object SpecializerCopier {
         )
         specializeContext.register(secondaryConstructor, typeArguments, copiedSecondaryConstructor)
         return copiedSecondaryConstructor
+    }
+
+    private fun copyInitializerBlock(
+        initializerBlock: EInitializerBlock,
+        typeArguments: List<Type>,
+        specializeContext: SpecializeContext
+    ): EInitializerBlock {
+        val body = copy(initializerBlock.body, typeArguments, specializeContext)
+        return EInitializerBlock(initializerBlock.location, body)
     }
 
     private fun copyProperty(

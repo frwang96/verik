@@ -72,8 +72,6 @@ object ComponentInterpreterStage : ProjectStage() {
 
         private fun interpretModule(cls: EKtClass): EModule {
             val ports = interpretPorts(cls.primaryConstructor?.valueParameters, referenceUpdater)
-            val isSynthesisTop = cls.hasAnnotationEntry(AnnotationEntries.SYNTHESIS_TOP)
-            val isSimulationTop = cls.hasAnnotationEntry(AnnotationEntries.SIMULATION_TOP)
             return EModule(
                 cls.location,
                 cls.bodyStartLocation,
@@ -83,9 +81,7 @@ object ComponentInterpreterStage : ProjectStage() {
                 cls.annotationEntries,
                 cls.documentationLines,
                 ports,
-                cls.declarations,
-                isSynthesisTop,
-                isSimulationTop
+                cls.declarations
             )
         }
 

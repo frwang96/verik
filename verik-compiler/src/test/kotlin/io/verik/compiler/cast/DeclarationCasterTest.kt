@@ -158,7 +158,21 @@ internal class DeclarationCasterTest : BaseTest() {
     }
 
     @Test
-    fun `class with secondary constructor`() {
+    fun `class with secondary constructor simple`() {
+        driveElementTest(
+            """
+                class C {
+                    @Suppress("ConvertSecondaryConstructorToPrimary")
+                    constructor()
+                }
+            """.trimIndent(),
+            CasterStage::class,
+            "KtClass(C, C, Any, [], [SecondaryConstructor(C, C, BlockExpression(*), [], null)], null, 0, 0, 0)"
+        ) { it.findDeclaration("C") }
+    }
+
+    @Test
+    fun `class with secondary constructor with super type call expression`() {
         driveElementTest(
             """
                 open class C0<T>(x: Int)
@@ -171,11 +185,33 @@ internal class DeclarationCasterTest : BaseTest() {
             """
                 KtClass(
                     C1, C1, C0<Int>, [],
-                    [SecondaryConstructor(C1, C1, BlockExpression(*), [KtValueParameter(x, Int, null, 0, 0)], null)],
+                    [SecondaryConstructor(
+                        C1, C1, BlockExpression(*), [KtValueParameter(x, Int, null, 0, 0)],
+                        CallExpression(C0<Int>, C0, null, [ConstantExpression(*)], [Int])
+                    )],
                     null, 0, 0, 0
                 )
             """.trimIndent()
         ) { it.findDeclaration("C1") }
+    }
+
+    @Test
+    fun `class with initializer block`() {
+        driveElementTest(
+            """
+                @Suppress("RedundantEmptyInitializerBlock")
+                class C {
+                    init {}
+                }
+            """.trimIndent(),
+            CasterStage::class,
+            """
+                KtClass(
+                    C, C, Any, [], [InitializerBlock(BlockExpression(*))],
+                    PrimaryConstructor(C, C, [], null), 0, 0, 0
+                )
+            """.trimIndent()
+        ) { it.findDeclaration("C") }
     }
 
     @Test
