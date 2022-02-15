@@ -75,8 +75,6 @@ object SmartCastReducerStage : ProjectStage() {
                         referenceExpression.reference = property
                         referenceExpression.receiver = null
                         return
-                    } else {
-                        Messages.INTERNAL_ERROR.on(referenceExpression, "Unable to reduce smart cast")
                     }
                 } else {
                     Messages.INTERNAL_ERROR.on(referenceExpression, "Unable to reduce smart cast")

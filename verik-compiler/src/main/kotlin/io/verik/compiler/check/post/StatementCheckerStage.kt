@@ -42,8 +42,7 @@ object StatementCheckerStage : ProjectStage() {
         override fun visitBlockExpression(blockExpression: EBlockExpression) {
             super.visitBlockExpression(blockExpression)
             blockExpression.statements.forEach {
-                if (!isValid(it))
-                    Messages.INVALID_STATEMENT.on(it)
+                if (!isValid(it)) Messages.INVALID_STATEMENT.on(it)
             }
         }
 

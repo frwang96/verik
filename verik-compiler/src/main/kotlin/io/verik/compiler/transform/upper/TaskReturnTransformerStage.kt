@@ -107,11 +107,11 @@ object TaskReturnTransformerStage : ProjectStage() {
             val newCallExpression = ExpressionCopier.shallowCopy(callExpression)
             referenceExpression.parent = newCallExpression
             newCallExpression.valueArguments.add(referenceExpression)
-            val extractedExpressions = listOf(
-                propertyStatement,
-                newCallExpression,
-                ExpressionCopier.deepCopy(referenceExpression)
-            )
+
+            val extractedExpressions = arrayListOf(propertyStatement, newCallExpression)
+            if (callExpression.parent !is EBlockExpression) {
+                extractedExpressions.add(ExpressionCopier.deepCopy(referenceExpression))
+            }
             EBlockExpression.extract(callExpression, extractedExpressions)
         }
     }

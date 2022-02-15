@@ -22,6 +22,7 @@ import org.jetbrains.kotlin.com.intellij.psi.tree.IElementType
 
 enum class KtUnaryOperatorKind {
     EXCL,
+    EXCL_EXCL,
     PLUS,
     MINUS,
     PRE_INC,
@@ -48,6 +49,7 @@ enum class KtUnaryOperatorKind {
 
         fun getKindPostfix(token: IElementType, location: SourceLocation): KtUnaryOperatorKind {
             return when (token.toString()) {
+                "EXCLEXCL" -> EXCL_EXCL
                 "PLUSPLUS" -> POST_INC
                 "MINUSMINUS" -> POST_DEC
                 else -> Messages.INTERNAL_ERROR.on(location, "Unrecognised unary operator kind: $token")
