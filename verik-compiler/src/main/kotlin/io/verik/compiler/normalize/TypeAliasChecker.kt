@@ -21,6 +21,7 @@ import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.ETypedElement
 import io.verik.compiler.ast.element.declaration.common.EAbstractClass
 import io.verik.compiler.ast.element.expression.common.ECallExpression
+import io.verik.compiler.ast.element.expression.sv.EScopeExpression
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
@@ -74,6 +75,11 @@ object TypeAliasChecker : NormalizationChecker {
             callExpression.typeArguments.forEach {
                 addTypeRecursive(it, callExpression)
             }
+        }
+
+        override fun visitScopeExpression(scopeExpression: EScopeExpression) {
+            super.visitScopeExpression(scopeExpression)
+            addTypeRecursive(scopeExpression.scope, scopeExpression)
         }
     }
 }

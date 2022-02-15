@@ -34,6 +34,13 @@ fun inject(content: String) {
 }
 
 /**
+ * Returns the SystemVerilog representation of type [T]. This should only be used in injected string literals.
+ */
+fun <T> t(): String {
+    throw VerikException()
+}
+
+/**
  * Represents a value that is not connected in output port connections or property declarations.
  */
 fun <T> nc(): T {

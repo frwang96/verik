@@ -17,11 +17,14 @@
 package io.verik.compiler.core.declaration.vk
 
 import io.verik.compiler.ast.element.declaration.sv.EAbstractComponentInstantiation
+import io.verik.compiler.ast.element.declaration.sv.EInjectedProperty
 import io.verik.compiler.ast.element.expression.common.ECallExpression
 import io.verik.compiler.ast.element.expression.common.EConstantExpression
 import io.verik.compiler.ast.element.expression.common.EExpression
 import io.verik.compiler.ast.element.expression.common.ENothingExpression
 import io.verik.compiler.ast.element.expression.common.EReferenceExpression
+import io.verik.compiler.ast.element.expression.sv.EInjectedStatement
+import io.verik.compiler.ast.element.expression.sv.EScopeExpression
 import io.verik.compiler.constant.BitComponent
 import io.verik.compiler.constant.BitConstant
 import io.verik.compiler.constant.BooleanConstantKind
@@ -59,6 +62,17 @@ object CoreVkSpecial : CoreScope(CorePackage.VK) {
     }
 
     val F_inject_String = BasicCoreFunctionDeclaration(parent, "inject", "fun inject(String)", null)
+
+    val F_t = object : TransformableCoreFunctionDeclaration(parent, "t", "fun t()") {
+
+        override fun transform(callExpression: ECallExpression): EExpression {
+            val parent = callExpression.parent
+            if (parent !is EInjectedProperty && parent !is EInjectedStatement) {
+                Messages.EXPRESSION_OUT_OF_CONTEXT.on(callExpression, name)
+            }
+            return EScopeExpression(callExpression.location, callExpression.typeArguments[0], listOf())
+        }
+    }
 
     val F_nc = object : TransformableCoreFunctionDeclaration(parent, "nc", "fun nc()") {
 
