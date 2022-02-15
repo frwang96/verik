@@ -58,7 +58,7 @@ object CoreVkSpecial : CoreScope(CorePackage.VK) {
         }
     }
 
-    val F_sv_String = BasicCoreFunctionDeclaration(parent, "sv", "fun sv(String)", null)
+    val F_inject_String = BasicCoreFunctionDeclaration(parent, "inject", "fun inject(String)", null)
 
     val F_nc = object : TransformableCoreFunctionDeclaration(parent, "nc", "fun nc()") {
 

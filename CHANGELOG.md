@@ -18,6 +18,7 @@
 - Remove support for constructor overloading.
 - Replace `SimTop` and `SynthTop` with `EntryPoint`.
 - Support initializer blocks.
+- Adopt `@Inject` annotation for injected properties.
 
 ## [0.1.13]
 ### Importer

@@ -70,6 +70,20 @@ annotation class Make
 annotation class EntryPoint
 
 /**
+ * Inject a string literal directly as SystemVerilog.
+ *
+ *  ```
+ *  class C {
+ *
+ *      @Inject
+ *      val macro = "`macro(C);"
+ *  }
+ *  ```
+ */
+@Target(AnnotationTarget.PROPERTY)
+annotation class Inject
+
+/**
  * Annotates input ports of a component. Mutable input ports are declared as var. Immutable input ports are declared as
  * val and must be assigned a constant expression when instantiated.
  *

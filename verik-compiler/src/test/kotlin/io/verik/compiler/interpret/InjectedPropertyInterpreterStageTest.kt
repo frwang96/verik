@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,39 +14,37 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.transform.upper
+package io.verik.compiler.interpret
 
 import io.verik.compiler.test.BaseTest
-import io.verik.compiler.test.findExpression
+import io.verik.compiler.test.findDeclaration
 import org.junit.jupiter.api.Test
 
-internal class InjectedStatementTransformerStageTest : BaseTest() {
+internal class InjectedPropertyInterpreterStageTest : BaseTest() {
 
     @Test
-    fun `inject literal simple`() {
+    fun `injected property simple`() {
         driveElementTest(
             """
-                fun f() {
-                    inject("abc")
-                }
+                @Inject
+                val x = "abc"
             """.trimIndent(),
-            InjectedStatementTransformerStage::class,
-            "InjectedStatement(Void, [abc])"
-        ) { it.findExpression("f") }
+            InjectedPropertyInterpreterStage::class,
+            "InjectedProperty(x, Void, [abc])"
+        ) { it.findDeclaration("x") }
     }
 
     @Test
-    fun `inject literal multiline`() {
+    fun `injected property multiline`() {
         driveElementTest(
             """
-                fun f() {
-                    inject(${"\"\"\""}
-                        abc
-                    ${"\"\"\""}.trimIndent())
-                }
+                @Inject
+                val x = ${"\"\"\""}
+                    abc
+                ${"\"\"\""}.trimIndent()
             """.trimIndent(),
-            InjectedStatementTransformerStage::class,
-            "InjectedStatement(Void, [abc])"
-        ) { it.findExpression("f") }
+            InjectedPropertyInterpreterStage::class,
+            "InjectedProperty(x, Void, [abc])"
+        ) { it.findDeclaration("x") }
     }
 }

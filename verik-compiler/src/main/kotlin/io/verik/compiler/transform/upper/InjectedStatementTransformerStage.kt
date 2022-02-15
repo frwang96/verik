@@ -36,7 +36,7 @@ object InjectedStatementTransformerStage : ProjectStage() {
 
         override fun visitCallExpression(callExpression: ECallExpression) {
             super.visitCallExpression(callExpression)
-            if (callExpression.reference == Core.Vk.F_sv_String) {
+            if (callExpression.reference == Core.Vk.F_inject_String) {
                 val expression = callExpression.valueArguments[0]
                 if (expression is EStringTemplateExpression) {
                     val injectedStatement = EInjectedStatement(

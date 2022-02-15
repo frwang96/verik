@@ -213,7 +213,7 @@ internal class ExpressionSerializerTest : BaseTest() {
             """
                 var x = false
                 fun f() {
-                    sv("x <= !x;")
+                    inject("x <= !x;")
                 }
             """.trimIndent(),
             """
@@ -233,7 +233,7 @@ internal class ExpressionSerializerTest : BaseTest() {
                 var x = false
                 var y = false
                 fun f() {
-                    sv(${"\"\"\""}
+                    inject(${"\"\"\""}
                         x <= !x;
                         y <= !y;
                     ${"\"\"\""}.trimIndent())
