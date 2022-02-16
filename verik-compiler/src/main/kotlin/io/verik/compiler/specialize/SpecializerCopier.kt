@@ -200,7 +200,7 @@ object SpecializerCopier {
             body = body,
             valueParameters = ArrayList(valueParameters),
             typeParameters = ArrayList(typeParameters),
-            isOverride = function.isOverride
+            overriddenFunction = null
         )
         specializeContext.register(function, typeArguments, copiedFunction)
         return copiedFunction

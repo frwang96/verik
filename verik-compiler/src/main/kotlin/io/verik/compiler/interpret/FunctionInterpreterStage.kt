@@ -158,13 +158,7 @@ object FunctionInterpreterStage : ProjectStage() {
             val valueParameters = getValueParameters(function.valueParameters, referenceUpdater)
             val parent = function.parent
             val isStatic = isStatic(function)
-            val isVirtual = if (parent is ESvClass) {
-                when {
-                    parent.isObject -> false
-                    function.isOverride -> false
-                    else -> true
-                }
-            } else false
+            val isVirtual = if (parent is ESvClass) !parent.isObject else false
             return ESvFunction(
                 function.location,
                 function.name,

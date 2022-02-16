@@ -53,6 +53,7 @@ import org.jetbrains.kotlin.psi.KtSuperTypeListEntry
 import org.jetbrains.kotlin.psi.KtTypeAlias
 import org.jetbrains.kotlin.psi.KtTypeParameter
 import org.jetbrains.kotlin.resolve.descriptorUtil.classValueType
+import org.jetbrains.kotlin.resolve.descriptorUtil.overriddenTreeUniqueAsSequence
 import org.jetbrains.kotlin.types.typeUtil.isNullableAny
 import org.jetbrains.kotlin.types.typeUtil.representativeUpperBound
 
@@ -159,7 +160,10 @@ object DeclarationCaster {
         val typeParameters = function.typeParameters.mapNotNull {
             castContext.castTypeParameter(it)
         }
-        val isOverride = function.hasModifier(KtTokens.OVERRIDE_KEYWORD)
+        val overriddenTree = descriptor.overriddenTreeUniqueAsSequence(true).toList()
+        val overriddenFunction = if (overriddenTree.size > 1) {
+            castContext.resolveDeclaration(overriddenTree[1], function)
+        } else null
 
         castedFunction.fill(
             type = type,
@@ -168,7 +172,7 @@ object DeclarationCaster {
             body = body,
             valueParameters = valueParameters,
             typeParameters = typeParameters,
-            isOverride = isOverride
+            overriddenFunction = overriddenFunction
         )
         return castedFunction
     }

@@ -147,7 +147,7 @@ object CastIndexerStage : ProjectStage() {
                 body = EBlockExpression.empty(location),
                 valueParameters = ArrayList(),
                 typeParameters = ArrayList(),
-                isOverride = false
+                overriddenFunction = null
             )
             castContext.registerDeclaration(descriptor, indexedFunction)
         }

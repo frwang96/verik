@@ -21,8 +21,9 @@ import io.verik.compiler.ast.common.Type
 import io.verik.compiler.ast.element.common.ETypedElement
 import io.verik.compiler.ast.element.declaration.common.EAbstractClass
 import io.verik.compiler.ast.element.declaration.common.EDeclaration
+import io.verik.compiler.ast.element.declaration.kt.EKtFunction
 import io.verik.compiler.ast.element.expression.common.ECallExpression
-import io.verik.compiler.ast.element.expression.common.EReceiverExpression
+import io.verik.compiler.ast.element.expression.common.EReferenceExpression
 import io.verik.compiler.main.ProjectContext
 
 class ReferenceUpdater(val projectContext: ProjectContext) {
@@ -61,14 +62,20 @@ class ReferenceUpdater(val projectContext: ProjectContext) {
         override fun visitTypedElement(typedElement: ETypedElement) {
             super.visitTypedElement(typedElement)
             updateTypeReferences(typedElement.type)
-            if (typedElement is EAbstractClass) {
-                updateTypeReferences(typedElement.superType)
-            }
-            if (typedElement is EReceiverExpression) {
-                typedElement.reference = updateReference(typedElement.reference)
-            }
-            if (typedElement is ECallExpression) {
-                typedElement.typeArguments.forEach { updateTypeReferences(it) }
+            when (typedElement) {
+                is EAbstractClass -> {
+                    updateTypeReferences(typedElement.superType)
+                }
+                is EKtFunction -> {
+                    typedElement.overriddenFunction = typedElement.overriddenFunction?.let { updateReference(it) }
+                }
+                is EReferenceExpression -> {
+                    typedElement.reference = updateReference(typedElement.reference)
+                }
+                is ECallExpression -> {
+                    typedElement.reference = updateReference(typedElement.reference)
+                    typedElement.typeArguments.forEach { updateTypeReferences(it) }
+                }
             }
         }
     }

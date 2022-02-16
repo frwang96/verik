@@ -21,6 +21,7 @@ import io.verik.compiler.ast.element.declaration.sv.ESvValueParameter
 import io.verik.compiler.ast.element.declaration.sv.ETask
 import io.verik.compiler.ast.element.expression.common.EBlockExpression
 import io.verik.compiler.ast.element.expression.common.ECallExpression
+import io.verik.compiler.ast.element.expression.common.ENothingExpression
 import io.verik.compiler.ast.element.expression.common.EPropertyStatement
 import io.verik.compiler.ast.element.expression.common.EReferenceExpression
 import io.verik.compiler.ast.element.expression.common.EReturnStatement
@@ -91,28 +92,35 @@ object TaskReturnTransformerStage : ProjectStage() {
         }
 
         private fun extract(callExpression: ECallExpression, valueParameter: ESvValueParameter) {
-            val property = EProperty.temporary(
-                callExpression.location,
-                valueParameter.type.copy(),
-                initializer = null,
-                isMutable = true
-            )
-            val propertyStatement = EPropertyStatement(callExpression.location, property)
-            val referenceExpression = EReferenceExpression(
-                callExpression.location,
-                property.type.copy(),
-                property,
-                null
-            )
-            val newCallExpression = ExpressionCopier.shallowCopy(callExpression)
-            referenceExpression.parent = newCallExpression
-            newCallExpression.valueArguments.add(referenceExpression)
+            if (callExpression.parent is EBlockExpression) {
+                val nothingExpression = ENothingExpression(callExpression.location)
+                nothingExpression.parent = callExpression
+                callExpression.valueArguments.add(nothingExpression)
+            } else {
+                val property = EProperty.temporary(
+                    callExpression.location,
+                    valueParameter.type.copy(),
+                    initializer = null,
+                    isMutable = true
+                )
+                val propertyStatement = EPropertyStatement(callExpression.location, property)
+                val referenceExpression = EReferenceExpression(
+                    callExpression.location,
+                    property.type.copy(),
+                    property,
+                    null
+                )
+                val newCallExpression = ExpressionCopier.shallowCopy(callExpression)
+                referenceExpression.parent = newCallExpression
+                newCallExpression.valueArguments.add(referenceExpression)
 
-            val extractedExpressions = arrayListOf(propertyStatement, newCallExpression)
-            if (callExpression.parent !is EBlockExpression) {
-                extractedExpressions.add(ExpressionCopier.deepCopy(referenceExpression))
+                val extractedExpressions = listOf(
+                    propertyStatement,
+                    newCallExpression,
+                    ExpressionCopier.deepCopy(referenceExpression)
+                )
+                EBlockExpression.extract(callExpression, extractedExpressions)
             }
-            EBlockExpression.extract(callExpression, extractedExpressions)
         }
     }
 }

@@ -25,6 +25,7 @@ import io.verik.compiler.check.mid.ComponentInstantiationCheckerStage
 import io.verik.compiler.check.mid.ConstructorCheckerStage
 import io.verik.compiler.check.mid.EntryPointCheckerStage
 import io.verik.compiler.check.mid.ObjectCheckerStage
+import io.verik.compiler.check.mid.OverrideCheckerStage
 import io.verik.compiler.check.mid.PortCheckerStage
 import io.verik.compiler.check.mid.PortInstantiationCheckerStage
 import io.verik.compiler.check.mid.ProceduralBlockReferenceCheckerStage
@@ -144,6 +145,7 @@ object StageSequencer {
 
         stageSequence.add(StageType.MID_CHECK, EntryPointCheckerStage)
         stageSequence.add(StageType.MID_CHECK, AnnotationEntryCheckerStage)
+        stageSequence.add(StageType.MID_CHECK, OverrideCheckerStage)
         stageSequence.add(StageType.MID_CHECK, ComponentInstantiationCheckerStage)
         stageSequence.add(StageType.MID_CHECK, TypeParameterCheckerStage)
         stageSequence.add(StageType.MID_CHECK, TypeArgumentTypeCheckerStage)

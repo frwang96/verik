@@ -246,7 +246,7 @@ class ElementPrinter : Visitor() {
             build(function.body)
             build(function.valueParameters)
             build(function.typeParameters)
-            build(function.isOverride)
+            build(function.overriddenFunction != null)
         }
     }
 

@@ -16,6 +16,7 @@
 
 package io.verik.compiler.ast.element.declaration.kt
 
+import io.verik.compiler.ast.common.Declaration
 import io.verik.compiler.ast.common.Type
 import io.verik.compiler.ast.common.TypeParameterized
 import io.verik.compiler.ast.element.declaration.common.ETypeParameter
@@ -34,7 +35,7 @@ class EKtFunction(
     override var body: EBlockExpression,
     override var valueParameters: ArrayList<EKtValueParameter>,
     override var typeParameters: ArrayList<ETypeParameter>,
-    var isOverride: Boolean
+    var overriddenFunction: Declaration?
 ) : EKtAbstractFunction(), TypeParameterized {
 
     init {
@@ -51,7 +52,7 @@ class EKtFunction(
         body: EBlockExpression,
         valueParameters: List<EKtValueParameter>,
         typeParameters: List<ETypeParameter>,
-        isOverride: Boolean
+        overriddenFunction: Declaration?
     ) {
         body.parent = this
         valueParameters.forEach { it.parent = this }
@@ -62,7 +63,7 @@ class EKtFunction(
         this.body = body
         this.valueParameters = ArrayList(valueParameters)
         this.typeParameters = ArrayList(typeParameters)
-        this.isOverride = isOverride
+        this.overriddenFunction = overriddenFunction
     }
 
     override fun accept(visitor: Visitor) {

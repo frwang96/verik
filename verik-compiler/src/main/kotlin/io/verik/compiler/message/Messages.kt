@@ -128,6 +128,14 @@ object Messages {
         "$0 assignment must be declared as var: $1"
     )
 
+    val FUNCTION_IS_TASK = ErrorMessageTemplate1<String>(
+        "Function should be annotated with @Task: $0"
+    )
+
+    val FUNCTION_NOT_TASK = ErrorMessageTemplate1<String>(
+        "Function should not be annotated with @Task: $0"
+    )
+
     val MISSING_MAKE_ANNOTATION = ErrorMessageTemplate0(
         "Make annotation required"
     )
