@@ -29,7 +29,7 @@ fun <T> imported(): T {
 /**
  * Inject [content] directly as SystemVerilog.
  */
-fun inject(content: String) {
+fun inj(content: String) {
     throw VerikException()
 }
 

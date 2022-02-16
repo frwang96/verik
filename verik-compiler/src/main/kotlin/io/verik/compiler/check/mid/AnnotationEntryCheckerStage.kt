@@ -47,7 +47,7 @@ object AnnotationEntryCheckerStage : ProjectStage() {
 
         override fun visitDeclaration(declaration: EDeclaration) {
             super.visitDeclaration(declaration)
-            val isEntryPoint = declaration.hasAnnotationEntry(AnnotationEntries.ENTRY_POINT)
+            val isEntryPoint = declaration.hasAnnotationEntry(AnnotationEntries.ENTRY)
             if (isEntryPoint) {
                 if (declaration is TypeParameterized && declaration.typeParameters.isNotEmpty()) {
                     Messages.ENTRY_POINT_PARAMETERIZED.on(declaration)

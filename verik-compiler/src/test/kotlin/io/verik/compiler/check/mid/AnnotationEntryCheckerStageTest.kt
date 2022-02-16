@@ -22,10 +22,10 @@ import org.junit.jupiter.api.Test
 internal class AnnotationEntryCheckerStageTest : BaseTest() {
 
     @Test
-    fun `entry point parameterized`() {
+    fun `entry parameterized`() {
         driveMessageTest(
             """
-                @EntryPoint
+                @Entry
                 class C<T>
             """.trimIndent(),
             true,
@@ -34,11 +34,11 @@ internal class AnnotationEntryCheckerStageTest : BaseTest() {
     }
 
     @Test
-    fun `entry point invalid`() {
+    fun `entry invalid`() {
         driveMessageTest(
             """
                 class C {
-                    @EntryPoint
+                    @Entry
                     fun f() {}
                 }
             """.trimIndent(),

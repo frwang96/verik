@@ -26,7 +26,7 @@ internal class InjectedPropertyInterpreterStageTest : BaseTest() {
     fun `injected property simple`() {
         driveElementTest(
             """
-                @Inject
+                @Inj
                 val x = "abc"
             """.trimIndent(),
             InjectedPropertyInterpreterStage::class,
@@ -38,7 +38,7 @@ internal class InjectedPropertyInterpreterStageTest : BaseTest() {
     fun `injected property multiline`() {
         driveElementTest(
             """
-                @Inject
+                @Inj
                 val x = ${"\"\"\""}
                     abc
                 ${"\"\"\""}.trimIndent()

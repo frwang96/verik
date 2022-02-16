@@ -27,7 +27,7 @@ internal class InjectedStatementTransformerStageTest : BaseTest() {
         driveElementTest(
             """
                 fun f() {
-                    inject("abc")
+                    inj("abc")
                 }
             """.trimIndent(),
             InjectedStatementTransformerStage::class,
@@ -40,7 +40,7 @@ internal class InjectedStatementTransformerStageTest : BaseTest() {
         driveElementTest(
             """
                 fun f() {
-                    inject(${"\"\"\""}
+                    inj(${"\"\"\""}
                         abc
                     ${"\"\"\""}.trimIndent())
                 }

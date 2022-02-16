@@ -23,15 +23,15 @@ import org.junit.jupiter.api.Test
 internal class CoreVkSpecialTest : CoreDeclarationTest() {
 
     @Test
-    fun `serialize inject t`() {
+    fun `serialize inj t`() {
         driveCoreDeclarationTest(
             listOf(
-                Core.Vk.F_inject_String,
+                Core.Vk.F_inj_String,
                 Core.Vk.F_t
             ),
             """
                 fun f() {
-                    inject("${'$'}{t<Int>()} x;")
+                    inj("${'$'}{t<Int>()} x;")
                 }
             """.trimIndent(),
             """

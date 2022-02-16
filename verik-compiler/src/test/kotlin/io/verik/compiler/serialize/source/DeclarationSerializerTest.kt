@@ -45,7 +45,7 @@ internal class DeclarationSerializerTest : BaseTest() {
     fun `injected property`() {
         driveTextFileTest(
             """
-                @Inject
+                @Inj
                 val M = ${"\"\"\""}
                     module M;
                     endmodule

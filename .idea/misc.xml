@@ -55,8 +55,8 @@
   <component name="EntryPointsManager">
     <list size="7">
       <item index="0" class="java.lang.String" itemvalue="io.verik.core.Com" />
-      <item index="1" class="java.lang.String" itemvalue="io.verik.core.EntryPoint" />
-      <item index="2" class="java.lang.String" itemvalue="io.verik.core.Inject" />
+      <item index="1" class="java.lang.String" itemvalue="io.verik.core.Entry" />
+      <item index="2" class="java.lang.String" itemvalue="io.verik.core.Inj" />
       <item index="3" class="java.lang.String" itemvalue="io.verik.core.Make" />
       <item index="4" class="java.lang.String" itemvalue="io.verik.core.Run" />
       <item index="5" class="java.lang.String" itemvalue="io.verik.core.Seq" />

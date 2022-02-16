@@ -70,7 +70,7 @@ object InjectedPropertyInterpreterStage : ProjectStage() {
 
         override fun visitProperty(property: EProperty) {
             super.visitProperty(property)
-            if (property.hasAnnotationEntry(AnnotationEntries.INJECT)) {
+            if (property.hasAnnotationEntry(AnnotationEntries.INJ)) {
                 val injectedProperty = interpretInjectedProperty(property)
                 if (injectedProperty != null) {
                     referenceUpdater.replace(property, injectedProperty)

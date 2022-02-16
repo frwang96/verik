@@ -22,8 +22,8 @@ import kotlin.reflect.full.declaredMemberProperties
 
 object AnnotationEntries {
 
-    val ENTRY_POINT = AnnotationEntry("io.verik.core.EntryPoint")
-    val INJECT = AnnotationEntry("io.verik.core.Inject")
+    val ENTRY = AnnotationEntry("io.verik.core.Entry")
+    val INJ = AnnotationEntry("io.verik.core.Inj")
     val MAKE = AnnotationEntry("io.verik.core.Make")
     val IN = AnnotationEntry("io.verik.core.In")
     val OUT = AnnotationEntry("io.verik.core.Out")

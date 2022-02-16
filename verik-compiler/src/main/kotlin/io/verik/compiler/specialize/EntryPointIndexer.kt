@@ -52,7 +52,7 @@ object EntryPointIndexer {
 
         private fun isEntryPoint(declaration: EDeclaration): Boolean {
             return if (enableDeadCodeElimination) {
-                if (declaration.hasAnnotationEntry(AnnotationEntries.ENTRY_POINT)) {
+                if (declaration.hasAnnotationEntry(AnnotationEntries.ENTRY)) {
                     when {
                         declaration is TypeParameterized && declaration.typeParameters.isNotEmpty() -> false
                         entryPointNames.isEmpty() || declaration.name in entryPointNames -> true

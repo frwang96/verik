@@ -51,7 +51,7 @@ import imported.x0
 import imported.test_pkg.C1
 import io.verik.core.*
 
-@EntryPoint
+@Entry
 object M : Module() {
 
     @Run

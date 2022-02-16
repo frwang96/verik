@@ -20,7 +20,7 @@
 
 import io.verik.core.*
 
-@EntryPoint
+@Entry
 object M : Module() {
 
     @Task
