@@ -36,7 +36,7 @@ import io.verik.compiler.ast.element.expression.sv.EEventExpression
 import io.verik.compiler.ast.element.expression.sv.EForeverStatement
 import io.verik.compiler.ast.element.expression.sv.EForkStatement
 import io.verik.compiler.ast.element.expression.sv.EImmediateAssertStatement
-import io.verik.compiler.ast.element.expression.sv.EInjectedStatement
+import io.verik.compiler.ast.element.expression.sv.EInjectedExpression
 import io.verik.compiler.ast.element.expression.sv.EInlineIfExpression
 import io.verik.compiler.ast.element.expression.sv.ERepeatStatement
 import io.verik.compiler.ast.element.expression.sv.EReplicationExpression
@@ -189,20 +189,18 @@ object ExpressionSerializer {
         }
     }
 
-    fun serializeInjectedStatement(injectedStatement: EInjectedStatement, serializeContext: SerializeContext) {
+    fun serializeInjectedExpression(injectedStatement: EInjectedExpression, serializeContext: SerializeContext) {
         injectedStatement.entries.forEach {
             when (it) {
                 is LiteralStringEntry -> {
-                    if (it.text == "\n")
-                        serializeContext.appendLine()
-                    else
-                        serializeContext.append(it.text)
+                    if (it.text == "\n") serializeContext.appendLine()
+                    else serializeContext.append(it.text)
                 }
-                is ExpressionStringEntry ->
+                is ExpressionStringEntry -> {
                     serializeContext.serializeAsExpression(it.expression)
+                }
             }
         }
-        serializeContext.appendLine()
     }
 
     fun serializeStringExpression(stringExpression: EStringExpression, serializeContext: SerializeContext) {

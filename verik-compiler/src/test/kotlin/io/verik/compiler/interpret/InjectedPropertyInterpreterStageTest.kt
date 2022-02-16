@@ -30,7 +30,7 @@ internal class InjectedPropertyInterpreterStageTest : BaseTest() {
                 val x = "abc"
             """.trimIndent(),
             InjectedPropertyInterpreterStage::class,
-            "InjectedProperty(x, Void, [abc])"
+            "InjectedProperty(x, InjectedExpression(Void, [abc]))"
         ) { it.findDeclaration("x") }
     }
 
@@ -44,7 +44,7 @@ internal class InjectedPropertyInterpreterStageTest : BaseTest() {
                 ${"\"\"\""}.trimIndent()
             """.trimIndent(),
             InjectedPropertyInterpreterStage::class,
-            "InjectedProperty(x, Void, [abc])"
+            "InjectedProperty(x, InjectedExpression(Void, [abc]))"
         ) { it.findDeclaration("x") }
     }
 }

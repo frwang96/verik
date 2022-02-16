@@ -20,33 +20,33 @@ import io.verik.compiler.test.BaseTest
 import io.verik.compiler.test.findExpression
 import org.junit.jupiter.api.Test
 
-internal class InjectedStatementTransformerStageTest : BaseTest() {
+internal class InjectedExpressionTransformerStageTest : BaseTest() {
 
     @Test
-    fun `inject literal simple`() {
+    fun `injected expression simple`() {
         driveElementTest(
             """
                 fun f() {
                     inj("abc")
                 }
             """.trimIndent(),
-            InjectedStatementTransformerStage::class,
-            "InjectedStatement(Void, [abc])"
+            InjectedExpressionTransformerStage::class,
+            "InjectedExpression(Void, [abc])"
         ) { it.findExpression("f") }
     }
 
     @Test
-    fun `inject literal multiline`() {
+    fun `injected expression multiline`() {
         driveElementTest(
             """
                 fun f() {
-                    inj(${"\"\"\""}
+                    inji<Unit>(${"\"\"\""}
                         abc
                     ${"\"\"\""}.trimIndent())
                 }
             """.trimIndent(),
-            InjectedStatementTransformerStage::class,
-            "InjectedStatement(Void, [abc])"
+            InjectedExpressionTransformerStage::class,
+            "InjectedExpression(Void, [abc])"
         ) { it.findExpression("f") }
     }
 }

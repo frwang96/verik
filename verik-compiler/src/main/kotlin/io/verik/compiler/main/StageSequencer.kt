@@ -105,7 +105,7 @@ import io.verik.compiler.transform.upper.CaseStatementTransformerStage
 import io.verik.compiler.transform.upper.CastTransformerStage
 import io.verik.compiler.transform.upper.ForStatementTransformerStage
 import io.verik.compiler.transform.upper.IfAndWhenExpressionUnlifterStage
-import io.verik.compiler.transform.upper.InjectedStatementTransformerStage
+import io.verik.compiler.transform.upper.InjectedExpressionTransformerStage
 import io.verik.compiler.transform.upper.InlineIfExpressionTransformerStage
 import io.verik.compiler.transform.upper.ProceduralAssignmentTransformerStage
 import io.verik.compiler.transform.upper.TaskReturnTransformerStage
@@ -182,7 +182,7 @@ object StageSequencer {
         stageSequence.add(StageType.INTERPRET, ModulePortParentResolverStage)
         stageSequence.add(StageType.INTERPRET, FileSplitterStage)
 
-        stageSequence.add(StageType.UPPER_TRANSFORM, InjectedStatementTransformerStage)
+        stageSequence.add(StageType.UPPER_TRANSFORM, InjectedExpressionTransformerStage)
         stageSequence.add(StageType.UPPER_TRANSFORM, ToStringTransformerStage)
         stageSequence.add(StageType.UPPER_TRANSFORM, CastTransformerStage)
         stageSequence.add(StageType.UPPER_TRANSFORM, TaskReturnTransformerStage)

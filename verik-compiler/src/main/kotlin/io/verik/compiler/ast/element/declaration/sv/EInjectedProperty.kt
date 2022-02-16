@@ -16,12 +16,9 @@
 
 package io.verik.compiler.ast.element.declaration.sv
 
-import io.verik.compiler.ast.common.ExpressionContainer
 import io.verik.compiler.ast.element.declaration.common.EAbstractProperty
-import io.verik.compiler.ast.element.expression.common.EExpression
+import io.verik.compiler.ast.element.expression.sv.EInjectedExpression
 import io.verik.compiler.ast.property.AnnotationEntry
-import io.verik.compiler.ast.property.ExpressionStringEntry
-import io.verik.compiler.ast.property.StringEntry
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
@@ -30,18 +27,15 @@ import io.verik.compiler.target.common.Target
 class EInjectedProperty(
     override val location: SourceLocation,
     override var name: String,
-    val entries: List<StringEntry>
-) : EAbstractProperty(), ExpressionContainer {
+    val injectedExpression: EInjectedExpression
+) : EAbstractProperty() {
 
     override var type = Target.C_Void.toType()
     override var annotationEntries: List<AnnotationEntry> = listOf()
     override var documentationLines: List<String>? = null
 
     init {
-        entries.forEach {
-            if (it is ExpressionStringEntry)
-                it.expression.parent = this
-        }
+        injectedExpression.parent = this
     }
 
     override fun accept(visitor: Visitor) {
@@ -49,20 +43,6 @@ class EInjectedProperty(
     }
 
     override fun acceptChildren(visitor: TreeVisitor) {
-        entries.forEach {
-            if (it is ExpressionStringEntry)
-                it.expression.accept(visitor)
-        }
-    }
-
-    override fun replaceChild(oldExpression: EExpression, newExpression: EExpression): Boolean {
-        newExpression.parent = this
-        entries.forEach {
-            if (it is ExpressionStringEntry && it.expression == oldExpression) {
-                it.expression = newExpression
-                return true
-            }
-        }
-        return false
+        injectedExpression.accept(visitor)
     }
 }

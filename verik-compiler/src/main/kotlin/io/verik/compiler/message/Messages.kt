@@ -280,8 +280,8 @@ object Messages {
 
 //  UPPER TRANSFORM  ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-    val ILLEGAL_INJECTED_STATEMENT = ErrorMessageTemplate0(
-        "String literal expected for injected statement"
+    val ILLEGAL_INJECTED_EXPRESSION = ErrorMessageTemplate0(
+        "String literal expected for injected expression"
     )
 
     val COM_ASSIGNMENT_NO_INITIALIZER = ErrorMessageTemplate0(

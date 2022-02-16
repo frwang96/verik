@@ -39,8 +39,6 @@ import io.verik.compiler.ast.element.declaration.sv.ESvFunction
 import io.verik.compiler.ast.element.declaration.sv.ESvValueParameter
 import io.verik.compiler.ast.element.declaration.sv.ETask
 import io.verik.compiler.ast.element.declaration.sv.ETypeDefinition
-import io.verik.compiler.ast.property.ExpressionStringEntry
-import io.verik.compiler.ast.property.LiteralStringEntry
 import io.verik.compiler.ast.property.PortType
 import io.verik.compiler.core.common.Core
 
@@ -53,19 +51,7 @@ object DeclarationSerializer {
     }
 
     fun serializeInjectedProperty(injectedProperty: EInjectedProperty, serializeContext: SerializeContext) {
-        injectedProperty.entries.forEach {
-            when (it) {
-                is LiteralStringEntry -> {
-                    if (it.text == "\n")
-                        serializeContext.appendLine()
-                    else
-                        serializeContext.append(it.text)
-                }
-                is ExpressionStringEntry ->
-                    serializeContext.serializeAsExpression(it.expression)
-            }
-        }
-        serializeContext.appendLine()
+        serializeContext.serializeAsStatement(injectedProperty.injectedExpression)
     }
 
     fun serializeClass(cls: ESvClass, serializeContext: SerializeContext) {
