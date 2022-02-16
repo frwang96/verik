@@ -40,7 +40,31 @@ internal class TaskReturnTransformerStageTest : BaseTest() {
     }
 
     @Test
-    fun `external return`() {
+    fun `external return statement`() {
+        driveTextFileTest(
+            """
+                @Task
+                fun f(): Boolean { return false }
+                @Task
+                fun g() { f() }
+            """.trimIndent(),
+            """
+                task automatic f(
+                    output logic __0
+                );
+                    __0 = 1'b0;
+                    return;
+                endtask : f
+
+                task automatic g();
+                    f(.__0());
+                endtask : g
+            """.trimIndent()
+        ) { it.nonRootPackageTextFiles[0] }
+    }
+
+    @Test
+    fun `external return expression`() {
         driveTextFileTest(
             """
                 var x = false

@@ -20,7 +20,6 @@ import io.verik.compiler.ast.common.Type
 import io.verik.compiler.ast.element.declaration.common.ETypeParameter
 import io.verik.compiler.ast.element.expression.common.EBlockExpression
 import io.verik.compiler.ast.property.AnnotationEntry
-import io.verik.compiler.ast.property.FunctionQualifierType
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
 
@@ -34,7 +33,7 @@ class ESvFunction(
     override var typeParameters: ArrayList<ETypeParameter>,
     override var valueParameters: ArrayList<ESvValueParameter>,
     override val isStatic: Boolean,
-    val qualifierType: FunctionQualifierType
+    val isVirtual: Boolean
 ) : ESvAbstractFunction() {
 
     init {

@@ -42,7 +42,7 @@ object EntryPointCheckerStage : ProjectStage() {
 
         override fun visitDeclaration(declaration: EDeclaration) {
             super.visitDeclaration(declaration)
-            if (declaration.hasAnnotationEntry(AnnotationEntries.ENTRY_POINT)) {
+            if (declaration.hasAnnotationEntry(AnnotationEntries.ENTRY)) {
                 names.add(declaration.name)
             }
         }

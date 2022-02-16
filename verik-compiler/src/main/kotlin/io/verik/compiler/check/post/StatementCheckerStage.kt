@@ -22,6 +22,7 @@ import io.verik.compiler.ast.element.expression.common.EExpression
 import io.verik.compiler.ast.element.expression.common.EIfExpression
 import io.verik.compiler.ast.element.expression.sv.EDelayExpression
 import io.verik.compiler.ast.element.expression.sv.EEventControlExpression
+import io.verik.compiler.ast.element.expression.sv.EInjectedExpression
 import io.verik.compiler.ast.element.expression.sv.ESvBinaryExpression
 import io.verik.compiler.ast.element.expression.sv.ESvUnaryExpression
 import io.verik.compiler.ast.property.SerializationType
@@ -42,8 +43,7 @@ object StatementCheckerStage : ProjectStage() {
         override fun visitBlockExpression(blockExpression: EBlockExpression) {
             super.visitBlockExpression(blockExpression)
             blockExpression.statements.forEach {
-                if (!isValid(it))
-                    Messages.INVALID_STATEMENT.on(it)
+                if (!isValid(it)) Messages.INVALID_STATEMENT.on(it)
             }
         }
 
@@ -56,6 +56,7 @@ object StatementCheckerStage : ProjectStage() {
                 is ESvBinaryExpression ->
                     statement.kind in listOf(SvBinaryOperatorKind.ASSIGN, SvBinaryOperatorKind.ARROW_ASSIGN)
                 is ECallExpression -> true
+                is EInjectedExpression -> true
                 is EIfExpression -> true
                 is EEventControlExpression -> true
                 is EDelayExpression -> true

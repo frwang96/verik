@@ -22,13 +22,11 @@ import kotlin.reflect.full.declaredMemberProperties
 
 object AnnotationEntries {
 
-    val ENTRY_POINT = AnnotationEntry("io.verik.core.EntryPoint")
-
+    val ENTRY = AnnotationEntry("io.verik.core.Entry")
+    val INJ = AnnotationEntry("io.verik.core.Inj")
     val MAKE = AnnotationEntry("io.verik.core.Make")
-
     val IN = AnnotationEntry("io.verik.core.In")
     val OUT = AnnotationEntry("io.verik.core.Out")
-
     val COM = AnnotationEntry("io.verik.core.Com")
     val SEQ = AnnotationEntry("io.verik.core.Seq")
     val RUN = AnnotationEntry("io.verik.core.Run")
@@ -38,7 +36,6 @@ object AnnotationEntries {
 
     init {
         annotationEntries.add(AnnotationEntry("kotlin.Suppress"))
-        annotationEntries.add(AnnotationEntry("io.verik.core.Imported"))
         AnnotationEntries::class.declaredMemberProperties.forEach {
             if (it.returnType == AnnotationEntry::class.createType()) {
                 val annotationEntry = it.get(AnnotationEntries) as AnnotationEntry

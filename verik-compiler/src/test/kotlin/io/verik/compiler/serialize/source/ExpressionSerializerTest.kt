@@ -208,12 +208,12 @@ internal class ExpressionSerializerTest : BaseTest() {
     }
 
     @Test
-    fun `injected statement simple`() {
+    fun `injected expression simple`() {
         driveTextFileTest(
             """
                 var x = false
                 fun f() {
-                    sv("x <= !x;")
+                    inj("x <= !x;")
                 }
             """.trimIndent(),
             """
@@ -227,13 +227,13 @@ internal class ExpressionSerializerTest : BaseTest() {
     }
 
     @Test
-    fun `injected statement multiline`() {
+    fun `injected expression multiline`() {
         driveTextFileTest(
             """
                 var x = false
                 var y = false
                 fun f() {
-                    sv(${"\"\"\""}
+                    inj(${"\"\"\""}
                         x <= !x;
                         y <= !y;
                     ${"\"\"\""}.trimIndent())

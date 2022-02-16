@@ -25,6 +25,7 @@ import io.verik.compiler.check.mid.ComponentInstantiationCheckerStage
 import io.verik.compiler.check.mid.ConstructorCheckerStage
 import io.verik.compiler.check.mid.EntryPointCheckerStage
 import io.verik.compiler.check.mid.ObjectCheckerStage
+import io.verik.compiler.check.mid.OverrideCheckerStage
 import io.verik.compiler.check.mid.PortCheckerStage
 import io.verik.compiler.check.mid.PortInstantiationCheckerStage
 import io.verik.compiler.check.mid.ProceduralBlockReferenceCheckerStage
@@ -55,6 +56,7 @@ import io.verik.compiler.interpret.FileSplitterStage
 import io.verik.compiler.interpret.FunctionInterpreterStage
 import io.verik.compiler.interpret.FunctionLiteralInterpreterStage
 import io.verik.compiler.interpret.InitializerBlockReducerStage
+import io.verik.compiler.interpret.InjectedPropertyInterpreterStage
 import io.verik.compiler.interpret.ModulePortParentResolverStage
 import io.verik.compiler.interpret.PrimaryConstructorReducerStage
 import io.verik.compiler.interpret.PropertyInterpreterStage
@@ -103,7 +105,7 @@ import io.verik.compiler.transform.upper.CaseStatementTransformerStage
 import io.verik.compiler.transform.upper.CastTransformerStage
 import io.verik.compiler.transform.upper.ForStatementTransformerStage
 import io.verik.compiler.transform.upper.IfAndWhenExpressionUnlifterStage
-import io.verik.compiler.transform.upper.InjectedStatementTransformerStage
+import io.verik.compiler.transform.upper.InjectedExpressionTransformerStage
 import io.verik.compiler.transform.upper.InlineIfExpressionTransformerStage
 import io.verik.compiler.transform.upper.ProceduralAssignmentTransformerStage
 import io.verik.compiler.transform.upper.TaskReturnTransformerStage
@@ -143,6 +145,7 @@ object StageSequencer {
 
         stageSequence.add(StageType.MID_CHECK, EntryPointCheckerStage)
         stageSequence.add(StageType.MID_CHECK, AnnotationEntryCheckerStage)
+        stageSequence.add(StageType.MID_CHECK, OverrideCheckerStage)
         stageSequence.add(StageType.MID_CHECK, ComponentInstantiationCheckerStage)
         stageSequence.add(StageType.MID_CHECK, TypeParameterCheckerStage)
         stageSequence.add(StageType.MID_CHECK, TypeArgumentTypeCheckerStage)
@@ -172,13 +175,14 @@ object StageSequencer {
         stageSequence.add(StageType.INTERPRET, FunctionInterpreterStage)
         stageSequence.add(StageType.INTERPRET, ConstructorInterpreterStage)
         stageSequence.add(StageType.INTERPRET, InitializerBlockReducerStage)
+        stageSequence.add(StageType.INTERPRET, InjectedPropertyInterpreterStage)
         stageSequence.add(StageType.INTERPRET, PropertyInterpreterStage)
         stageSequence.add(StageType.INTERPRET, FunctionLiteralInterpreterStage)
         stageSequence.add(StageType.INTERPRET, CompanionObjectReducerStage)
         stageSequence.add(StageType.INTERPRET, ModulePortParentResolverStage)
         stageSequence.add(StageType.INTERPRET, FileSplitterStage)
 
-        stageSequence.add(StageType.UPPER_TRANSFORM, InjectedStatementTransformerStage)
+        stageSequence.add(StageType.UPPER_TRANSFORM, InjectedExpressionTransformerStage)
         stageSequence.add(StageType.UPPER_TRANSFORM, ToStringTransformerStage)
         stageSequence.add(StageType.UPPER_TRANSFORM, CastTransformerStage)
         stageSequence.add(StageType.UPPER_TRANSFORM, TaskReturnTransformerStage)

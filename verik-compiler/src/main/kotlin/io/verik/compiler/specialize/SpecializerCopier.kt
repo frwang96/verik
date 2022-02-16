@@ -161,7 +161,6 @@ object SpecializerCopier {
             declarations = ArrayList(declarations),
             primaryConstructor = primaryConstructor,
             isEnum = cls.isEnum,
-            isAbstract = cls.isAbstract,
             isObject = cls.isObject
         )
         specializeContext.register(cls, typeArguments, copiedClass)
@@ -201,8 +200,7 @@ object SpecializerCopier {
             body = body,
             valueParameters = ArrayList(valueParameters),
             typeParameters = ArrayList(typeParameters),
-            isAbstract = function.isAbstract,
-            isOverride = function.isOverride
+            overriddenFunction = null
         )
         specializeContext.register(function, typeArguments, copiedFunction)
         return copiedFunction

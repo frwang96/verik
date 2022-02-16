@@ -60,7 +60,7 @@ import io.verik.compiler.ast.element.expression.sv.EEventExpression
 import io.verik.compiler.ast.element.expression.sv.EForeverStatement
 import io.verik.compiler.ast.element.expression.sv.EForkStatement
 import io.verik.compiler.ast.element.expression.sv.EImmediateAssertStatement
-import io.verik.compiler.ast.element.expression.sv.EInjectedStatement
+import io.verik.compiler.ast.element.expression.sv.EInjectedExpression
 import io.verik.compiler.ast.element.expression.sv.EInlineIfExpression
 import io.verik.compiler.ast.element.expression.sv.ERepeatStatement
 import io.verik.compiler.ast.element.expression.sv.EReplicationExpression
@@ -114,8 +114,12 @@ class SourceSerializerVisitor(
             Messages.INTERNAL_ERROR.on(expression, "Expression or statement expected but got: $expression")
         serialize(expression)
         if (expression.serializationType == SerializationType.EXPRESSION) {
-            serializeContext.label(expression) {
-                serializeContext.appendLine(";")
+            if (expression !is EInjectedExpression) {
+                serializeContext.label(expression) {
+                    serializeContext.appendLine(";")
+                }
+            } else {
+                serializeContext.appendLine()
             }
         }
     }
@@ -258,8 +262,8 @@ class SourceSerializerVisitor(
         ExpressionSerializer.serializeReturnStatement(returnStatement, serializeContext)
     }
 
-    override fun visitInjectedStatement(injectedStatement: EInjectedStatement) {
-        ExpressionSerializer.serializeInjectedStatement(injectedStatement, serializeContext)
+    override fun visitInjectedExpression(injectedExpression: EInjectedExpression) {
+        ExpressionSerializer.serializeInjectedExpression(injectedExpression, serializeContext)
     }
 
     override fun visitStringExpression(stringExpression: EStringExpression) {

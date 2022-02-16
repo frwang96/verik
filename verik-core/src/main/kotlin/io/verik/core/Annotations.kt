@@ -67,7 +67,21 @@ annotation class Make
  * are not reachable from any entry point are eliminated.
  */
 @Target(AnnotationTarget.CLASS, AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY)
-annotation class EntryPoint
+annotation class Entry
+
+/**
+ * Inject a string literal directly as SystemVerilog.
+ *
+ *  ```
+ *  class C {
+ *
+ *      @Inj
+ *      val macro = "`macro(C);"
+ *  }
+ *  ```
+ */
+@Target(AnnotationTarget.PROPERTY)
+annotation class Inj
 
 /**
  * Annotates input ports of a component. Mutable input ports are declared as var. Immutable input ports are declared as

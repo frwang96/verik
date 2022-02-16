@@ -86,8 +86,9 @@ object OverrideTransformerStage : ProjectStage() {
                             if (!isOverride(declaration, superClass)) declarations.add(declaration)
                         }
                         is EKtFunction -> {
-                            declaration.isOverride = isOverride(declaration, superClass)
-                            declaration.valueParameters.forEach { it.hasDefault = false }
+                            val isOverride = isOverride(declaration, superClass)
+                            declaration.isOverride = isOverride
+                            if (isOverride) declaration.valueParameters.forEach { it.hasDefault = false }
                             declarations.add(declaration)
                         }
                         else -> declarations.add(declaration)

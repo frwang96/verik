@@ -23,7 +23,6 @@ import io.verik.compiler.ast.element.declaration.sv.EAbstractContainerComponent
 import io.verik.compiler.ast.element.declaration.sv.EClockingBlock
 import io.verik.compiler.ast.element.declaration.sv.EClockingBlockInstantiation
 import io.verik.compiler.ast.element.declaration.sv.EComponentInstantiation
-import io.verik.compiler.ast.element.declaration.sv.EInjectedProperty
 import io.verik.compiler.ast.element.declaration.sv.EModulePort
 import io.verik.compiler.ast.element.declaration.sv.EModulePortInstantiation
 import io.verik.compiler.ast.element.declaration.sv.EPort
@@ -31,13 +30,10 @@ import io.verik.compiler.ast.element.declaration.sv.ESvClass
 import io.verik.compiler.ast.element.expression.common.ECallExpression
 import io.verik.compiler.ast.element.expression.common.EExpression
 import io.verik.compiler.ast.element.expression.common.EReferenceExpression
-import io.verik.compiler.ast.element.expression.kt.EStringTemplateExpression
 import io.verik.compiler.ast.element.expression.sv.EEventControlExpression
-import io.verik.compiler.ast.property.StringEntry
 import io.verik.compiler.common.ReferenceUpdater
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.AnnotationEntries
-import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
@@ -51,48 +47,20 @@ object PropertyInterpreterStage : ProjectStage() {
         referenceUpdater.flush()
     }
 
-    private class PropertyInterpreterVisitor(private val referenceUpdater: ReferenceUpdater) : TreeVisitor() {
+    private class PropertyInterpreterVisitor(
+        private val referenceUpdater: ReferenceUpdater
+    ) : TreeVisitor() {
 
         private fun interpret(property: EProperty): EDeclaration? {
-            interpretInjectedProperty(property)?.let { return it }
-            interpretAbstractComponentInstantiation(property)?.let { return it }
-
+            if (property.hasAnnotationEntry(AnnotationEntries.MAKE)) {
+                return interpretAbstractComponentInstantiation(property)
+            }
             val parent = property.parent
             property.isStatic = (parent is ESvClass && parent.isObject) || parent is ECompanionObject
             return null
         }
 
-        private fun interpretInjectedProperty(property: EProperty): EInjectedProperty? {
-            val initializer = property.initializer
-            if (initializer is ECallExpression && initializer.reference == Core.Vk.F_sv_String) {
-                val expression = initializer.valueArguments[0]
-                if (expression is EStringTemplateExpression) {
-                    return EInjectedProperty(
-                        property.location,
-                        property.name,
-                        expression.entries
-                    )
-                } else if (expression is ECallExpression && expression.reference == Core.Kt.Text.F_trimIndent) {
-                    val receiver = expression.receiver!!
-                    if (receiver is EStringTemplateExpression) {
-                        return EInjectedProperty(
-                            property.location,
-                            property.name,
-                            StringEntry.trimIndent(receiver.entries)
-                        )
-                    } else {
-                        Messages.ILLEGAL_INJECTED_PROPERTY.on(property, property.name)
-                    }
-                } else {
-                    Messages.ILLEGAL_INJECTED_PROPERTY.on(property, property.name)
-                }
-            }
-            return null
-        }
-
         private fun interpretAbstractComponentInstantiation(property: EProperty): EDeclaration? {
-            if (!property.hasAnnotationEntry(AnnotationEntries.MAKE))
-                return null
             val initializer = property.initializer
             return if (initializer is ECallExpression) {
                 when (val component = initializer.reference) {

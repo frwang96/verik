@@ -35,13 +35,13 @@ internal class CoreVkRandomTest : CoreDeclarationTest() {
                 fun f() {
                     x = random()
                     x = random(3)
-                    x = random(2, 3)
+                    x = random(2, 4)
                 }
             """.trimIndent(),
             """
                 function automatic void f();
                     x = ${'$'}random();
-                    x = ${'$'}urandom_range(3);
+                    x = ${'$'}urandom_range(2);
                     x = ${'$'}urandom_range(2, 3);
                 endfunction : f
             """.trimIndent()

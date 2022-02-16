@@ -136,7 +136,7 @@ internal class FunctionInterpreterStageTest : BaseTest() {
                 fun f() {}
             """.trimIndent(),
             FunctionInterpreterStage::class,
-            "SvFunction(f, Unit, *, [], [], 0, REGULAR)"
+            "SvFunction(f, Unit, *, [], [], 0, 0)"
         ) { it.findDeclaration("f") }
     }
 
@@ -149,7 +149,7 @@ internal class FunctionInterpreterStageTest : BaseTest() {
                 }
             """.trimIndent(),
             FunctionInterpreterStage::class,
-            "SvFunction(f, Unit, *, [], [], 0, VIRTUAL)"
+            "SvFunction(f, Unit, *, [], [], 0, 1)"
         ) { it.findDeclaration("f") }
     }
 
@@ -162,7 +162,7 @@ internal class FunctionInterpreterStageTest : BaseTest() {
                 }
             """.trimIndent(),
             FunctionInterpreterStage::class,
-            "SvFunction(f, Unit, *, [], [], 1, REGULAR)"
+            "SvFunction(f, Unit, *, [], [], 1, 0)"
         ) { it.findDeclaration("f") }
     }
 }

@@ -33,11 +33,7 @@ internal class InitializerBlockReducerStageTest : BaseTest() {
                 }
             """.trimIndent(),
             InitializerBlockReducerStage::class,
-            """
-                SvClass(
-                    C, C, [], [SvConstructor(C, BlockExpression(Unit, [CallExpression(*)]), [])], 0, 0
-                )
-            """.trimIndent()
+            "SvClass(C, C, [], [SvConstructor(C, BlockExpression(Unit, [CallExpression(*)]), [])], 0)"
         ) { it.findDeclaration("C") }
     }
 }

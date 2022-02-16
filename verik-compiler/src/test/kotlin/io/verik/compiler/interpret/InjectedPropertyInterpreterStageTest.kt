@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,33 +20,31 @@ import io.verik.compiler.test.BaseTest
 import io.verik.compiler.test.findDeclaration
 import org.junit.jupiter.api.Test
 
-internal class ClassInterpreterStageTest : BaseTest() {
+internal class InjectedPropertyInterpreterStageTest : BaseTest() {
 
     @Test
-    fun `class simple`() {
+    fun `injected property simple`() {
         driveElementTest(
             """
-                class C
+                @Inj
+                val x = "abc"
             """.trimIndent(),
-            ClassInterpreterStage::class,
-            """
-                SvClass(
-                    C, C, [],
-                    [SecondaryConstructor(C, C, BlockExpression(*), [], null)],
-                    0
-                )
-            """.trimIndent(),
-        ) { it.findDeclaration("C") }
+            InjectedPropertyInterpreterStage::class,
+            "InjectedProperty(x, InjectedExpression(Void, [abc]))"
+        ) { it.findDeclaration("x") }
     }
 
     @Test
-    fun `class declarations static`() {
+    fun `injected property multiline`() {
         driveElementTest(
             """
-                object O
+                @Inj
+                val x = ${"\"\"\""}
+                    abc
+                ${"\"\"\""}.trimIndent()
             """.trimIndent(),
-            ClassInterpreterStage::class,
-            "SvClass(O, O, [], [], 1)"
-        ) { it.findDeclaration("O") }
+            InjectedPropertyInterpreterStage::class,
+            "InjectedProperty(x, InjectedExpression(Void, [abc]))"
+        ) { it.findDeclaration("x") }
     }
 }

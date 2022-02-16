@@ -20,6 +20,7 @@ import io.verik.compiler.ast.common.Type
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.ETypedElement
 import io.verik.compiler.ast.element.expression.common.ECallExpression
+import io.verik.compiler.ast.element.expression.sv.EScopeExpression
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.CoreClassDeclaration
 import io.verik.compiler.main.ProjectContext
@@ -42,6 +43,11 @@ object TypeReferenceTransformerStage : ProjectStage() {
         override fun visitCallExpression(callExpression: ECallExpression) {
             super.visitCallExpression(callExpression)
             callExpression.typeArguments.forEach { transform(it, callExpression) }
+        }
+
+        override fun visitScopeExpression(scopeExpression: EScopeExpression) {
+            super.visitScopeExpression(scopeExpression)
+            transform(scopeExpression.scope, scopeExpression)
         }
 
         private fun transform(type: Type, element: EElement) {

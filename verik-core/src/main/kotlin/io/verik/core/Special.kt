@@ -27,9 +27,23 @@ fun <T> imported(): T {
 }
 
 /**
- * Inject [content] directly as SystemVerilog.
+ * Inject [content] directly as a SystemVerilog statement. To inject an expression inline use [inji].
  */
-fun sv(content: String) {
+fun inj(content: String) {
+    throw VerikException()
+}
+
+/**
+ * Inject [content] directly as an inline SystemVerilog expression. The injected expression has type [T].
+ */
+fun <T> inji(content: String): T {
+    throw VerikException()
+}
+
+/**
+ * Returns the SystemVerilog representation of type [T]. This should only be used in injected string literals.
+ */
+fun <T> t(): String {
     throw VerikException()
 }
 

@@ -23,17 +23,24 @@ import org.junit.jupiter.api.Test
 internal class CoreVkSpecialTest : CoreDeclarationTest() {
 
     @Test
-    fun `serialize sv`() {
+    fun `serialize inj inji t`() {
         driveCoreDeclarationTest(
-            listOf(Core.Vk.F_sv_String),
+            listOf(
+                Core.Vk.F_inj_String,
+                Core.Vk.F_inji_String,
+                Core.Vk.F_t
+            ),
             """
+                var x = false
                 fun f() {
-                    sv("xyz;")
+                    inj("${'$'}{t<Int>()} x;")
+                    x = inji("1'b1")
                 }
             """.trimIndent(),
             """
                 function automatic void f();
-                    xyz;
+                    int x;
+                    x = 1'b1;
                 endfunction : f
             """.trimIndent()
         )

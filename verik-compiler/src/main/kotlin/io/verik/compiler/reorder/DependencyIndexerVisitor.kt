@@ -83,19 +83,23 @@ class DependencyIndexerVisitor(
             parent is EAbstractContainerClass
     }
 
+    override fun visitSvClass(cls: ESvClass) {
+        super.visitSvClass(cls)
+        val reference = cls.superType.reference
+        if (reference is EDeclaration) processDependency(cls, reference)
+    }
+
     override fun visitProperty(property: EProperty) {
         super.visitProperty(property)
         val reference = property.type.reference
-        if (reference is EDeclaration)
-            processDependency(property, reference)
+        if (reference is EDeclaration) processDependency(property, reference)
     }
 
     override fun visitReceiverExpression(receiverExpression: EReceiverExpression) {
         super.visitReceiverExpression(receiverExpression)
         if (receiverExpression.receiver == null) {
             val reference = receiverExpression.reference
-            if (reference is EDeclaration)
-                processDependency(receiverExpression, reference)
+            if (reference is EDeclaration) processDependency(receiverExpression, reference)
         }
     }
 }

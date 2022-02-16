@@ -29,7 +29,7 @@ internal class SpecializerStageTest : BaseTest() {
                 class C
             """.trimIndent(),
             SpecializerStage::class,
-            "KtClass(C, C, Any, [], [], PrimaryConstructor(C, C, [], null), 0, 0, 0)"
+            "KtClass(C, C, Any, [], [], PrimaryConstructor(C, C, [], null), 0, 0)"
         ) { it.findDeclaration("C") }
     }
 
@@ -44,7 +44,7 @@ internal class SpecializerStageTest : BaseTest() {
             """
                 KtClass(
                     C_N_8, C<`8`>, Any, [TypeParameter(N, `8`)], [],
-                    PrimaryConstructor(C_N_8, C<`8`>, [], null), 0, 0, 0
+                    PrimaryConstructor(C_N_8, C<`8`>, [], null), 0, 0
                 )
             """.trimIndent()
         ) { it.findDeclaration("C_N_8") }
@@ -61,7 +61,7 @@ internal class SpecializerStageTest : BaseTest() {
             """
                 KtClass(
                     C_N_8, C<`8`>, Any, [TypeParameter(N, `8`)], [],
-                    PrimaryConstructor(C_N_8, C<`8`>, [], null), 0, 0, 0
+                    PrimaryConstructor(C_N_8, C<`8`>, [], null), 0, 0
                 )
             """.trimIndent()
         ) { it.findDeclaration("C_N_8") }
@@ -79,7 +79,7 @@ internal class SpecializerStageTest : BaseTest() {
             """
                 KtClass(
                     D_T_C, D<C>, Any, [TypeParameter(T, C)], [],
-                    PrimaryConstructor(D_T_C, D<C>, [], null), 0, 0, 0
+                    PrimaryConstructor(D_T_C, D<C>, [], null), 0, 0
                 )
             """.trimIndent()
         ) { it.findDeclaration("D_T_C") }
@@ -141,8 +141,8 @@ internal class SpecializerStageTest : BaseTest() {
             SpecializerStage::class,
             """
                 KtClass(
-                    C0, C0, Any, [], [KtClass(C1, C1, Any, [], [], PrimaryConstructor(C1, C1, [], null), 0, 0, 0)],
-                    PrimaryConstructor(C0, C0, [], null), 0, 0, 0
+                    C0, C0, Any, [], [KtClass(C1, C1, Any, [], [], PrimaryConstructor(C1, C1, [], null), 0, 0)],
+                    PrimaryConstructor(C0, C0, [], null), 0, 0
                 )
             """.trimIndent()
         ) { it.findDeclaration("C0") }

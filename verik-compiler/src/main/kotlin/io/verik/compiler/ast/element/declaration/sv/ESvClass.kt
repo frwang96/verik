@@ -35,7 +35,6 @@ class ESvClass(
     override var superType: Type,
     override var typeParameters: ArrayList<ETypeParameter>,
     override var declarations: ArrayList<EDeclaration>,
-    val isVirtual: Boolean,
     val isObject: Boolean
 ) : EAbstractContainerClass() {
 

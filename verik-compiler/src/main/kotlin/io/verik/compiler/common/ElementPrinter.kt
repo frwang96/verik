@@ -80,7 +80,7 @@ import io.verik.compiler.ast.element.expression.sv.EEventControlExpression
 import io.verik.compiler.ast.element.expression.sv.EEventExpression
 import io.verik.compiler.ast.element.expression.sv.EForeverStatement
 import io.verik.compiler.ast.element.expression.sv.EImmediateAssertStatement
-import io.verik.compiler.ast.element.expression.sv.EInjectedStatement
+import io.verik.compiler.ast.element.expression.sv.EInjectedExpression
 import io.verik.compiler.ast.element.expression.sv.EInlineIfExpression
 import io.verik.compiler.ast.element.expression.sv.ERepeatStatement
 import io.verik.compiler.ast.element.expression.sv.EReplicationExpression
@@ -164,7 +164,6 @@ class ElementPrinter : Visitor() {
             build(cls.declarations)
             build(cls.primaryConstructor)
             build(cls.isEnum)
-            build(cls.isAbstract)
             build(cls.isObject)
         }
     }
@@ -182,7 +181,6 @@ class ElementPrinter : Visitor() {
             build(cls.type.toString())
             build(cls.typeParameters)
             build(cls.declarations)
-            build(cls.isVirtual)
             build(cls.isObject)
         }
     }
@@ -248,7 +246,7 @@ class ElementPrinter : Visitor() {
             build(function.body)
             build(function.valueParameters)
             build(function.typeParameters)
-            build(function.isAbstract)
+            build(function.overriddenFunction != null)
         }
     }
 
@@ -279,7 +277,7 @@ class ElementPrinter : Visitor() {
             build(function.typeParameters)
             build(function.valueParameters)
             build(function.isStatic)
-            build(function.qualifierType.toString())
+            build(function.isVirtual)
         }
     }
 
@@ -344,8 +342,7 @@ class ElementPrinter : Visitor() {
     override fun visitInjectedProperty(injectedProperty: EInjectedProperty) {
         build("InjectedProperty") {
             build(injectedProperty.name)
-            build(injectedProperty.type.toString())
-            build(injectedProperty.entries)
+            build(injectedProperty.injectedExpression)
         }
     }
 
@@ -548,10 +545,10 @@ class ElementPrinter : Visitor() {
         }
     }
 
-    override fun visitInjectedStatement(injectedStatement: EInjectedStatement) {
-        build("InjectedStatement") {
-            build(injectedStatement.type.toString())
-            build(injectedStatement.entries)
+    override fun visitInjectedExpression(injectedExpression: EInjectedExpression) {
+        build("InjectedExpression") {
+            build(injectedExpression.type.toString())
+            build(injectedExpression.entries)
         }
     }
 

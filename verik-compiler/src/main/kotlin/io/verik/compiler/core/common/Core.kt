@@ -181,7 +181,9 @@ object Core {
         val F_time = CoreVkSystem.F_time
 
         val F_imported = CoreVkSpecial.F_imported
-        val F_sv_String = CoreVkSpecial.F_sv_String
+        val F_inj_String = CoreVkSpecial.F_inj_String
+        val F_inji_String = CoreVkSpecial.F_inji_String
+        val F_t = CoreVkSpecial.F_t
         val F_nc = CoreVkSpecial.F_nc
         val F_b = CoreVkSpecial.F_b
         val F_i = CoreVkSpecial.F_i

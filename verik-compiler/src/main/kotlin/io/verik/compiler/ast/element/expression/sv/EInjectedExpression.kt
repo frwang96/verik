@@ -24,23 +24,24 @@ import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
 import io.verik.compiler.target.common.Target
 
-class EInjectedStatement(
+class EInjectedExpression(
     override val location: SourceLocation,
     override val entries: List<StringEntry>
 ) : EStringEntryExpression() {
 
     override var type = Target.C_Void.toType()
 
-    override val serializationType = SerializationType.STATEMENT
+    override val serializationType = SerializationType.EXPRESSION
 
     init {
         entries.forEach {
-            if (it is ExpressionStringEntry)
+            if (it is ExpressionStringEntry) {
                 it.expression.parent = this
+            }
         }
     }
 
     override fun accept(visitor: Visitor) {
-        visitor.visitInjectedStatement(this)
+        visitor.visitInjectedExpression(this)
     }
 }

@@ -38,7 +38,6 @@ class EKtClass(
     override var declarations: ArrayList<EDeclaration>,
     var primaryConstructor: EPrimaryConstructor?,
     var isEnum: Boolean,
-    var isAbstract: Boolean,
     var isObject: Boolean
 ) : EAbstractContainerClass() {
 
@@ -57,7 +56,6 @@ class EKtClass(
         declarations: List<EDeclaration>,
         primaryConstructor: EPrimaryConstructor?,
         isEnum: Boolean,
-        isAbstract: Boolean,
         isObject: Boolean
     ) {
         typeParameters.forEach { it.parent = this }
@@ -71,7 +69,6 @@ class EKtClass(
         this.declarations = ArrayList(declarations)
         this.primaryConstructor = primaryConstructor
         this.isEnum = isEnum
-        this.isAbstract = isAbstract
         this.isObject = isObject
     }
 

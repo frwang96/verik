@@ -56,6 +56,11 @@ object UnaryExpressionReducerStage : ProjectStage() {
             super.visitKtUnaryExpression(unaryExpression)
             val expressionDeclaration = unaryExpression.expression.type.reference
             val kind = unaryExpression.kind
+            // TODO proper handling of null
+            if (kind == KtUnaryOperatorKind.EXCL_EXCL) {
+                unaryExpression.replace(unaryExpression.expression)
+                return
+            }
             if (expressionDeclaration is CoreClassDeclaration) {
                 val reference = referenceMap[ReducerEntry(expressionDeclaration, kind)]
                 if (reference != null) {
@@ -72,8 +77,9 @@ object UnaryExpressionReducerStage : ProjectStage() {
                     return
                 }
             }
-            if (kind.isReducible())
+            if (kind.isReducible()) {
                 Messages.INTERNAL_ERROR.on(unaryExpression, "Unary expression could not be reduced")
+            }
         }
     }
 }

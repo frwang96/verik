@@ -128,6 +128,14 @@ object Messages {
         "$0 assignment must be declared as var: $1"
     )
 
+    val FUNCTION_IS_TASK = ErrorMessageTemplate1<String>(
+        "Function should be annotated with @Task: $0"
+    )
+
+    val FUNCTION_NOT_TASK = ErrorMessageTemplate1<String>(
+        "Function should not be annotated with @Task: $0"
+    )
+
     val MISSING_MAKE_ANNOTATION = ErrorMessageTemplate0(
         "Make annotation required"
     )
@@ -272,8 +280,8 @@ object Messages {
 
 //  UPPER TRANSFORM  ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-    val ILLEGAL_INJECTED_STATEMENT = ErrorMessageTemplate0(
-        "String literal expected for injected statement"
+    val ILLEGAL_INJECTED_EXPRESSION = ErrorMessageTemplate0(
+        "String literal expected for injected expression"
     )
 
     val COM_ASSIGNMENT_NO_INITIALIZER = ErrorMessageTemplate0(

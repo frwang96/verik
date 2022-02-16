@@ -44,7 +44,7 @@ internal class CasterStageTest : BaseTest() {
                 class C
             """.trimIndent(),
             CasterStage::class,
-            "File([KtClass(C, C, Any, [], [], PrimaryConstructor(C, C, [], null), 0, 0, 0)])"
+            "File([KtClass(C, C, Any, [], [], PrimaryConstructor(C, C, [], null), 0, 0)])"
         ) { it.files().first() }
     }
 
@@ -58,8 +58,8 @@ internal class CasterStageTest : BaseTest() {
             CasterStage::class,
             """
                 File([
-                    KtClass(C0, C0, Any, [], [], PrimaryConstructor(C0, C0, [], null), 0, 0, 0),
-                    KtClass(C1, C1, Any, [], [], PrimaryConstructor(C1, C1, [], null), 0, 0, 0)
+                    KtClass(C0, C0, Any, [], [], PrimaryConstructor(C0, C0, [], null), 0, 0),
+                    KtClass(C1, C1, Any, [], [], PrimaryConstructor(C1, C1, [], null), 0, 0)
                 ])
             """.trimIndent()
         ) { it.files().first() }

@@ -14,38 +14,44 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.evaluate
+package io.verik.compiler.check.mid
 
 import io.verik.compiler.test.BaseTest
-import io.verik.compiler.test.findDeclaration
-import io.verik.compiler.test.findStatements
 import org.junit.jupiter.api.Test
 
-internal class ConstantPropertyEliminatorStageTest : BaseTest() {
+internal class OverrideCheckerStageTest : BaseTest() {
 
     @Test
-    fun `eliminate property`() {
-        driveElementTest(
+    fun `function is task`() {
+        driveMessageTest(
             """
-                class C {
-                    val x = 0
+                open class C0 {
+                    @Task
+                    open fun f() {}
+                }
+                class C1 : C0() {
+                    override fun f() {}
                 }
             """.trimIndent(),
-            ConstantPropertyEliminatorStage::class,
-            "KtClass(C, C, Any, [], [], PrimaryConstructor(*), 0, 0)"
-        ) { it.findDeclaration("C") }
+            true,
+            "Function should be annotated with @Task: f"
+        )
     }
 
     @Test
-    fun `eliminate property statement`() {
-        driveElementTest(
+    fun `function not task`() {
+        driveMessageTest(
             """
-                fun f() {
-                    val x = 0
+                open class C0 {
+                    open fun f() {}
+                }
+                class C1 : C0() {
+                    @Task
+                    override fun f() {}
                 }
             """.trimIndent(),
-            ConstantPropertyEliminatorStage::class,
-            "[]"
-        ) { it.findStatements("f") }
+            true,
+            "Function should not be annotated with @Task: f"
+        )
     }
 }
