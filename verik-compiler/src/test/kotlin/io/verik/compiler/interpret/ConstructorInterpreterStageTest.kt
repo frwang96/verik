@@ -33,7 +33,7 @@ internal class ConstructorInterpreterStageTest : BaseTest() {
                 SvClass(
                     C, C, [],
                     [SvConstructor(C, BlockExpression(*), [SvValueParameter(x, Int, null, 1)])],
-                    0, 0
+                    0
                 )
             """.trimIndent()
         ) { it.findDeclaration("C") }
@@ -53,7 +53,7 @@ internal class ConstructorInterpreterStageTest : BaseTest() {
                     [SvConstructor(
                         D, BlockExpression(Unit, [CallExpression(Unit, new, SuperExpression(C), [], [])]), []
                     )],
-                    0, 0
+                    0
                 )
             """.trimIndent()
         ) { it.findDeclaration("D") }

@@ -48,6 +48,7 @@ object SpecializerIndexer {
             addType(typedElement.type)
             when (typedElement) {
                 is EAbstractClass -> addType(typedElement.superType)
+                is ECallExpression -> typedElement.typeArguments.forEach { addType(it) }
             }
         }
 

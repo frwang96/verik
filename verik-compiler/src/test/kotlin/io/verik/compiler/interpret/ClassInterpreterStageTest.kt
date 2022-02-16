@@ -33,20 +33,9 @@ internal class ClassInterpreterStageTest : BaseTest() {
                 SvClass(
                     C, C, [],
                     [SecondaryConstructor(C, C, BlockExpression(*), [], null)],
-                    0, 0
+                    0
                 )
             """.trimIndent(),
-        ) { it.findDeclaration("C") }
-    }
-
-    @Test
-    fun `class abstract`() {
-        driveElementTest(
-            """
-                abstract class C
-            """.trimIndent(),
-            ClassInterpreterStage::class,
-            "SvClass(C, C, [], [SecondaryConstructor(C, C, BlockExpression(*), [], null)], 1, 0)"
         ) { it.findDeclaration("C") }
     }
 
@@ -57,7 +46,7 @@ internal class ClassInterpreterStageTest : BaseTest() {
                 object O
             """.trimIndent(),
             ClassInterpreterStage::class,
-            "SvClass(O, O, [], [], 0, 1)"
+            "SvClass(O, O, [], [], 1)"
         ) { it.findDeclaration("O") }
     }
 }

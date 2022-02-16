@@ -49,7 +49,6 @@ object ClassInterpreterStage : ProjectStage() {
                 superType = cls.superType,
                 typeParameters = cls.typeParameters,
                 declarations = cls.declarations,
-                isVirtual = cls.isAbstract,
                 isObject = cls.isObject
             )
             referenceUpdater.replace(cls, interpretedClass)

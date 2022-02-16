@@ -104,7 +104,6 @@ object SpecializerStage : ProjectStage() {
                         declarations = ArrayList(classDeclarations),
                         primaryConstructor = null,
                         isEnum = false,
-                        isAbstract = false,
                         isObject = false
                     )
                     specializeContext.register(declaration, listOf(), cls)

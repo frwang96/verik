@@ -34,7 +34,7 @@ internal class CompanionObjectReducerStageTest : BaseTest() {
             """
                 SvClass(
                     C, C, [],
-                    [SvConstructor(*), Property(x, Boolean, ConstantExpression(*), 1, 1)], 0, 0
+                    [SvConstructor(*), Property(x, Boolean, ConstantExpression(*), 1, 1)], 0
                 )
             """.trimIndent()
         ) { it.findDeclaration("C") }

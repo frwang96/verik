@@ -164,7 +164,6 @@ class ElementPrinter : Visitor() {
             build(cls.declarations)
             build(cls.primaryConstructor)
             build(cls.isEnum)
-            build(cls.isAbstract)
             build(cls.isObject)
         }
     }
@@ -182,7 +181,6 @@ class ElementPrinter : Visitor() {
             build(cls.type.toString())
             build(cls.typeParameters)
             build(cls.declarations)
-            build(cls.isVirtual)
             build(cls.isObject)
         }
     }
@@ -248,7 +246,7 @@ class ElementPrinter : Visitor() {
             build(function.body)
             build(function.valueParameters)
             build(function.typeParameters)
-            build(function.isAbstract)
+            build(function.isOverride)
         }
     }
 
@@ -279,7 +277,7 @@ class ElementPrinter : Visitor() {
             build(function.typeParameters)
             build(function.valueParameters)
             build(function.isStatic)
-            build(function.qualifierType.toString())
+            build(function.isVirtual)
         }
     }
 

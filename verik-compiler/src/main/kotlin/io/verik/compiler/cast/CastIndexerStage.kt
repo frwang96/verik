@@ -128,7 +128,6 @@ object CastIndexerStage : ProjectStage() {
                 declarations = ArrayList(),
                 primaryConstructor = null,
                 isEnum = false,
-                isAbstract = false,
                 isObject = false
             )
             castContext.registerDeclaration(descriptor, indexedClass)
@@ -148,7 +147,6 @@ object CastIndexerStage : ProjectStage() {
                 body = EBlockExpression.empty(location),
                 valueParameters = ArrayList(),
                 typeParameters = ArrayList(),
-                isAbstract = false,
                 isOverride = false
             )
             castContext.registerDeclaration(descriptor, indexedFunction)

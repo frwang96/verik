@@ -31,7 +31,6 @@ import io.verik.compiler.ast.element.expression.common.EBlockExpression
 import io.verik.compiler.ast.element.expression.common.ECallExpression
 import io.verik.compiler.ast.element.expression.kt.EFunctionLiteralExpression
 import io.verik.compiler.ast.element.expression.sv.EEventControlExpression
-import io.verik.compiler.ast.property.FunctionQualifierType
 import io.verik.compiler.common.ReferenceUpdater
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.constant.BooleanConstantKind
@@ -159,17 +158,13 @@ object FunctionInterpreterStage : ProjectStage() {
             val valueParameters = getValueParameters(function.valueParameters, referenceUpdater)
             val parent = function.parent
             val isStatic = isStatic(function)
-            val qualifierType = when {
-                function.isAbstract -> FunctionQualifierType.PURE_VIRTUAL
-                parent is ESvClass -> {
-                    when {
-                        parent.isObject -> FunctionQualifierType.REGULAR
-                        function.isOverride -> FunctionQualifierType.REGULAR
-                        else -> FunctionQualifierType.VIRTUAL
-                    }
+            val isVirtual = if (parent is ESvClass) {
+                when {
+                    parent.isObject -> false
+                    function.isOverride -> false
+                    else -> true
                 }
-                else -> FunctionQualifierType.REGULAR
-            }
+            } else false
             return ESvFunction(
                 function.location,
                 function.name,
@@ -180,7 +175,7 @@ object FunctionInterpreterStage : ProjectStage() {
                 function.typeParameters,
                 ArrayList(valueParameters),
                 isStatic,
-                qualifierType
+                isVirtual
             )
         }
 

@@ -69,7 +69,7 @@ internal class DependencyReordererStageTest : BaseTest() {
                 class A(val x: Boolean)
             """.trimIndent(),
             DependencyReordererStage::class,
-            "File([SvClass(B, B, *, *, *, *), SvClass(A, A, *, *, *, *)])"
+            "File([SvClass(B, B, *, *, *), SvClass(A, A, *, *, *)])"
         ) { it.files().first() }
     }
 }

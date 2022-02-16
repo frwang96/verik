@@ -34,7 +34,6 @@ class EKtFunction(
     override var body: EBlockExpression,
     override var valueParameters: ArrayList<EKtValueParameter>,
     override var typeParameters: ArrayList<ETypeParameter>,
-    var isAbstract: Boolean,
     var isOverride: Boolean
 ) : EKtAbstractFunction(), TypeParameterized {
 
@@ -52,7 +51,6 @@ class EKtFunction(
         body: EBlockExpression,
         valueParameters: List<EKtValueParameter>,
         typeParameters: List<ETypeParameter>,
-        isAbstract: Boolean,
         isOverride: Boolean
     ) {
         body.parent = this
@@ -64,7 +62,6 @@ class EKtFunction(
         this.body = body
         this.valueParameters = ArrayList(valueParameters)
         this.typeParameters = ArrayList(typeParameters)
-        this.isAbstract = isAbstract
         this.isOverride = isOverride
     }
 

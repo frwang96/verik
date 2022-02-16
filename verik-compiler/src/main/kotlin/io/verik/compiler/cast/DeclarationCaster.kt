@@ -107,7 +107,6 @@ object DeclarationCaster {
             else -> null
         }
         val isEnum = classOrObject.hasModifier(KtTokens.ENUM_KEYWORD)
-        val isAbstract = classOrObject.hasModifier(KtTokens.ABSTRACT_KEYWORD)
         val isObject = classOrObject is KtObjectDeclaration
 
         castedClass.fill(
@@ -119,7 +118,6 @@ object DeclarationCaster {
             declarations = declarations,
             primaryConstructor = primaryConstructor,
             isEnum = isEnum,
-            isAbstract = isAbstract,
             isObject = isObject,
         )
         return castedClass
@@ -161,7 +159,6 @@ object DeclarationCaster {
         val typeParameters = function.typeParameters.mapNotNull {
             castContext.castTypeParameter(it)
         }
-        val isAbstract = function.hasModifier(KtTokens.ABSTRACT_KEYWORD)
         val isOverride = function.hasModifier(KtTokens.OVERRIDE_KEYWORD)
 
         castedFunction.fill(
@@ -171,7 +168,6 @@ object DeclarationCaster {
             body = body,
             valueParameters = valueParameters,
             typeParameters = typeParameters,
-            isAbstract = isAbstract,
             isOverride = isOverride
         )
         return castedFunction

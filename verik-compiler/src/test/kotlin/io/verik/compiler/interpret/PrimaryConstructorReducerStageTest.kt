@@ -33,7 +33,7 @@ internal class PrimaryConstructorReducerStageTest : BaseTest() {
                 KtClass(
                     C, C, Any, [],
                     [SecondaryConstructor(C, C, BlockExpression(Unit, []), [], null)],
-                    null, 0, 0, 0
+                    null, 0, 0
                 )
             """.trimIndent()
         ) { it.findDeclaration("C") }
@@ -62,7 +62,7 @@ internal class PrimaryConstructorReducerStageTest : BaseTest() {
                     C, C, Any, [], [
                         Property(x, Int, null, 0, 0),
                         SecondaryConstructor(C, C, $blockExpression, [KtValueParameter(*)], null)
-                    ], null, 0, 0, 0
+                    ], null, 0, 0
                 )
             """.trimIndent()
         ) { it.findDeclaration("C") }

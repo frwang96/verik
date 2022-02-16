@@ -40,7 +40,6 @@ import io.verik.compiler.ast.element.declaration.sv.ESvValueParameter
 import io.verik.compiler.ast.element.declaration.sv.ETask
 import io.verik.compiler.ast.element.declaration.sv.ETypeDefinition
 import io.verik.compiler.ast.property.ExpressionStringEntry
-import io.verik.compiler.ast.property.FunctionQualifierType
 import io.verik.compiler.ast.property.LiteralStringEntry
 import io.verik.compiler.ast.property.PortType
 import io.verik.compiler.core.common.Core
@@ -70,8 +69,6 @@ object DeclarationSerializer {
     }
 
     fun serializeClass(cls: ESvClass, serializeContext: SerializeContext) {
-        if (cls.isVirtual)
-            serializeContext.append("virtual ")
         serializeContext.append("class ${cls.name}")
         val superType = cls.superType
         if (superType.reference != Core.Kt.C_Any) {
@@ -139,22 +136,16 @@ object DeclarationSerializer {
 
     fun serializeFunction(function: ESvFunction, serializeContext: SerializeContext) {
         if (function.isStatic) serializeContext.append("static ")
-        when (function.qualifierType) {
-            FunctionQualifierType.VIRTUAL -> serializeContext.append("virtual ")
-            FunctionQualifierType.PURE_VIRTUAL -> serializeContext.append("pure virtual ")
-            else -> {}
-        }
+        if (function.isVirtual) serializeContext.append("virtual ")
         val serializedType = TypeSerializer.serialize(function.type, function)
         serializedType.checkNoVariableDimension(function)
         serializeContext.append("function automatic ${serializedType.base} ${function.name}")
         serializeValueParameterList(function, serializeContext)
-        if (function.qualifierType != FunctionQualifierType.PURE_VIRTUAL) {
-            serializeContext.indent {
-                function.body.statements.forEach { serializeContext.serializeAsStatement(it) }
-            }
-            serializeContext.label(function.body.endLocation) {
-                serializeContext.appendLine("endfunction : ${function.name}")
-            }
+        serializeContext.indent {
+            function.body.statements.forEach { serializeContext.serializeAsStatement(it) }
+        }
+        serializeContext.label(function.body.endLocation) {
+            serializeContext.appendLine("endfunction : ${function.name}")
         }
     }
 

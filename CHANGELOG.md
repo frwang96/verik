@@ -19,6 +19,7 @@
 - Replace `SimTop` and `SynthTop` with `EntryPoint`.
 - Support initializer blocks.
 - Adopt `@Inject` annotation for injected properties.
+- Abstract classes compile to regular classes and not virtual classes.
 
 ## [0.1.13]
 ### Importer
