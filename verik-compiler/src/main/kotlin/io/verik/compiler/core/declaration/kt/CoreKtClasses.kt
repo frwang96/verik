@@ -22,7 +22,7 @@ import io.verik.compiler.core.common.CorePackage
 import io.verik.compiler.core.common.CoreScope
 import io.verik.compiler.target.common.Target
 
-object CoreKtClass : CoreScope(CorePackage.KT) {
+object CoreKtClasses : CoreScope(CorePackage.KT) {
 
     val C_Function = CoreClassDeclaration(parent, "Function", null, Target.C_Void)
     val C_Any = CoreClassDeclaration(parent, "Any", null, null)

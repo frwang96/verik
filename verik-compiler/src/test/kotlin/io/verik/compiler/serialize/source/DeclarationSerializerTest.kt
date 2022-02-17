@@ -243,6 +243,28 @@ internal class DeclarationSerializerTest : BaseTest() {
     }
 
     @Test
+    fun `property rand`() {
+        driveTextFileTest(
+            """
+                class C : Class() {
+                    @Rand
+                    var x = false
+                }
+            """.trimIndent(),
+            """
+                class C;
+
+                    function new();
+                    endfunction : new
+
+                    rand logic x = 1'b0;
+
+                endclass : C
+            """.trimIndent()
+        ) { it.nonRootPackageTextFiles[0] }
+    }
+
+    @Test
     fun `property with documentation`() {
         driveTextFileTest(
             """

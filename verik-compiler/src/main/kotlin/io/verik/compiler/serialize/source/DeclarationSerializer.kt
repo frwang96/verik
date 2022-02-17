@@ -40,6 +40,7 @@ import io.verik.compiler.ast.element.declaration.sv.ESvValueParameter
 import io.verik.compiler.ast.element.declaration.sv.ETask
 import io.verik.compiler.ast.element.declaration.sv.ETypeDefinition
 import io.verik.compiler.ast.property.PortType
+import io.verik.compiler.core.common.AnnotationEntries
 import io.verik.compiler.core.common.Core
 
 object DeclarationSerializer {
@@ -191,6 +192,7 @@ object DeclarationSerializer {
 
     fun serializeProperty(property: EProperty, serializeContext: SerializeContext) {
         if (property.isStatic) serializeContext.append("static ")
+        if (property.hasAnnotationEntry(AnnotationEntries.RAND)) serializeContext.append("rand ")
         serializePropertyTypeAndName(property, true, serializeContext)
         val initializer = property.initializer
         if (initializer != null) {

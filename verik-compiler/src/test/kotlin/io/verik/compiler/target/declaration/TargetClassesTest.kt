@@ -19,7 +19,7 @@ package io.verik.compiler.target.declaration
 import io.verik.compiler.test.BaseTest
 import org.junit.jupiter.api.Test
 
-internal class TargetClassTest : BaseTest() {
+internal class TargetClassesTest : BaseTest() {
 
     @Test
     fun `serialize type Boolean`() {

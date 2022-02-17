@@ -23,7 +23,7 @@ import io.verik.compiler.core.common.CorePackage
 import io.verik.compiler.core.common.CoreScope
 import io.verik.compiler.target.common.Target
 
-object CoreJvClass : CoreScope(CorePackage.JV) {
+object CoreJvClasses : CoreScope(CorePackage.JV) {
 
     object Util : CoreScope(CorePackage.JV_UTIL) {
 
