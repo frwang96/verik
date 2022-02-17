@@ -22,7 +22,7 @@ package imported
 
 import io.verik.core.*
 
-val x0: Boolean = imported()
+val x0: Boolean = imp()
 
 class C0
 

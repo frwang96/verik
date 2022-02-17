@@ -200,3 +200,17 @@ fun pack(value: Any): Ubit<`*`> {
 fun <T> unpack(value: Ubit<`*`>): T {
     throw VerikException()
 }
+
+/**
+ * Construct a [Sequence] that evaluates [value] on the current cycle.
+ */
+fun q(value: Boolean): Sequence {
+    throw VerikException()
+}
+
+/**
+ * Construct a randomization constraint from [conditions].
+ */
+fun cons(vararg conditions: Boolean): Constraint {
+    throw VerikException()
+}

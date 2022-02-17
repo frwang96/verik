@@ -105,6 +105,30 @@ annotation class In
 annotation class Out
 
 /**
+ * Annotates that a property in a [Class] should be randomized.
+ */
+@Target(AnnotationTarget.PROPERTY)
+annotation class Rand
+
+/**
+ * Annotates randomization constraints in a [Class].
+ */
+@Target(AnnotationTarget.PROPERTY)
+annotation class Cons
+
+/**
+ * Annotates assertion properties.
+ */
+@Target(AnnotationTarget.PROPERTY)
+annotation class Assert
+
+/**
+ * Annotates cover properties.
+ */
+@Target(AnnotationTarget.PROPERTY)
+annotation class Cover
+
+/**
  * Annotates combinational action blocks or combinationally assigned properties. It is executed when the value of
  * its contents change and is used to model combinational logic. They correspond to SystemVerilog always_comb blocks.
  *

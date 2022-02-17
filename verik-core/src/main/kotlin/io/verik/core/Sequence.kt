@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,21 +14,12 @@
  * limitations under the License.
  */
 
+@file:Suppress("unused")
+
 package io.verik.core
 
-import kotlin.reflect.KProperty
-
-internal class VerikException : Exception(
-    "Verik declaration should not be run as Kotlin"
-)
-
-internal class VerikExceptionDelegate<T> {
-
-    operator fun getValue(thisRef: Any?, property: KProperty<*>): T {
-        throw VerikException()
-    }
-
-    operator fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
-        throw VerikException()
-    }
-}
+/**
+ * A boolean expression evaluated over a single or multiple clock cycles. Sequences are used to define
+ * [assertion properties][Assert] and [cover properties][Cover].
+ */
+class Sequence internal constructor()

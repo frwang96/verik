@@ -18,8 +18,6 @@
 
 package io.verik.core
 
-import kotlin.properties.Delegates
-
 /**
  * (UNIMPLEMENTED) Returns true if the boolean is unknown.
  */
@@ -58,13 +56,9 @@ fun <N : `*`> Boolean.toSbit(): Sbit<N> {
 /**
  * Unknown boolean value.
  */
-val unknown: Boolean by Delegates.observable(false) { _, _, _ ->
-    throw VerikException()
-}
+val unknown: Boolean by VerikExceptionDelegate()
 
 /**
  * Floating boolean value.
  */
-val floating: Boolean by Delegates.observable(false) { _, _, _ ->
-    throw VerikException()
-}
+val floating: Boolean by VerikExceptionDelegate()
