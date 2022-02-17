@@ -26,7 +26,7 @@ internal class TypeReferenceForwarderStageTest : BaseTest() {
     fun `forward type not parameterized`() {
         driveElementTest(
             """
-                class C
+                class C : Class()
                 val x = C()
             """.trimIndent(),
             TypeReferenceForwarderStage::class,
@@ -38,7 +38,7 @@ internal class TypeReferenceForwarderStageTest : BaseTest() {
     fun `forward type parameterized`() {
         driveElementTest(
             """
-                class C<N : `*`>
+                class C<N : `*`> : Class()
                 val x = C<`1`>()
             """.trimIndent(),
             TypeReferenceForwarderStage::class,

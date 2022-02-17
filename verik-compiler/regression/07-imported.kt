@@ -24,7 +24,7 @@ import io.verik.core.*
 
 val x0: Boolean = imp()
 
-class C0
+class C0 : Class()
 
 // Imported1.kt ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -34,7 +34,7 @@ package imported.test_pkg
 
 import io.verik.core.*
 
-class C1<T> {
+class C1<T> : Class() {
 
     companion object {
 

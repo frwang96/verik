@@ -31,7 +31,7 @@ internal class ClassCasterTest : BaseTest() {
                 class c;
                 endclass
             """.trimIndent(),
-            "SvClass(c, [], [], SimpleDescriptor(Any))"
+            "SvClass(c, [], [], SimpleDescriptor(Class))"
         ) { it.findDeclaration("c") }
     }
 

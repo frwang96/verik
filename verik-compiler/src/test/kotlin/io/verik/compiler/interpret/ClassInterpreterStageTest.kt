@@ -26,13 +26,13 @@ internal class ClassInterpreterStageTest : BaseTest() {
     fun `class simple`() {
         driveElementTest(
             """
-                class C
+                class C : Class()
             """.trimIndent(),
             ClassInterpreterStage::class,
             """
                 SvClass(
-                    C, C, [],
-                    [SecondaryConstructor(C, C, BlockExpression(*), [], null)],
+                    C, C, Class, [],
+                    [SecondaryConstructor(C, C, BlockExpression(*), [], CallExpression(Class, Class, null, [], []))],
                     0
                 )
             """.trimIndent(),
@@ -43,10 +43,10 @@ internal class ClassInterpreterStageTest : BaseTest() {
     fun `class declarations static`() {
         driveElementTest(
             """
-                object O
+                object O : Class()
             """.trimIndent(),
             ClassInterpreterStage::class,
-            "SvClass(O, O, [], [], 1)"
+            "SvClass(O, O, Class, [], [], 1)"
         ) { it.findDeclaration("O") }
     }
 }

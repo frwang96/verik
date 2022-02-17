@@ -28,7 +28,6 @@ import io.verik.importer.ast.element.declaration.EProperty
 import io.verik.importer.ast.element.declaration.ETypeAlias
 import io.verik.importer.ast.element.declaration.ETypeParameter
 import io.verik.importer.ast.element.descriptor.EDescriptor
-import io.verik.importer.core.Core
 
 object DeclarationSerializer {
 
@@ -52,11 +51,9 @@ object DeclarationSerializer {
             }
             serializeContext.append(")")
         }
-        if (cls.superDescriptor.type.reference != Core.C_Any) {
-            serializeContext.append(" : ${cls.superDescriptor.type}")
-            if (cls.getConstructor() == null) {
-                serializeSuperConstructorCall(cls.superDescriptor, serializeContext)
-            }
+        serializeContext.append(" : ${cls.superDescriptor.type}")
+        if (cls.getConstructor() == null) {
+            serializeSuperConstructorCall(cls.superDescriptor, serializeContext)
         }
         if (cls.declarations.isNotEmpty()) {
             serializeContext.appendLine(" {")
@@ -158,10 +155,8 @@ object DeclarationSerializer {
             serializeContext.append("()")
         }
         val cls = constructor.parentNotNull().cast<EKtClass>()
-        if (cls.superDescriptor.type.reference != Core.C_Any) {
-            serializeContext.append(" : super")
-            serializeSuperConstructorCall(cls.superDescriptor, serializeContext)
-        }
+        serializeContext.append(" : super")
+        serializeSuperConstructorCall(cls.superDescriptor, serializeContext)
         serializeContext.appendLine()
     }
 

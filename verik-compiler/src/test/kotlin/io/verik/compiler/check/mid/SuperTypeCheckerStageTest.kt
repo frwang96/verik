@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,28 +14,21 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.serialize.general
+package io.verik.compiler.check.mid
 
 import io.verik.compiler.test.BaseTest
 import org.junit.jupiter.api.Test
 
-internal class PackageWrapperSerializerStageTest : BaseTest() {
+internal class SuperTypeCheckerStageTest : BaseTest() {
 
     @Test
-    fun `package file`() {
-        driveTextFileTest(
+    fun `entry parameterized`() {
+        driveMessageTest(
             """
-                class C : Class()
+                class C
             """.trimIndent(),
-            """
-                package test_pkg;
-                
-                    typedef class C;
-                
-                `include "src/test/Test.svh"
-                
-                endpackage : test_pkg
-            """.trimIndent()
-        ) { it.packageWrapperTextFiles[0] }
+            true,
+            "Supertype is required: C"
+        )
     }
 }

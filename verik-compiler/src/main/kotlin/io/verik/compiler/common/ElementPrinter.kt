@@ -179,6 +179,7 @@ class ElementPrinter : Visitor() {
         build("SvClass") {
             build(cls.name)
             build(cls.type.toString())
+            build(cls.superType.toString())
             build(cls.typeParameters)
             build(cls.declarations)
             build(cls.isObject)

@@ -28,7 +28,7 @@ enum class e0 {
 
 var x0: e0 = imp()
 
-open class c {
+open class c : Class() {
 
     enum class e1 {
         E3,

@@ -30,7 +30,7 @@ internal class SuperDescriptorTransformerStageTest : BaseTest() {
                 endclass
             """.trimIndent(),
             SuperDescriptorTransformerStage::class,
-            "KtClass(c, [], [TypeParameter(T, null, 0)], [], SimpleDescriptor(Any), 1)"
+            "KtClass(c, [], [TypeParameter(T, null, 0)], [], SimpleDescriptor(Class), 1)"
         ) { it.findDeclaration("c") }
     }
 }

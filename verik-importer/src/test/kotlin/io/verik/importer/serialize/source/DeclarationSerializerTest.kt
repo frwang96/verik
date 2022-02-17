@@ -29,7 +29,7 @@ internal class DeclarationSerializerTest : BaseTest() {
                 endclass
             """.trimIndent(),
             """
-                open class c
+                open class c : Class()
             """.trimIndent()
         )
     }
@@ -43,7 +43,7 @@ internal class DeclarationSerializerTest : BaseTest() {
                 endclass
             """.trimIndent(),
             """
-                open class c {
+                open class c : Class() {
                 
                     var x: Boolean = imp()
                 }
@@ -61,7 +61,7 @@ internal class DeclarationSerializerTest : BaseTest() {
                 endclass
             """.trimIndent(),
             """
-                open class d
+                open class d : Class()
 
                 open class c : d()
             """.trimIndent()
@@ -106,7 +106,7 @@ internal class DeclarationSerializerTest : BaseTest() {
                 endclass
             """.trimIndent(),
             """
-                open class c {
+                open class c : Class() {
 
                     companion object {
                 
@@ -196,7 +196,7 @@ internal class DeclarationSerializerTest : BaseTest() {
                 endfunction
             """.trimIndent(),
             """
-                open class c
+                open class c : Class()
 
                 fun f(
                     x: c?
@@ -215,7 +215,7 @@ internal class DeclarationSerializerTest : BaseTest() {
                 endclass
             """.trimIndent(),
             """
-                open class c<T> {
+                open class c<T> : Class() {
 
                     companion object {
 
@@ -236,11 +236,11 @@ internal class DeclarationSerializerTest : BaseTest() {
                 endclass
             """.trimIndent(),
             """
-                open class c {
+                open class c : Class {
                 
                     constructor(
                         x: Boolean
-                    )
+                    ) : super()
                 }
             """.trimIndent()
         )
@@ -260,11 +260,11 @@ internal class DeclarationSerializerTest : BaseTest() {
                 endclass
             """.trimIndent(),
             """
-                open class c {
+                open class c : Class {
                 
                     constructor(
                         x: Boolean
-                    )
+                    ) : super()
                 }
 
                 open class d : c {

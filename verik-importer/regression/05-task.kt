@@ -25,7 +25,7 @@ fun t0(
     x0: Boolean
 ): Unit = imp()
 
-open class c {
+open class c : Class() {
 
     @Task
     open fun t1(

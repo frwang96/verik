@@ -144,7 +144,7 @@ internal class FunctionInterpreterStageTest : BaseTest() {
     fun `interpret function in class`() {
         driveElementTest(
             """
-                class C {
+                class C : Class() {
                     fun f() {}
                 }
             """.trimIndent(),
@@ -157,7 +157,7 @@ internal class FunctionInterpreterStageTest : BaseTest() {
     fun `interpret function in object`() {
         driveElementTest(
             """
-                object O {
+                object O : Class() {
                     fun f() {}
                 }
             """.trimIndent(),

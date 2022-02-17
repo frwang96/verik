@@ -126,7 +126,7 @@ internal class DeclarationSerializerTest : BaseTest() {
     fun `class simple`() {
         driveTextFileTest(
             """
-                class C
+                class C : Class()
             """.trimIndent(),
             """
                 class C;
@@ -228,7 +228,7 @@ internal class DeclarationSerializerTest : BaseTest() {
     fun `property static`() {
         driveTextFileTest(
             """
-                object O {
+                object O : Class() {
                     var x = false
                 }
             """.trimIndent(),

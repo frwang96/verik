@@ -26,7 +26,7 @@ internal class DependencyReordererStageTest : BaseTest() {
         driveMessageTest(
             """
                 object M : Module() { var x: Boolean = nc() }
-                class C {
+                class C : Class() {
                     fun f() {
                         println(M.x)
                     }
@@ -65,11 +65,11 @@ internal class DependencyReordererStageTest : BaseTest() {
     fun `class dependency not reordered`() {
         driveElementTest(
             """
-                class B(val a: A)
-                class A(val x: Boolean)
+                class B(val a: A) : Class()
+                class A(val x: Boolean) : Class()
             """.trimIndent(),
             DependencyReordererStage::class,
-            "File([SvClass(B, B, *, *, *), SvClass(A, A, *, *, *)])"
+            "File([SvClass(B, B, Class, *, *, *), SvClass(A, A, Class, *, *, *)])"
         ) { it.files().first() }
     }
 }

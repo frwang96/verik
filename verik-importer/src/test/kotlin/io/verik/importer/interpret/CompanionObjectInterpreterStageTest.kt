@@ -32,7 +32,7 @@ internal class CompanionObjectInterpreterStageTest : BaseTest() {
                 endclass
             """.trimIndent(),
             CompanionObjectInterpreterStage::class,
-            "KtClass(c, [CompanionObject([SvFunction(*)])], [], [], SimpleDescriptor(Any), 1)"
+            "KtClass(c, [CompanionObject([SvFunction(*)])], [], [], SimpleDescriptor(Class), 1)"
         ) { it.findDeclaration("c") }
     }
 
@@ -45,7 +45,7 @@ internal class CompanionObjectInterpreterStageTest : BaseTest() {
                 endclass
             """.trimIndent(),
             CompanionObjectInterpreterStage::class,
-            "KtClass(c, [CompanionObject([Property(*)])], [], [], SimpleDescriptor(Any), 1)"
+            "KtClass(c, [CompanionObject([Property(*)])], [], [], SimpleDescriptor(Class), 1)"
         ) { it.findDeclaration("c") }
     }
 

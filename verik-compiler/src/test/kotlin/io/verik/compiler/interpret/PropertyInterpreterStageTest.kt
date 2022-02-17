@@ -116,7 +116,7 @@ internal class PropertyInterpreterStageTest : BaseTest() {
     fun `interpret property static`() {
         driveElementTest(
             """
-                object O {
+                object O : Class() {
                     var x = false
                 }
             """.trimIndent(),

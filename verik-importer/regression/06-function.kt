@@ -24,7 +24,7 @@ fun f0(
     x0: Boolean
 ): Int = imp()
 
-open class c {
+open class c : Class() {
 
     open fun f1(
         x1: Int

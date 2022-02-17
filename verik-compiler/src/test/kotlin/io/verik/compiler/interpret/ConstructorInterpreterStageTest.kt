@@ -26,12 +26,12 @@ internal class ConstructorInterpreterStageTest : BaseTest() {
     fun `constructor with parameter`() {
         driveElementTest(
             """
-                class C(x: Int)
+                class C(x: Int) : Class()
             """.trimIndent(),
             ConstructorInterpreterStage::class,
             """
                 SvClass(
-                    C, C, [],
+                    C, C, Class, [],
                     [SvConstructor(C, BlockExpression(*), [SvValueParameter(x, Int, null, 1)])],
                     0
                 )
@@ -43,13 +43,13 @@ internal class ConstructorInterpreterStageTest : BaseTest() {
     fun `constructor with super type call expression`() {
         driveElementTest(
             """
-                open class C
+                open class C : Class()
                 class D : C()
             """.trimIndent(),
             ConstructorInterpreterStage::class,
             """
                 SvClass(
-                    D, D, [],
+                    D, D, C, [],
                     [SvConstructor(
                         D, BlockExpression(Unit, [CallExpression(Unit, new, SuperExpression(C), [], [])]), []
                     )],

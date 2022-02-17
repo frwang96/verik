@@ -138,6 +138,7 @@ object Core {
         val C_AssociativeArray = CoreVkClass.C_AssociativeArray
         val C_Time = CoreVkClass.C_Time
         val C_Event = CoreVkClass.C_Event
+        val C_Class = CoreVkClass.C_Class
         val C_Struct = CoreVkClass.C_Struct
         val C_Component = CoreVkClass.C_Component
         val C_Module = CoreVkClass.C_Module
@@ -145,6 +146,7 @@ object Core {
         val C_ModulePort = CoreVkClass.C_ModulePort
         val C_ClockingBlock = CoreVkClass.C_ClockingBlock
 
+        val F_Class = CoreVkClass.F_Class
         val F_Struct = CoreVkClass.F_Struct
         val F_Module = CoreVkClass.F_Module
         val F_ModuleInterface = CoreVkClass.F_ModuleInterface

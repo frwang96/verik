@@ -26,7 +26,7 @@ internal class NameRedeclarationCheckerStageTest : BaseTest() {
         driveMessageTest(
             """
                 enum class E { A }
-                class A
+                class A : Class()
             """.trimIndent(),
             true,
             "Name has already been declared: A"

@@ -167,7 +167,7 @@ internal class ExpressionSerializerTest : BaseTest() {
     fun `this expression`() {
         driveTextFileTest(
             """
-                class C {
+                class C : Class() {
                     private var x = 0
                     fun f() {
                         println(this.x)

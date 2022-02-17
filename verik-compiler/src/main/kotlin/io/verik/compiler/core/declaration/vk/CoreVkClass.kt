@@ -34,6 +34,7 @@ object CoreVkClass : CoreScope(CorePackage.VK) {
     val C_AssociativeArray = CoreClassDeclaration(parent, "AssociativeArray", Core.Kt.C_Any, Target.C_AssociativeArray)
     val C_Time = CoreClassDeclaration(parent, "Time", Core.Kt.C_Any, Target.C_Time)
     val C_Event = CoreClassDeclaration(parent, "Event", Core.Kt.C_Any, Target.C_Event)
+    val C_Class = CoreClassDeclaration(parent, "Class", Core.Kt.C_Any, null)
     val C_Struct = CoreClassDeclaration(parent, "Struct", Core.Kt.C_Any, null)
     val C_Component = CoreClassDeclaration(parent, "Component", Core.Kt.C_Any, null)
     val C_Module = CoreClassDeclaration(parent, "Module", C_Component, null)
@@ -41,6 +42,7 @@ object CoreVkClass : CoreScope(CorePackage.VK) {
     val C_ModulePort = CoreClassDeclaration(parent, "ModulePort", C_Component, null)
     val C_ClockingBlock = CoreClassDeclaration(parent, "ClockingBlock", C_Component, null)
 
+    val F_Class = CoreConstructorDeclaration(C_Class, null)
     val F_Struct = CoreConstructorDeclaration(C_Struct, null)
     val F_Module = CoreConstructorDeclaration(C_Module, null)
     val F_ModuleInterface = CoreConstructorDeclaration(C_ModuleInterface, null)

@@ -27,7 +27,7 @@ internal class SpecializerIndexerTest : BaseTest() {
     fun `type resolved`() {
         driveElementTest(
             """
-                class C<X: `*`>
+                class C<X: `*`> : Class()
                 val x: C<`1`> = C()
             """.trimIndent(),
             SpecializerStage::class,
@@ -39,7 +39,7 @@ internal class SpecializerIndexerTest : BaseTest() {
     fun `primary constructor resolved`() {
         driveElementTest(
             """
-                class C<X: `*`>
+                class C<X: `*`> : Class()
                 val x = C<`1`>()
             """.trimIndent(),
             SpecializerStage::class,

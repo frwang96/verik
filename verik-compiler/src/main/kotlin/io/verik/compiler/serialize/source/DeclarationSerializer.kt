@@ -57,7 +57,7 @@ object DeclarationSerializer {
     fun serializeClass(cls: ESvClass, serializeContext: SerializeContext) {
         serializeContext.append("class ${cls.name}")
         val superType = cls.superType
-        if (superType.reference != Core.Kt.C_Any) {
+        if (superType.reference != Core.Vk.C_Class) {
             val serializedSuperType = TypeSerializer.serialize(superType, cls)
             serializedSuperType.checkNoVariableDimension(cls)
             serializeContext.append(" extends ${serializedSuperType.base}")

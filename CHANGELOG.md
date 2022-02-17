@@ -20,6 +20,7 @@
 - Support initializer blocks.
 - Adopt `@Inject` annotation for injected properties.
 - Abstract classes compile to regular classes and not virtual classes.
+- All classes should inherit from `Class` to get randomization functions.
 
 ## [0.1.13]
 ### Importer

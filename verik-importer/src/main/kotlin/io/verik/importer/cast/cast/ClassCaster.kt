@@ -36,7 +36,7 @@ object ClassCaster {
         val typeParameters = ctx.parameterPortList()?.let { castContext.castTypeParameters(it) } ?: listOf()
         val superDescriptor = ctx.classType()
             ?.let { castContext.castDescriptor(it) }
-            ?: ESimpleDescriptor(location, Core.C_Any.toType())
+            ?: ESimpleDescriptor(location, Core.C_Class.toType())
         return ESvClass(
             location,
             name,

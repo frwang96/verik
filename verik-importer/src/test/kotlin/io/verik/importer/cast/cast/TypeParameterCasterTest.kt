@@ -31,7 +31,7 @@ internal class TypeParameterCasterTest : BaseTest() {
                 class c #(int N);
                 endclass
             """.trimIndent(),
-            "SvClass(c, [], [TypeParameter(N, null, 1)], SimpleDescriptor(Any))"
+            "SvClass(c, [], [TypeParameter(N, null, 1)], SimpleDescriptor(Class))"
         ) { it.findDeclaration("c") }
     }
 
@@ -43,7 +43,7 @@ internal class TypeParameterCasterTest : BaseTest() {
                 class c #(type T = int);
                 endclass
             """.trimIndent(),
-            "SvClass(c, [], [TypeParameter(T, SimpleDescriptor(Int), 0)], SimpleDescriptor(Any))"
+            "SvClass(c, [], [TypeParameter(T, SimpleDescriptor(Int), 0)], SimpleDescriptor(Class))"
         ) { it.findDeclaration("c") }
     }
 

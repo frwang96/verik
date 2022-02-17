@@ -99,7 +99,7 @@ object SpecializerStage : ProjectStage() {
                         type = declaration.toType(),
                         annotationEntries = listOf(),
                         documentationLines = null,
-                        superType = Core.Kt.C_Any.toType(),
+                        superType = Core.Vk.C_Class.toType(),
                         typeParameters = ArrayList(),
                         declarations = ArrayList(classDeclarations),
                         primaryConstructor = null,

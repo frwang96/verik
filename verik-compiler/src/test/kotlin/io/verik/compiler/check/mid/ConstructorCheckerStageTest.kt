@@ -25,7 +25,7 @@ internal class ConstructorCheckerStageTest : BaseTest() {
     fun `multiple constructors illegal`() {
         driveMessageTest(
             """
-                class C() {
+                class C() : Class() {
                     constructor(x: Int) : this()
                 }
             """.trimIndent(),
