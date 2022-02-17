@@ -24,6 +24,7 @@ import io.verik.compiler.ast.element.declaration.sv.EAlwaysComBlock
 import io.verik.compiler.ast.element.declaration.sv.EAlwaysSeqBlock
 import io.verik.compiler.ast.element.declaration.sv.EClockingBlockInstantiation
 import io.verik.compiler.ast.element.declaration.sv.EComponentInstantiation
+import io.verik.compiler.ast.element.declaration.sv.EConstraint
 import io.verik.compiler.ast.element.declaration.sv.EEnum
 import io.verik.compiler.ast.element.declaration.sv.EInitialBlock
 import io.verik.compiler.ast.element.declaration.sv.EInjectedProperty
@@ -280,6 +281,16 @@ object DeclarationSerializer {
         }
         serializeContext.label(clockingBlockInstantiation.endLocation) {
             serializeContext.appendLine("endclocking")
+        }
+    }
+
+    fun serializeConstraint(constraint: EConstraint, serializeContext: SerializeContext) {
+        serializeContext.appendLine("constraint ${constraint.name} {")
+        serializeContext.indent {
+            constraint.body.statements.forEach { serializeContext.serializeAsStatement(it) }
+        }
+        serializeContext.label(constraint.body.endLocation) {
+            serializeContext.appendLine("}")
         }
     }
 

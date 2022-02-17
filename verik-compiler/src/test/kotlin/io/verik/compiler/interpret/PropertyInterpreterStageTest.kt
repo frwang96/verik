@@ -23,6 +23,18 @@ import org.junit.jupiter.api.Test
 internal class PropertyInterpreterStageTest : BaseTest() {
 
     @Test
+    fun `interpret constraint`() {
+        driveElementTest(
+            """
+                @Cons
+                val c = cons(true)
+            """.trimIndent(),
+            PropertyInterpreterStage::class,
+            "Constraint(c, BlockExpression(Unit, [ConstantExpression(*)]))"
+        ) { it.findDeclaration("c") }
+    }
+
+    @Test
     fun `interpret property static`() {
         driveElementTest(
             """

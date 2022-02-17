@@ -16,6 +16,7 @@
 
 package io.verik.compiler.check.post
 
+import io.verik.compiler.ast.element.declaration.sv.EConstraint
 import io.verik.compiler.ast.element.expression.common.EBlockExpression
 import io.verik.compiler.ast.element.expression.common.ECallExpression
 import io.verik.compiler.ast.element.expression.common.EExpression
@@ -42,6 +43,7 @@ object StatementCheckerStage : ProjectStage() {
 
         override fun visitBlockExpression(blockExpression: EBlockExpression) {
             super.visitBlockExpression(blockExpression)
+            if (blockExpression.parent is EConstraint) return
             blockExpression.statements.forEach {
                 if (!isValid(it)) Messages.INVALID_STATEMENT.on(it)
             }

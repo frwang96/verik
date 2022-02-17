@@ -390,14 +390,14 @@ internal class DeclarationSerializerTest : BaseTest() {
         driveTextFileTest(
             """
                 class MP(@In var x: Boolean) : ModulePort()
-                class Top : ModuleInterface() {
+                class M : ModuleInterface() {
                     private var x : Boolean = nc()
                     @Make
                     val mp = MP(x)
                 }
             """.trimIndent(),
             """
-                interface Top;
+                interface M;
                 
                     logic x;
                 
@@ -405,7 +405,7 @@ internal class DeclarationSerializerTest : BaseTest() {
                         input  x
                     );
                 
-                endinterface : Top
+                endinterface : M
             """.trimIndent()
         ) { it.rootPackageTextFiles[0] }
     }
@@ -415,14 +415,14 @@ internal class DeclarationSerializerTest : BaseTest() {
         driveTextFileTest(
             """
                 class CB(override val event: Event, @In var x: Boolean) : ClockingBlock()
-                class Top : Module() {
+                class M : Module() {
                     private var x : Boolean = nc()
                     @Make
                     val cb = CB(posedge(x), x)
                 }
             """.trimIndent(),
             """
-                module Top;
+                module M;
                 
                     logic x;
                 
@@ -430,8 +430,35 @@ internal class DeclarationSerializerTest : BaseTest() {
                         input  x;
                     endclocking
                 
-                endmodule : Top
+                endmodule : M
             """.trimIndent()
         ) { it.rootPackageTextFiles[0] }
+    }
+
+    @Test
+    fun `constraint simple`() {
+        driveTextFileTest(
+            """
+                class C : Class(){
+                    var x = 0
+                    @Cons
+                    var c = cons(x == 0)
+                }
+            """.trimIndent(),
+            """
+                class C;
+
+                    function new();
+                    endfunction : new
+
+                    int x = 0;
+
+                    constraint c {
+                        x == 0;
+                    }
+
+                endclass : C
+            """.trimIndent()
+        ) { it.nonRootPackageTextFiles[0] }
     }
 }
