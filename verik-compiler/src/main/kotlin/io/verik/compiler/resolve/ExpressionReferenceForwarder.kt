@@ -16,6 +16,7 @@
 
 package io.verik.compiler.resolve
 
+import io.verik.compiler.ast.common.Declaration
 import io.verik.compiler.ast.common.Type
 import io.verik.compiler.ast.element.declaration.common.EDeclaration
 import io.verik.compiler.ast.element.declaration.common.EEnumEntry
@@ -31,6 +32,7 @@ import io.verik.compiler.ast.element.expression.common.EExpression
 import io.verik.compiler.ast.element.expression.common.EReceiverExpression
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.message.Messages
 import io.verik.compiler.specialize.SpecializeContext
 
 object ExpressionReferenceForwarder {
@@ -49,7 +51,7 @@ object ExpressionReferenceForwarder {
             return true
         val receiver = entry.receiverExpression.receiver
         return if (receiver != null) {
-            forwardWithReceiver(entry.receiverExpression, receiver, specializeContext)
+            forwardWithReceiver(entry.receiverExpression, receiver, reference, specializeContext)
         } else {
             forwardWithoutReceiver(entry, reference, specializeContext)
         }
@@ -58,17 +60,24 @@ object ExpressionReferenceForwarder {
     private fun forwardWithReceiver(
         receiverExpression: EReceiverExpression,
         receiver: EExpression,
+        reference: EDeclaration,
         specializeContext: SpecializeContext
     ): Boolean {
         val receiverType = receiver.type
-        if (!receiverType.isResolved())
-            return false
-        receiverExpression.reference = specializeContext.forward(
-            receiverExpression.reference,
-            receiverType.arguments,
-            receiverExpression
-        )
-        return true
+        return if (!receiverType.isResolved()) {
+            false
+        } else {
+            val referenceParentClass = reference.getParentClassOrNull()
+                ?: Messages.INTERNAL_ERROR.on(receiverExpression, "Unable to find parent class of reference")
+            val forwardedReference = forwardClassDeclaration(
+                receiverExpression,
+                referenceParentClass.cast(),
+                receiverType,
+                specializeContext
+            )
+            receiverExpression.reference = forwardedReference
+            true
+        }
     }
 
     private fun forwardWithoutReceiver(
@@ -76,42 +85,92 @@ object ExpressionReferenceForwarder {
         reference: EDeclaration,
         specializeContext: SpecializeContext
     ): Boolean {
-        val receiverExpression = entry.receiverExpression
-        val isTopLevel = reference.parent is EFile ||
-            reference.parent is ECompanionObject ||
+        val referenceParent = reference.parent
+        val isTopLevel = referenceParent is EFile ||
+            referenceParent is ECompanionObject ||
+            (referenceParent is EKtClass && referenceParent.isObject) ||
             reference is EPrimaryConstructor ||
             reference is ESecondaryConstructor ||
             reference is EEnumEntry
+
         return if (isTopLevel) {
-            if (receiverExpression is ECallExpression && reference is EKtAbstractFunction) {
-                val typeArguments = receiverExpression.typeArguments
-                if (typeArguments.any { !it.isResolved() }) {
-                    false
-                } else {
-                    receiverExpression.reference = specializeContext.forward(
-                        reference,
-                        typeArguments,
-                        receiverExpression
-                    )
-                    receiverExpression.typeArguments = ArrayList()
-                    true
-                }
+            forwardWithoutReceiverTopLevel(entry.receiverExpression, reference, specializeContext)
+        } else {
+            forwardWithoutReceiverNotTopLevel(entry, reference, specializeContext)
+            true
+        }
+    }
+
+    private fun forwardWithoutReceiverTopLevel(
+        receiverExpression: EReceiverExpression,
+        reference: EDeclaration,
+        specializeContext: SpecializeContext
+    ): Boolean {
+        return if (receiverExpression is ECallExpression && reference is EKtAbstractFunction) {
+            val typeArguments = receiverExpression.typeArguments
+            if (typeArguments.any { !it.isResolved() }) {
+                false
             } else {
                 receiverExpression.reference = specializeContext.forward(
                     reference,
-                    listOf(),
+                    typeArguments,
                     receiverExpression
                 )
+                receiverExpression.typeArguments = ArrayList()
                 true
             }
         } else {
             receiverExpression.reference = specializeContext.forward(
                 reference,
-                entry.parentTypeArguments,
+                listOf(),
                 receiverExpression
             )
             true
         }
+    }
+
+    private fun forwardWithoutReceiverNotTopLevel(
+        entry: ExpressionReferenceForwarderEntry,
+        reference: EDeclaration,
+        specializeContext: SpecializeContext
+    ) {
+        val referenceParentClass = reference.getParentClassOrNull()
+        val expressionParentClass = entry.receiverExpression.getParentClassOrNull()
+        if (referenceParentClass != null && expressionParentClass != null) {
+            val implicitReceiverType = expressionParentClass.type.copy()
+            implicitReceiverType.arguments = ArrayList(entry.parentTypeArguments)
+            entry.receiverExpression.reference = forwardClassDeclaration(
+                entry.receiverExpression,
+                referenceParentClass.cast(),
+                implicitReceiverType,
+                specializeContext
+            )
+        } else {
+            entry.receiverExpression.reference = specializeContext.forward(
+                reference,
+                entry.parentTypeArguments,
+                entry.receiverExpression
+            )
+        }
+    }
+
+    private fun forwardClassDeclaration(
+        receiverExpression: EReceiverExpression,
+        referenceParentClass: EKtClass,
+        receiverType: Type,
+        specializeContext: SpecializeContext
+    ): Declaration {
+        val receiverSuperTypes = receiverType.getSuperTypes()
+        receiverSuperTypes.forEach {
+            if (it.reference == referenceParentClass) {
+                return specializeContext.forward(
+                    receiverExpression.reference,
+                    it.arguments,
+                    receiverExpression
+                )
+            }
+        }
+        Messages.INTERNAL_ERROR.on(receiverExpression, "Super type not found: ${referenceParentClass.name}")
     }
 
     private class ExpressionReferenceForwarderIndexerVisitor : TreeVisitor() {

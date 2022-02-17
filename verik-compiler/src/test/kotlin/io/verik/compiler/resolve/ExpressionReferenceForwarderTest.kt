@@ -39,6 +39,42 @@ internal class ExpressionReferenceForwarderTest : BaseTest() {
     }
 
     @Test
+    fun `forward property parameterized super type`() {
+        driveElementTest(
+            """
+                open class C0<T> : Class() {
+                    var x: T = nc()
+                }
+                class C1 : C0<Int>() {
+                    fun f() {
+                        x
+                    }
+                }
+            """.trimIndent(),
+            TypeResolverStage::class,
+            "ReferenceExpression(Int, x, null)"
+        ) { it.findExpression("f") }
+    }
+
+    @Test
+    fun `forward property with receiver parameterised super type`() {
+        driveElementTest(
+            """
+                open class C0<T> : Class() {
+                    var x: T = nc()
+                }
+                class C1 : C0<Int>()
+                var c = C1()
+                fun f() {
+                    c.x
+                }
+            """.trimIndent(),
+            TypeResolverStage::class,
+            "ReferenceExpression(Int, x, ReferenceExpression(C1, c, null))"
+        ) { it.findExpression("f") }
+    }
+
+    @Test
     fun `forward function parameterized`() {
         driveElementTest(
             """
