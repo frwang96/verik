@@ -34,6 +34,7 @@ object CoreVkClasses : CoreScope(CorePackage.VK) {
     val C_AssociativeArray = CoreClassDeclaration(parent, "AssociativeArray", Core.Kt.C_Any, Target.C_AssociativeArray)
     val C_Time = CoreClassDeclaration(parent, "Time", Core.Kt.C_Any, Target.C_Time)
     val C_Event = CoreClassDeclaration(parent, "Event", Core.Kt.C_Any, Target.C_Event)
+    val C_Constraint = CoreClassDeclaration(parent, "Constraint", Core.Kt.C_Any, Target.C_Void)
     val C_Class = CoreClassDeclaration(parent, "Class", Core.Kt.C_Any, null)
     val C_Struct = CoreClassDeclaration(parent, "Struct", Core.Kt.C_Any, null)
     val C_Component = CoreClassDeclaration(parent, "Component", Core.Kt.C_Any, null)

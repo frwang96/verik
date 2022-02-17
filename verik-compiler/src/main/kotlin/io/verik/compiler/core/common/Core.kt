@@ -139,6 +139,7 @@ object Core {
         val C_AssociativeArray = CoreVkClasses.C_AssociativeArray
         val C_Time = CoreVkClasses.C_Time
         val C_Event = CoreVkClasses.C_Event
+        val C_Constraint = CoreVkClasses.C_Constraint
         val C_Class = CoreVkClasses.C_Class
         val C_Struct = CoreVkClasses.C_Struct
         val C_Component = CoreVkClasses.C_Component
@@ -201,6 +202,7 @@ object Core {
         val F_s_String = CoreVkSpecial.F_s_String
         val F_s0 = CoreVkSpecial.F_s0
         val F_s1 = CoreVkSpecial.F_s1
+        val F_cons = CoreVkSpecial.F_cons
         val P_unknown = CoreVkSpecial.P_unknown
         val P_floating = CoreVkSpecial.P_floating
 

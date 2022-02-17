@@ -50,6 +50,7 @@ import io.verik.compiler.evaluate.ConstantPropertyEliminatorStage
 import io.verik.compiler.evaluate.ExpressionEvaluatorStage
 import io.verik.compiler.interpret.ClassInterpreterStage
 import io.verik.compiler.interpret.CompanionObjectReducerStage
+import io.verik.compiler.interpret.ComponentInstantiationInterpreterStage
 import io.verik.compiler.interpret.ComponentInterpreterStage
 import io.verik.compiler.interpret.ConstructorInterpreterStage
 import io.verik.compiler.interpret.EnumInterpreterStage
@@ -178,6 +179,7 @@ object StageSequencer {
         stageSequence.add(StageType.INTERPRET, ConstructorInterpreterStage)
         stageSequence.add(StageType.INTERPRET, InitializerBlockReducerStage)
         stageSequence.add(StageType.INTERPRET, InjectedPropertyInterpreterStage)
+        stageSequence.add(StageType.INTERPRET, ComponentInstantiationInterpreterStage)
         stageSequence.add(StageType.INTERPRET, PropertyInterpreterStage)
         stageSequence.add(StageType.INTERPRET, FunctionLiteralInterpreterStage)
         stageSequence.add(StageType.INTERPRET, CompanionObjectReducerStage)

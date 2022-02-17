@@ -230,6 +230,14 @@ object CoreVkSpecial : CoreScope(CorePackage.VK) {
         }
     }
 
+    val F_cons = object : TransformableCoreFunctionDeclaration(parent, "cons", "fun cons(vararg Boolean)") {
+
+        override fun transform(callExpression: ECallExpression): EExpression {
+            Messages.EXPRESSION_OUT_OF_CONTEXT.on(callExpression, name)
+            return ENothingExpression(callExpression.location)
+        }
+    }
+
     val P_unknown = object : CorePropertyDeclaration(parent, "unknown") {
 
         override fun transform(referenceExpression: EReferenceExpression): EExpression {
