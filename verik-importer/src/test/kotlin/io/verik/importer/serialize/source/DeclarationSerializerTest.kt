@@ -45,7 +45,7 @@ internal class DeclarationSerializerTest : BaseTest() {
             """
                 open class c {
                 
-                    var x: Boolean = imported()
+                    var x: Boolean = imp()
                 }
             """.trimIndent()
         )
@@ -110,7 +110,7 @@ internal class DeclarationSerializerTest : BaseTest() {
 
                     companion object {
                 
-                        fun f(): Unit = imported()
+                        fun f(): Unit = imp()
                     }
                 }
             """.trimIndent()
@@ -152,7 +152,7 @@ internal class DeclarationSerializerTest : BaseTest() {
                 endfunction
             """.trimIndent(),
             """
-                fun f(): Int = imported()
+                fun f(): Int = imp()
             """.trimIndent()
         )
     }
@@ -166,8 +166,8 @@ internal class DeclarationSerializerTest : BaseTest() {
             """.trimIndent(),
             """
                 fun f(
-                    x: Int = imported()
-                ): Unit = imported()
+                    x: Int = imp()
+                ): Unit = imp()
             """.trimIndent()
         )
     }
@@ -181,7 +181,7 @@ internal class DeclarationSerializerTest : BaseTest() {
             """.trimIndent(),
             """
                 @Task
-                fun t(): Unit = imported()
+                fun t(): Unit = imp()
             """.trimIndent()
         )
     }
@@ -200,7 +200,7 @@ internal class DeclarationSerializerTest : BaseTest() {
 
                 fun f(
                     x: c?
-                ): c? = imported()
+                ): c? = imp()
             """.trimIndent()
         )
     }
@@ -219,7 +219,7 @@ internal class DeclarationSerializerTest : BaseTest() {
 
                     companion object {
 
-                        fun <T> f(): Unit = imported()
+                        fun <T> f(): Unit = imp()
                     }
                 }
             """.trimIndent()
@@ -271,9 +271,7 @@ internal class DeclarationSerializerTest : BaseTest() {
 
                     constructor(
                         x: Boolean
-                    ) : super(
-                        imported()
-                    )
+                    ) : super(imp())
                 }
             """.trimIndent()
         )
@@ -286,7 +284,7 @@ internal class DeclarationSerializerTest : BaseTest() {
                 logic x;
             """.trimIndent(),
             """
-                var x: Boolean = imported()
+                var x: Boolean = imp()
             """.trimIndent()
         )
     }
@@ -298,7 +296,7 @@ internal class DeclarationSerializerTest : BaseTest() {
                 const string x;
             """.trimIndent(),
             """
-                val x: String = imported()
+                val x: String = imp()
             """.trimIndent()
         )
     }

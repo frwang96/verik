@@ -40,7 +40,7 @@ import io.verik.compiler.resolve.TypeConstraintKind
 
 object CoreVkSpecial : CoreScope(CorePackage.VK) {
 
-    val F_imported = object : TransformableCoreFunctionDeclaration(parent, "imported", "fun imported()") {
+    val F_imp = object : TransformableCoreFunctionDeclaration(parent, "imp", "fun imp()") {
 
         override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
             return listOf(
@@ -65,7 +65,7 @@ object CoreVkSpecial : CoreScope(CorePackage.VK) {
     val F_inji_String = object : BasicCoreFunctionDeclaration(parent, "inji", "fun inji(String)", null) {
 
         override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
-            return F_imported.getTypeConstraints(callExpression)
+            return F_imp.getTypeConstraints(callExpression)
         }
     }
 
@@ -83,7 +83,7 @@ object CoreVkSpecial : CoreScope(CorePackage.VK) {
     val F_nc = object : TransformableCoreFunctionDeclaration(parent, "nc", "fun nc()") {
 
         override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
-            return F_imported.getTypeConstraints(callExpression)
+            return F_imp.getTypeConstraints(callExpression)
         }
 
         override fun transform(callExpression: ECallExpression): EExpression {

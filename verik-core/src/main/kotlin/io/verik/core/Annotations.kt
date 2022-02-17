@@ -63,8 +63,8 @@ annotation class Verik
 annotation class Make
 
 /**
- * Annotates that a declaration is eligible to be an entry point. If dead code elimination is enabled, declarations that
- * are not reachable from any entry point are eliminated.
+ * Annotates that a declaration is an entry point for compilation. By default, all entry points are elaborated. If dead
+ * code elimination is enabled, declarations that are not reachable from any entry point are eliminated.
  */
 @Target(AnnotationTarget.CLASS, AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY)
 annotation class Entry

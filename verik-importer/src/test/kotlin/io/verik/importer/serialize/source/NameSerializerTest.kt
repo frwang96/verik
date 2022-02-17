@@ -28,7 +28,7 @@ internal class NameSerializerTest : BaseTest() {
                 logic val;
             """.trimIndent(),
             """
-                var `val`: Boolean = imported()
+                var `val`: Boolean = imp()
             """.trimIndent()
         )
     }

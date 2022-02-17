@@ -28,4 +28,4 @@ class s(
     var x2: t
 ) : Struct()
 
-var x3: s = imported()
+var x3: s = imp()

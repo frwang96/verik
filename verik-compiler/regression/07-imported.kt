@@ -38,7 +38,7 @@ class C1<T> {
 
     companion object {
 
-        fun <T> f0(): Boolean = imported()
+        fun <T> f0(): Boolean = imp()
     }
 }
 

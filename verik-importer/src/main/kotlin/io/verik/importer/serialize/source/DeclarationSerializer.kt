@@ -141,7 +141,7 @@ object DeclarationSerializer {
         }
         serializeContext.append(": ${function.descriptor.type}")
         if (function.descriptor.type.isNullable()) serializeContext.append("?")
-        serializeContext.appendLine(" = imported()")
+        serializeContext.appendLine(" = imp()")
     }
 
     fun serializeConstructor(constructor: EKtConstructor, serializeContext: SerializeContext) {
@@ -176,7 +176,7 @@ object DeclarationSerializer {
         serializeContext.serializeName(property)
         serializeContext.append(": ${property.descriptor.type}")
         if (property.descriptor.type.isNullable()) serializeContext.append("?")
-        serializeContext.appendLine(" = imported()")
+        serializeContext.appendLine(" = imp()")
     }
 
     fun serializeValueParameter(valueParameter: EKtValueParameter, serializeContext: SerializeContext) {
@@ -190,7 +190,7 @@ object DeclarationSerializer {
         serializeContext.serializeName(valueParameter)
         serializeContext.append(": ${valueParameter.descriptor.type}")
         if (valueParameter.descriptor.type.isNullable()) serializeContext.append("?")
-        if (valueParameter.hasDefault) serializeContext.append(" = imported()")
+        if (valueParameter.hasDefault) serializeContext.append(" = imp()")
     }
 
     fun serializeEnumEntry(enumEntry: EEnumEntry, serializeContext: SerializeContext) {
@@ -223,15 +223,9 @@ object DeclarationSerializer {
         if (constructor != null) {
             val parameterCount = constructor.valueParameters.size
             if (parameterCount != 0) {
-                serializeContext.appendLine("(")
-                serializeContext.indent {
-                    serializeContext.append("imported()")
-                    repeat(parameterCount - 1) {
-                        serializeContext.append(",")
-                        serializeContext.appendLine()
-                        serializeContext.append("imported()")
-                    }
-                    serializeContext.appendLine()
+                serializeContext.append("(imp()")
+                repeat(parameterCount - 1) {
+                    serializeContext.append(", imp()")
                 }
                 serializeContext.append(")")
             } else {
