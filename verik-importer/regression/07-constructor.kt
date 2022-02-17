@@ -20,12 +20,12 @@ package imported
 
 import io.verik.core.*
 
-open class c0 {
+open class c0 : Class {
 
     constructor(
         x0: Boolean,
         x1: Boolean
-    )
+    ) : super()
 }
 
 open class c1 : c0 {
@@ -33,8 +33,5 @@ open class c1 : c0 {
     constructor(
         x2: Boolean,
         x3: Boolean
-    ) : super(
-        imported(),
-        imported()
-    )
+    ) : super(imp(), imp())
 }

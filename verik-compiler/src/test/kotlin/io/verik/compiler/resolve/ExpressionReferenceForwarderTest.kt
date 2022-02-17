@@ -27,7 +27,7 @@ internal class ExpressionReferenceForwarderTest : BaseTest() {
         driveElementTest(
             """
                 @Suppress("MemberVisibilityCanBePrivate")
-                class C<N : `*`> {
+                class C<N : `*`> : Class() {
                     var x: Ubit<N> = nc()
                     var y = x
                 }
@@ -39,11 +39,47 @@ internal class ExpressionReferenceForwarderTest : BaseTest() {
     }
 
     @Test
+    fun `forward property parameterized super type`() {
+        driveElementTest(
+            """
+                open class C0<T> : Class() {
+                    var x: T = nc()
+                }
+                class C1 : C0<Int>() {
+                    fun f() {
+                        x
+                    }
+                }
+            """.trimIndent(),
+            TypeResolverStage::class,
+            "ReferenceExpression(Int, x, null)"
+        ) { it.findExpression("f") }
+    }
+
+    @Test
+    fun `forward property with receiver parameterised super type`() {
+        driveElementTest(
+            """
+                open class C0<T> : Class() {
+                    var x: T = nc()
+                }
+                class C1 : C0<Int>()
+                var c = C1()
+                fun f() {
+                    c.x
+                }
+            """.trimIndent(),
+            TypeResolverStage::class,
+            "ReferenceExpression(Int, x, ReferenceExpression(C1, c, null))"
+        ) { it.findExpression("f") }
+    }
+
+    @Test
     fun `forward function parameterized`() {
         driveElementTest(
             """
                 @Suppress("MemberVisibilityCanBePrivate")
-                class C<N : `*`> {
+                class C<N : `*`> : Class() {
                     fun f(): Boolean { return false }
                     var x = f()
                 }
@@ -58,8 +94,8 @@ internal class ExpressionReferenceForwarderTest : BaseTest() {
     fun `forward function not parameterized`() {
         driveElementTest(
             """
-                class D
-                class C<N : `*`> {
+                class D : Class()
+                class C<N : `*`> : Class() {
                     var x = D()
                 }
                 val c = C<`8`>()

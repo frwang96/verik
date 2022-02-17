@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,21 +14,17 @@
  * limitations under the License.
  */
 
+@file:Suppress("unused", "UNUSED_PARAMETER")
+
 package io.verik.core
 
-import kotlin.reflect.KProperty
+/**
+ * Randomization constraint for [random][Rand] properties of [classes][Class].
+ */
+class Constraint private constructor() {
 
-internal class VerikException : Exception(
-    "Verik declaration should not be run as Kotlin"
-)
-
-internal class VerikExceptionDelegate<T> {
-
-    operator fun getValue(thisRef: Any?, property: KProperty<*>): T {
-        throw VerikException()
-    }
-
-    operator fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
-        throw VerikException()
-    }
+    /**
+     * Whether this randomization constraint is enabled.
+     */
+    var enable: Boolean by VerikExceptionDelegate()
 }

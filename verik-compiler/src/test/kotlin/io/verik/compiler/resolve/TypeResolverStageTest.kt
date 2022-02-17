@@ -38,7 +38,7 @@ internal class TypeResolverStageTest : BaseTest() {
     fun `resolve property type parameterized`() {
         driveElementTest(
             """
-                class C<N : `*`>
+                class C<N : `*`> : Class()
                 var c = C<`8`>()
             """.trimIndent(),
             TypeResolverStage::class,
@@ -47,7 +47,7 @@ internal class TypeResolverStageTest : BaseTest() {
     }
 
     @Test
-    fun `resolve property type parameterized inferred`() {
+    fun `resolve property type parameterized conditional`() {
         driveElementTest(
             """
                 var x = if (b<TRUE>()) u(0x0) else u(0x00)
@@ -117,28 +117,6 @@ internal class TypeResolverStageTest : BaseTest() {
             """.trimIndent(),
             TypeResolverStage::class,
             "CallExpression(Ubit<`2`>, cat, null, *, [])"
-        ) { it.findExpression("x") }
-    }
-
-    @Test
-    fun `resolve call expression cat illegal`() {
-        driveMessageTest(
-            """
-                val x = cat(posedge(false))
-            """.trimIndent(),
-            true,
-            "Could not get width of type: Event"
-        )
-    }
-
-    @Test
-    fun `resolve call expression rep`() {
-        driveElementTest(
-            """
-                val x = rep<`3`>(false)
-            """.trimIndent(),
-            TypeResolverStage::class,
-            "CallExpression(Ubit<`3`>, rep, null, *, [`3`])"
         ) { it.findExpression("x") }
     }
 

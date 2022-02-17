@@ -26,14 +26,14 @@ enum class e0 {
     E2
 }
 
-var x0: e0 = imported()
+var x0: e0 = imp()
 
-open class c {
+open class c : Class() {
 
     enum class e1 {
         E3,
         E4
     }
 
-    var x1: e1 = imported()
+    var x1: e1 = imp()
 }

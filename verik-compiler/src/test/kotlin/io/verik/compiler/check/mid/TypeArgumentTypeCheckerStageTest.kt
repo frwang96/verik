@@ -36,7 +36,7 @@ internal class TypeArgumentTypeCheckerStageTest : BaseTest() {
     fun `cardinal type expected type parameter`() {
         driveMessageTest(
             """
-                class C<N> {
+                class C<N> : Class() {
                     var x: Ubit<INC<N>> = u(0)
                 }
             """.trimIndent(),

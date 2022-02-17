@@ -48,10 +48,6 @@ object Messages {
         "Invalid timescale: $0"
     )
 
-    val ENTRY_POINT_NOT_FOUND = ErrorMessageTemplate1<String>(
-        "Entry point not found: $0"
-    )
-
     val UNANNOTATED_FILE = WarningMessageTemplate0(
         "File is not annotated as Verik"
     )
@@ -111,6 +107,14 @@ object Messages {
     )
 
 //  MID CHECK  /////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    val ENTRY_POINT_NOT_FOUND = ErrorMessageTemplate1<String>(
+        "Entry point not found: $0"
+    )
+
+    val SUPER_TYPE_MISSING = ErrorMessageTemplate1<String>(
+        "Supertype is required: $0"
+    )
 
     val CONFLICTING_ANNOTATIONS = ErrorMessageTemplate2<AnnotationEntry, AnnotationEntry>(
         "Conflicting annotations: @$0 and @$1"

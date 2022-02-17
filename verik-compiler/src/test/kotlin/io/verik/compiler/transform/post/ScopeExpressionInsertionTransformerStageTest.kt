@@ -63,7 +63,7 @@ internal class ScopeExpressionInsertionTransformerStageTest : BaseTest() {
     fun `reference package class`() {
         driveElementTest(
             """
-                object O {
+                object O : Class() {
                     var x = false
                 }
                 class M : Module() {
@@ -81,7 +81,7 @@ internal class ScopeExpressionInsertionTransformerStageTest : BaseTest() {
     fun `reference object property`() {
         driveElementTest(
             """
-                object O {
+                object O : Class() {
                     var x = false
                 }
                 fun f() {

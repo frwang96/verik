@@ -18,8 +18,6 @@
 
 package io.verik.core
 
-import kotlin.properties.Delegates
-
 /**
  * An unpacked array of size [X] of elements of type [E].
  */
@@ -32,9 +30,7 @@ class Unpacked<X : `*`, E> private constructor() : Iterable<E> {
     /**
      * The size of the array.
      */
-    var size: Int by Delegates.observable(0) { _, _, _ ->
-        throw VerikException()
-    }
+    var size: Int by VerikExceptionDelegate()
 
     /**
      * Returns the array element at the specified [index].

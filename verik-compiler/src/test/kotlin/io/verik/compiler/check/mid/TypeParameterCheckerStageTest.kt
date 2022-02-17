@@ -25,7 +25,7 @@ internal class TypeParameterCheckerStageTest : BaseTest() {
     fun `parameterized function illegal`() {
         driveMessageTest(
             """
-                class C {
+                class C : Class() {
                     fun <T> f() {}
                 }
             """.trimIndent(),

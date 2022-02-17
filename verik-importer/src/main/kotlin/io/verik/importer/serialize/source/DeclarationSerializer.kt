@@ -28,7 +28,6 @@ import io.verik.importer.ast.element.declaration.EProperty
 import io.verik.importer.ast.element.declaration.ETypeAlias
 import io.verik.importer.ast.element.declaration.ETypeParameter
 import io.verik.importer.ast.element.descriptor.EDescriptor
-import io.verik.importer.core.Core
 
 object DeclarationSerializer {
 
@@ -52,11 +51,9 @@ object DeclarationSerializer {
             }
             serializeContext.append(")")
         }
-        if (cls.superDescriptor.type.reference != Core.C_Any) {
-            serializeContext.append(" : ${cls.superDescriptor.type}")
-            if (cls.getConstructor() == null) {
-                serializeSuperConstructorCall(cls.superDescriptor, serializeContext)
-            }
+        serializeContext.append(" : ${cls.superDescriptor.type}")
+        if (cls.getConstructor() == null) {
+            serializeSuperConstructorCall(cls.superDescriptor, serializeContext)
         }
         if (cls.declarations.isNotEmpty()) {
             serializeContext.appendLine(" {")
@@ -141,7 +138,7 @@ object DeclarationSerializer {
         }
         serializeContext.append(": ${function.descriptor.type}")
         if (function.descriptor.type.isNullable()) serializeContext.append("?")
-        serializeContext.appendLine(" = imported()")
+        serializeContext.appendLine(" = imp()")
     }
 
     fun serializeConstructor(constructor: EKtConstructor, serializeContext: SerializeContext) {
@@ -158,10 +155,8 @@ object DeclarationSerializer {
             serializeContext.append("()")
         }
         val cls = constructor.parentNotNull().cast<EKtClass>()
-        if (cls.superDescriptor.type.reference != Core.C_Any) {
-            serializeContext.append(" : super")
-            serializeSuperConstructorCall(cls.superDescriptor, serializeContext)
-        }
+        serializeContext.append(" : super")
+        serializeSuperConstructorCall(cls.superDescriptor, serializeContext)
         serializeContext.appendLine()
     }
 
@@ -176,7 +171,7 @@ object DeclarationSerializer {
         serializeContext.serializeName(property)
         serializeContext.append(": ${property.descriptor.type}")
         if (property.descriptor.type.isNullable()) serializeContext.append("?")
-        serializeContext.appendLine(" = imported()")
+        serializeContext.appendLine(" = imp()")
     }
 
     fun serializeValueParameter(valueParameter: EKtValueParameter, serializeContext: SerializeContext) {
@@ -190,7 +185,7 @@ object DeclarationSerializer {
         serializeContext.serializeName(valueParameter)
         serializeContext.append(": ${valueParameter.descriptor.type}")
         if (valueParameter.descriptor.type.isNullable()) serializeContext.append("?")
-        if (valueParameter.hasDefault) serializeContext.append(" = imported()")
+        if (valueParameter.hasDefault) serializeContext.append(" = imp()")
     }
 
     fun serializeEnumEntry(enumEntry: EEnumEntry, serializeContext: SerializeContext) {
@@ -223,15 +218,9 @@ object DeclarationSerializer {
         if (constructor != null) {
             val parameterCount = constructor.valueParameters.size
             if (parameterCount != 0) {
-                serializeContext.appendLine("(")
-                serializeContext.indent {
-                    serializeContext.append("imported()")
-                    repeat(parameterCount - 1) {
-                        serializeContext.append(",")
-                        serializeContext.appendLine()
-                        serializeContext.append("imported()")
-                    }
-                    serializeContext.appendLine()
+                serializeContext.append("(imp()")
+                repeat(parameterCount - 1) {
+                    serializeContext.append(", imp()")
                 }
                 serializeContext.append(")")
             } else {

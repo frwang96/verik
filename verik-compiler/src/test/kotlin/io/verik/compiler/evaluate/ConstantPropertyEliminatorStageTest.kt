@@ -27,12 +27,12 @@ internal class ConstantPropertyEliminatorStageTest : BaseTest() {
     fun `eliminate property`() {
         driveElementTest(
             """
-                class C {
+                class C : Class() {
                     val x = 0
                 }
             """.trimIndent(),
             ConstantPropertyEliminatorStage::class,
-            "KtClass(C, C, Any, [], [], PrimaryConstructor(*), 0, 0)"
+            "KtClass(C, C, Class, [], [], PrimaryConstructor(*), 0, 0)"
         ) { it.findDeclaration("C") }
     }
 

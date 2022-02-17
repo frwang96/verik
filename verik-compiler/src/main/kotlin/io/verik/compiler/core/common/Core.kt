@@ -19,9 +19,9 @@
 package io.verik.compiler.core.common
 
 import io.verik.compiler.core.declaration.jv.CoreJvArrayList
-import io.verik.compiler.core.declaration.jv.CoreJvClass
+import io.verik.compiler.core.declaration.jv.CoreJvClasses
 import io.verik.compiler.core.declaration.kt.CoreKtBoolean
-import io.verik.compiler.core.declaration.kt.CoreKtClass
+import io.verik.compiler.core.declaration.kt.CoreKtClasses
 import io.verik.compiler.core.declaration.kt.CoreKtCollections
 import io.verik.compiler.core.declaration.kt.CoreKtFunctions
 import io.verik.compiler.core.declaration.kt.CoreKtInt
@@ -31,6 +31,7 @@ import io.verik.compiler.core.declaration.kt.CoreKtText
 import io.verik.compiler.core.declaration.vk.CoreVkBoolean
 import io.verik.compiler.core.declaration.vk.CoreVkCardinal
 import io.verik.compiler.core.declaration.vk.CoreVkClass
+import io.verik.compiler.core.declaration.vk.CoreVkClasses
 import io.verik.compiler.core.declaration.vk.CoreVkComponent
 import io.verik.compiler.core.declaration.vk.CoreVkControl
 import io.verik.compiler.core.declaration.vk.CoreVkMisc
@@ -48,14 +49,14 @@ object Core {
 
     object Kt {
 
-        val C_Function = CoreKtClass.C_Function
-        val C_Any = CoreKtClass.C_Any
-        val C_Unit = CoreKtClass.C_Unit
-        val C_Nothing = CoreKtClass.C_Nothing
-        val C_Enum = CoreKtClass.C_Enum
-        val C_Int = CoreKtClass.C_Int
-        val C_Boolean = CoreKtClass.C_Boolean
-        val C_String = CoreKtClass.C_String
+        val C_Function = CoreKtClasses.C_Function
+        val C_Any = CoreKtClasses.C_Any
+        val C_Unit = CoreKtClasses.C_Unit
+        val C_Nothing = CoreKtClasses.C_Nothing
+        val C_Enum = CoreKtClasses.C_Enum
+        val C_Int = CoreKtClasses.C_Int
+        val C_Boolean = CoreKtClasses.C_Boolean
+        val C_String = CoreKtClasses.C_String
 
         val F_repeat_Int_Function = CoreKtFunctions.F_repeat_Int_Function
         val F_assert_Boolean = CoreKtFunctions.F_assert_Boolean
@@ -102,7 +103,7 @@ object Core {
 
         object Ranges {
 
-            val C_IntRange = CoreKtClass.Ranges.C_IntRange
+            val C_IntRange = CoreKtClasses.Ranges.C_IntRange
 
             val F_until_Int = CoreKtRanges.F_until_Int
         }
@@ -112,9 +113,9 @@ object Core {
 
         object Util {
 
-            val C_ArrayList = CoreJvClass.Util.C_ArrayList
+            val C_ArrayList = CoreJvClasses.Util.C_ArrayList
 
-            val F_ArrayList = CoreJvClass.Util.F_ArrayList
+            val F_ArrayList = CoreJvClasses.Util.F_ArrayList
 
             object ArrayList {
 
@@ -129,27 +130,30 @@ object Core {
 
     object Vk {
 
-        val C_Ubit = CoreVkClass.C_Ubit
-        val C_Sbit = CoreVkClass.C_Sbit
-        val C_Packed = CoreVkClass.C_Packed
-        val C_Unpacked = CoreVkClass.C_Unpacked
-        val C_Queue = CoreVkClass.C_Queue
-        val C_DynamicArray = CoreVkClass.C_DynamicArray
-        val C_AssociativeArray = CoreVkClass.C_AssociativeArray
-        val C_Time = CoreVkClass.C_Time
-        val C_Event = CoreVkClass.C_Event
-        val C_Struct = CoreVkClass.C_Struct
-        val C_Component = CoreVkClass.C_Component
-        val C_Module = CoreVkClass.C_Module
-        val C_ModuleInterface = CoreVkClass.C_ModuleInterface
-        val C_ModulePort = CoreVkClass.C_ModulePort
-        val C_ClockingBlock = CoreVkClass.C_ClockingBlock
+        val C_Ubit = CoreVkClasses.C_Ubit
+        val C_Sbit = CoreVkClasses.C_Sbit
+        val C_Packed = CoreVkClasses.C_Packed
+        val C_Unpacked = CoreVkClasses.C_Unpacked
+        val C_Queue = CoreVkClasses.C_Queue
+        val C_DynamicArray = CoreVkClasses.C_DynamicArray
+        val C_AssociativeArray = CoreVkClasses.C_AssociativeArray
+        val C_Time = CoreVkClasses.C_Time
+        val C_Event = CoreVkClasses.C_Event
+        val C_Constraint = CoreVkClasses.C_Constraint
+        val C_Class = CoreVkClasses.C_Class
+        val C_Struct = CoreVkClasses.C_Struct
+        val C_Component = CoreVkClasses.C_Component
+        val C_Module = CoreVkClasses.C_Module
+        val C_ModuleInterface = CoreVkClasses.C_ModuleInterface
+        val C_ModulePort = CoreVkClasses.C_ModulePort
+        val C_ClockingBlock = CoreVkClasses.C_ClockingBlock
 
-        val F_Struct = CoreVkClass.F_Struct
-        val F_Module = CoreVkClass.F_Module
-        val F_ModuleInterface = CoreVkClass.F_ModuleInterface
-        val F_ModulePort = CoreVkClass.F_ModulePort
-        val F_ClockingBlock = CoreVkClass.F_ClockingBlock
+        val F_Class = CoreVkClasses.F_Class
+        val F_Struct = CoreVkClasses.F_Struct
+        val F_Module = CoreVkClasses.F_Module
+        val F_ModuleInterface = CoreVkClasses.F_ModuleInterface
+        val F_ModulePort = CoreVkClasses.F_ModulePort
+        val F_ClockingBlock = CoreVkClasses.F_ClockingBlock
 
         val T_TRUE = CoreVkCardinal.T_TRUE
         val T_FALSE = CoreVkCardinal.T_FALSE
@@ -180,7 +184,7 @@ object Core {
         val F_info_String = CoreVkSystem.F_info_String
         val F_time = CoreVkSystem.F_time
 
-        val F_imported = CoreVkSpecial.F_imported
+        val F_imp = CoreVkSpecial.F_imp
         val F_inj_String = CoreVkSpecial.F_inj_String
         val F_inji_String = CoreVkSpecial.F_inji_String
         val F_t = CoreVkSpecial.F_t
@@ -198,6 +202,7 @@ object Core {
         val F_s_String = CoreVkSpecial.F_s_String
         val F_s0 = CoreVkSpecial.F_s0
         val F_s1 = CoreVkSpecial.F_s1
+        val F_cons = CoreVkSpecial.F_cons
         val P_unknown = CoreVkSpecial.P_unknown
         val P_floating = CoreVkSpecial.P_floating
 
@@ -346,6 +351,11 @@ object Core {
             val F_set_Ubit_E = CoreVkUnpacked.F_set_Ubit_E
 
             val P_size = CoreVkUnpacked.P_size
+        }
+
+        object Class {
+
+            val F_randomize = CoreVkClass.F_randomize
         }
     }
 }

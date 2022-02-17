@@ -63,8 +63,8 @@ annotation class Verik
 annotation class Make
 
 /**
- * Annotates that a declaration is eligible to be an entry point. If dead code elimination is enabled, declarations that
- * are not reachable from any entry point are eliminated.
+ * Annotates that a declaration is an entry point for compilation. By default, all entry points are elaborated. If dead
+ * code elimination is enabled, declarations that are not reachable from any entry point are eliminated.
  */
 @Target(AnnotationTarget.CLASS, AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY)
 annotation class Entry
@@ -103,6 +103,30 @@ annotation class In
  */
 @Target(AnnotationTarget.PROPERTY)
 annotation class Out
+
+/**
+ * Annotates that a property in a [Class] should be randomized.
+ */
+@Target(AnnotationTarget.PROPERTY)
+annotation class Rand
+
+/**
+ * Annotates randomization constraints in a [Class].
+ */
+@Target(AnnotationTarget.PROPERTY)
+annotation class Cons
+
+/**
+ * Annotates assertion properties.
+ */
+@Target(AnnotationTarget.PROPERTY)
+annotation class Assert
+
+/**
+ * Annotates cover properties.
+ */
+@Target(AnnotationTarget.PROPERTY)
+annotation class Cover
 
 /**
  * Annotates combinational action blocks or combinationally assigned properties. It is executed when the value of

@@ -25,7 +25,7 @@ import io.verik.compiler.target.common.PrimitiveTargetClassDeclaration
 import io.verik.compiler.target.common.TargetPackage
 import io.verik.compiler.target.common.TargetScope
 
-object TargetClass : TargetScope(TargetPackage) {
+object TargetClasses : TargetScope(TargetPackage) {
 
     val C_Void = object : PrimitiveTargetClassDeclaration(parent, "Void") {
 

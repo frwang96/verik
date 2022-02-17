@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,28 +14,37 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.serialize.general
+package io.verik.compiler.core.declaration.vk
 
-import io.verik.compiler.test.BaseTest
+import io.verik.compiler.core.common.Core
+import io.verik.compiler.test.CoreDeclarationTest
 import org.junit.jupiter.api.Test
 
-internal class PackageWrapperSerializerStageTest : BaseTest() {
+internal class CoreVkClassTest : CoreDeclarationTest() {
 
     @Test
-    fun `package file`() {
-        driveTextFileTest(
+    fun `serialize randomize`() {
+        driveCoreDeclarationTest(
+            listOf(Core.Vk.Class.F_randomize),
             """
                 class C : Class()
+                val c  = C()
+                fun f() {
+                    c.randomize()
+                }
             """.trimIndent(),
             """
-                package test_pkg;
-                
-                    typedef class C;
-                
-                `include "src/test/Test.svh"
-                
-                endpackage : test_pkg
+                class C;
+
+                    function new();
+                    endfunction : new
+
+                endclass : C
+
+                function automatic void f();
+                    c.randomize();
+                endfunction : f
             """.trimIndent()
-        ) { it.packageWrapperTextFiles[0] }
+        )
     }
 }

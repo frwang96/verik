@@ -24,6 +24,7 @@ import io.verik.compiler.ast.element.declaration.sv.EAlwaysComBlock
 import io.verik.compiler.ast.element.declaration.sv.EAlwaysSeqBlock
 import io.verik.compiler.ast.element.declaration.sv.EClockingBlockInstantiation
 import io.verik.compiler.ast.element.declaration.sv.EComponentInstantiation
+import io.verik.compiler.ast.element.declaration.sv.EConstraint
 import io.verik.compiler.ast.element.declaration.sv.EEnum
 import io.verik.compiler.ast.element.declaration.sv.EInitialBlock
 import io.verik.compiler.ast.element.declaration.sv.EInjectedProperty
@@ -40,6 +41,7 @@ import io.verik.compiler.ast.element.declaration.sv.ESvValueParameter
 import io.verik.compiler.ast.element.declaration.sv.ETask
 import io.verik.compiler.ast.element.declaration.sv.ETypeDefinition
 import io.verik.compiler.ast.property.PortType
+import io.verik.compiler.core.common.AnnotationEntries
 import io.verik.compiler.core.common.Core
 
 object DeclarationSerializer {
@@ -57,7 +59,7 @@ object DeclarationSerializer {
     fun serializeClass(cls: ESvClass, serializeContext: SerializeContext) {
         serializeContext.append("class ${cls.name}")
         val superType = cls.superType
-        if (superType.reference != Core.Kt.C_Any) {
+        if (superType.reference != Core.Vk.C_Class) {
             val serializedSuperType = TypeSerializer.serialize(superType, cls)
             serializedSuperType.checkNoVariableDimension(cls)
             serializeContext.append(" extends ${serializedSuperType.base}")
@@ -191,6 +193,7 @@ object DeclarationSerializer {
 
     fun serializeProperty(property: EProperty, serializeContext: SerializeContext) {
         if (property.isStatic) serializeContext.append("static ")
+        if (property.hasAnnotationEntry(AnnotationEntries.RAND)) serializeContext.append("rand ")
         serializePropertyTypeAndName(property, true, serializeContext)
         val initializer = property.initializer
         if (initializer != null) {
@@ -278,6 +281,16 @@ object DeclarationSerializer {
         }
         serializeContext.label(clockingBlockInstantiation.endLocation) {
             serializeContext.appendLine("endclocking")
+        }
+    }
+
+    fun serializeConstraint(constraint: EConstraint, serializeContext: SerializeContext) {
+        serializeContext.appendLine("constraint ${constraint.name} {")
+        serializeContext.indent {
+            constraint.body.statements.forEach { serializeContext.serializeAsStatement(it) }
+        }
+        serializeContext.label(constraint.body.endLocation) {
+            serializeContext.appendLine("}")
         }
     }
 

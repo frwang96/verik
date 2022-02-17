@@ -26,13 +26,13 @@ internal class PrimaryConstructorReducerStageTest : BaseTest() {
     fun `reduce primary constructor simple`() {
         driveElementTest(
             """
-                class C
+                class C : Class()
             """.trimIndent(),
             PrimaryConstructorReducerStage::class,
             """
                 KtClass(
-                    C, C, Any, [],
-                    [SecondaryConstructor(C, C, BlockExpression(Unit, []), [], null)],
+                    C, C, Class, [],
+                    [SecondaryConstructor(C, C, BlockExpression(Unit, []), [], CallExpression(*))],
                     null, 0, 0
                 )
             """.trimIndent()
@@ -54,14 +54,14 @@ internal class PrimaryConstructorReducerStageTest : BaseTest() {
         """.trimIndent()
         driveElementTest(
             """
-                class C(val x: Int)
+                class C(val x: Int) : Class()
             """.trimIndent(),
             PrimaryConstructorReducerStage::class,
             """
                 KtClass(
-                    C, C, Any, [], [
+                    C, C, Class, [], [
                         Property(x, Int, null, 0, 0),
-                        SecondaryConstructor(C, C, $blockExpression, [KtValueParameter(*)], null)
+                        SecondaryConstructor(C, C, $blockExpression, [KtValueParameter(*)], CallExpression(*))
                     ], null, 0, 0
                 )
             """.trimIndent()

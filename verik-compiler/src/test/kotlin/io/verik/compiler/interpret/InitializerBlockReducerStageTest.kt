@@ -26,14 +26,14 @@ internal class InitializerBlockReducerStageTest : BaseTest() {
     fun `reduce initializer block`() {
         driveElementTest(
             """
-                class C {
+                class C : Class() {
                     init {
                         println()
                     }
                 }
             """.trimIndent(),
             InitializerBlockReducerStage::class,
-            "SvClass(C, C, [], [SvConstructor(C, BlockExpression(Unit, [CallExpression(*)]), [])], 0)"
+            "SvClass(C, C, Class, [], [SvConstructor(C, BlockExpression(Unit, [CallExpression(*)]), [])], 0)"
         ) { it.findDeclaration("C") }
     }
 }

@@ -36,6 +36,7 @@ import io.verik.compiler.ast.element.declaration.sv.EAlwaysSeqBlock
 import io.verik.compiler.ast.element.declaration.sv.EClockingBlock
 import io.verik.compiler.ast.element.declaration.sv.EClockingBlockInstantiation
 import io.verik.compiler.ast.element.declaration.sv.EComponentInstantiation
+import io.verik.compiler.ast.element.declaration.sv.EConstraint
 import io.verik.compiler.ast.element.declaration.sv.EEnum
 import io.verik.compiler.ast.element.declaration.sv.EInitialBlock
 import io.verik.compiler.ast.element.declaration.sv.EInjectedProperty
@@ -179,6 +180,7 @@ class ElementPrinter : Visitor() {
         build("SvClass") {
             build(cls.name)
             build(cls.type.toString())
+            build(cls.superType.toString())
             build(cls.typeParameters)
             build(cls.declarations)
             build(cls.isObject)
@@ -375,6 +377,13 @@ class ElementPrinter : Visitor() {
             build(clockingBlockInstantiation.type.toString())
             build(clockingBlockInstantiation.valueArguments)
             build(clockingBlockInstantiation.eventControlExpression)
+        }
+    }
+
+    override fun visitConstraint(constraint: EConstraint) {
+        build("Constraint") {
+            build(constraint.name)
+            build(constraint.body)
         }
     }
 

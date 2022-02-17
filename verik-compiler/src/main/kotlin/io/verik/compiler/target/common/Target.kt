@@ -17,25 +17,25 @@
 package io.verik.compiler.target.common
 
 import io.verik.compiler.target.declaration.TargetArrayList
-import io.verik.compiler.target.declaration.TargetClass
+import io.verik.compiler.target.declaration.TargetClasses
 import io.verik.compiler.target.declaration.TargetSystem
 
 object Target {
 
-    val C_Void = TargetClass.C_Void
-    val C_Int = TargetClass.C_Int
-    val C_Boolean = TargetClass.C_Boolean
-    val C_String = TargetClass.C_String
-    val C_Ubit = TargetClass.C_Ubit
-    val C_Sbit = TargetClass.C_Sbit
-    val C_Packed = TargetClass.C_Packed
-    val C_Unpacked = TargetClass.C_Unpacked
-    val C_Queue = TargetClass.C_Queue
-    val C_DynamicArray = TargetClass.C_DynamicArray
-    val C_AssociativeArray = TargetClass.C_AssociativeArray
-    val C_Time = TargetClass.C_Time
-    val C_Event = TargetClass.C_Event
-    val C_ArrayList = TargetClass.C_ArrayList
+    val C_Void = TargetClasses.C_Void
+    val C_Int = TargetClasses.C_Int
+    val C_Boolean = TargetClasses.C_Boolean
+    val C_String = TargetClasses.C_String
+    val C_Ubit = TargetClasses.C_Ubit
+    val C_Sbit = TargetClasses.C_Sbit
+    val C_Packed = TargetClasses.C_Packed
+    val C_Unpacked = TargetClasses.C_Unpacked
+    val C_Queue = TargetClasses.C_Queue
+    val C_DynamicArray = TargetClasses.C_DynamicArray
+    val C_AssociativeArray = TargetClasses.C_AssociativeArray
+    val C_Time = TargetClasses.C_Time
+    val C_Event = TargetClasses.C_Event
+    val C_ArrayList = TargetClasses.C_ArrayList
 
     val F_cast = TargetSystem.F_cast
     val F_display = TargetSystem.F_display
@@ -55,6 +55,7 @@ object Target {
     val F_finish = TargetSystem.F_finish
     val F_wait = TargetSystem.F_wait
     val F_name = TargetSystem.F_name
+    val F_randomize = TargetSystem.F_randomize
 
     val P_root = TargetSystem.P_root
 

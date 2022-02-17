@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,21 +14,21 @@
  * limitations under the License.
  */
 
-package io.verik.core
+package io.verik.compiler.check.mid
 
-import kotlin.reflect.KProperty
+import io.verik.compiler.test.BaseTest
+import org.junit.jupiter.api.Test
 
-internal class VerikException : Exception(
-    "Verik declaration should not be run as Kotlin"
-)
+internal class SuperTypeCheckerStageTest : BaseTest() {
 
-internal class VerikExceptionDelegate<T> {
-
-    operator fun getValue(thisRef: Any?, property: KProperty<*>): T {
-        throw VerikException()
-    }
-
-    operator fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
-        throw VerikException()
+    @Test
+    fun `entry parameterized`() {
+        driveMessageTest(
+            """
+                class C
+            """.trimIndent(),
+            true,
+            "Supertype is required: C"
+        )
     }
 }

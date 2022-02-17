@@ -22,13 +22,13 @@ import io.verik.core.*
 
 typealias t0 = Ubit<`8`>
 
-var x0: t0 = imported()
+var x0: t0 = imp()
 
 typealias t1 = Queue<Boolean>
 
-var x1: t1 = imported()
+var x1: t1 = imp()
 
-open class c {
+open class c : Class() {
 
-    var x2: Boolean = imported()
+    var x2: Boolean = imp()
 }

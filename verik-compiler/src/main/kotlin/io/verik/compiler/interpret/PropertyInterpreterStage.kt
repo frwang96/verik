@@ -16,27 +16,18 @@
 
 package io.verik.compiler.interpret
 
-import io.verik.compiler.ast.element.declaration.common.EDeclaration
 import io.verik.compiler.ast.element.declaration.common.EProperty
 import io.verik.compiler.ast.element.declaration.kt.ECompanionObject
-import io.verik.compiler.ast.element.declaration.sv.EAbstractContainerComponent
-import io.verik.compiler.ast.element.declaration.sv.EClockingBlock
-import io.verik.compiler.ast.element.declaration.sv.EClockingBlockInstantiation
-import io.verik.compiler.ast.element.declaration.sv.EComponentInstantiation
-import io.verik.compiler.ast.element.declaration.sv.EModulePort
-import io.verik.compiler.ast.element.declaration.sv.EModulePortInstantiation
-import io.verik.compiler.ast.element.declaration.sv.EPort
+import io.verik.compiler.ast.element.declaration.sv.EConstraint
 import io.verik.compiler.ast.element.declaration.sv.ESvClass
+import io.verik.compiler.ast.element.expression.common.EBlockExpression
 import io.verik.compiler.ast.element.expression.common.ECallExpression
-import io.verik.compiler.ast.element.expression.common.EExpression
-import io.verik.compiler.ast.element.expression.common.EReferenceExpression
-import io.verik.compiler.ast.element.expression.sv.EEventControlExpression
 import io.verik.compiler.common.ReferenceUpdater
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.AnnotationEntries
+import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
-import io.verik.compiler.message.Messages
 
 object PropertyInterpreterStage : ProjectStage() {
 
@@ -51,121 +42,34 @@ object PropertyInterpreterStage : ProjectStage() {
         private val referenceUpdater: ReferenceUpdater
     ) : TreeVisitor() {
 
-        private fun interpret(property: EProperty): EDeclaration? {
-            if (property.hasAnnotationEntry(AnnotationEntries.MAKE)) {
-                return interpretAbstractComponentInstantiation(property)
-            }
-            val parent = property.parent
-            property.isStatic = (parent is ESvClass && parent.isObject) || parent is ECompanionObject
-            return null
-        }
-
-        private fun interpretAbstractComponentInstantiation(property: EProperty): EDeclaration? {
-            val initializer = property.initializer
-            return if (initializer is ECallExpression) {
-                when (val component = initializer.reference) {
-                    is EAbstractContainerComponent ->
-                        interpretComponentInstantiation(property, initializer, component)
-                    is EModulePort ->
-                        interpretModulePortInstantiation(property, initializer, component)
-                    is EClockingBlock ->
-                        interpretClockingBlockInstantiation(property, initializer, component)
-                    else -> null
-                }
-            } else null
-        }
-
-        private fun interpretComponentInstantiation(
-            property: EProperty,
-            callExpression: ECallExpression,
-            component: EAbstractContainerComponent
-        ): EComponentInstantiation {
-            if (component.ports.size != callExpression.valueArguments.size) {
-                Messages.INTERNAL_ERROR.on(callExpression, "Incorrect number of value arguments")
-            }
-
-            return EComponentInstantiation(
-                property.location,
-                property.endLocation,
-                property.name,
-                property.type,
-                property.annotationEntries,
-                property.documentationLines,
-                callExpression.valueArguments
+        private fun interpretConstraint(property: EProperty): EConstraint? {
+            val callExpression = property.initializer
+            if (callExpression !is ECallExpression || callExpression.reference != Core.Vk.F_cons) return null
+            val body = EBlockExpression(
+                location = property.location,
+                endLocation = property.endLocation,
+                type = Core.Kt.C_Unit.toType(),
+                statements = callExpression.valueArguments
             )
-        }
-
-        private fun interpretModulePortInstantiation(
-            property: EProperty,
-            callExpression: ECallExpression,
-            modulePort: EModulePort
-        ): EModulePortInstantiation {
-            if (modulePort.ports.size != callExpression.valueArguments.size) {
-                Messages.INTERNAL_ERROR.on(callExpression, "Incorrect number of value arguments")
-            }
-            modulePort.ports.zip(callExpression.valueArguments).forEach { (port, valueArgument) ->
-                checkPortNameMatch(port, valueArgument)
-            }
-
-            return EModulePortInstantiation(
-                property.location,
-                property.endLocation,
-                property.name,
-                property.type,
-                property.annotationEntries,
-                property.documentationLines,
-                callExpression.valueArguments
+            return EConstraint(
+                location = property.location,
+                name = property.name,
+                annotationEntries = property.annotationEntries,
+                documentationLines = property.documentationLines,
+                body = body
             )
-        }
-
-        private fun interpretClockingBlockInstantiation(
-            property: EProperty,
-            callExpression: ECallExpression,
-            clockingBlock: EClockingBlock
-        ): EClockingBlockInstantiation {
-            val valueArguments = callExpression
-                .valueArguments
-                .filterIndexed { index, _ -> index != clockingBlock.eventValueParameterIndex }
-            if (clockingBlock.ports.size != valueArguments.size) {
-                Messages.INTERNAL_ERROR.on(callExpression, "Incorrect number of value arguments")
-            }
-
-            val eventExpression = callExpression.valueArguments[clockingBlock.eventValueParameterIndex]
-            val eventControlExpression = EEventControlExpression(
-                eventExpression.location,
-                arrayListOf(eventExpression)
-            )
-
-            clockingBlock.ports.zip(valueArguments).forEach { (port, valueArgument) ->
-                checkPortNameMatch(port, valueArgument)
-            }
-
-            return EClockingBlockInstantiation(
-                property.location,
-                property.endLocation,
-                property.name,
-                property.type,
-                property.annotationEntries,
-                property.documentationLines,
-                ArrayList(valueArguments),
-                eventControlExpression
-            )
-        }
-
-        private fun checkPortNameMatch(port: EPort, expression: EExpression) {
-            if (expression !is EReferenceExpression ||
-                expression.receiver != null ||
-                expression.reference.name != port.name
-            ) {
-                Messages.MISMATCHED_PORT_NAME.on(expression, port.name)
-            }
         }
 
         override fun visitProperty(property: EProperty) {
             super.visitProperty(property)
-            val interpretedProperty = interpret(property)
-            if (interpretedProperty != null) {
-                referenceUpdater.replace(property, interpretedProperty)
+            if (property.hasAnnotationEntry(AnnotationEntries.CONS)) {
+                val interpretedProperty = interpretConstraint(property)
+                if (interpretedProperty != null) {
+                    referenceUpdater.replace(property, interpretedProperty)
+                }
+            } else {
+                val parent = property.parent
+                property.isStatic = (parent is ESvClass && parent.isObject) || parent is ECompanionObject
             }
         }
     }

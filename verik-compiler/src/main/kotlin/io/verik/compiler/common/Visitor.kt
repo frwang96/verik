@@ -49,6 +49,7 @@ import io.verik.compiler.ast.element.declaration.sv.EAlwaysSeqBlock
 import io.verik.compiler.ast.element.declaration.sv.EClockingBlock
 import io.verik.compiler.ast.element.declaration.sv.EClockingBlockInstantiation
 import io.verik.compiler.ast.element.declaration.sv.EComponentInstantiation
+import io.verik.compiler.ast.element.declaration.sv.EConstraint
 import io.verik.compiler.ast.element.declaration.sv.EEnum
 import io.verik.compiler.ast.element.declaration.sv.EInitialBlock
 import io.verik.compiler.ast.element.declaration.sv.EInjectedProperty
@@ -304,6 +305,10 @@ abstract class Visitor {
 
     open fun visitClockingBlockInstantiation(clockingBlockInstantiation: EClockingBlockInstantiation) {
         visitAbstractComponentInstantiation(clockingBlockInstantiation)
+    }
+
+    open fun visitConstraint(constraint: EConstraint) {
+        visitAbstractProperty(constraint)
     }
 
     open fun visitAbstractValueParameter(abstractValueParameter: EAbstractValueParameter) {

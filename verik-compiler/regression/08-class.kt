@@ -35,7 +35,7 @@ object M : Module() {
     }
 }
 
-open class C0 {
+open class C0 : Class() {
 
     companion object {
 
@@ -45,7 +45,7 @@ open class C0 {
 
 class C1: C0()
 
-class C2<T> {
+class C2<T> : Class() {
 
     companion object {
 

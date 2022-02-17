@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,100 +23,22 @@ import org.junit.jupiter.api.Test
 internal class PropertyInterpreterStageTest : BaseTest() {
 
     @Test
-    fun `interpret module instantiation`() {
+    fun `interpret constraint`() {
         driveElementTest(
             """
-                class M0(@In var x: Boolean) : Module()
-                class M1 : Module() {
-                    @Make
-                    val m = M0(false)
-                }
+                @Cons
+                val c = cons(true)
             """.trimIndent(),
             PropertyInterpreterStage::class,
-            "ComponentInstantiation(m, M0, [ConstantExpression(*)])"
-        ) { it.findDeclaration("m") }
-    }
-
-    @Test
-    fun `interpret module instantiation null`() {
-        driveElementTest(
-            """
-                class M0 : Module()
-                class M1 : Module() {
-                    @Make
-                    val m = optional<FALSE, M0> { M0() }
-                }
-            """.trimIndent(),
-            PropertyInterpreterStage::class,
-            "Module(M1, M1, [], [])"
-        ) { it.findDeclaration("M1") }
-    }
-
-    @Test
-    fun `interpret module interface instantiation`() {
-        driveElementTest(
-            """
-                class MI : ModuleInterface()
-                class M : Module() {
-                    @Make
-                    val mi = MI()
-                }
-            """.trimIndent(),
-            PropertyInterpreterStage::class,
-            "ComponentInstantiation(mi, MI, [])"
-        ) { it.findDeclaration("mi") }
-    }
-
-    @Test
-    fun `interpret module port instantiation`() {
-        driveElementTest(
-            """
-                class MP : ModulePort()
-                class M : Module() {
-                    @Make
-                    val mp = MP()
-                }
-            """.trimIndent(),
-            PropertyInterpreterStage::class,
-            "ModulePortInstantiation(mp, MP, [])"
-        ) { it.findDeclaration("mp") }
-    }
-
-    @Test
-    fun `interpret clocking block instantiation`() {
-        driveElementTest(
-            """
-                class CB(override val event: Event) : ClockingBlock()
-                class M : Module() {
-                    @Make
-                    val cb = CB(posedge(false))
-                }
-            """.trimIndent(),
-            PropertyInterpreterStage::class,
-            "ClockingBlockInstantiation(cb, CB, [], EventControlExpression(*))"
-        ) { it.findDeclaration("cb") }
-    }
-
-    @Test
-    fun `interpret clocking block instantiation illegal`() {
-        driveMessageTest(
-            """
-                class CB(override val event: Event, @In var x: Boolean) : ClockingBlock()
-                class M : Module() {
-                    @Make
-                    val cb = CB(posedge(false), false)
-                }
-            """.trimIndent(),
-            true,
-            "Port instantiation must match port name: x"
-        )
+            "Constraint(c, BlockExpression(Unit, [ConstantExpression(*)]))"
+        ) { it.findDeclaration("c") }
     }
 
     @Test
     fun `interpret property static`() {
         driveElementTest(
             """
-                object O {
+                object O : Class() {
                     var x = false
                 }
             """.trimIndent(),

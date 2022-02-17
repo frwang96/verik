@@ -43,7 +43,7 @@ class Type(
         return when (val reference = reference) {
             is ETypeAlias -> reference.descriptor.type.isNullable()
             is EKtClass -> reference.superDescriptor.type.isNullable()
-            Core.C_Any -> true
+            Core.C_Class -> true
             else -> false
         }
     }

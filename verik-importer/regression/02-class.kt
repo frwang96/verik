@@ -20,8 +20,8 @@ package imported
 
 import io.verik.core.*
 
-open class c0
+open class c0 : Class()
 
 open class c1 : c0()
 
-open class c2<T, U, V : `*`>
+open class c2<T, U, V : `*`> : Class()

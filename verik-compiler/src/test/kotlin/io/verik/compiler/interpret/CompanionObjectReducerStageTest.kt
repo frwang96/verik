@@ -26,14 +26,14 @@ internal class CompanionObjectReducerStageTest : BaseTest() {
     fun `reduce companion object`() {
         driveElementTest(
             """
-                class C {
+                class C : Class() {
                     companion object { var x = false }
                 }
             """.trimIndent(),
             CompanionObjectReducerStage::class,
             """
                 SvClass(
-                    C, C, [],
+                    C, C, Class, [],
                     [SvConstructor(*), Property(x, Boolean, ConstantExpression(*), 1, 1)], 0
                 )
             """.trimIndent()

@@ -29,6 +29,7 @@ import io.verik.compiler.check.mid.OverrideCheckerStage
 import io.verik.compiler.check.mid.PortCheckerStage
 import io.verik.compiler.check.mid.PortInstantiationCheckerStage
 import io.verik.compiler.check.mid.ProceduralBlockReferenceCheckerStage
+import io.verik.compiler.check.mid.SuperTypeCheckerStage
 import io.verik.compiler.check.mid.TypeArgumentTypeCheckerStage
 import io.verik.compiler.check.mid.TypeParameterCheckerStage
 import io.verik.compiler.check.post.FileCheckerStage
@@ -49,6 +50,7 @@ import io.verik.compiler.evaluate.ConstantPropertyEliminatorStage
 import io.verik.compiler.evaluate.ExpressionEvaluatorStage
 import io.verik.compiler.interpret.ClassInterpreterStage
 import io.verik.compiler.interpret.CompanionObjectReducerStage
+import io.verik.compiler.interpret.ComponentInstantiationInterpreterStage
 import io.verik.compiler.interpret.ComponentInterpreterStage
 import io.verik.compiler.interpret.ConstructorInterpreterStage
 import io.verik.compiler.interpret.EnumInterpreterStage
@@ -144,6 +146,7 @@ object StageSequencer {
         stageSequence.add(StageType.PRE_TRANSFORM, ConstantExpressionReducerStage)
 
         stageSequence.add(StageType.MID_CHECK, EntryPointCheckerStage)
+        stageSequence.add(StageType.MID_CHECK, SuperTypeCheckerStage)
         stageSequence.add(StageType.MID_CHECK, AnnotationEntryCheckerStage)
         stageSequence.add(StageType.MID_CHECK, OverrideCheckerStage)
         stageSequence.add(StageType.MID_CHECK, ComponentInstantiationCheckerStage)
@@ -176,6 +179,7 @@ object StageSequencer {
         stageSequence.add(StageType.INTERPRET, ConstructorInterpreterStage)
         stageSequence.add(StageType.INTERPRET, InitializerBlockReducerStage)
         stageSequence.add(StageType.INTERPRET, InjectedPropertyInterpreterStage)
+        stageSequence.add(StageType.INTERPRET, ComponentInstantiationInterpreterStage)
         stageSequence.add(StageType.INTERPRET, PropertyInterpreterStage)
         stageSequence.add(StageType.INTERPRET, FunctionLiteralInterpreterStage)
         stageSequence.add(StageType.INTERPRET, CompanionObjectReducerStage)

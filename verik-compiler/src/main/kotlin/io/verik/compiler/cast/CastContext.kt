@@ -84,32 +84,26 @@ class CastContext(
 
     fun resolveDeclaration(declarationDescriptor: DeclarationDescriptor, element: KtElement): Declaration {
         val unwrappedDeclarationDescriptor = unwrapDeclarationDescriptor(declarationDescriptor)
-        val declaration = declarationMap[unwrappedDeclarationDescriptor]
-        if (declaration != null)
-            return declaration
         when (unwrappedDeclarationDescriptor) {
             is SimpleFunctionDescriptorImpl -> {
-                unwrappedDeclarationDescriptor.overriddenTreeAsSequence(true).forEach {
-                    val overriddenDeclaration = declarationMap[it]
-                    if (overriddenDeclaration != null)
-                        return overriddenDeclaration
+                unwrappedDeclarationDescriptor.overriddenTreeAsSequence(true).forEach { descriptor ->
+                    declarationMap[descriptor]?.let { return it }
+                    CoreDeclarationMap[descriptor]?.let { return it }
                 }
             }
             is PropertyDescriptorImpl -> {
-                unwrappedDeclarationDescriptor.overriddenTreeAsSequence(true).forEach {
-                    val overriddenDeclaration = declarationMap[it]
-                    if (overriddenDeclaration != null)
-                        return overriddenDeclaration
+                unwrappedDeclarationDescriptor.overriddenTreeAsSequence(true).forEach { descriptor ->
+                    declarationMap[descriptor]?.let { return it }
+                    CoreDeclarationMap[descriptor]?.let { return it }
                 }
             }
+            else -> {
+                declarationMap[unwrappedDeclarationDescriptor]?.let { return it }
+                CoreDeclarationMap[unwrappedDeclarationDescriptor]?.let { return it }
+            }
         }
-        val coreDeclaration = CoreDeclarationMap[unwrappedDeclarationDescriptor]
-        return if (coreDeclaration != null) {
-            coreDeclaration
-        } else {
-            Messages.UNSUPPORTED_DECLARATION.on(element, unwrappedDeclarationDescriptor.name.asString())
-            NullDeclaration
-        }
+        Messages.UNSUPPORTED_DECLARATION.on(element, unwrappedDeclarationDescriptor.name.asString())
+        return NullDeclaration
     }
 
     fun castDeclaration(declaration: KtDeclaration): EDeclaration? {

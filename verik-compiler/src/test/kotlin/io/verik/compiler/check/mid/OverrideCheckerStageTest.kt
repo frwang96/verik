@@ -25,7 +25,7 @@ internal class OverrideCheckerStageTest : BaseTest() {
     fun `function is task`() {
         driveMessageTest(
             """
-                open class C0 {
+                open class C0 : Class() {
                     @Task
                     open fun f() {}
                 }
@@ -42,7 +42,7 @@ internal class OverrideCheckerStageTest : BaseTest() {
     fun `function not task`() {
         driveMessageTest(
             """
-                open class C0 {
+                open class C0 : Class() {
                     open fun f() {}
                 }
                 class C1 : C0() {

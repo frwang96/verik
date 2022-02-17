@@ -18,6 +18,7 @@ package io.verik.compiler.ast.element.common
 
 import io.verik.compiler.ast.common.DeclarationContainer
 import io.verik.compiler.ast.common.ExpressionContainer
+import io.verik.compiler.ast.element.declaration.common.EAbstractClass
 import io.verik.compiler.ast.element.declaration.common.EDeclaration
 import io.verik.compiler.ast.element.declaration.common.EPackage
 import io.verik.compiler.ast.element.expression.common.EExpression
@@ -69,6 +70,14 @@ abstract class EElement {
             is EPackage -> parent
             null -> Messages.INTERNAL_ERROR.on(this, "Parent package not found")
             else -> parent.getParentPackage()
+        }
+    }
+
+    fun getParentClassOrNull(): EAbstractClass? {
+        return when (val parent = parent) {
+            is EAbstractClass -> parent
+            null -> null
+            else -> parent.getParentClassOrNull()
         }
     }
 

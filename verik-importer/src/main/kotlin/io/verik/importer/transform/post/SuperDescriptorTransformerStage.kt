@@ -38,7 +38,7 @@ object SuperDescriptorTransformerStage : ProjectStage() {
             if (superDescriptor.type.reference is ETypeParameter) {
                 val simpleDescriptor = ESimpleDescriptor(
                     superDescriptor.location,
-                    Core.C_Any.toType()
+                    Core.C_Class.toType()
                 )
                 simpleDescriptor.parent = cls
                 cls.superDescriptor = simpleDescriptor

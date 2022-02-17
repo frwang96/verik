@@ -26,7 +26,7 @@ internal class AnnotationEntryCheckerStageTest : BaseTest() {
         driveMessageTest(
             """
                 @Entry
-                class C<T>
+                class C<T> : Class()
             """.trimIndent(),
             true,
             "Type parameters not permitted on entry points"
@@ -37,7 +37,7 @@ internal class AnnotationEntryCheckerStageTest : BaseTest() {
     fun `entry invalid`() {
         driveMessageTest(
             """
-                class C {
+                class C : Class() {
                     @Entry
                     fun f() {}
                 }
