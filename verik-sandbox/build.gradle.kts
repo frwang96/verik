@@ -19,6 +19,7 @@ import java.nio.file.Files
 group = "io.verik"
 
 plugins {
+    kotlin("jvm") version "1.5.31"
     id("io.verik.verik-plugin")
 }
 

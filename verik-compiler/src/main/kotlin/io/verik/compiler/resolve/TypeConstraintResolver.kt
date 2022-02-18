@@ -180,9 +180,10 @@ object TypeConstraintResolver {
         val typeAdapterType = typeAdapters[0].getType()
         if (isIgnored(type) || isIgnored(typeAdapterType))
             return
-        // TODO take inheritance into account when setting types
+        // TODO property handle type variance
         if (typeAdapterType.isResolved()) {
-            if (hasCardinalType(type) && typeAdapterType != type) {
+            val typeAdapterSuperTypes = typeAdapterType.getSuperTypes()
+            if (hasCardinalType(type) && type !in typeAdapterSuperTypes) {
                 if (isActual) {
                     Messages.MISMATCHED_TYPE.on(
                         typeAdapters[0].getElement(),
