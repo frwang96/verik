@@ -27,6 +27,7 @@ import org.antlr.v4.runtime.BaseErrorListener
 import org.antlr.v4.runtime.CommonTokenStream
 import org.antlr.v4.runtime.RecognitionException
 import org.antlr.v4.runtime.Recognizer
+import org.antlr.v4.runtime.WritableToken
 
 object ParserStage : ProjectStage() {
 
@@ -47,6 +48,10 @@ object ParserStage : ProjectStage() {
         lexer.addErrorListener(lexerErrorListener)
 
         val parserTokenStream = CommonTokenStream(lexer)
+        parserTokenStream.fill()
+        val tokens = parserTokenStream.tokens.map { it as WritableToken }
+        ParserFilter.filter(tokens)
+
         val parser = SystemVerilogParser(parserTokenStream)
         val parserErrorListener = ParserErrorListener(parserCharStream)
         parser.removeErrorListeners()
