@@ -57,7 +57,8 @@ internal class TaskReturnTransformerStageTest : BaseTest() {
                 endtask : f
 
                 task automatic g();
-                    f(.__0());
+                    logic __1;
+                    f(.__0(__1));
                 endtask : g
             """.trimIndent()
         ) { it.nonRootPackageTextFiles[0] }

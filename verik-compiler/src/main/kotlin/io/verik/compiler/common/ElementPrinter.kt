@@ -122,6 +122,7 @@ class ElementPrinter : Visitor() {
         build("Package") {
             build(pkg.name)
             build(pkg.files)
+            build(pkg.injectedProperties)
             build(pkg.packageType.toString())
         }
     }

@@ -22,7 +22,7 @@ import java.nio.file.Path
 
 object FileHeaderBuilder {
 
-    fun build(config: VerikConfig, inputPath: Path?, outputPath: Path, headerStyle: HeaderStyle): String {
+    fun build(config: VerikConfig, inputPath: Path?, outputPath: Path, commentStyle: CommentStyle): String {
         val lines = ArrayList<String>()
         val inputPathString = inputPath?.let { Platform.getStringFromPath(it.toAbsolutePath()) }
         val outputPathString = Platform.getStringFromPath(outputPath.toAbsolutePath())
@@ -30,27 +30,18 @@ object FileHeaderBuilder {
         lines.add("Toolchain : ${config.toolchain}")
         lines.add("Date      : ${config.timestamp}")
         lines.add("Project   : ${config.projectName}")
-        if (inputPathString != null)
+        if (inputPathString != null) {
             lines.add("Input     : $inputPathString")
+        }
         lines.add("Output    : $outputPathString")
 
         val builder = StringBuilder()
-        when (headerStyle) {
-            HeaderStyle.SYSTEM_VERILOG -> {
-                lines.forEach { builder.appendLine("// $it") }
-                builder.appendLine()
-                builder.appendLine("`ifndef VERIK")
-                builder.appendLine("`define VERIK")
-                builder.appendLine("`timescale ${config.timescale}")
-                builder.appendLine("`endif")
-            }
-            HeaderStyle.TEXT -> {
-                lines.forEach { builder.appendLine("# $it") }
-            }
+        when (commentStyle) {
+            CommentStyle.SLASH -> lines.forEach { builder.appendLine("// $it") }
+            CommentStyle.HASH -> lines.forEach { builder.appendLine("# $it") }
         }
-        builder.appendLine()
         return builder.toString()
     }
 
-    enum class HeaderStyle { SYSTEM_VERILOG, TEXT }
+    enum class CommentStyle { SLASH, HASH }
 }

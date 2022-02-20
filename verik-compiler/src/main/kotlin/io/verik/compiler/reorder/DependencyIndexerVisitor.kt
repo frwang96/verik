@@ -24,6 +24,7 @@ import io.verik.compiler.ast.element.declaration.common.EFile
 import io.verik.compiler.ast.element.declaration.common.EPackage
 import io.verik.compiler.ast.element.declaration.common.EProperty
 import io.verik.compiler.ast.element.declaration.sv.EAbstractContainerComponent
+import io.verik.compiler.ast.element.declaration.sv.EModuleInterface
 import io.verik.compiler.ast.element.declaration.sv.ESvClass
 import io.verik.compiler.ast.element.expression.common.EReceiverExpression
 import io.verik.compiler.common.TreeVisitor
@@ -51,8 +52,9 @@ class DependencyIndexerVisitor(
             val toDeclaration = referenceParents[commonParentIndex + 1]
             if (fromDeclaration is EDeclaration && toDeclaration is EDeclaration) {
                 val dependency = Dependency(fromDeclaration, toDeclaration, element)
-                if (isValidDependency(parent, dependency))
+                if (isValidDependency(parent, element, reference)) {
                     dependencyRegistry.add(parent, dependency)
+                }
             }
         }
     }
@@ -67,10 +69,13 @@ class DependencyIndexerVisitor(
         return parents.asReversed()
     }
 
-    private fun isValidDependency(parent: EElement, dependency: Dependency): Boolean {
+    private fun isValidDependency(parent: EElement, element: EElement, reference: EDeclaration): Boolean {
+        val elementInClass = element is ESvClass || element.getParentClassOrNull() is ESvClass
+        val referenceInClass = reference is ESvClass || reference.getParentClassOrNull() is ESvClass
         return when {
             !isReorderable(parent) -> false
-            dependency.fromDeclaration is ESvClass && dependency.toDeclaration is ESvClass -> false
+            elementInClass && referenceInClass -> parent is EProject
+            reference is EModuleInterface -> false
             else -> true
         }
     }

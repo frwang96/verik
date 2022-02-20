@@ -6,6 +6,7 @@
 - Merge expressions with descriptors.
 - Add classes `Queue`, `AssociativeArray`, and `DynamicArray` to mirror SystemVerilog.
 - Static functions as functions of companion objects.
+- Fast parsing by hiding function and task bodies.
 
 ### Compiler
 - Rename `onr` to `oni`.

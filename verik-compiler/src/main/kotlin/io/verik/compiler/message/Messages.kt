@@ -282,6 +282,14 @@ object Messages {
         "String literal expected for injected property: $0"
     )
 
+    val NOT_INJECTED_PROPERTY = ErrorMessageTemplate0(
+        "Only injected properties are permitted in Pkg.kt"
+    )
+
+    val INJECTED_PROPERTY_NOT_LITERAL = ErrorMessageTemplate0(
+        "Expressions are not permitted in injected properties declared in Pkg.kt"
+    )
+
 //  UPPER TRANSFORM  ///////////////////////////////////////////////////////////////////////////////////////////////////
 
     val ILLEGAL_INJECTED_EXPRESSION = ErrorMessageTemplate0(
@@ -324,10 +332,6 @@ object Messages {
 
     val RESERVED_PACKAGE_NAME = ErrorMessageTemplate1<String>(
         "Package name is reserved: $0"
-    )
-
-    val RESERVED_FILE_NAME = ErrorMessageTemplate1<Path>(
-        "File name is reserved: $0"
     )
 
     val DUPLICATED_FILE_NAME = ErrorMessageTemplate1<Path>(

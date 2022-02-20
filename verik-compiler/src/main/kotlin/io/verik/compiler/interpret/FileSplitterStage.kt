@@ -87,7 +87,7 @@ object FileSplitterStage : ProjectStage() {
             is EStruct -> false
             is ESvFunction -> false
             is ETask -> false
-            is EInjectedProperty -> true
+            is EInjectedProperty -> false
             is EProperty -> false
             is EEnumEntry -> false
             else -> Messages.INTERNAL_ERROR.on(

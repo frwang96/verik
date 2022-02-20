@@ -27,7 +27,6 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.plugins.JavaPluginExtension
-import org.jetbrains.kotlin.gradle.plugin.KotlinCommonPluginWrapper
 import io.verik.compiler.main.StageSequencer as VerikStageSequencer
 import io.verik.importer.main.StageSequencer as VerikImporterStageSequencer
 
@@ -35,7 +34,6 @@ import io.verik.importer.main.StageSequencer as VerikImporterStageSequencer
 class VerikPlugin : Plugin<Project> {
 
     override fun apply(project: Project) {
-        project.plugins.apply(KotlinCommonPluginWrapper::class.java)
         project.dependencies.add("implementation", "io.verik:verik-core:${ConfigUtil.getVersion()}")
         val verikTask = createVerikTask(project)
         val verikImportTask = createVerikImportTask(project)
@@ -62,7 +60,6 @@ class VerikPlugin : Plugin<Project> {
         task.inputs.property("entryPoints", { extension.entryPoints })
         task.inputs.property("enableDeadCodeElimination", { extension.enableDeadCodeElimination })
         task.inputs.property("labelLines", { extension.labelLines })
-        task.inputs.property("enableLineDirective", { extension.enableLineDirective })
         task.inputs.property("indentLength", { extension.indentLength })
         task.inputs.property("wrapLength", { extension.wrapLength })
         task.inputs.property("suppressedWarnings", { extension.suppressedWarnings })

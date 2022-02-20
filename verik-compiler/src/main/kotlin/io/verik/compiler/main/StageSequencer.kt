@@ -60,6 +60,7 @@ import io.verik.compiler.interpret.FunctionLiteralInterpreterStage
 import io.verik.compiler.interpret.InitializerBlockReducerStage
 import io.verik.compiler.interpret.InjectedPropertyInterpreterStage
 import io.verik.compiler.interpret.ModulePortParentResolverStage
+import io.verik.compiler.interpret.PackageInjectedPropertyReducerStage
 import io.verik.compiler.interpret.PrimaryConstructorReducerStage
 import io.verik.compiler.interpret.PropertyInterpreterStage
 import io.verik.compiler.interpret.StructInterpreterStage
@@ -73,8 +74,7 @@ import io.verik.compiler.resolve.TypeReferenceForwarderStage
 import io.verik.compiler.resolve.TypeResolvedCheckerStage
 import io.verik.compiler.resolve.TypeResolverStage
 import io.verik.compiler.serialize.general.ConfigFileSerializerStage
-import io.verik.compiler.serialize.general.PackageWrapperSerializerStage
-import io.verik.compiler.serialize.general.SourcesFileSerializerStage
+import io.verik.compiler.serialize.general.WrapperSerializerStage
 import io.verik.compiler.serialize.source.SourceSerializerStage
 import io.verik.compiler.serialize.target.CompositeTargetSerializerStage
 import io.verik.compiler.specialize.SpecializerStage
@@ -183,6 +183,7 @@ object StageSequencer {
         stageSequence.add(StageType.INTERPRET, PropertyInterpreterStage)
         stageSequence.add(StageType.INTERPRET, FunctionLiteralInterpreterStage)
         stageSequence.add(StageType.INTERPRET, CompanionObjectReducerStage)
+        stageSequence.add(StageType.INTERPRET, PackageInjectedPropertyReducerStage)
         stageSequence.add(StageType.INTERPRET, ModulePortParentResolverStage)
         stageSequence.add(StageType.INTERPRET, FileSplitterStage)
 
@@ -229,8 +230,7 @@ object StageSequencer {
         stageSequence.add(StageType.SERIALIZE, ConfigFileSerializerStage)
         stageSequence.add(StageType.SERIALIZE, CompositeTargetSerializerStage)
         stageSequence.add(StageType.SERIALIZE, SourceSerializerStage)
-        stageSequence.add(StageType.SERIALIZE, PackageWrapperSerializerStage)
-        stageSequence.add(StageType.SERIALIZE, SourcesFileSerializerStage)
+        stageSequence.add(StageType.SERIALIZE, WrapperSerializerStage)
 
         return stageSequence
     }

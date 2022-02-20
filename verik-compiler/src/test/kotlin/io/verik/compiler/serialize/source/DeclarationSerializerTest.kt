@@ -46,16 +46,14 @@ internal class DeclarationSerializerTest : BaseTest() {
         driveTextFileTest(
             """
                 @Inj
-                val M = ${"\"\"\""}
-                    module M;
-                    endmodule
+                val x = ${"\"\"\""}
+                    abc
                 ${"\"\"\""}.trimIndent()
             """.trimIndent(),
             """
-                module M;
-                endmodule
+                abc
             """.trimIndent()
-        ) { it.rootPackageTextFiles[0] }
+        ) { it.nonRootPackageTextFiles[0] }
     }
 
     @Test

@@ -16,6 +16,7 @@
 
 package io.verik.compiler.ast.element.declaration.common
 
+import io.verik.compiler.ast.element.declaration.sv.EInjectedProperty
 import io.verik.compiler.ast.property.AnnotationEntry
 import io.verik.compiler.ast.property.PackageType
 import io.verik.compiler.common.TreeVisitor
@@ -28,6 +29,7 @@ class EPackage(
     override val location: SourceLocation,
     override var name: String,
     var files: ArrayList<EFile>,
+    var injectedProperties: ArrayList<EInjectedProperty>,
     val outputPath: Path,
     val packageType: PackageType
 ) : EDeclaration() {
@@ -38,6 +40,7 @@ class EPackage(
 
     init {
         files.forEach { it.parent = this }
+        injectedProperties.forEach { it.parent = this }
     }
 
     override fun accept(visitor: Visitor) {
@@ -46,5 +49,6 @@ class EPackage(
 
     override fun acceptChildren(visitor: TreeVisitor) {
         files.forEach { it.accept(visitor) }
+        injectedProperties.forEach { it.accept(visitor) }
     }
 }

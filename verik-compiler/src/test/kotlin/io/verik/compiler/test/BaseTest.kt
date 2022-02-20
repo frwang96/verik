@@ -173,7 +173,7 @@ abstract class BaseTest {
             .dropLastWhile { it.isEmpty() }
         val actualLines = actual.content.lines()
             .let { lines ->
-                val index = lines.indexOfFirst { it == "`endif" } + 2
+                val index = lines.indexOfFirst { it.startsWith("// Output") } + 2
                 lines.subList(index, lines.size)
             }
             .dropLastWhile { it.isEmpty() }
@@ -206,7 +206,6 @@ abstract class BaseTest {
                 entryPoints = listOf(),
                 enableDeadCodeElimination = false,
                 labelLines = false,
-                enableLineDirective = false,
                 indentLength = 4,
                 wrapLength = 80,
                 suppressedWarnings = listOf("KOTLIN_COMPILE_WARNING"),

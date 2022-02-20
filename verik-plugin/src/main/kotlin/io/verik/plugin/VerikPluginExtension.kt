@@ -22,7 +22,6 @@ abstract class VerikPluginExtension {
     var entryPoints: ArrayList<String> = ArrayList()
     var enableDeadCodeElimination: Boolean = true
     var labelLines: Boolean = true
-    var enableLineDirective: Boolean = false
     var indentLength: Int = 4
     var wrapLength: Int = 120
     var suppressedWarnings: ArrayList<String> = ArrayList()
