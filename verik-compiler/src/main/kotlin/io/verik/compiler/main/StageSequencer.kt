@@ -41,7 +41,6 @@ import io.verik.compiler.check.post.UntransformedElementCheckerStage
 import io.verik.compiler.check.post.UntransformedReferenceCheckerStage
 import io.verik.compiler.check.pre.ConfigCheckerStage
 import io.verik.compiler.check.pre.FileAnnotationCheckerStage
-import io.verik.compiler.check.pre.ImportDirectiveCheckerStage
 import io.verik.compiler.check.pre.PreNameCheckerStage
 import io.verik.compiler.check.pre.UnsupportedElementCheckerStage
 import io.verik.compiler.check.pre.UnsupportedModifierCheckerStage
@@ -126,7 +125,6 @@ object StageSequencer {
         stageSequence.add(StageType.PRE_CHECK, FileAnnotationCheckerStage)
         stageSequence.add(StageType.PRE_CHECK, UnsupportedElementCheckerStage)
         stageSequence.add(StageType.PRE_CHECK, UnsupportedModifierCheckerStage)
-        stageSequence.add(StageType.PRE_CHECK, ImportDirectiveCheckerStage)
         stageSequence.add(StageType.PRE_CHECK, PreNameCheckerStage)
 
         stageSequence.add(StageType.COMPILE, KotlinCompilerAnalyzerStage)

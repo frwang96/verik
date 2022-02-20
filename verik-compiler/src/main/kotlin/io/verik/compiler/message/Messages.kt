@@ -60,10 +60,6 @@ object Messages {
         "Modifier $0 not supported"
     )
 
-    val MISSING_PACKAGE = ErrorMessageTemplate1<String>(
-        "Package not found: $0"
-    )
-
     val ILLEGAL_NAME = ErrorMessageTemplate1<String>(
         "Illegal name: $0"
     )
@@ -253,7 +249,7 @@ object Messages {
     )
 
     val UNRESOLVED_TYPE_ARGUMENT = ErrorMessageTemplate0(
-        "Type of type argument could not be resolved"
+        "Type argument should be specified explicitly"
     )
 
     val CARDINAL_NEGATIVE = ErrorMessageTemplate1<Type>(

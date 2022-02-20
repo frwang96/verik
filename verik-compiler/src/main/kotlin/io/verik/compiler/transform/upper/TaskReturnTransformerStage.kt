@@ -36,11 +36,12 @@ import io.verik.compiler.message.Messages
 object TaskReturnTransformerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
-        projectContext.project.accept(TaskReturnInternalTransformerVisitor)
+        val taskReturnInternalTransformerVisitor = TaskReturnInternalTransformerVisitor()
+        projectContext.project.accept(taskReturnInternalTransformerVisitor)
         projectContext.project.accept(TaskReturnExternalTransformerVisitor)
     }
 
-    private object TaskReturnInternalTransformerVisitor : TreeVisitor() {
+    private class TaskReturnInternalTransformerVisitor : TreeVisitor() {
 
         private var returnValueParameter: ESvValueParameter? = null
 

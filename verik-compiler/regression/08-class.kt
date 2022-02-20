@@ -27,11 +27,12 @@ object M : Module() {
     val x1 = C1()
     val x2 = C2<Int>()
     val x3 = C3()
+    val x4 = C4(false)
 
     @Run
     fun f0() {
-        println(C0.x4)
-        println(C2.x5)
+        println(C0.x5)
+        println(C2.x6)
     }
 }
 
@@ -39,7 +40,7 @@ open class C0 : Class() {
 
     companion object {
 
-        var x4 = false
+        var x5 = false
     }
 }
 
@@ -49,11 +50,20 @@ class C2<T> : Class() {
 
     companion object {
 
-        var x5 = false
+        var x6 = false
     }
 }
 
 class C3: C0 {
 
     constructor(): super()
+}
+
+class C4(x7: Boolean) : Class() {
+
+    var x8 = false
+
+    init {
+        x8 = x7
+    }
 }
