@@ -61,6 +61,7 @@ object CasterStage : ProjectStage() {
             SourceLocation.NULL,
             "<root>",
             ArrayList(),
+            ArrayList(),
             getPackageOutputPath("", projectContext),
             PackageType.REGULAR_ROOT
         )
@@ -68,6 +69,7 @@ object CasterStage : ProjectStage() {
         val importedRootPackage = EPackage(
             SourceLocation.NULL,
             "imported",
+            ArrayList(),
             ArrayList(),
             getPackageOutputPath("imported", projectContext),
             PackageType.IMPORTED_ROOT
@@ -89,6 +91,7 @@ object CasterStage : ProjectStage() {
                             SourceLocation.NULL,
                             packageName,
                             files,
+                            ArrayList(),
                             getPackageOutputPath(packageName, projectContext),
                             PackageType.IMPORTED_NON_ROOT
                         )
@@ -100,6 +103,7 @@ object CasterStage : ProjectStage() {
                             SourceLocation.NULL,
                             packageName,
                             files,
+                            ArrayList(),
                             getPackageOutputPath(packageName, projectContext),
                             PackageType.REGULAR_NON_ROOT
                         )

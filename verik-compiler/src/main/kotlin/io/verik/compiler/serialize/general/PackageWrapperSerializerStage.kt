@@ -17,7 +17,9 @@
 package io.verik.compiler.serialize.general
 
 import io.verik.compiler.ast.element.declaration.common.EPackage
+import io.verik.compiler.ast.element.declaration.sv.EInjectedProperty
 import io.verik.compiler.ast.element.declaration.sv.ESvClass
+import io.verik.compiler.ast.property.LiteralStringEntry
 import io.verik.compiler.common.TextFile
 import io.verik.compiler.main.Platform
 import io.verik.compiler.main.ProjectContext
@@ -47,16 +49,17 @@ object PackageWrapperSerializerStage : ProjectStage() {
             FileHeaderBuilder.HeaderStyle.SYSTEM_VERILOG
         )
         val packageName = pkg.name
-        val indent = " ".repeat(projectContext.config.indentLength)
 
         val builder = StringBuilder()
         builder.append(fileHeader)
         builder.appendLine("package $packageName;")
+        pkg.injectedProperties.forEach {
+            serializeInjectedProperty(it, builder)
+        }
         pkg.files.forEach { file ->
             file.declarations.forEach {
                 if (it is ESvClass) {
                     builder.appendLine()
-                    builder.append(indent)
                     builder.appendLine("typedef class ${it.name};")
                 }
             }
@@ -74,5 +77,13 @@ object PackageWrapperSerializerStage : ProjectStage() {
         builder.appendLine("endpackage : $packageName")
 
         return TextFile(outputPath, builder.toString())
+    }
+
+    private fun serializeInjectedProperty(injectedProperty: EInjectedProperty, builder: StringBuilder) {
+        val entries = injectedProperty.injectedExpression.entries.filterIsInstance<LiteralStringEntry>()
+        if (entries.isEmpty()) return
+        builder.appendLine()
+        entries.forEach { builder.append(it.text) }
+        builder.appendLine()
     }
 }

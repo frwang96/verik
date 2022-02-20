@@ -60,6 +60,7 @@ import io.verik.compiler.interpret.FunctionLiteralInterpreterStage
 import io.verik.compiler.interpret.InitializerBlockReducerStage
 import io.verik.compiler.interpret.InjectedPropertyInterpreterStage
 import io.verik.compiler.interpret.ModulePortParentResolverStage
+import io.verik.compiler.interpret.PackageInjectedPropertyReducerStage
 import io.verik.compiler.interpret.PrimaryConstructorReducerStage
 import io.verik.compiler.interpret.PropertyInterpreterStage
 import io.verik.compiler.interpret.StructInterpreterStage
@@ -183,6 +184,7 @@ object StageSequencer {
         stageSequence.add(StageType.INTERPRET, PropertyInterpreterStage)
         stageSequence.add(StageType.INTERPRET, FunctionLiteralInterpreterStage)
         stageSequence.add(StageType.INTERPRET, CompanionObjectReducerStage)
+        stageSequence.add(StageType.INTERPRET, PackageInjectedPropertyReducerStage)
         stageSequence.add(StageType.INTERPRET, ModulePortParentResolverStage)
         stageSequence.add(StageType.INTERPRET, FileSplitterStage)
 

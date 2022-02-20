@@ -30,7 +30,7 @@ internal class PackageWrapperSerializerStageTest : BaseTest() {
             """
                 package test_pkg;
                 
-                    typedef class C;
+                typedef class C;
                 
                 `include "src/test/Test.svh"
                 

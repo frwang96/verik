@@ -52,6 +52,10 @@ class EProject(
         return regularNonRootPackages + regularRootPackage + importedNonRootPackages + importedRootPackage
     }
 
+    fun regularPackages(): List<EPackage> {
+        return regularNonRootPackages + regularRootPackage
+    }
+
     fun files(): List<EFile> {
         return regularNonRootPackages.flatMap { it.files } +
             regularRootPackage.files +
