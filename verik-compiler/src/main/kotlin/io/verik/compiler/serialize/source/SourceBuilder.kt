@@ -18,7 +18,6 @@ package io.verik.compiler.serialize.source
 
 import io.verik.compiler.ast.element.declaration.common.EFile
 import io.verik.compiler.common.TextFile
-import io.verik.compiler.main.Platform
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.serialize.general.FileHeaderBuilder
 
@@ -28,7 +27,6 @@ class SourceBuilder(
 ) {
 
     private val labelLines = projectContext.config.labelLines
-    private val enableLineDirective = projectContext.config.enableLineDirective
     private val indentLength = projectContext.config.indentLength
     private val wrapLength = projectContext.config.wrapLength
     private val labelLength = if (labelLines) 12 else 0
@@ -40,33 +38,10 @@ class SourceBuilder(
             projectContext.config,
             file.inputPath,
             file.outputPath,
-            FileHeaderBuilder.HeaderStyle.SYSTEM_VERILOG
+            FileHeaderBuilder.CommentStyle.SLASH
         )
         sourceBuilder.append(fileHeader)
-
-        if (labelLines) {
-            if (enableLineDirective) {
-                val pathString = Platform.getStringFromPath(file.inputPath.toAbsolutePath())
-                sourceBuilder.appendLine(
-                    """
-                        `ifdef _
-                        `undef _
-                        `endif
-                        `define _(n) `line n "$pathString" 0 \
-                    """.trimIndent()
-                )
-                sourceBuilder.appendLine()
-            } else {
-                sourceBuilder.appendLine(
-                    """
-                        `ifndef _
-                        `define _(n)
-                        `endif
-                    """.trimIndent()
-                )
-                sourceBuilder.appendLine()
-            }
-        }
+        sourceBuilder.appendLine()
     }
 
     fun toTextFile(): TextFile {

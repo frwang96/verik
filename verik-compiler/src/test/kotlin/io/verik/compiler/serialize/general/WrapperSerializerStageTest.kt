@@ -19,10 +19,10 @@ package io.verik.compiler.serialize.general
 import io.verik.compiler.test.BaseTest
 import org.junit.jupiter.api.Test
 
-internal class PackageWrapperSerializerStageTest : BaseTest() {
+internal class WrapperSerializerStageTest : BaseTest() {
 
     @Test
-    fun `package file`() {
+    fun `non root package wrapper file`() {
         driveTextFileTest(
             """
                 class C : Class()
@@ -37,5 +37,31 @@ internal class PackageWrapperSerializerStageTest : BaseTest() {
                 endpackage : test_pkg
             """.trimIndent()
         ) { it.packageWrapperTextFiles[0] }
+    }
+
+    @Test
+    fun `root package wrapper file`() {
+        driveTextFileTest(
+            """
+                class M : Module()
+            """.trimIndent(),
+            """
+                `include "src/test/Test.sv"
+            """.trimIndent()
+        ) { it.packageWrapperTextFiles[0] }
+    }
+
+    @Test
+    fun `project wrapper file`() {
+        driveTextFileTest(
+            """
+                class M : Module()
+            """.trimIndent(),
+            """
+                `timescale 1ns / 1ns
+
+                `include "src/Pkg.sv"
+            """.trimIndent()
+        ) { it.projectWrapperTextFile }
     }
 }

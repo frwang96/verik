@@ -28,11 +28,12 @@ object ConfigFileSerializerStage : ProjectStage() {
             projectContext.config,
             null,
             outputPath,
-            FileHeaderBuilder.HeaderStyle.TEXT
+            FileHeaderBuilder.CommentStyle.HASH
         )
 
         val builder = StringBuilder()
         builder.append(fileHeader)
+        builder.appendLine()
         builder.appendLine("timescale: ${projectContext.config.timescale}")
         if (projectContext.config.entryPoints.isNotEmpty()) {
             builder.appendLine("entryPoints:")

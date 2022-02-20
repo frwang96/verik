@@ -28,7 +28,6 @@ data class VerikConfig(
     val entryPoints: List<String>,
     val enableDeadCodeElimination: Boolean,
     val labelLines: Boolean,
-    val enableLineDirective: Boolean,
     val indentLength: Int,
     val wrapLength: Int,
     val suppressedWarnings: List<String>,

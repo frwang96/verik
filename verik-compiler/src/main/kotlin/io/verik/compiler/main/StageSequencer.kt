@@ -74,8 +74,7 @@ import io.verik.compiler.resolve.TypeReferenceForwarderStage
 import io.verik.compiler.resolve.TypeResolvedCheckerStage
 import io.verik.compiler.resolve.TypeResolverStage
 import io.verik.compiler.serialize.general.ConfigFileSerializerStage
-import io.verik.compiler.serialize.general.PackageWrapperSerializerStage
-import io.verik.compiler.serialize.general.SourcesFileSerializerStage
+import io.verik.compiler.serialize.general.WrapperSerializerStage
 import io.verik.compiler.serialize.source.SourceSerializerStage
 import io.verik.compiler.serialize.target.CompositeTargetSerializerStage
 import io.verik.compiler.specialize.SpecializerStage
@@ -231,8 +230,7 @@ object StageSequencer {
         stageSequence.add(StageType.SERIALIZE, ConfigFileSerializerStage)
         stageSequence.add(StageType.SERIALIZE, CompositeTargetSerializerStage)
         stageSequence.add(StageType.SERIALIZE, SourceSerializerStage)
-        stageSequence.add(StageType.SERIALIZE, PackageWrapperSerializerStage)
-        stageSequence.add(StageType.SERIALIZE, SourcesFileSerializerStage)
+        stageSequence.add(StageType.SERIALIZE, WrapperSerializerStage)
 
         return stageSequence
     }

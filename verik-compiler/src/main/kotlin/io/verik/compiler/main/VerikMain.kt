@@ -72,7 +72,7 @@ object VerikMain {
         isPass: Boolean
     ) {
         val path = config.buildDir.resolve("log.txt")
-        val fileHeader = FileHeaderBuilder.build(config, null, path, FileHeaderBuilder.HeaderStyle.TEXT)
+        val fileHeader = FileHeaderBuilder.build(config, null, path, FileHeaderBuilder.CommentStyle.HASH)
         val messages = messagePrinter.toString()
         val elapsedTime = System.currentTimeMillis() - startTime
         val elapsedString = when {
@@ -83,11 +83,13 @@ object VerikMain {
 
         val builder = StringBuilder()
         builder.append(fileHeader)
+        builder.appendLine()
         builder.append(messages)
-        if (isPass)
+        if (isPass) {
             builder.appendLine("i: Compile passed in $elapsedString")
-        else
+        } else {
             builder.appendLine("i: Compile failed in $elapsedString")
+        }
 
         Files.createDirectories(path.parent)
         Files.writeString(path, builder)

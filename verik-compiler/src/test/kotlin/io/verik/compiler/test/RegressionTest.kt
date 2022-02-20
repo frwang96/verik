@@ -115,7 +115,6 @@ internal class RegressionTest {
             entryPoints = listOf(),
             enableDeadCodeElimination = true,
             labelLines = false,
-            enableLineDirective = false,
             indentLength = 4,
             wrapLength = 80,
             suppressedWarnings = listOf(),
@@ -145,7 +144,7 @@ internal class RegressionTest {
 
     private fun getActualString(outputContext: OutputContext): String {
         val builder = StringBuilder()
-        val textFiles = outputContext.getTextFiles().filter { it.path.extension in listOf("sv", "svh") }
+        val textFiles = outputContext.getPackageTextFiles()
         textFiles.forEach { textFile ->
             val path = textFile.path.relativeTo(Paths.get("src"))
             val pathLine = "// ${Platform.getStringFromPath(path)} ".padEnd(120, '/')

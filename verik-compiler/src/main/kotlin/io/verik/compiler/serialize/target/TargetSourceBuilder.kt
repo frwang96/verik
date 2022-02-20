@@ -35,9 +35,10 @@ class TargetSourceBuilder(
             projectContext.config,
             null,
             path,
-            FileHeaderBuilder.HeaderStyle.SYSTEM_VERILOG
+            FileHeaderBuilder.CommentStyle.SLASH
         )
         sourceBuilder.append(fileHeader)
+        sourceBuilder.appendLine()
     }
 
     fun appendLine() {

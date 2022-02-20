@@ -74,9 +74,7 @@ class DependencyIndexerVisitor(
         val referenceInClass = reference is ESvClass || reference.getParentClassOrNull() is ESvClass
         return when {
             !isReorderable(parent) -> false
-            elementInClass && referenceInClass -> {
-                parent is EProject || (parent is EPackage && parent.packageType.isRoot())
-            }
+            elementInClass && referenceInClass -> parent is EProject
             reference is EModuleInterface -> false
             else -> true
         }

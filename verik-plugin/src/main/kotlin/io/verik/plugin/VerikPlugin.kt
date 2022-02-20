@@ -60,7 +60,6 @@ class VerikPlugin : Plugin<Project> {
         task.inputs.property("entryPoints", { extension.entryPoints })
         task.inputs.property("enableDeadCodeElimination", { extension.enableDeadCodeElimination })
         task.inputs.property("labelLines", { extension.labelLines })
-        task.inputs.property("enableLineDirective", { extension.enableLineDirective })
         task.inputs.property("indentLength", { extension.indentLength })
         task.inputs.property("wrapLength", { extension.wrapLength })
         task.inputs.property("suppressedWarnings", { extension.suppressedWarnings })
