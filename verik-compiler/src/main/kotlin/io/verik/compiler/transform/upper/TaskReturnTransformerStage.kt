@@ -62,7 +62,7 @@ object TaskReturnTransformerStage : ProjectStage() {
             val expression = returnStatement.expression
             if (valueParameter != null && expression != null) {
                 val newReturnStatement = EReturnStatement(returnStatement.location, Core.Kt.C_Unit.toType(), null)
-                val referenceExpression =  EReferenceExpression(
+                val referenceExpression = EReferenceExpression(
                     returnStatement.location,
                     valueParameter.type.copy(),
                     valueParameter,
@@ -106,13 +106,7 @@ object TaskReturnTransformerStage : ProjectStage() {
                 isMutable = true
             )
             val propertyStatement = EPropertyStatement(callExpression.location, property)
-            val referenceExpression = EReferenceExpression(
-                callExpression.location,
-                property.type.copy(),
-                property,
-                null,
-                false
-            )
+            val referenceExpression = EReferenceExpression.of(property)
             val newCallExpression = ExpressionCopier.shallowCopy(callExpression)
             referenceExpression.parent = newCallExpression
             newCallExpression.valueArguments.add(referenceExpression)

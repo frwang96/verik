@@ -109,6 +109,7 @@ import io.verik.compiler.transform.upper.IfAndWhenExpressionUnlifterStage
 import io.verik.compiler.transform.upper.InjectedExpressionTransformerStage
 import io.verik.compiler.transform.upper.InlineIfExpressionTransformerStage
 import io.verik.compiler.transform.upper.ProceduralAssignmentTransformerStage
+import io.verik.compiler.transform.upper.SafeAccessReducerStage
 import io.verik.compiler.transform.upper.TaskReturnTransformerStage
 import io.verik.compiler.transform.upper.ToStringTransformerStage
 import io.verik.compiler.transform.upper.UninitializedPropertyTransformerStage
@@ -192,6 +193,7 @@ object StageSequencer {
         stageSequence.add(StageType.UPPER_TRANSFORM, UninitializedPropertyTransformerStage)
         stageSequence.add(StageType.UPPER_TRANSFORM, ProceduralAssignmentTransformerStage)
         stageSequence.add(StageType.UPPER_TRANSFORM, ForStatementTransformerStage)
+        stageSequence.add(StageType.UPPER_TRANSFORM, SafeAccessReducerStage)
         stageSequence.add(StageType.UPPER_TRANSFORM, InlineIfExpressionTransformerStage)
         stageSequence.add(StageType.UPPER_TRANSFORM, IfAndWhenExpressionUnlifterStage)
         stageSequence.add(StageType.UPPER_TRANSFORM, CaseStatementTransformerStage)

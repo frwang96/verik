@@ -42,13 +42,7 @@ object CastTransformerStage : ProjectStage() {
 
         override fun visitIsExpression(isExpression: EIsExpression) {
             super.visitIsExpression(isExpression)
-            val referenceExpression = EReferenceExpression(
-                isExpression.location,
-                isExpression.property.type.copy(),
-                isExpression.property,
-                null,
-                false
-            )
+            val referenceExpression = EReferenceExpression.of(isExpression.property)
             val callExpression = ECallExpression(
                 isExpression.location,
                 Core.Kt.C_Boolean.toType(),
@@ -83,13 +77,7 @@ object CastTransformerStage : ProjectStage() {
                 initializer = null,
                 isMutable = false
             )
-            val referenceExpression = EReferenceExpression(
-                property.location,
-                property.type.copy(),
-                property,
-                null,
-                false
-            )
+            val referenceExpression = EReferenceExpression.of(property)
             val propertyStatement = EPropertyStatement(property.location, property)
             val castCallExpression = ECallExpression(
                 asExpression.location,

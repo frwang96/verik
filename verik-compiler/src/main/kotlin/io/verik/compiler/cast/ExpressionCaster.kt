@@ -58,7 +58,9 @@ import org.jetbrains.kotlin.psi.KtIsExpression
 import org.jetbrains.kotlin.psi.KtLambdaExpression
 import org.jetbrains.kotlin.psi.KtPostfixExpression
 import org.jetbrains.kotlin.psi.KtPrefixExpression
+import org.jetbrains.kotlin.psi.KtQualifiedExpression
 import org.jetbrains.kotlin.psi.KtReturnExpression
+import org.jetbrains.kotlin.psi.KtSafeQualifiedExpression
 import org.jetbrains.kotlin.psi.KtSimpleNameExpression
 import org.jetbrains.kotlin.psi.KtSuperExpression
 import org.jetbrains.kotlin.psi.KtThisExpression
@@ -140,11 +142,12 @@ object ExpressionCaster {
     }
 
     fun castReferenceExpressionOrCallExpression(
-        expression: KtDotQualifiedExpression,
+        expression: KtQualifiedExpression,
         castContext: CastContext
     ): EExpression {
         val location = expression.location()
         val type = castContext.castType(expression)
+        val isSafeAccess = expression is KtSafeQualifiedExpression
 
         // Drop receiver if reference target is a package or class
         val receiverReferenceTarget = when (val receiver = expression.receiverExpression) {
@@ -162,7 +165,7 @@ object ExpressionCaster {
             is KtSimpleNameExpression -> {
                 val descriptor = castContext.sliceReferenceTarget[selector]!!
                 val declaration = castContext.resolveDeclaration(descriptor, expression)
-                val referenceExpression = EReferenceExpression(location, type, declaration, receiver, false)
+                val referenceExpression = EReferenceExpression(location, type, declaration, receiver, isSafeAccess)
                 ReferenceExpressionCaster.checkSmartCast(expression, referenceExpression, castContext)
                 referenceExpression
             }
@@ -172,13 +175,13 @@ object ExpressionCaster {
                 val valueArguments = CallExpressionCaster.castValueArguments(selector.calleeExpression!!, castContext)
                 val typeArguments = CallExpressionCaster.castTypeArguments(selector, castContext)
                 return ECallExpression(
-                    location,
-                    type,
-                    declaration,
-                    receiver,
-                    false,
-                    valueArguments,
-                    typeArguments
+                    location = location,
+                    type = type,
+                    reference = declaration,
+                    receiver = receiver,
+                    isSafeAccess = isSafeAccess,
+                    valueArguments = valueArguments,
+                    typeArguments = typeArguments
                 )
             }
             else -> Messages.INTERNAL_ERROR.on(expression, "Simple name expression or call expression expected")

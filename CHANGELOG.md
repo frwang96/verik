@@ -24,6 +24,7 @@
 - All classes should inherit from `Class` to get randomization functions.
 - Support for randomize annotation `@Rand`.
 - Support `toString` function.
+- Support for safe access operator.
 
 ## [0.1.13]
 ### Importer

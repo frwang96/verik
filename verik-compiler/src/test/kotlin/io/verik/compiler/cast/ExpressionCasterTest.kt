@@ -154,6 +154,23 @@ internal class ExpressionCasterTest : BaseTest() {
     }
 
     @Test
+    fun `call expression safe access`() {
+        driveElementTest(
+            """
+                class C : Class() {
+                    fun f() {}
+                }
+                val c: C? = nc()
+                fun g() {
+                    c?.f()
+                }
+            """.trimIndent(),
+            CasterStage::class,
+            "CallExpression(Unit, f, ReferenceExpression(C, c, null, 0), 1, [], [])"
+        ) { it.findExpression("g") }
+    }
+
+    @Test
     fun `constant expression integer`() {
         driveElementTest(
             """
