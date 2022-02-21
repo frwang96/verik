@@ -228,6 +228,7 @@ object ArrayAccessExpressionReducerStage : ProjectStage() {
                             binaryExpression.type,
                             reference,
                             left.array,
+                            false,
                             ArrayList(left.indices + right),
                             arrayListOf()
                         )
@@ -252,6 +253,7 @@ object ArrayAccessExpressionReducerStage : ProjectStage() {
                         arrayAccessExpression.type,
                         reference,
                         arrayAccessExpression.array,
+                        false,
                         arrayAccessExpression.indices,
                         arrayListOf()
                     )

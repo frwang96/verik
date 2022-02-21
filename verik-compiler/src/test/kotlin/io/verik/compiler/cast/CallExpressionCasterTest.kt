@@ -29,7 +29,7 @@ internal class CallExpressionCasterTest : BaseTest() {
                 var x = u(0).ext<`8`>()
             """.trimIndent(),
             CasterStage::class,
-            "CallExpression(Ubit<`*`>, ext, *, *, [`8`])"
+            "CallExpression(Ubit<`*`>, ext, *, 0, *, [`8`])"
         ) { it.findExpression("x") }
     }
 
@@ -40,7 +40,7 @@ internal class CallExpressionCasterTest : BaseTest() {
                 var x: Ubit<`8`> = u(0).ext()
             """.trimIndent(),
             CasterStage::class,
-            "CallExpression(Ubit<`*`>, ext, *, *, [`*`])"
+            "CallExpression(Ubit<`*`>, ext, *, 0, *, [`*`])"
         ) { it.findExpression("x") }
     }
 
@@ -52,7 +52,7 @@ internal class CallExpressionCasterTest : BaseTest() {
                 var x = f(0)
             """.trimIndent(),
             CasterStage::class,
-            "CallExpression(Unit, f, null, [ConstantExpression(*)], [])"
+            "CallExpression(Unit, f, null, 0, [ConstantExpression(*)], [])"
         ) { it.findExpression("x") }
     }
 
@@ -64,7 +64,7 @@ internal class CallExpressionCasterTest : BaseTest() {
                 var x = f(x = 0)
             """.trimIndent(),
             CasterStage::class,
-            "CallExpression(Unit, f, null, [ConstantExpression(*)], [])"
+            "CallExpression(Unit, f, null, 0, [ConstantExpression(*)], [])"
         ) { it.findExpression("x") }
     }
 
@@ -76,7 +76,7 @@ internal class CallExpressionCasterTest : BaseTest() {
                 var x = f(y = "", x = 0)
             """.trimIndent(),
             CasterStage::class,
-            "CallExpression(Unit, f, null, [ConstantExpression(*), StringTemplateExpression(*)], [])"
+            "CallExpression(Unit, f, null, 0, [ConstantExpression(*), StringTemplateExpression(*)], [])"
         ) { it.findExpression("x") }
     }
 
@@ -87,7 +87,7 @@ internal class CallExpressionCasterTest : BaseTest() {
                 var x = max(0)
             """.trimIndent(),
             CasterStage::class,
-            "CallExpression(Int, max, null, [ConstantExpression(*)], [])"
+            "CallExpression(Int, max, null, 0, [ConstantExpression(*)], [])"
         ) { it.findExpression("x") }
     }
 
@@ -98,7 +98,11 @@ internal class CallExpressionCasterTest : BaseTest() {
                 var x = max(0, 1, 2)
             """.trimIndent(),
             CasterStage::class,
-            "CallExpression(Int, max, null, [ConstantExpression(*), ConstantExpression(*), ConstantExpression(*)], [])"
+            """
+                CallExpression(
+                    Int, max, null, 0, [ConstantExpression(*), ConstantExpression(*), ConstantExpression(*)], []
+                )
+            """.trimIndent()
         ) { it.findExpression("x") }
     }
 
@@ -110,7 +114,7 @@ internal class CallExpressionCasterTest : BaseTest() {
                 var x = f()
             """.trimIndent(),
             CasterStage::class,
-            "CallExpression(Unit, f, null, [NothingExpression()], [])"
+            "CallExpression(Unit, f, null, 0, [NothingExpression()], [])"
         ) { it.findExpression("x") }
     }
 }

@@ -43,7 +43,7 @@ internal class SpecializerIndexerTest : BaseTest() {
                 val x = C<`1`>()
             """.trimIndent(),
             SpecializerStage::class,
-            "CallExpression(C<`*`>, C, null, [], [`1`])"
+            "CallExpression(C<`*`>, C, null, 0, [], [`1`])"
         ) { it.findExpression("x") }
     }
 }

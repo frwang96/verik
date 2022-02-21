@@ -83,6 +83,7 @@ object ConstructorInterpreterStage : ProjectStage() {
                         Core.Kt.C_Unit.toType(),
                         reference,
                         superExpression,
+                        false,
                         superTypeCallExpression.valueArguments,
                         ArrayList()
                     )

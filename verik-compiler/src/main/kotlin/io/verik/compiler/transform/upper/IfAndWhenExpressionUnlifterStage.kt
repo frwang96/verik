@@ -53,7 +53,8 @@ object IfAndWhenExpressionUnlifterStage : ProjectStage() {
                     ifExpression.location,
                     property.type.copy(),
                     property,
-                    null
+                    null,
+                    false
                 )
                 val extractedExpressions = listOf(
                     propertyStatement,
@@ -77,7 +78,8 @@ object IfAndWhenExpressionUnlifterStage : ProjectStage() {
                     whenExpression.location,
                     property.type.copy(),
                     property,
-                    null
+                    null,
+                    false
                 )
                 val propertyStatement = EPropertyStatement(
                     whenExpression.location,
@@ -141,7 +143,7 @@ object IfAndWhenExpressionUnlifterStage : ProjectStage() {
                 EKtBinaryExpression(
                     expression.location,
                     Core.Kt.C_Unit.toType(),
-                    EReferenceExpression(expression.location, property.type.copy(), property, null),
+                    EReferenceExpression(expression.location, property.type.copy(), property, null, false),
                     expression,
                     KtBinaryOperatorKind.EQ
                 )

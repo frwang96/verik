@@ -396,6 +396,7 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
                 Core.Kt.C_String.toType(),
                 Target.F_sformatf,
                 null,
+                false,
                 arrayListOf(stringExpression, callExpression.receiver!!),
                 ArrayList()
             )
@@ -411,6 +412,7 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
                 Core.Kt.C_String.toType(),
                 Target.F_sformatf,
                 null,
+                false,
                 arrayListOf(stringExpression, callExpression.receiver!!),
                 ArrayList()
             )

@@ -20,12 +20,9 @@ import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 import org.jetbrains.kotlin.psi.KtClassLiteralExpression
-import org.jetbrains.kotlin.psi.KtDestructuringDeclaration
 import org.jetbrains.kotlin.psi.KtDoubleColonExpression
-import org.jetbrains.kotlin.psi.KtImportAlias
 import org.jetbrains.kotlin.psi.KtObjectLiteralExpression
 import org.jetbrains.kotlin.psi.KtPropertyDelegate
-import org.jetbrains.kotlin.psi.KtSafeQualifiedExpression
 import org.jetbrains.kotlin.psi.KtThrowExpression
 import org.jetbrains.kotlin.psi.KtTreeVisitorVoid
 import org.jetbrains.kotlin.psi.KtTryExpression
@@ -39,14 +36,6 @@ object UnsupportedElementCheckerStage : ProjectStage() {
     }
 
     private object UnsupportedElementCheckerVisitor : KtTreeVisitorVoid() {
-
-        override fun visitDestructuringDeclaration(destructuringDeclaration: KtDestructuringDeclaration) {
-            Messages.UNSUPPORTED_ELEMENT.on(destructuringDeclaration, "Destructuring declaration")
-        }
-
-        override fun visitImportAlias(importAlias: KtImportAlias) {
-            Messages.UNSUPPORTED_ELEMENT.on(importAlias, "Import alias")
-        }
 
         override fun visitPropertyDelegate(delegate: KtPropertyDelegate) {
             Messages.UNSUPPORTED_ELEMENT.on(delegate, "Property delegate")
@@ -66,10 +55,6 @@ object UnsupportedElementCheckerStage : ProjectStage() {
 
         override fun visitClassLiteralExpression(expression: KtClassLiteralExpression) {
             Messages.UNSUPPORTED_ELEMENT.on(expression, "Class literal expression")
-        }
-
-        override fun visitSafeQualifiedExpression(expression: KtSafeQualifiedExpression) {
-            Messages.UNSUPPORTED_ELEMENT.on(expression, "Safe qualified expression")
         }
 
         override fun visitObjectLiteralExpression(expression: KtObjectLiteralExpression) {

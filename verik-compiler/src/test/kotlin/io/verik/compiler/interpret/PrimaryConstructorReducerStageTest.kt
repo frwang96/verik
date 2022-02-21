@@ -46,8 +46,8 @@ internal class PrimaryConstructorReducerStageTest : BaseTest() {
                 Unit,
                 [KtBinaryExpression(
                     Unit,
-                    ReferenceExpression(Int, x, ThisExpression(C)),
-                    ReferenceExpression(Int, x, null),
+                    ReferenceExpression(Int, x, ThisExpression(C), 0),
+                    ReferenceExpression(Int, x, null, 0),
                     EQ
                 )]
             )

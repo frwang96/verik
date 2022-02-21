@@ -34,8 +34,7 @@ internal class ForStatementReducerStageTest : BaseTest() {
             ForStatementReducerStage::class,
             """
                 CallExpression(
-                    Unit, forEach,
-                    CallExpression(IntRange, until, *, [*], []),
+                    Unit, forEach, CallExpression(IntRange, until, *, 0, [*], []), 0,
                     [FunctionLiteralExpression(Function, [KtValueParameter(*)], BlockExpression(*))],
                     [Int]
                 )

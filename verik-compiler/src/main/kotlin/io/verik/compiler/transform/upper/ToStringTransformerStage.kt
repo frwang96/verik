@@ -61,6 +61,7 @@ object ToStringTransformerStage : ProjectStage() {
                     Core.Kt.C_String.toType(),
                     Target.F_name,
                     ExpressionCopier.shallowCopy(expression),
+                    false,
                     ArrayList(),
                     ArrayList()
                 )
@@ -76,6 +77,7 @@ object ToStringTransformerStage : ProjectStage() {
                     Core.Kt.C_String.toType(),
                     toStringFunction,
                     ExpressionCopier.shallowCopy(expression),
+                    false,
                     ArrayList(),
                     ArrayList()
                 )

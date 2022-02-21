@@ -373,6 +373,7 @@ object DeclarationCaster {
             type,
             declaration,
             null,
+            false,
             valueArguments,
             ArrayList(typeArguments)
         )
@@ -400,6 +401,7 @@ object DeclarationCaster {
             type,
             declaration,
             null,
+            false,
             valueArguments,
             typeArguments
         )

@@ -88,6 +88,7 @@ object StringTemplateExpressionTransformerStage : ProjectStage() {
                     Target.C_String.toType(),
                     Target.F_sformatf,
                     null,
+                    false,
                     valueArguments,
                     ArrayList()
                 )

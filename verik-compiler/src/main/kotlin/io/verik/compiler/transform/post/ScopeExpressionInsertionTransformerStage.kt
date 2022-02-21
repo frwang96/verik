@@ -112,13 +112,15 @@ object ScopeExpressionInsertionTransformerStage : ProjectStage() {
                     receiverExpression.location,
                     Target.C_Void.toType(),
                     Target.P_root,
-                    null
+                    null,
+                    false
                 )
                 EReferenceExpression(
                     receiverExpression.location,
                     module.toType(),
                     module,
-                    referenceExpression
+                    referenceExpression,
+                    false
                 )
             } else null
         }

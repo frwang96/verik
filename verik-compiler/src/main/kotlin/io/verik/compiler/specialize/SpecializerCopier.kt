@@ -391,7 +391,8 @@ object SpecializerCopier {
             referenceExpression.location,
             type,
             referenceExpression.reference,
-            receiver
+            receiver,
+            referenceExpression.isSafeAccess
         )
     }
 
@@ -409,6 +410,7 @@ object SpecializerCopier {
             type,
             callExpression.reference,
             receiver,
+            callExpression.isSafeAccess,
             ArrayList(copiedValueArguments),
             ArrayList(copiedTypeArguments)
         )

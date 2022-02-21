@@ -46,7 +46,7 @@ internal class ExpressionEvaluatorSubstageTest : BaseTest() {
                 var y = x || false
             """.trimIndent(),
             SpecializerStage::class,
-            "ReferenceExpression(Boolean, x, null)"
+            "ReferenceExpression(Boolean, x, null, 0)"
         ) { it.findExpression("y") }
     }
 

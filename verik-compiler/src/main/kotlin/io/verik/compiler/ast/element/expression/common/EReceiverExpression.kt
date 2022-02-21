@@ -24,6 +24,7 @@ abstract class EReceiverExpression : EExpression(), ExpressionContainer {
 
     abstract var reference: Declaration
     abstract var receiver: EExpression?
+    abstract val isSafeAccess: Boolean
 
     override fun acceptChildren(visitor: TreeVisitor) {
         receiver?.accept(visitor)

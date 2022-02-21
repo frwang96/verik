@@ -105,13 +105,15 @@ object PrimaryConstructorReducerStage : ProjectStage() {
                         valueParameter.location,
                         valueParameter.type.copy(),
                         property,
-                        thisExpression
+                        thisExpression,
+                        false
                     )
                     val valueParameterReferenceExpression = EReferenceExpression(
                         valueParameter.location,
                         valueParameter.type.copy(),
                         valueParameter,
-                        null
+                        null,
+                        false
                     )
                     statements.add(
                         EKtBinaryExpression(

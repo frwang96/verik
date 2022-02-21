@@ -29,6 +29,7 @@ class ECallExpression(
     override var type: Type,
     override var reference: Declaration,
     override var receiver: EExpression?,
+    override val isSafeAccess: Boolean,
     val valueArguments: ArrayList<EExpression>,
     var typeArguments: ArrayList<Type>
 ) : EReceiverExpression() {

@@ -78,7 +78,8 @@ object ExpressionExtractorStage : ProjectStage() {
                 expression.location,
                 property.type.copy(),
                 property,
-                null
+                null,
+                false
             )
             return Pair(propertyStatement, referenceExpression)
         }

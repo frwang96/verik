@@ -30,7 +30,7 @@ internal class UnaryExpressionReducerStageTest : BaseTest() {
                 var y = !x
             """.trimIndent(),
             UnaryExpressionReducerStage::class,
-            "CallExpression(Boolean, not, ReferenceExpression(*), [], [])"
+            "CallExpression(Boolean, not, ReferenceExpression(*), 0, [], [])"
         ) { it.findExpression("y") }
     }
 }

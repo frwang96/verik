@@ -38,7 +38,7 @@ internal class CaseStatementTransformerStageTest : BaseTest() {
             """
                 CaseStatement(
                     Unit,
-                    ReferenceExpression(Int, x, null),
+                    ReferenceExpression(Int, x, null, 0),
                     [CaseEntry([ConstantExpression(Int, 0)], *), CaseEntry([], *)]
                 )
             """.trimIndent()
@@ -62,7 +62,7 @@ internal class CaseStatementTransformerStageTest : BaseTest() {
                 CaseStatement(
                     Unit,
                     ConstantExpression(Boolean, 1'b1),
-                    [CaseEntry([ReferenceExpression(Boolean, x, null)], *), CaseEntry([], *)]
+                    [CaseEntry([ReferenceExpression(Boolean, x, null, 0)], *), CaseEntry([], *)]
                 )
             """.trimIndent()
         ) { it.findExpression("f") }

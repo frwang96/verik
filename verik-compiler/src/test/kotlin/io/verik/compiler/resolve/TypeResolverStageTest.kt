@@ -42,7 +42,7 @@ internal class TypeResolverStageTest : BaseTest() {
                 var c = C<`8`>()
             """.trimIndent(),
             TypeResolverStage::class,
-            "Property(c, C<`8`>, CallExpression(C<`8`>, C_N_8, null, [], []), 1, 0)"
+            "Property(c, C<`8`>, CallExpression(C<`8`>, C_N_8, null, 0, [], []), 1, 0)"
         ) { it.findDeclaration("c") }
     }
 
@@ -67,7 +67,7 @@ internal class TypeResolverStageTest : BaseTest() {
                 }
             """.trimIndent(),
             TypeResolverStage::class,
-            "ReferenceExpression(Boolean, x, null)"
+            "ReferenceExpression(Boolean, x, null, 0)"
         ) { it.findExpression("f") }
     }
 
@@ -82,7 +82,7 @@ internal class TypeResolverStageTest : BaseTest() {
                 }
             """.trimIndent(),
             TypeResolverStage::class,
-            "ReferenceExpression(Ubit<`8`>, x, *)"
+            "ReferenceExpression(Ubit<`8`>, x, *, 0)"
         ) { it.findExpression("f") }
     }
 
@@ -94,7 +94,7 @@ internal class TypeResolverStageTest : BaseTest() {
                 val y = u(0x00) + x
             """.trimIndent(),
             TypeResolverStage::class,
-            "CallExpression(Ubit<`8`>, plus, *, *, [])"
+            "CallExpression(Ubit<`8`>, plus, *, 0, *, [])"
         ) { it.findExpression("y") }
     }
 
@@ -105,7 +105,7 @@ internal class TypeResolverStageTest : BaseTest() {
                 val x = u<`8`>()
             """.trimIndent(),
             TypeResolverStage::class,
-            "CallExpression(Ubit<`4`>, u, null, [], [`8`])"
+            "CallExpression(Ubit<`4`>, u, null, 0, [], [`8`])"
         ) { it.findExpression("x") }
     }
 
@@ -116,7 +116,7 @@ internal class TypeResolverStageTest : BaseTest() {
                 val x = cat(u(0), false)
             """.trimIndent(),
             TypeResolverStage::class,
-            "CallExpression(Ubit<`2`>, cat, null, *, [])"
+            "CallExpression(Ubit<`2`>, cat, null, 0, *, [])"
         ) { it.findExpression("x") }
     }
 
@@ -128,7 +128,7 @@ internal class TypeResolverStageTest : BaseTest() {
                 val x = f(u0())
             """.trimIndent(),
             TypeResolverStage::class,
-            "CallExpression(Unit, f, null, [CallExpression(Ubit<`8`>, u0, null, [], [`8`])], [])"
+            "CallExpression(Unit, f, null, 0, [CallExpression(Ubit<`8`>, u0, null, 0, [], [`8`])], [])"
         ) { it.findExpression("x") }
     }
 
@@ -141,7 +141,7 @@ internal class TypeResolverStageTest : BaseTest() {
                 }
             """.trimIndent(),
             TypeResolverStage::class,
-            "ReturnStatement(Nothing, CallExpression(Ubit<`8`>, u0, null, [], [`8`]))"
+            "ReturnStatement(Nothing, CallExpression(Ubit<`8`>, u0, null, 0, [], [`8`]))"
         ) { it.findExpression("f") }
     }
 }

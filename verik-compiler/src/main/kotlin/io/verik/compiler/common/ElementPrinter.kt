@@ -481,6 +481,7 @@ class ElementPrinter : Visitor() {
             build(referenceExpression.type.toString())
             build(referenceExpression.reference.name)
             build(referenceExpression.receiver)
+            build(referenceExpression.isSafeAccess)
         }
     }
 
@@ -489,6 +490,7 @@ class ElementPrinter : Visitor() {
             build(callExpression.type.toString())
             build(callExpression.reference.name)
             build(callExpression.receiver)
+            build(callExpression.isSafeAccess)
             build(callExpression.valueArguments)
             build(callExpression.typeArguments.map { it.toString() })
         }

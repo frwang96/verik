@@ -62,10 +62,17 @@ object TaskReturnTransformerStage : ProjectStage() {
             val expression = returnStatement.expression
             if (valueParameter != null && expression != null) {
                 val newReturnStatement = EReturnStatement(returnStatement.location, Core.Kt.C_Unit.toType(), null)
+                val referenceExpression =  EReferenceExpression(
+                    returnStatement.location,
+                    valueParameter.type.copy(),
+                    valueParameter,
+                    null,
+                    false
+                )
                 val binaryExpression = EKtBinaryExpression(
                     returnStatement.location,
                     Core.Kt.C_Unit.toType(),
-                    EReferenceExpression(returnStatement.location, valueParameter.type.copy(), valueParameter, null),
+                    referenceExpression,
                     expression,
                     KtBinaryOperatorKind.EQ
                 )
@@ -103,7 +110,8 @@ object TaskReturnTransformerStage : ProjectStage() {
                 callExpression.location,
                 property.type.copy(),
                 property,
-                null
+                null,
+                false
             )
             val newCallExpression = ExpressionCopier.shallowCopy(callExpression)
             referenceExpression.parent = newCallExpression

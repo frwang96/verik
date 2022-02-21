@@ -26,7 +26,8 @@ class EReferenceExpression(
     override val location: SourceLocation,
     override var type: Type,
     override var reference: Declaration,
-    override var receiver: EExpression?
+    override var receiver: EExpression?,
+    override val isSafeAccess: Boolean
 ) : EReceiverExpression() {
 
     override val serializationType = SerializationType.EXPRESSION

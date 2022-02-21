@@ -41,6 +41,7 @@ object CoreJvArrayList : CoreScope(Core.Jv.Util.C_ArrayList) {
                 referenceExpression.type,
                 Target.ArrayList.F_size,
                 referenceExpression.receiver,
+                false,
                 arrayListOf(),
                 arrayListOf()
             )

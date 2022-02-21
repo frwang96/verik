@@ -150,7 +150,9 @@ internal class DeclarationCasterTest : BaseTest() {
             """
                 KtClass(
                     C1, C1, C0<Int>, [], [],
-                    PrimaryConstructor(C1, C1, [], CallExpression(C0<Int>, C0, null, [ConstantExpression(*)], [Int])),
+                    PrimaryConstructor(
+                        C1, C1, [], CallExpression(C0<Int>, C0, null, 0, [ConstantExpression(*)], [Int])
+                    ),
                     0, 0
                 )
             """.trimIndent()
@@ -187,7 +189,7 @@ internal class DeclarationCasterTest : BaseTest() {
                     C1, C1, C0<Int>, [],
                     [SecondaryConstructor(
                         C1, C1, BlockExpression(*), [KtValueParameter(x, Int, null, 0, 0)],
-                        CallExpression(C0<Int>, C0, null, [ConstantExpression(*)], [Int])
+                        CallExpression(C0<Int>, C0, null, 0, [ConstantExpression(*)], [Int])
                     )],
                     null, 0, 0
                 )

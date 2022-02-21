@@ -34,7 +34,7 @@ internal class ExpressionReferenceForwarderTest : BaseTest() {
                 val c = C<`8`>()
             """.trimIndent(),
             TypeResolverStage::class,
-            "ReferenceExpression(Ubit<`8`>, x, null)"
+            "ReferenceExpression(Ubit<`8`>, x, null, 0)"
         ) { it.findExpression("y") }
     }
 
@@ -52,7 +52,7 @@ internal class ExpressionReferenceForwarderTest : BaseTest() {
                 }
             """.trimIndent(),
             TypeResolverStage::class,
-            "ReferenceExpression(Int, x, null)"
+            "ReferenceExpression(Int, x, null, 0)"
         ) { it.findExpression("f") }
     }
 
@@ -70,7 +70,7 @@ internal class ExpressionReferenceForwarderTest : BaseTest() {
                 }
             """.trimIndent(),
             TypeResolverStage::class,
-            "ReferenceExpression(Int, x, ReferenceExpression(C1, c, null))"
+            "ReferenceExpression(Int, x, ReferenceExpression(C1, c, null, 0), 0)"
         ) { it.findExpression("f") }
     }
 
@@ -86,7 +86,7 @@ internal class ExpressionReferenceForwarderTest : BaseTest() {
                 val c = C<`8`>()
             """.trimIndent(),
             TypeResolverStage::class,
-            "CallExpression(Boolean, f, null, [], [])"
+            "CallExpression(Boolean, f, null, 0, [], [])"
         ) { it.findExpression("x") }
     }
 
@@ -101,7 +101,7 @@ internal class ExpressionReferenceForwarderTest : BaseTest() {
                 val c = C<`8`>()
             """.trimIndent(),
             TypeResolverStage::class,
-            "CallExpression(D, D, null, [], [])"
+            "CallExpression(D, D, null, 0, [], [])"
         ) { it.findExpression("x") }
     }
 }

@@ -76,7 +76,8 @@ object ProceduralAssignmentTransformerStage : ProjectStage() {
                     property.location,
                     property.type.copy(),
                     property,
-                    null
+                    null,
+                    false
                 )
                 val binaryExpression = EKtBinaryExpression(
                     property.location,
@@ -112,7 +113,8 @@ object ProceduralAssignmentTransformerStage : ProjectStage() {
                     property.location,
                     property.type.copy(),
                     property,
-                    null
+                    null,
+                    false
                 )
                 val body = initializer.valueArguments.last().cast<EFunctionLiteralExpression>().body
                 if (body.isEmpty()) {

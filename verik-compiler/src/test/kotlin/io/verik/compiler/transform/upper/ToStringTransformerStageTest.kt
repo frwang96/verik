@@ -33,7 +33,7 @@ internal class ToStringTransformerStageTest : BaseTest() {
                 }
             """.trimIndent(),
             ToStringTransformerStage::class,
-            "StringTemplateExpression(String, [CallExpression(String, name, ReferenceExpression(*), [], [])])"
+            "StringTemplateExpression(String, [CallExpression(String, name, ReferenceExpression(*), 0, [], [])])"
         ) { it.findExpression("f") }
     }
 
@@ -66,8 +66,8 @@ internal class ToStringTransformerStageTest : BaseTest() {
             ToStringTransformerStage::class,
             """
                 CallExpression(
-                    Unit, println, null,
-                    [CallExpression(String, toString, ReferenceExpression(C, c, null), [], [])], []
+                    Unit, println, null, 0,
+                    [CallExpression(String, toString, ReferenceExpression(C, c, null, 0), 0, [], [])], []
                 )
             """.trimIndent()
         ) { it.findExpression("f") }

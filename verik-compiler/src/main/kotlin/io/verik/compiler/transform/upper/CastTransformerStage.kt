@@ -46,13 +46,15 @@ object CastTransformerStage : ProjectStage() {
                 isExpression.location,
                 isExpression.property.type.copy(),
                 isExpression.property,
-                null
+                null,
+                false
             )
             val callExpression = ECallExpression(
                 isExpression.location,
                 Core.Kt.C_Boolean.toType(),
                 Target.F_cast,
                 null,
+                false,
                 arrayListOf(referenceExpression, isExpression.expression),
                 ArrayList()
             )
@@ -63,6 +65,7 @@ object CastTransformerStage : ProjectStage() {
                     Core.Kt.C_Boolean.toType(),
                     Core.Kt.Boolean.F_not,
                     callExpression,
+                    false,
                     ArrayList(),
                     ArrayList()
                 )
@@ -84,7 +87,8 @@ object CastTransformerStage : ProjectStage() {
                 property.location,
                 property.type.copy(),
                 property,
-                null
+                null,
+                false
             )
             val propertyStatement = EPropertyStatement(property.location, property)
             val castCallExpression = ECallExpression(
@@ -92,6 +96,7 @@ object CastTransformerStage : ProjectStage() {
                 Core.Kt.C_Boolean.toType(),
                 Target.F_cast,
                 null,
+                false,
                 arrayListOf(referenceExpression, asExpression.expression),
                 ArrayList()
             )
@@ -100,6 +105,7 @@ object CastTransformerStage : ProjectStage() {
                 Core.Kt.C_Boolean.toType(),
                 Core.Kt.Boolean.F_not,
                 castCallExpression,
+                false,
                 ArrayList(),
                 ArrayList()
             )
@@ -112,6 +118,7 @@ object CastTransformerStage : ProjectStage() {
                 Core.Kt.C_Nothing.toType(),
                 Core.Vk.F_fatal_String,
                 null,
+                false,
                 arrayListOf(stringExpression),
                 ArrayList()
             )

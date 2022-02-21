@@ -89,7 +89,8 @@ object ForStatementTransformerStage : ProjectStage() {
                 property.location,
                 property.type.copy(),
                 property,
-                null
+                null,
+                false
             )
             val condition = EKtBinaryExpression(
                 callExpression.location,
@@ -128,13 +129,15 @@ object ForStatementTransformerStage : ProjectStage() {
                 indexProperty.location,
                 indexProperty.type.copy(),
                 indexProperty,
-                null
+                null,
+                false
             )
             val sizeReferenceExpression = EReferenceExpression(
                 referenceExpression.location,
                 Core.Kt.C_Int.toType(),
                 Core.Jv.Util.ArrayList.P_size,
-                referenceExpression
+                referenceExpression,
+                false
             )
             val condition = EKtBinaryExpression(
                 referenceExpression.location,
@@ -154,6 +157,7 @@ object ForStatementTransformerStage : ProjectStage() {
                 valueParameter.type.copy(),
                 Core.Jv.Util.ArrayList.F_get_Int,
                 ExpressionCopier.deepCopy(referenceExpression),
+                false,
                 arrayListOf(ExpressionCopier.deepCopy(indexReferenceExpression)),
                 ArrayList()
             )
