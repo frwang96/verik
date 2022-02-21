@@ -23,6 +23,7 @@
 - Abstract classes compile to regular classes and not virtual classes.
 - All classes should inherit from `Class` to get randomization functions.
 - Support for randomize annotation `@Rand`.
+- Support `toString` function.
 
 ## [0.1.13]
 ### Importer

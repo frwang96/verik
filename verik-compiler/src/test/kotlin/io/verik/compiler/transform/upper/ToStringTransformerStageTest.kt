@@ -23,7 +23,7 @@ import org.junit.jupiter.api.Test
 internal class ToStringTransformerStageTest : BaseTest() {
 
     @Test
-    fun `string template expression enum property`() {
+    fun `enum property`() {
         driveElementTest(
             """
                 enum class E { A }
@@ -38,7 +38,7 @@ internal class ToStringTransformerStageTest : BaseTest() {
     }
 
     @Test
-    fun `string template expression enum entry`() {
+    fun `enum entry`() {
         driveElementTest(
             """
                 enum class E { A }
@@ -52,16 +52,24 @@ internal class ToStringTransformerStageTest : BaseTest() {
     }
 
     @Test
-    fun `println enum entry`() {
+    fun `class to string`() {
         driveElementTest(
             """
-                enum class E { A }
+                class C : Class() {
+                    override fun toString(): String { return "" }
+                }
+                val c = C()
                 fun f() {
-                    println(E.A)
+                    println(c)
                 }
             """.trimIndent(),
             ToStringTransformerStage::class,
-            "CallExpression(Unit, println, null, [StringTemplateExpression(String, [A])], [])"
+            """
+                CallExpression(
+                    Unit, println, null,
+                    [CallExpression(String, toString, ReferenceExpression(C, c, null), [], [])], []
+                )
+            """.trimIndent()
         ) { it.findExpression("f") }
     }
 }

@@ -440,7 +440,7 @@ internal class DeclarationSerializerTest : BaseTest() {
                 class C : Class(){
                     var x = 0
                     @Cons
-                    var c = cons(x == 0)
+                    var c = c(x == 0)
                 }
             """.trimIndent(),
             """

@@ -25,7 +25,6 @@ import io.verik.compiler.ast.property.LiteralStringEntry
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
-import io.verik.compiler.message.Messages
 import io.verik.compiler.target.common.Target
 
 object StringTemplateExpressionTransformerStage : ProjectStage() {
@@ -34,21 +33,19 @@ object StringTemplateExpressionTransformerStage : ProjectStage() {
         projectContext.project.accept(StringTemplateExpressionTransformerVisitor)
     }
 
-    private fun getFormatSpecifier(expression: EExpression): String {
-        val type = expression.type
-        return when (type.reference) {
-            Target.C_Boolean -> "%b"
-            Target.C_Int -> "%0d"
-            Target.C_String -> "%s"
-            Target.C_Ubit, Target.C_Sbit -> "%h"
-            Target.C_Time -> "%0t"
-            else -> {
-                Messages.INTERNAL_ERROR.on(expression, "Unable to get format specifier of type: ${expression.type}")
+    private object StringTemplateExpressionTransformerVisitor : TreeVisitor() {
+
+        private fun getFormatSpecifier(expression: EExpression): String {
+            val type = expression.type
+            return when (type.reference) {
+                Target.C_Boolean -> "%b"
+                Target.C_Int -> "%0d"
+                Target.C_String -> "%s"
+                Target.C_Ubit, Target.C_Sbit -> "%h"
+                Target.C_Time -> "%0t"
+                else -> "%p"
             }
         }
-    }
-
-    private object StringTemplateExpressionTransformerVisitor : TreeVisitor() {
 
         override fun visitStringTemplateExpression(stringTemplateExpression: EStringTemplateExpression) {
             super.visitStringTemplateExpression(stringTemplateExpression)
