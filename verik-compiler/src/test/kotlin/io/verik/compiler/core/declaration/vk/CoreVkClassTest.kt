@@ -42,7 +42,7 @@ internal class CoreVkClassTest : CoreDeclarationTest() {
                 endclass : C
 
                 function automatic void f();
-                    c.randomize();
+                    assert (c.randomize());
                 endfunction : f
             """.trimIndent()
         )

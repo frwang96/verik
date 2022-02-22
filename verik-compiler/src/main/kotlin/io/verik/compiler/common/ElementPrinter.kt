@@ -663,7 +663,6 @@ class ElementPrinter : Visitor() {
 
     override fun visitImmediateAssertStatement(immediateAssertStatement: EImmediateAssertStatement) {
         build("ImmediateAssertStatement") {
-            build(immediateAssertStatement.type.toString())
             build(immediateAssertStatement.condition)
             build(immediateAssertStatement.elseExpression)
         }

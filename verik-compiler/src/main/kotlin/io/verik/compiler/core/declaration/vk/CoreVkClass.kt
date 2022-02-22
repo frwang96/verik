@@ -16,12 +16,23 @@
 
 package io.verik.compiler.core.declaration.vk
 
-import io.verik.compiler.core.common.BasicCoreFunctionDeclaration
+import io.verik.compiler.ast.element.expression.common.ECallExpression
+import io.verik.compiler.ast.element.expression.common.EExpression
+import io.verik.compiler.ast.element.expression.sv.EImmediateAssertStatement
+import io.verik.compiler.common.ExpressionCopier
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreScope
+import io.verik.compiler.core.common.TransformableCoreFunctionDeclaration
 import io.verik.compiler.target.common.Target
 
 object CoreVkClass : CoreScope(Core.Vk.C_Class) {
 
-    val F_randomize = BasicCoreFunctionDeclaration(parent, "randomize", "fun randomize()", Target.F_randomize)
+    val F_randomize = object : TransformableCoreFunctionDeclaration(parent, "randomize", "fun randomize()") {
+
+        override fun transform(callExpression: ECallExpression): EExpression {
+            val copiedCallExpression = ExpressionCopier.shallowCopy(callExpression)
+            copiedCallExpression.reference = Target.F_randomize
+            return EImmediateAssertStatement(callExpression.location, copiedCallExpression, null)
+        }
+    }
 }
