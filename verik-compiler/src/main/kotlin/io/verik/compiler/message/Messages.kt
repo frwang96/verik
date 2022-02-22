@@ -258,6 +258,14 @@ object Messages {
 
 //  INTERPRET  /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    val ENUM_PROPERTY_ILLEGAL = ErrorMessageTemplate1<String>(
+        "Illegal enum property: $0"
+    )
+
+    val ENUM_PROPERTY_ILLEGAL_TYPE = ErrorMessageTemplate1<Type>(
+        "Illegal type for enum property: $0"
+    )
+
     val EXPECTED_ON_EXPRESSION = ErrorMessageTemplate0(
         "Expected on expression"
     )

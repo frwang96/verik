@@ -228,6 +228,7 @@ class ElementPrinter : Visitor() {
         build("Enum") {
             build(enum.name)
             build(enum.type.toString())
+            build(enum.property)
             build(enum.enumEntries.map { it.name })
         }
     }
@@ -353,6 +354,7 @@ class ElementPrinter : Visitor() {
         build("EnumEntry") {
             build(enumEntry.name)
             build(enumEntry.type.toString())
+            build(enumEntry.expression)
         }
     }
 
