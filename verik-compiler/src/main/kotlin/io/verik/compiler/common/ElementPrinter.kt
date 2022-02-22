@@ -228,6 +228,7 @@ class ElementPrinter : Visitor() {
         build("Enum") {
             build(enum.name)
             build(enum.type.toString())
+            build(enum.property)
             build(enum.enumEntries.map { it.name })
         }
     }
@@ -353,6 +354,7 @@ class ElementPrinter : Visitor() {
         build("EnumEntry") {
             build(enumEntry.name)
             build(enumEntry.type.toString())
+            build(enumEntry.expression)
         }
     }
 
@@ -481,6 +483,7 @@ class ElementPrinter : Visitor() {
             build(referenceExpression.type.toString())
             build(referenceExpression.reference.name)
             build(referenceExpression.receiver)
+            build(referenceExpression.isSafeAccess)
         }
     }
 
@@ -489,6 +492,7 @@ class ElementPrinter : Visitor() {
             build(callExpression.type.toString())
             build(callExpression.reference.name)
             build(callExpression.receiver)
+            build(callExpression.isSafeAccess)
             build(callExpression.valueArguments)
             build(callExpression.typeArguments.map { it.toString() })
         }
@@ -661,7 +665,6 @@ class ElementPrinter : Visitor() {
 
     override fun visitImmediateAssertStatement(immediateAssertStatement: EImmediateAssertStatement) {
         build("ImmediateAssertStatement") {
-            build(immediateAssertStatement.type.toString())
             build(immediateAssertStatement.condition)
             build(immediateAssertStatement.elseExpression)
         }

@@ -51,7 +51,7 @@ internal class ConstructorInterpreterStageTest : BaseTest() {
                 SvClass(
                     D, D, C, [],
                     [SvConstructor(
-                        D, BlockExpression(Unit, [CallExpression(Unit, new, SuperExpression(C), [], [])]), []
+                        D, BlockExpression(Unit, [CallExpression(Unit, new, SuperExpression(C), 0, [], [])]), []
                     )],
                     0
                 )

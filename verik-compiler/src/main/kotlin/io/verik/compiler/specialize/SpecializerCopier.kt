@@ -286,12 +286,14 @@ object SpecializerCopier {
         specializeContext: SpecializeContext
     ): EEnumEntry {
         val type = enumEntry.type.copy()
+        val expression = enumEntry.expression?.let { copy(it, typeArguments, specializeContext) }
         val copiedEnumEntry = EEnumEntry(
             location = enumEntry.location,
             name = enumEntry.name,
             type = type,
             annotationEntries = enumEntry.annotationEntries,
             documentationLines = enumEntry.documentationLines,
+            expression = expression
         )
         specializeContext.register(enumEntry, typeArguments, copiedEnumEntry)
         return copiedEnumEntry
@@ -391,7 +393,8 @@ object SpecializerCopier {
             referenceExpression.location,
             type,
             referenceExpression.reference,
-            receiver
+            receiver,
+            referenceExpression.isSafeAccess
         )
     }
 
@@ -409,6 +412,7 @@ object SpecializerCopier {
             type,
             callExpression.reference,
             receiver,
+            callExpression.isSafeAccess,
             ArrayList(copiedValueArguments),
             ArrayList(copiedTypeArguments)
         )

@@ -20,6 +20,7 @@ package io.verik.compiler.core.common
 
 import io.verik.compiler.core.declaration.jv.CoreJvArrayList
 import io.verik.compiler.core.declaration.jv.CoreJvClasses
+import io.verik.compiler.core.declaration.kt.CoreKtAny
 import io.verik.compiler.core.declaration.kt.CoreKtBoolean
 import io.verik.compiler.core.declaration.kt.CoreKtClasses
 import io.verik.compiler.core.declaration.kt.CoreKtCollections
@@ -61,6 +62,11 @@ object Core {
         val F_repeat_Int_Function = CoreKtFunctions.F_repeat_Int_Function
         val F_assert_Boolean = CoreKtFunctions.F_assert_Boolean
         val F_assert_Boolean_Function = CoreKtFunctions.F_assert_Boolean_Function
+
+        object Any {
+
+            val F_toString = CoreKtAny.F_toString
+        }
 
         object Int {
 
@@ -202,7 +208,7 @@ object Core {
         val F_s_String = CoreVkSpecial.F_s_String
         val F_s0 = CoreVkSpecial.F_s0
         val F_s1 = CoreVkSpecial.F_s1
-        val F_cons = CoreVkSpecial.F_cons
+        val F_c = CoreVkSpecial.F_c
         val P_unknown = CoreVkSpecial.P_unknown
         val P_floating = CoreVkSpecial.P_floating
 

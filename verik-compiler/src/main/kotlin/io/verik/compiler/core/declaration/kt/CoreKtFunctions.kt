@@ -21,7 +21,6 @@ import io.verik.compiler.ast.element.expression.common.EExpression
 import io.verik.compiler.ast.element.expression.kt.EFunctionLiteralExpression
 import io.verik.compiler.ast.element.expression.sv.EImmediateAssertStatement
 import io.verik.compiler.ast.element.expression.sv.ERepeatStatement
-import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CorePackage
 import io.verik.compiler.core.common.CoreScope
 import io.verik.compiler.core.common.TransformableCoreFunctionDeclaration
@@ -51,7 +50,6 @@ object CoreKtFunctions : CoreScope(CorePackage.KT) {
         override fun transform(callExpression: ECallExpression): EExpression {
             return EImmediateAssertStatement(
                 callExpression.location,
-                Core.Kt.C_Unit.toType(),
                 callExpression.valueArguments[0],
                 null
             )
@@ -68,7 +66,6 @@ object CoreKtFunctions : CoreScope(CorePackage.KT) {
             val functionLiteralExpression = callExpression.valueArguments[1].cast<EFunctionLiteralExpression>()
             return EImmediateAssertStatement(
                 callExpression.location,
-                Core.Kt.C_Unit.toType(),
                 callExpression.valueArguments[0],
                 functionLiteralExpression.body
             )

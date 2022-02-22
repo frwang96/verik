@@ -42,17 +42,13 @@ object CastTransformerStage : ProjectStage() {
 
         override fun visitIsExpression(isExpression: EIsExpression) {
             super.visitIsExpression(isExpression)
-            val referenceExpression = EReferenceExpression(
-                isExpression.location,
-                isExpression.property.type.copy(),
-                isExpression.property,
-                null
-            )
+            val referenceExpression = EReferenceExpression.of(isExpression.property)
             val callExpression = ECallExpression(
                 isExpression.location,
                 Core.Kt.C_Boolean.toType(),
                 Target.F_cast,
                 null,
+                false,
                 arrayListOf(referenceExpression, isExpression.expression),
                 ArrayList()
             )
@@ -63,6 +59,7 @@ object CastTransformerStage : ProjectStage() {
                     Core.Kt.C_Boolean.toType(),
                     Core.Kt.Boolean.F_not,
                     callExpression,
+                    false,
                     ArrayList(),
                     ArrayList()
                 )
@@ -80,18 +77,14 @@ object CastTransformerStage : ProjectStage() {
                 initializer = null,
                 isMutable = false
             )
-            val referenceExpression = EReferenceExpression(
-                property.location,
-                property.type.copy(),
-                property,
-                null
-            )
+            val referenceExpression = EReferenceExpression.of(property)
             val propertyStatement = EPropertyStatement(property.location, property)
             val castCallExpression = ECallExpression(
                 asExpression.location,
                 Core.Kt.C_Boolean.toType(),
                 Target.F_cast,
                 null,
+                false,
                 arrayListOf(referenceExpression, asExpression.expression),
                 ArrayList()
             )
@@ -100,6 +93,7 @@ object CastTransformerStage : ProjectStage() {
                 Core.Kt.C_Boolean.toType(),
                 Core.Kt.Boolean.F_not,
                 castCallExpression,
+                false,
                 ArrayList(),
                 ArrayList()
             )
@@ -112,6 +106,7 @@ object CastTransformerStage : ProjectStage() {
                 Core.Kt.C_Nothing.toType(),
                 Core.Vk.F_fatal_String,
                 null,
+                false,
                 arrayListOf(stringExpression),
                 ArrayList()
             )

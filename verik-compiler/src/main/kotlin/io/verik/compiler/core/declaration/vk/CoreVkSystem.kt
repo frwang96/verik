@@ -40,6 +40,7 @@ object CoreVkSystem : CoreScope(CorePackage.VK) {
                 callExpression.type,
                 Target.F_fatal,
                 null,
+                false,
                 arrayListOf(
                     EConstantExpression(callExpression.location, Core.Kt.C_Int.toType(), "1"),
                     callExpression.valueArguments[0]

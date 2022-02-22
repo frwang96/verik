@@ -77,7 +77,7 @@ internal class ExpressionCasterTest : BaseTest() {
                 var x = u(1) shl 1
             """.trimIndent(),
             CasterStage::class,
-            "CallExpression(Ubit<`*`>, shl, CallExpression(*), [ConstantExpression(*)], [])"
+            "CallExpression(Ubit<`*`>, shl, CallExpression(*), 0, [ConstantExpression(*)], [])"
         ) { it.findExpression("x") }
     }
 
@@ -89,7 +89,7 @@ internal class ExpressionCasterTest : BaseTest() {
                 var y = x
             """.trimIndent(),
             CasterStage::class,
-            "ReferenceExpression(Int, x, null)"
+            "ReferenceExpression(Int, x, null, 0)"
         ) { it.findExpression("y") }
     }
 
@@ -101,7 +101,7 @@ internal class ExpressionCasterTest : BaseTest() {
                 var y = test.x
             """.trimIndent(),
             CasterStage::class,
-            "ReferenceExpression(Int, x, null)"
+            "ReferenceExpression(Int, x, null, 0)"
         ) { it.findExpression("y") }
     }
 
@@ -113,7 +113,7 @@ internal class ExpressionCasterTest : BaseTest() {
                 var x = E.A
             """.trimIndent(),
             CasterStage::class,
-            "ReferenceExpression(E, A, null)"
+            "ReferenceExpression(E, A, null, 0)"
         ) { it.findExpression("x") }
     }
 
@@ -126,7 +126,7 @@ internal class ExpressionCasterTest : BaseTest() {
                 }
             """.trimIndent(),
             CasterStage::class,
-            "CallExpression(Unit, println, null, [], [])"
+            "CallExpression(Unit, println, null, 0, [], [])"
         ) { it.findExpression("f") }
     }
 
@@ -138,7 +138,7 @@ internal class ExpressionCasterTest : BaseTest() {
                 var y = x.plus(1)
             """.trimIndent(),
             CasterStage::class,
-            "CallExpression(Int, plus, ReferenceExpression(*), [ConstantExpression(*)], [])"
+            "CallExpression(Int, plus, ReferenceExpression(*), 0, [ConstantExpression(*)], [])"
         ) { it.findExpression("y") }
     }
 
@@ -149,8 +149,25 @@ internal class ExpressionCasterTest : BaseTest() {
                 var x = io.verik.core.random()
             """.trimIndent(),
             CasterStage::class,
-            "CallExpression(Int, random, null, [], [])"
+            "CallExpression(Int, random, null, 0, [], [])"
         ) { it.findExpression("x") }
+    }
+
+    @Test
+    fun `call expression safe access`() {
+        driveElementTest(
+            """
+                class C : Class() {
+                    fun f() {}
+                }
+                val c: C? = nc()
+                fun g() {
+                    c?.f()
+                }
+            """.trimIndent(),
+            CasterStage::class,
+            "CallExpression(Unit, f, ReferenceExpression(C, c, null, 0), 1, [], [])"
+        ) { it.findExpression("g") }
     }
 
     @Test
@@ -204,7 +221,7 @@ internal class ExpressionCasterTest : BaseTest() {
                 }
             """.trimIndent(),
             CasterStage::class,
-            "CallExpression(Unit, f, SuperExpression(C), [], [])"
+            "CallExpression(Unit, f, SuperExpression(C), 0, [], [])"
         ) { it.findExpression("g") }
     }
 
@@ -233,9 +250,7 @@ internal class ExpressionCasterTest : BaseTest() {
             CasterStage::class,
             """
                 CallExpression(
-                    Unit,
-                    forEach,
-                    ReferenceExpression(*),
+                    Unit, forEach, ReferenceExpression(*), 0,
                     [FunctionLiteralExpression(Function, [KtValueParameter(y, Boolean, null, 0, 0)], *)],
                     [Boolean]
                 )
@@ -255,9 +270,7 @@ internal class ExpressionCasterTest : BaseTest() {
             CasterStage::class,
             """
                 CallExpression(
-                    Unit,
-                    forEach,
-                    ReferenceExpression(*),
+                    Unit, forEach, ReferenceExpression(*), 0,
                     [FunctionLiteralExpression(Function, [KtValueParameter(it, Boolean, null, 0, 0)], *)],
                     [Boolean]
                 )
@@ -274,10 +287,12 @@ internal class ExpressionCasterTest : BaseTest() {
             CasterStage::class,
             """
                 CallExpression(
-                    Boolean, oni, null, [
+                    Boolean, oni, null, 0,
+                    [
                         CallExpression(*),
                         FunctionLiteralExpression(Function, [], BlockExpression(Boolean, [*]))
-                    ], [Boolean]
+                    ],
+                    [Boolean]
                 )
             """.trimIndent()
         ) { it.findExpression("x") }
@@ -328,7 +343,7 @@ internal class ExpressionCasterTest : BaseTest() {
             """
                 IfExpression(
                     Int,
-                    ReferenceExpression(Boolean, x, null),
+                    ReferenceExpression(Boolean, x, null, 0),
                     BlockExpression(Int, [ConstantExpression(*)]),
                     BlockExpression(Int, [ConstantExpression(*)])
                 )

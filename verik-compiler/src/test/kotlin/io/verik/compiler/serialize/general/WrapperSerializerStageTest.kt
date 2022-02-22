@@ -22,7 +22,7 @@ import org.junit.jupiter.api.Test
 internal class WrapperSerializerStageTest : BaseTest() {
 
     @Test
-    fun `non root package wrapper file`() {
+    fun `package wrapper file`() {
         driveTextFileTest(
             """
                 class C : Class()
@@ -40,18 +40,6 @@ internal class WrapperSerializerStageTest : BaseTest() {
     }
 
     @Test
-    fun `root package wrapper file`() {
-        driveTextFileTest(
-            """
-                class M : Module()
-            """.trimIndent(),
-            """
-                `include "src/test/Test.sv"
-            """.trimIndent()
-        ) { it.packageWrapperTextFiles[0] }
-    }
-
-    @Test
     fun `project wrapper file`() {
         driveTextFileTest(
             """
@@ -60,7 +48,7 @@ internal class WrapperSerializerStageTest : BaseTest() {
             """
                 `timescale 1ns / 1ns
 
-                `include "src/Pkg.sv"
+                `include "src/test/Test.sv"
             """.trimIndent()
         ) { it.projectWrapperTextFile }
     }

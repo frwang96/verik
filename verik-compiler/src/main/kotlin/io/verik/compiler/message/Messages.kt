@@ -60,10 +60,6 @@ object Messages {
         "Modifier $0 not supported"
     )
 
-    val MISSING_PACKAGE = ErrorMessageTemplate1<String>(
-        "Package not found: $0"
-    )
-
     val ILLEGAL_NAME = ErrorMessageTemplate1<String>(
         "Illegal name: $0"
     )
@@ -253,7 +249,7 @@ object Messages {
     )
 
     val UNRESOLVED_TYPE_ARGUMENT = ErrorMessageTemplate0(
-        "Type of type argument could not be resolved"
+        "Type argument should be specified explicitly"
     )
 
     val CARDINAL_NEGATIVE = ErrorMessageTemplate1<Type>(
@@ -261,6 +257,14 @@ object Messages {
     )
 
 //  INTERPRET  /////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    val ENUM_PROPERTY_ILLEGAL = ErrorMessageTemplate1<String>(
+        "Illegal enum property: $0"
+    )
+
+    val ENUM_PROPERTY_ILLEGAL_TYPE = ErrorMessageTemplate1<Type>(
+        "Illegal type for enum property: $0"
+    )
 
     val EXPECTED_ON_EXPRESSION = ErrorMessageTemplate0(
         "Expected on expression"

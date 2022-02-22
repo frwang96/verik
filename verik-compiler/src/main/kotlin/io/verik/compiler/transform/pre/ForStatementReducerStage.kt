@@ -44,6 +44,7 @@ object ForStatementReducerStage : ProjectStage() {
                 forStatement.type,
                 Core.Kt.Collections.F_forEach_Function,
                 forStatement.range,
+                false,
                 arrayListOf(functionLiteralExpression),
                 arrayListOf(forStatement.valueParameter.type.copy())
             )

@@ -23,6 +23,8 @@ import io.verik.compiler.ast.element.declaration.kt.EKtFunction
 import io.verik.compiler.ast.element.declaration.kt.EKtValueParameter
 import io.verik.compiler.ast.element.declaration.kt.EPrimaryConstructor
 import io.verik.compiler.ast.element.declaration.kt.ESecondaryConstructor
+import io.verik.compiler.ast.element.expression.common.ECallExpression
+import io.verik.compiler.ast.element.expression.common.EReferenceExpression
 import io.verik.compiler.ast.element.expression.kt.EAsExpression
 import io.verik.compiler.ast.element.expression.kt.EIsExpression
 import io.verik.compiler.ast.element.expression.kt.EKtArrayAccessExpression
@@ -83,6 +85,18 @@ object UntransformedElementCheckerStage : ProjectStage() {
 
         override fun visitKtBinaryExpression(binaryExpression: EKtBinaryExpression) {
             Messages.INTERNAL_ERROR.on(binaryExpression, "Binary expression $message")
+        }
+
+        override fun visitReferenceExpression(referenceExpression: EReferenceExpression) {
+            if (referenceExpression.isSafeAccess) {
+                Messages.INTERNAL_ERROR.on(referenceExpression, "Reference expression $message")
+            }
+        }
+
+        override fun visitCallExpression(callExpression: ECallExpression) {
+            if (callExpression.isSafeAccess) {
+                Messages.INTERNAL_ERROR.on(callExpression, "Call expression $message")
+            }
         }
 
         override fun visitStringTemplateExpression(stringTemplateExpression: EStringTemplateExpression) {

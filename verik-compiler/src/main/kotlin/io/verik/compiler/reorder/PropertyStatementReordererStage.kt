@@ -46,7 +46,7 @@ object PropertyStatementReordererStage : ProjectStage() {
                         val statement = EKtBinaryExpression(
                             it.location,
                             Core.Kt.C_Unit.toType(),
-                            EReferenceExpression(it.location, it.property.type.copy(), it.property, null),
+                            EReferenceExpression(it.location, it.property.type.copy(), it.property, null, false),
                             initializer,
                             KtBinaryOperatorKind.EQ
                         )

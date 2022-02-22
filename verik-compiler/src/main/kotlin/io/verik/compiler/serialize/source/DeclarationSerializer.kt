@@ -99,7 +99,14 @@ object DeclarationSerializer {
     }
 
     fun serializeEnum(enum: EEnum, serializeContext: SerializeContext) {
-        serializeContext.appendLine("typedef enum {")
+        serializeContext.append("typedef enum")
+        val property = enum.property
+        if (property != null) {
+            val serializedType = TypeSerializer.serialize(property.type, enum)
+            serializedType.checkNoVariableDimension(enum)
+            serializeContext.append(" ${serializedType.base}")
+        }
+        serializeContext.appendLine(" {")
         serializeContext.indent {
             serializeContext.serializeJoinAppendLine(enum.enumEntries) {
                 serializeContext.serialize(it)
@@ -207,6 +214,11 @@ object DeclarationSerializer {
 
     fun serializeEnumEntry(enumEntry: EEnumEntry, serializeContext: SerializeContext) {
         serializeContext.append(enumEntry.name)
+        val expression = enumEntry.expression
+        if (expression != null) {
+            serializeContext.append(" = ")
+            serializeContext.serializeAsExpression(expression)
+        }
     }
 
     fun serializeComponentInstantiation(

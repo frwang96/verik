@@ -41,7 +41,6 @@ import io.verik.compiler.check.post.UntransformedElementCheckerStage
 import io.verik.compiler.check.post.UntransformedReferenceCheckerStage
 import io.verik.compiler.check.pre.ConfigCheckerStage
 import io.verik.compiler.check.pre.FileAnnotationCheckerStage
-import io.verik.compiler.check.pre.ImportDirectiveCheckerStage
 import io.verik.compiler.check.pre.PreNameCheckerStage
 import io.verik.compiler.check.pre.UnsupportedElementCheckerStage
 import io.verik.compiler.check.pre.UnsupportedModifierCheckerStage
@@ -105,11 +104,13 @@ import io.verik.compiler.transform.pre.TypeAliasReducerStage
 import io.verik.compiler.transform.pre.UnaryExpressionReducerStage
 import io.verik.compiler.transform.upper.CaseStatementTransformerStage
 import io.verik.compiler.transform.upper.CastTransformerStage
+import io.verik.compiler.transform.upper.EnumPropertyReferenceTransformerStage
 import io.verik.compiler.transform.upper.ForStatementTransformerStage
 import io.verik.compiler.transform.upper.IfAndWhenExpressionUnlifterStage
 import io.verik.compiler.transform.upper.InjectedExpressionTransformerStage
 import io.verik.compiler.transform.upper.InlineIfExpressionTransformerStage
 import io.verik.compiler.transform.upper.ProceduralAssignmentTransformerStage
+import io.verik.compiler.transform.upper.SafeAccessReducerStage
 import io.verik.compiler.transform.upper.TaskReturnTransformerStage
 import io.verik.compiler.transform.upper.ToStringTransformerStage
 import io.verik.compiler.transform.upper.UninitializedPropertyTransformerStage
@@ -126,7 +127,6 @@ object StageSequencer {
         stageSequence.add(StageType.PRE_CHECK, FileAnnotationCheckerStage)
         stageSequence.add(StageType.PRE_CHECK, UnsupportedElementCheckerStage)
         stageSequence.add(StageType.PRE_CHECK, UnsupportedModifierCheckerStage)
-        stageSequence.add(StageType.PRE_CHECK, ImportDirectiveCheckerStage)
         stageSequence.add(StageType.PRE_CHECK, PreNameCheckerStage)
 
         stageSequence.add(StageType.COMPILE, KotlinCompilerAnalyzerStage)
@@ -189,11 +189,13 @@ object StageSequencer {
 
         stageSequence.add(StageType.UPPER_TRANSFORM, InjectedExpressionTransformerStage)
         stageSequence.add(StageType.UPPER_TRANSFORM, ToStringTransformerStage)
+        stageSequence.add(StageType.UPPER_TRANSFORM, EnumPropertyReferenceTransformerStage)
         stageSequence.add(StageType.UPPER_TRANSFORM, CastTransformerStage)
         stageSequence.add(StageType.UPPER_TRANSFORM, TaskReturnTransformerStage)
         stageSequence.add(StageType.UPPER_TRANSFORM, UninitializedPropertyTransformerStage)
         stageSequence.add(StageType.UPPER_TRANSFORM, ProceduralAssignmentTransformerStage)
         stageSequence.add(StageType.UPPER_TRANSFORM, ForStatementTransformerStage)
+        stageSequence.add(StageType.UPPER_TRANSFORM, SafeAccessReducerStage)
         stageSequence.add(StageType.UPPER_TRANSFORM, InlineIfExpressionTransformerStage)
         stageSequence.add(StageType.UPPER_TRANSFORM, IfAndWhenExpressionUnlifterStage)
         stageSequence.add(StageType.UPPER_TRANSFORM, CaseStatementTransformerStage)

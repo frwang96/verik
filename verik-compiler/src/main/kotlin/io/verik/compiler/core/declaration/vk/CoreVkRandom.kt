@@ -41,6 +41,7 @@ object CoreVkRandom : CoreScope(CorePackage.VK) {
                 callExpression.type,
                 Target.F_urandom_range,
                 null,
+                false,
                 arrayListOf(expression),
                 ArrayList()
             )
@@ -56,6 +57,7 @@ object CoreVkRandom : CoreScope(CorePackage.VK) {
                 callExpression.type,
                 Target.F_urandom_range,
                 null,
+                false,
                 arrayListOf(callExpression.valueArguments[0], expression),
                 ArrayList()
             )

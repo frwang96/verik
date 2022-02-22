@@ -43,8 +43,8 @@ internal class StringTemplateExpressionTransformerStageTest : BaseTest() {
             StringTemplateExpressionTransformerStage::class,
             """
                 CallExpression(
-                    String, ${"$"}sformatf, null,
-                    [StringExpression(String, %0d), ReferenceExpression(Int, x, null)],
+                    String, ${"$"}sformatf, null, 0,
+                    [StringExpression(String, %0d), ReferenceExpression(Int, x, null, 0)],
                     []
                 )
             """.trimIndent()
@@ -59,7 +59,7 @@ internal class StringTemplateExpressionTransformerStageTest : BaseTest() {
             """.trimIndent(),
             StringTemplateExpressionTransformerStage::class,
             """
-                CallExpression(String, *, null, [StringExpression(String, %0d%%), ConstantExpression(*)], [])
+                CallExpression(String, *, null, 0, [StringExpression(String, %0d%%), ConstantExpression(*)], [])
             """.trimIndent()
         ) { it.findExpression("x") }
     }

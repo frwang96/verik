@@ -30,7 +30,7 @@ internal class BinaryExpressionReducerStageTest : BaseTest() {
                 var y = x + 0
             """.trimIndent(),
             BinaryExpressionReducerStage::class,
-            "CallExpression(Int, plus, ReferenceExpression(*), [ConstantExpression(*)], [])"
+            "CallExpression(Int, plus, ReferenceExpression(*), 0, [ConstantExpression(*)], [])"
         ) { it.findExpression("y") }
     }
 
@@ -45,11 +45,9 @@ internal class BinaryExpressionReducerStageTest : BaseTest() {
             BinaryExpressionReducerStage::class,
             """
                 CallExpression(
-                    Int,
-                    plus,
-                    CallExpression(Int, plus, ReferenceExpression(*), [ReferenceExpression(*)], []),
-                    [ConstantExpression(*)],
-                    []
+                    Int, plus,
+                    CallExpression(Int, plus, ReferenceExpression(*), 0, [ReferenceExpression(*)], []),
+                    0, [ConstantExpression(*)], []
                 )
             """.trimIndent()
         ) { it.findExpression("z") }

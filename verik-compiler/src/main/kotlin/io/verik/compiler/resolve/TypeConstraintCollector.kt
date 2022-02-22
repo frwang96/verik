@@ -19,8 +19,10 @@ package io.verik.compiler.resolve
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.declaration.common.EAbstractProperty
 import io.verik.compiler.ast.element.declaration.common.EDeclaration
+import io.verik.compiler.ast.element.declaration.common.EEnumEntry
 import io.verik.compiler.ast.element.declaration.common.EProperty
 import io.verik.compiler.ast.element.declaration.kt.EKtAbstractFunction
+import io.verik.compiler.ast.element.declaration.kt.EKtClass
 import io.verik.compiler.ast.element.declaration.kt.EKtFunction
 import io.verik.compiler.ast.element.declaration.kt.EKtValueParameter
 import io.verik.compiler.ast.element.expression.common.EBlockExpression
@@ -136,6 +138,22 @@ object TypeConstraintCollector {
                         TypeConstraintKind.EQ_INOUT,
                         TypeAdapter.ofElement(property),
                         TypeAdapter.ofElement(initializer)
+                    )
+                )
+            }
+        }
+
+        override fun visitEnumEntry(enumEntry: EEnumEntry) {
+            super.visitEnumEntry(enumEntry)
+            val expression = enumEntry.expression
+            val cls = enumEntry.getParentClassOrNull() as EKtClass
+            val valueParameter = cls.primaryConstructor?.valueParameters?.firstOrNull()
+            if (expression != null && valueParameter != null) {
+                typeConstraints.add(
+                    TypeConstraint(
+                        TypeConstraintKind.EQ_IN,
+                        TypeAdapter.ofElement(expression),
+                        TypeAdapter.ofElement(valueParameter)
                     )
                 )
             }

@@ -70,11 +70,14 @@ class DependencyIndexerVisitor(
     }
 
     private fun isValidDependency(parent: EElement, element: EElement, reference: EDeclaration): Boolean {
-        val elementInClass = element is ESvClass || element.getParentClassOrNull() is ESvClass
-        val referenceInClass = reference is ESvClass || reference.getParentClassOrNull() is ESvClass
+        val elementParentClass = if (element is ESvClass) element else element.getParentClassOrNull()
+        val referenceParentClass = if (reference is ESvClass) reference else reference.getParentClassOrNull()
+        val isDifferentParentClass = elementParentClass is ESvClass &&
+            referenceParentClass is ESvClass &&
+            elementParentClass != referenceParentClass
         return when {
             !isReorderable(parent) -> false
-            elementInClass && referenceInClass -> parent is EProject
+            isDifferentParentClass -> parent is EProject
             reference is EModuleInterface -> false
             else -> true
         }

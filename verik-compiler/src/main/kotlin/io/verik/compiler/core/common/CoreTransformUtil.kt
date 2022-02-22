@@ -30,6 +30,7 @@ object CoreTransformUtil {
             Core.Kt.C_Int.toType(),
             Core.Kt.Int.F_minus_Int,
             expression,
+            false,
             arrayListOf(ConstantBuilder.buildInt(expression, 1)),
             ArrayList()
         )
@@ -42,6 +43,7 @@ object CoreTransformUtil {
             Core.Vk.C_Sbit.toType(expression.type.getWidthAsType(expression)),
             Target.F_signed,
             null,
+            false,
             arrayListOf(expression),
             ArrayList()
         )
@@ -53,6 +55,7 @@ object CoreTransformUtil {
             Core.Vk.C_Ubit.toType(expression.type.getWidthAsType(expression)),
             Target.F_unsigned,
             null,
+            false,
             arrayListOf(expression),
             ArrayList()
         )

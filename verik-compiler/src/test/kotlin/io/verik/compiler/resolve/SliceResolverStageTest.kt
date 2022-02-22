@@ -30,7 +30,7 @@ internal class SliceResolverStageTest : BaseTest() {
                 var y = x[1, 0]
             """.trimIndent(),
             SliceResolverStage::class,
-            "CallExpression(Ubit<`*`>, get, ReferenceExpression(*), [*], [`2`])"
+            "CallExpression(Ubit<`*`>, get, ReferenceExpression(*), 0, [*], [`2`])"
         ) { it.findExpression("y") }
     }
 

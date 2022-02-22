@@ -33,7 +33,7 @@ internal class ConstantPropagatorSubstageTest : BaseTest() {
                 }
             """.trimIndent(),
             SpecializerStage::class,
-            "CallExpression(Unit, println, null, [ConstantExpression(Int, 0)], [])"
+            "CallExpression(Unit, println, null, 0, [ConstantExpression(Int, 0)], [])"
         ) { it.findExpression("f") }
     }
 
@@ -48,7 +48,7 @@ internal class ConstantPropagatorSubstageTest : BaseTest() {
                 }
             """.trimIndent(),
             SpecializerStage::class,
-            "CallExpression(Unit, println, null, [ConstantExpression(Int, 0)], [])"
+            "CallExpression(Unit, println, null, 0, [ConstantExpression(Int, 0)], [])"
         ) { it.findExpression("f") }
     }
 
@@ -62,7 +62,7 @@ internal class ConstantPropagatorSubstageTest : BaseTest() {
                 }
             """.trimIndent(),
             SpecializerStage::class,
-            "CallExpression(Unit, println, null, [ConstantExpression(Boolean, 1'b1)], [])"
+            "CallExpression(Unit, println, null, 0, [ConstantExpression(Boolean, 1'b1)], [])"
         ) { it.findExpression("f") }
     }
 }

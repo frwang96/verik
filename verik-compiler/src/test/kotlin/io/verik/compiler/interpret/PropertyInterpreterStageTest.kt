@@ -27,7 +27,7 @@ internal class PropertyInterpreterStageTest : BaseTest() {
         driveElementTest(
             """
                 @Cons
-                val c = cons(true)
+                val c = c(true)
             """.trimIndent(),
             PropertyInterpreterStage::class,
             "Constraint(c, BlockExpression(Unit, [ConstantExpression(*)]))"

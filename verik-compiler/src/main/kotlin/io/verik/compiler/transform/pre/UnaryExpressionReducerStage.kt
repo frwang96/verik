@@ -70,6 +70,7 @@ object UnaryExpressionReducerStage : ProjectStage() {
                             unaryExpression.type,
                             reference,
                             unaryExpression.expression,
+                            false,
                             ArrayList(),
                             ArrayList()
                         )

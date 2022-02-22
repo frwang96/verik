@@ -111,7 +111,7 @@ internal class SpecializerStageTest : BaseTest() {
                 val c = C<`8`>()
             """.trimIndent(),
             SpecializerStage::class,
-            "Property(x, Boolean, CallExpression(Boolean, f, null, [], []), 0, 0)"
+            "Property(x, Boolean, CallExpression(Boolean, f, null, 0, [], []), 0, 0)"
         ) { it.findDeclaration("x") }
     }
 
@@ -126,7 +126,7 @@ internal class SpecializerStageTest : BaseTest() {
                 val c = C1<`8`>()
             """.trimIndent(),
             SpecializerStage::class,
-            "Property(x, C0, CallExpression(C0, C0, null, [], []), 0, 0)"
+            "Property(x, C0, CallExpression(C0, C0, null, 0, [], []), 0, 0)"
         ) { it.findDeclaration("x") }
     }
 

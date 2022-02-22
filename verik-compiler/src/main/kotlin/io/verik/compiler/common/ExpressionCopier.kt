@@ -203,14 +203,16 @@ object ExpressionCopier {
                 location ?: referenceExpression.location,
                 type,
                 referenceExpression.reference,
-                receiver
+                receiver,
+                referenceExpression.isSafeAccess
             )
         } else {
             EReferenceExpression(
                 location ?: referenceExpression.location,
                 referenceExpression.type,
                 referenceExpression.reference,
-                referenceExpression.receiver
+                referenceExpression.receiver,
+                referenceExpression.isSafeAccess
             )
         }
     }
@@ -230,6 +232,7 @@ object ExpressionCopier {
                 type,
                 callExpression.reference,
                 receiver,
+                callExpression.isSafeAccess,
                 ArrayList(valueArguments),
                 ArrayList(typeArguments)
             )
@@ -239,6 +242,7 @@ object ExpressionCopier {
                 callExpression.type,
                 callExpression.reference,
                 callExpression.receiver,
+                callExpression.isSafeAccess,
                 callExpression.valueArguments,
                 callExpression.typeArguments
             )

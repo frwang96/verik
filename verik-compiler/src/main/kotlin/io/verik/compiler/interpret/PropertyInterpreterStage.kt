@@ -44,7 +44,7 @@ object PropertyInterpreterStage : ProjectStage() {
 
         private fun interpretConstraint(property: EProperty): EConstraint? {
             val callExpression = property.initializer
-            if (callExpression !is ECallExpression || callExpression.reference != Core.Vk.F_cons) return null
+            if (callExpression !is ECallExpression || callExpression.reference != Core.Vk.F_c) return null
             val body = EBlockExpression(
                 location = property.location,
                 endLocation = property.endLocation,

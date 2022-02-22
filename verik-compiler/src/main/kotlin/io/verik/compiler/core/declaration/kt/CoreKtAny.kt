@@ -14,23 +14,13 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.transform.pre
+package io.verik.compiler.core.declaration.kt
 
-import io.verik.compiler.test.BaseTest
-import io.verik.compiler.test.findExpression
-import org.junit.jupiter.api.Test
+import io.verik.compiler.core.common.BasicCoreFunctionDeclaration
+import io.verik.compiler.core.common.Core
+import io.verik.compiler.core.common.CoreScope
 
-internal class UnaryExpressionReducerStageTest : BaseTest() {
+object CoreKtAny : CoreScope(Core.Kt.C_Any) {
 
-    @Test
-    fun `reduce not`() {
-        driveElementTest(
-            """
-                var x = false
-                var y = !x
-            """.trimIndent(),
-            UnaryExpressionReducerStage::class,
-            "CallExpression(Boolean, not, ReferenceExpression(*), 0, [], [])"
-        ) { it.findExpression("y") }
-    }
+    val F_toString = BasicCoreFunctionDeclaration(parent, "toString", "fun toString()", null)
 }

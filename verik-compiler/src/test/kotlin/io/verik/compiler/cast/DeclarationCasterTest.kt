@@ -150,7 +150,9 @@ internal class DeclarationCasterTest : BaseTest() {
             """
                 KtClass(
                     C1, C1, C0<Int>, [], [],
-                    PrimaryConstructor(C1, C1, [], CallExpression(C0<Int>, C0, null, [ConstantExpression(*)], [Int])),
+                    PrimaryConstructor(
+                        C1, C1, [], CallExpression(C0<Int>, C0, null, 0, [ConstantExpression(*)], [Int])
+                    ),
                     0, 0
                 )
             """.trimIndent()
@@ -187,7 +189,7 @@ internal class DeclarationCasterTest : BaseTest() {
                     C1, C1, C0<Int>, [],
                     [SecondaryConstructor(
                         C1, C1, BlockExpression(*), [KtValueParameter(x, Int, null, 0, 0)],
-                        CallExpression(C0<Int>, C0, null, [ConstantExpression(*)], [Int])
+                        CallExpression(C0<Int>, C0, null, 0, [ConstantExpression(*)], [Int])
                     )],
                     null, 0, 0
                 )
@@ -215,13 +217,18 @@ internal class DeclarationCasterTest : BaseTest() {
     }
 
     @Test
-    fun `enum class`() {
+    fun `class enum`() {
         driveElementTest(
             """
-                enum class E { A }
+                enum class E(val value: Ubit<`4`>) { A(u(0x0)) }
             """.trimIndent(),
             CasterStage::class,
-            "KtClass(E, E, Enum, [], [EnumEntry(A, E)], PrimaryConstructor(E, E, [], null), 1, 0)"
+            """
+                KtClass(
+                    E, E, Enum, [], [EnumEntry(A, E, CallExpression(*))],
+                    PrimaryConstructor(E, E, [KtValueParameter(value, Ubit<`4`>, null, 1, 0)], null), 1, 0
+                )
+            """.trimIndent()
         ) { it.findDeclaration("E") }
     }
 

@@ -71,6 +71,7 @@ object ConstantPropagator {
             callExpression.type,
             callExpression.reference,
             receiver,
+            false,
             ArrayList(valueArguments),
             callExpression.typeArguments
         )

@@ -153,6 +153,20 @@ internal class DeclarationSerializerTest : BaseTest() {
     }
 
     @Test
+    fun `enum with property`() {
+        driveTextFileTest(
+            """
+                enum class E(val value: Ubit<`4`>) { A(u(0x0)) }
+            """.trimIndent(),
+            """
+                typedef enum logic [3:0] {
+                    A = 4'b0000
+                } E;
+            """.trimIndent()
+        ) { it.nonRootPackageTextFiles[0] }
+    }
+
+    @Test
     fun `struct simple`() {
         driveTextFileTest(
             """
@@ -440,7 +454,7 @@ internal class DeclarationSerializerTest : BaseTest() {
                 class C : Class(){
                     var x = 0
                     @Cons
-                    var c = cons(x == 0)
+                    var c = c(x == 0)
                 }
             """.trimIndent(),
             """

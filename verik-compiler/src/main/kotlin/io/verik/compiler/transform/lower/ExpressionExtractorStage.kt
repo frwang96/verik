@@ -74,12 +74,7 @@ object ExpressionExtractorStage : ProjectStage() {
                 expression.location,
                 property
             )
-            val referenceExpression = EReferenceExpression(
-                expression.location,
-                property.type.copy(),
-                property,
-                null
-            )
+            val referenceExpression = EReferenceExpression.of(property)
             return Pair(propertyStatement, referenceExpression)
         }
     }

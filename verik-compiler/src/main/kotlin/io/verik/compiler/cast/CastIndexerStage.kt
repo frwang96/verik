@@ -215,6 +215,7 @@ object CastIndexerStage : ProjectStage() {
                 type = NullDeclaration.toType(),
                 annotationEntries = listOf(),
                 documentationLines = null,
+                expression = null
             )
             castContext.registerDeclaration(descriptor, indexedEnumEntry)
         }

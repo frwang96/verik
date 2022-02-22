@@ -199,6 +199,7 @@ object CoreVkMisc : CoreScope(CorePackage.VK) {
                 Core.Kt.C_Int.toType(),
                 Core.Kt.Int.F_shl_Int,
                 constantExpression,
+                false,
                 callExpression.valueArguments,
                 ArrayList()
             )

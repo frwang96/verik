@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,32 +14,24 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.check.pre
+package io.verik.compiler.transform.upper
 
 import io.verik.compiler.test.BaseTest
+import io.verik.compiler.test.findExpression
 import org.junit.jupiter.api.Test
 
-internal class ImportDirectiveCheckerStageTest : BaseTest() {
+internal class EnumPropertyReferenceTransformerStageTest : BaseTest() {
 
     @Test
-    fun `import not found`() {
-        driveMessageTest(
+    fun `enum property reference`() {
+        driveElementTest(
             """
-                import java.time.LocalDateTime
+                enum class E(val value: Ubit<`4`>) { A(u0()) }
+                var x = E.A
+                var y = x.value
             """.trimIndent(),
-            true,
-            "Package not found: java.time"
-        )
-    }
-
-    @Test
-    fun `import not found all under`() {
-        driveMessageTest(
-            """
-                import java.time.*
-            """.trimIndent(),
-            true,
-            "Package not found: java.time"
-        )
+            EnumPropertyReferenceTransformerStage::class,
+            "ReferenceExpression(Ubit<`4`>, x, null, 0)",
+        ) { it.findExpression("y") }
     }
 }

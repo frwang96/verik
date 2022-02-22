@@ -49,12 +49,7 @@ object IfAndWhenExpressionUnlifterStage : ProjectStage() {
                 )
                 val propertyStatement = EPropertyStatement(ifExpression.location, property)
                 val newIfExpression = getIfExpressionReplacement(ifExpression, property)
-                val referenceExpression = EReferenceExpression(
-                    ifExpression.location,
-                    property.type.copy(),
-                    property,
-                    null
-                )
+                val referenceExpression = EReferenceExpression.of(property)
                 val extractedExpressions = listOf(
                     propertyStatement,
                     newIfExpression,
@@ -73,12 +68,7 @@ object IfAndWhenExpressionUnlifterStage : ProjectStage() {
                     initializer = null,
                     isMutable = false
                 )
-                val referenceExpression = EReferenceExpression(
-                    whenExpression.location,
-                    property.type.copy(),
-                    property,
-                    null
-                )
+                val referenceExpression = EReferenceExpression.of(property)
                 val propertyStatement = EPropertyStatement(
                     whenExpression.location,
                     property
@@ -141,7 +131,7 @@ object IfAndWhenExpressionUnlifterStage : ProjectStage() {
                 EKtBinaryExpression(
                     expression.location,
                     Core.Kt.C_Unit.toType(),
-                    EReferenceExpression(expression.location, property.type.copy(), property, null),
+                    EReferenceExpression.of(property),
                     expression,
                     KtBinaryOperatorKind.EQ
                 )

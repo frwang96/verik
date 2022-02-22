@@ -92,6 +92,7 @@ object BinaryExpressionReducerStage : ProjectStage() {
                             binaryExpression.type,
                             reference,
                             binaryExpression.left,
+                            false,
                             arrayListOf(binaryExpression.right),
                             arrayListOf()
                         )

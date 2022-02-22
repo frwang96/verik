@@ -30,7 +30,7 @@ internal class ArrayAccessExpressionReducerStageTest : BaseTest() {
                 var y = x[0]
             """.trimIndent(),
             ArrayAccessExpressionReducerStage::class,
-            "CallExpression(Boolean, get, *, [*], [])"
+            "CallExpression(Boolean, get, *, 0, [*], [])"
         ) { it.findExpression("y") }
     }
 
@@ -42,7 +42,7 @@ internal class ArrayAccessExpressionReducerStageTest : BaseTest() {
                 var y = x[1, 0]
             """.trimIndent(),
             ArrayAccessExpressionReducerStage::class,
-            "CallExpression(Ubit<`*`>, get, *, [*], [])"
+            "CallExpression(Ubit<`*`>, get, *, 0, [*], [])"
         ) { it.findExpression("y") }
     }
 
@@ -56,7 +56,7 @@ internal class ArrayAccessExpressionReducerStageTest : BaseTest() {
                 }
             """.trimIndent(),
             ArrayAccessExpressionReducerStage::class,
-            "CallExpression(Unit, set, *, [*, *], [])"
+            "CallExpression(Unit, set, *, 0, [*, *], [])"
         ) { it.findExpression("f") }
     }
 }

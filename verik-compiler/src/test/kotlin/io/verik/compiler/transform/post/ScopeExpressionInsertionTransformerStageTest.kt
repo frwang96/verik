@@ -33,11 +33,9 @@ internal class ScopeExpressionInsertionTransformerStageTest : BaseTest() {
             ScopeExpressionInsertionTransformerStage::class,
             """
                 CallExpression(
-                    ArrayList<Boolean>,
-                    __new,
+                    ArrayList<Boolean>, __new,
                     ScopeExpression(Void, ArrayList<Boolean>, []),
-                    [],
-                    [Boolean]
+                    0, [], [Boolean]
                 )
             """.trimIndent()
         ) { it.findExpression("f") }
@@ -55,7 +53,7 @@ internal class ScopeExpressionInsertionTransformerStageTest : BaseTest() {
                 }
             """.trimIndent(),
             ScopeExpressionInsertionTransformerStage::class,
-            "ReferenceExpression(Boolean, x, ScopeExpression(Void, test_pkg, []))"
+            "ReferenceExpression(Boolean, x, ScopeExpression(Void, test_pkg, []), 0)"
         ) { it.findExpression("f") }
     }
 
@@ -73,7 +71,7 @@ internal class ScopeExpressionInsertionTransformerStageTest : BaseTest() {
                 }
             """.trimIndent(),
             ScopeExpressionInsertionTransformerStage::class,
-            "ReferenceExpression(Boolean, x, ScopeExpression(Void, O, []))"
+            "ReferenceExpression(Boolean, x, ScopeExpression(Void, O, []), 0)"
         ) { it.findExpression("f") }
     }
 
@@ -89,7 +87,7 @@ internal class ScopeExpressionInsertionTransformerStageTest : BaseTest() {
                 }
             """.trimIndent(),
             ScopeExpressionInsertionTransformerStage::class,
-            "ReferenceExpression(Boolean, x, ScopeExpression(Void, O, []))"
+            "ReferenceExpression(Boolean, x, ScopeExpression(Void, O, []), 0)"
         ) { it.findExpression("f") }
     }
 
@@ -107,7 +105,11 @@ internal class ScopeExpressionInsertionTransformerStageTest : BaseTest() {
                 }
             """.trimIndent(),
             ScopeExpressionInsertionTransformerStage::class,
-            "ReferenceExpression(Boolean, x, ReferenceExpression(M0, M0, ReferenceExpression(Void, ${'$'}root, null)))"
+            """
+                ReferenceExpression(
+                    Boolean, x, ReferenceExpression(M0, M0, ReferenceExpression(Void, ${'$'}root, null, 0), 0), 0
+                )
+            """.trimIndent()
         ) { it.findExpression("f") }
     }
 }

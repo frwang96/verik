@@ -264,8 +264,18 @@ object DeclarationCaster {
         val type = castContext.castType(descriptor.classValueType!!, enumEntry)
         val annotationEntries = castAnnotationEntries(enumEntry.annotationEntries, castContext)
         val documentationLines = castDocumentationLines(enumEntry.docComment)
+        val initializerList = enumEntry.initializerList
+        val expression = if (initializerList != null && initializerList.initializers.isNotEmpty()) {
+            val initializer = initializerList.initializers[0]
+            if (initializer is KtSuperTypeCallEntry) {
+                val callExpression = castSuperTypeCallExpression(initializer, castContext)
+                if (callExpression.valueArguments.isNotEmpty()) {
+                    callExpression.valueArguments[0]
+                } else null
+            } else null
+        } else null
 
-        castedEnumEntry.fill(type, annotationEntries, documentationLines)
+        castedEnumEntry.fill(type, annotationEntries, documentationLines, expression)
         return castedEnumEntry
     }
 
@@ -373,6 +383,7 @@ object DeclarationCaster {
             type,
             declaration,
             null,
+            false,
             valueArguments,
             ArrayList(typeArguments)
         )
@@ -400,6 +411,7 @@ object DeclarationCaster {
             type,
             declaration,
             null,
+            false,
             valueArguments,
             typeArguments
         )

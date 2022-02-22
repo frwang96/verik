@@ -211,6 +211,6 @@ fun q(value: Boolean): Sequence {
 /**
  * Construct a randomization constraint from [conditions].
  */
-fun cons(vararg conditions: Boolean): Constraint {
+fun c(vararg conditions: Boolean): Constraint {
     throw VerikException()
 }

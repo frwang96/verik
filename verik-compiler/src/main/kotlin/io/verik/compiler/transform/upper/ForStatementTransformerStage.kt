@@ -85,12 +85,7 @@ object ForStatementTransformerStage : ProjectStage() {
                 isMutable = true
             )
             referenceUpdater.update(valueParameter, property)
-            val propertyReferenceExpression = EReferenceExpression(
-                property.location,
-                property.type.copy(),
-                property,
-                null
-            )
+            val propertyReferenceExpression = EReferenceExpression.of(property)
             val condition = EKtBinaryExpression(
                 callExpression.location,
                 Core.Kt.C_Boolean.toType(),
@@ -124,17 +119,13 @@ object ForStatementTransformerStage : ProjectStage() {
                 initializer = EConstantExpression(referenceExpression.location, Core.Kt.C_Int.toType(), "0"),
                 isMutable = true
             )
-            val indexReferenceExpression = EReferenceExpression(
-                indexProperty.location,
-                indexProperty.type.copy(),
-                indexProperty,
-                null
-            )
+            val indexReferenceExpression = EReferenceExpression.of(indexProperty)
             val sizeReferenceExpression = EReferenceExpression(
                 referenceExpression.location,
                 Core.Kt.C_Int.toType(),
                 Core.Jv.Util.ArrayList.P_size,
-                referenceExpression
+                referenceExpression,
+                false
             )
             val condition = EKtBinaryExpression(
                 referenceExpression.location,
@@ -154,6 +145,7 @@ object ForStatementTransformerStage : ProjectStage() {
                 valueParameter.type.copy(),
                 Core.Jv.Util.ArrayList.F_get_Int,
                 ExpressionCopier.deepCopy(referenceExpression),
+                false,
                 arrayListOf(ExpressionCopier.deepCopy(indexReferenceExpression)),
                 ArrayList()
             )

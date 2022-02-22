@@ -36,11 +36,12 @@ import io.verik.compiler.message.Messages
 object TaskReturnTransformerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
-        projectContext.project.accept(TaskReturnInternalTransformerVisitor)
+        val taskReturnInternalTransformerVisitor = TaskReturnInternalTransformerVisitor()
+        projectContext.project.accept(taskReturnInternalTransformerVisitor)
         projectContext.project.accept(TaskReturnExternalTransformerVisitor)
     }
 
-    private object TaskReturnInternalTransformerVisitor : TreeVisitor() {
+    private class TaskReturnInternalTransformerVisitor : TreeVisitor() {
 
         private var returnValueParameter: ESvValueParameter? = null
 
@@ -61,10 +62,17 @@ object TaskReturnTransformerStage : ProjectStage() {
             val expression = returnStatement.expression
             if (valueParameter != null && expression != null) {
                 val newReturnStatement = EReturnStatement(returnStatement.location, Core.Kt.C_Unit.toType(), null)
+                val referenceExpression = EReferenceExpression(
+                    returnStatement.location,
+                    valueParameter.type.copy(),
+                    valueParameter,
+                    null,
+                    false
+                )
                 val binaryExpression = EKtBinaryExpression(
                     returnStatement.location,
                     Core.Kt.C_Unit.toType(),
-                    EReferenceExpression(returnStatement.location, valueParameter.type.copy(), valueParameter, null),
+                    referenceExpression,
                     expression,
                     KtBinaryOperatorKind.EQ
                 )
@@ -98,12 +106,7 @@ object TaskReturnTransformerStage : ProjectStage() {
                 isMutable = true
             )
             val propertyStatement = EPropertyStatement(callExpression.location, property)
-            val referenceExpression = EReferenceExpression(
-                callExpression.location,
-                property.type.copy(),
-                property,
-                null
-            )
+            val referenceExpression = EReferenceExpression.of(property)
             val newCallExpression = ExpressionCopier.shallowCopy(callExpression)
             referenceExpression.parent = newCallExpression
             newCallExpression.valueArguments.add(referenceExpression)

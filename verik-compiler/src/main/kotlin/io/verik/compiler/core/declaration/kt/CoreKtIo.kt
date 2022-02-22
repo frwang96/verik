@@ -46,6 +46,7 @@ object CoreKtIo : CoreScope(CorePackage.KT_IO) {
                 Core.Kt.C_Unit.toType(),
                 Target.F_write,
                 null,
+                false,
                 arrayListOf(expression),
                 ArrayList()
             )
@@ -85,6 +86,7 @@ object CoreKtIo : CoreScope(CorePackage.KT_IO) {
                 Core.Kt.C_Unit.toType(),
                 Target.F_display,
                 null,
+                false,
                 arrayListOf(expression),
                 ArrayList()
             )

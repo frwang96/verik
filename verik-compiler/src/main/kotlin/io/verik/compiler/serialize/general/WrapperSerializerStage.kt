@@ -31,7 +31,7 @@ object WrapperSerializerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
         val packageWrapperTextFiles = ArrayList<TextFile>()
-        projectContext.project.regularPackages().forEach {
+        projectContext.project.regularNonRootPackages.forEach {
             val packageWrapperTextFile = serializePackageWrapper(it, projectContext)
             if (packageWrapperTextFile != null) {
                 packageWrapperTextFiles.add(packageWrapperTextFile)
@@ -56,16 +56,12 @@ object WrapperSerializerStage : ProjectStage() {
 
         val builder = StringBuilder()
         builder.append(fileHeader)
-        if (!pkg.packageType.isRoot()) {
-            builder.appendLine()
-            builder.appendLine("package ${pkg.name};")
-        }
+        builder.appendLine()
+        builder.appendLine("package ${pkg.name};")
         serializeInjectedProperties(pkg.injectedProperties, builder)
         serializeFiles(pkg.files, projectContext, builder)
-        if (!pkg.packageType.isRoot()) {
-            builder.appendLine()
-            builder.appendLine("endpackage : ${pkg.name}")
-        }
+        builder.appendLine()
+        builder.appendLine("endpackage : ${pkg.name}")
         return TextFile(outputPath, builder.toString())
     }
 
@@ -91,6 +87,9 @@ object WrapperSerializerStage : ProjectStage() {
         }
         projectContext.outputContext.targetPackageTextFile?.let { serializeInclude(it.path, projectContext, builder) }
         packageWrapperTextFiles.forEach { serializeInclude(it.path, projectContext, builder) }
+        val rootPackage = projectContext.project.regularRootPackage
+        serializeInjectedProperties(rootPackage.injectedProperties, builder)
+        serializeFiles(rootPackage.files, projectContext, builder)
         return TextFile(outputPath, builder.toString())
     }
 

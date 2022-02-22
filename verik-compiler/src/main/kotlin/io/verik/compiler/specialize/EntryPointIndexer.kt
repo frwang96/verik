@@ -19,6 +19,7 @@ package io.verik.compiler.specialize
 import io.verik.compiler.ast.common.TypeParameterized
 import io.verik.compiler.ast.element.declaration.common.EDeclaration
 import io.verik.compiler.ast.element.declaration.common.EFile
+import io.verik.compiler.ast.element.declaration.common.EProperty
 import io.verik.compiler.ast.element.declaration.kt.ECompanionObject
 import io.verik.compiler.ast.element.declaration.kt.EKtClass
 import io.verik.compiler.ast.element.declaration.kt.ETypeAlias
@@ -51,6 +52,10 @@ object EntryPointIndexer {
         }
 
         private fun isEntryPoint(declaration: EDeclaration): Boolean {
+            if (declaration.hasAnnotationEntry(AnnotationEntries.INJ) &&
+                declaration is EProperty &&
+                declaration.parent is EFile
+            ) return true
             return if (enableDeadCodeElimination) {
                 if (declaration.hasAnnotationEntry(AnnotationEntries.ENTRY)) {
                     when {
