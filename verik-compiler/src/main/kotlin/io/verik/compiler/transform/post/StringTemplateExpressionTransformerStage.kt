@@ -61,7 +61,6 @@ object StringTemplateExpressionTransformerStage : ProjectStage() {
                                 '\t' -> "\\t"
                                 '\\' -> "\\\\"
                                 '\"' -> "\\\""
-                                '\'' -> "\\\'"
                                 '%' -> if (isStringExpression) "%" else "%%"
                                 else -> it
                             }

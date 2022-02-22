@@ -24,8 +24,7 @@ class OutputContext {
     var targetPackageTextFile: TextFile? = null
     var nonRootPackageTextFiles: List<TextFile> = listOf()
     var rootPackageTextFiles: List<TextFile> = listOf()
-    var packageWrapperTextFiles: List<TextFile> = listOf()
-    lateinit var projectWrapperTextFile: TextFile
+    lateinit var wrapperTextFile: TextFile
 
     fun getTextFiles(): List<TextFile> {
         val textFiles = ArrayList<TextFile>()
@@ -33,8 +32,7 @@ class OutputContext {
         targetPackageTextFile?.let { textFiles.add(it) }
         textFiles.addAll(nonRootPackageTextFiles)
         textFiles.addAll(rootPackageTextFiles)
-        textFiles.addAll(packageWrapperTextFiles)
-        textFiles.add(projectWrapperTextFile)
+        textFiles.add(wrapperTextFile)
         return textFiles.sortedBy { it.path }
     }
 

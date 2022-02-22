@@ -28,6 +28,8 @@ internal class WrapperSerializerStageTest : BaseTest() {
                 class C : Class()
             """.trimIndent(),
             """
+                `timescale 1ns / 1ns
+
                 package test_pkg;
                 
                 typedef class C;
@@ -36,11 +38,11 @@ internal class WrapperSerializerStageTest : BaseTest() {
                 
                 endpackage : test_pkg
             """.trimIndent()
-        ) { it.packageWrapperTextFiles[0] }
+        ) { it.wrapperTextFile }
     }
 
     @Test
-    fun `project wrapper file`() {
+    fun `non package wrapper file`() {
         driveTextFileTest(
             """
                 class M : Module()
@@ -50,6 +52,6 @@ internal class WrapperSerializerStageTest : BaseTest() {
 
                 `include "src/test/Test.sv"
             """.trimIndent()
-        ) { it.projectWrapperTextFile }
+        ) { it.wrapperTextFile }
     }
 }
