@@ -17,7 +17,9 @@
 package io.verik.compiler.transform.lower
 
 import io.verik.compiler.ast.element.declaration.common.EProperty
+import io.verik.compiler.ast.element.declaration.sv.ESvConstructor
 import io.verik.compiler.ast.element.expression.common.EBlockExpression
+import io.verik.compiler.ast.element.expression.common.ECallExpression
 import io.verik.compiler.ast.element.expression.common.EExpression
 import io.verik.compiler.ast.element.expression.common.EPropertyStatement
 import io.verik.compiler.ast.element.expression.common.EReferenceExpression
@@ -37,6 +39,18 @@ object ExpressionExtractorStage : ProjectStage() {
     }
 
     private object ExpressionExtractorVisitor : TreeVisitor() {
+
+        override fun visitCallExpression(callExpression: ECallExpression) {
+            super.visitCallExpression(callExpression)
+            val isExtractable = callExpression.getExpressionType() == ExpressionType.INDIRECT_TYPED_SUBEXPRESSION ||
+                callExpression.parent is ECallExpression
+            if (isExtractable && callExpression.reference is ESvConstructor) {
+                val callExpressionReplacement = ExpressionCopier.shallowCopy(callExpression)
+                val (propertyStatement, referenceExpression) =
+                    getPropertyStatementAndReferenceExpression(callExpressionReplacement)
+                EBlockExpression.extract(callExpression, listOf(propertyStatement, referenceExpression))
+            }
+        }
 
         override fun visitConstantPartSelectExpression(constantPartSelectExpression: EConstantPartSelectExpression) {
             super.visitConstantPartSelectExpression(constantPartSelectExpression)

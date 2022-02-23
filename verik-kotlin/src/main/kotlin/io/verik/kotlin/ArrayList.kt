@@ -27,27 +27,27 @@ class ArrayList<E> {
      * Appends element [e] to the end of this list.
      */
     fun add(e: E) {
-        throw IllegalArgumentException()
+        throw VerikException()
     }
 
     /**
      * Returns the element at the specified [index] in this list.
      */
     fun get(index: Int): E {
-        throw IllegalArgumentException()
+        throw VerikException()
     }
 
     /**
      * Replaces the element at the specified [index] in this list.
      */
     fun set(index: Int, element: E) {
-        throw IllegalArgumentException()
+        throw VerikException()
     }
 
     /**
      * Returns the number of elements in this list.
      */
     val size: Int by lazy<Int> {
-        throw IllegalArgumentException()
+        throw VerikException()
     }
 }

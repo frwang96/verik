@@ -23,5 +23,5 @@ package io.verik.kotlin
  * the last lines if they are blank.
  */
 fun String.trimIndent(): String {
-    throw IllegalArgumentException()
+    throw VerikException()
 }

@@ -18,13 +18,31 @@ package io.verik.compiler.core.declaration.kt
 
 import io.verik.compiler.ast.element.expression.common.ECallExpression
 import io.verik.compiler.ast.element.expression.common.EConstantExpression
+import io.verik.compiler.ast.element.expression.common.EExpression
 import io.verik.compiler.ast.property.SvBinaryOperatorKind
+import io.verik.compiler.ast.property.SvUnaryOperatorKind
 import io.verik.compiler.constant.IntConstantEvaluator
 import io.verik.compiler.core.common.BinaryCoreFunctionDeclaration
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreScope
+import io.verik.compiler.core.common.TransformableCoreFunctionDeclaration
+import io.verik.compiler.core.common.UnaryCoreFunctionDeclaration
 
 object CoreKtInt : CoreScope(Core.Kt.C_Int) {
+
+    val F_unaryPlus = object : TransformableCoreFunctionDeclaration(parent, "unaryPlus", "fun unaryPlus()") {
+
+        override fun transform(callExpression: ECallExpression): EExpression {
+            return callExpression.receiver!!
+        }
+    }
+
+    val F_unaryMinus = UnaryCoreFunctionDeclaration(
+        parent,
+        "unaryMinus",
+        "fun unaryMinus()",
+        SvUnaryOperatorKind.MINUS
+    )
 
     val F_plus_Int = object : BinaryCoreFunctionDeclaration(
         parent,

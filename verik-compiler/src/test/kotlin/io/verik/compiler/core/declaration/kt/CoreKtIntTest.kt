@@ -23,6 +23,30 @@ import org.junit.jupiter.api.Test
 internal class CoreKtIntTest : CoreDeclarationTest() {
 
     @Test
+    fun `serialize unaryPlus unaryMinus`() {
+        driveCoreDeclarationTest(
+            listOf(
+                Core.Kt.Int.F_unaryPlus,
+                Core.Kt.Int.F_unaryMinus
+            ),
+            """
+                var a = 0
+                var x = 0
+                fun f() {
+                    x = +a
+                    x = -a
+                }
+            """.trimIndent(),
+            """
+                function automatic void f();
+                    x = a;
+                    x = -a;
+                endfunction : f
+            """.trimIndent()
+        )
+    }
+
+    @Test
     fun `serialize plus minus times`() {
         driveCoreDeclarationTest(
             listOf(
