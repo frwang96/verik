@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,19 +16,7 @@
 
 package io.verik.importer.main
 
-import io.verik.importer.common.TextFile
+class VerikImporterReport {
 
-class OutputContext {
-
-    var preprocessorTextFile: TextFile? = null
-    lateinit var reportTextFile: TextFile
-    var sourceTextFiles: List<TextFile> = listOf()
-
-    fun getTextFiles(): List<TextFile> {
-        val textFiles = ArrayList<TextFile>()
-        preprocessorTextFile?.let { textFiles.add(it) }
-        textFiles.add(reportTextFile)
-        textFiles.addAll(sourceTextFiles)
-        return textFiles.sortedBy { it.path }
-    }
+    var counts: List<Pair<String, Int>> = listOf()
 }

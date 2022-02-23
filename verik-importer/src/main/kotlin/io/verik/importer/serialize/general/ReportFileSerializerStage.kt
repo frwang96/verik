@@ -21,10 +21,10 @@ import io.verik.importer.main.Platform
 import io.verik.importer.main.ProjectContext
 import io.verik.importer.main.ProjectStage
 
-object ConfigFileSerializerStage : ProjectStage() {
+object ReportFileSerializerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
-        val outputPath = projectContext.config.buildDir.resolve("config.yaml")
+        val outputPath = projectContext.config.buildDir.resolve("report.yaml")
         val fileHeader = FileHeaderBuilder.build(
             projectContext.config,
             outputPath,
@@ -45,6 +45,11 @@ object ConfigFileSerializerStage : ProjectStage() {
                 builder.appendLine("  - ${Platform.getStringFromPath(it.toAbsolutePath())}")
             }
         }
-        projectContext.outputContext.configTextFile = TextFile(outputPath, builder.toString())
+        builder.appendLine("counts:")
+        projectContext.config.report.counts.forEach { (name, count) ->
+            builder.appendLine("  $name: $count")
+        }
+
+        projectContext.outputContext.reportTextFile = TextFile(outputPath, builder.toString())
     }
 }
