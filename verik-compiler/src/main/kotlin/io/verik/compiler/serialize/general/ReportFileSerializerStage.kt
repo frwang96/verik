@@ -47,9 +47,9 @@ object ReportFileSerializerStage : ProjectStage() {
             }
         }
         builder.appendLine("enableDeadCodeElimination: ${projectContext.config.enableDeadCodeElimination}")
-        if (projectContext.config.entryPoints.isNotEmpty()) {
+        if (projectContext.report.entryPoints.isNotEmpty()) {
             builder.appendLine("entryPoints:")
-            projectContext.config.entryPoints.forEach {
+            projectContext.report.entryPoints.forEach {
                 builder.appendLine("  - $it")
             }
         }

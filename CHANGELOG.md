@@ -26,6 +26,7 @@
 - Support `toString` function.
 - Support for safe access operator.
 - Support for enums with values.
+- Rename `config.yaml` to `report.yaml`.
 
 ## [0.1.13]
 ### Importer
