@@ -45,9 +45,11 @@ object ReportFileSerializerStage : ProjectStage() {
                 builder.appendLine("  - ${Platform.getStringFromPath(it.toAbsolutePath())}")
             }
         }
-        builder.appendLine("counts:")
-        projectContext.config.report.counts.forEach { (name, count) ->
-            builder.appendLine("  $name: $count")
+        if (projectContext.report.counts.isNotEmpty()) {
+            builder.appendLine("counts:")
+            projectContext.report.counts.forEach { (name, count) ->
+                builder.appendLine("  $name: $count")
+            }
         }
 
         projectContext.outputContext.reportTextFile = TextFile(outputPath, builder.toString())

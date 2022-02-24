@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,20 +14,9 @@
  * limitations under the License.
  */
 
-package io.verik.importer.main
+package io.verik.compiler.main
 
-import io.verik.importer.ast.element.common.EProject
-import io.verik.importer.common.TextFile
-import java.nio.file.Path
+class VerikReport {
 
-class ProjectContext(
-    val config: VerikImporterConfig
-) {
-
-    val report = VerikImporterReport()
-    var inputFileContexts: List<InputFileContext> = listOf()
-    var includedTextFiles: HashMap<Path, TextFile> = HashMap()
-    val processedProjectStages = HashSet<ProjectStage>()
-    var project: EProject = EProject(arrayListOf())
-    val outputContext = OutputContext()
+    var counts: List<Pair<String, Int>> = listOf()
 }

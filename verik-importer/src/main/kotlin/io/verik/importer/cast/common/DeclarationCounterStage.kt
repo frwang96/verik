@@ -47,7 +47,7 @@ object DeclarationCounterStage : ProjectStage() {
         counts.add(Pair("tasks", declarationCounterVisitor.taskCount))
         counts.add(Pair("constructors", declarationCounterVisitor.constructorCount))
         counts.add(Pair("properties", declarationCounterVisitor.propertyCount))
-        projectContext.config.report.counts = counts
+        projectContext.report.counts = counts.filter { it.second != 0 }
     }
 
     private class DeclarationCounterVisitor : TreeVisitor() {

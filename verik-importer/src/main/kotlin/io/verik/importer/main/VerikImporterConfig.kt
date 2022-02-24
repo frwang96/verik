@@ -32,7 +32,6 @@ data class VerikImporterConfig(
     val debug: Boolean
 ) {
 
-    val report = VerikImporterReport()
     val rootPackageName = "imported"
     val rootPackageOutputPath: Path = buildDir.resolve("src/$rootPackageName")
 }
