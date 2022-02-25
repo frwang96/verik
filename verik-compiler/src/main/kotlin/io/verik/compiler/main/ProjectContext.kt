@@ -27,6 +27,7 @@ class ProjectContext(
     val config: VerikConfig
 ) {
 
+    val report = VerikReport()
     var sourceSetContexts: List<SourceSetContext> = listOf()
     val processedProjectStages = HashSet<ProjectStage>()
     lateinit var kotlinCoreEnvironment: KotlinCoreEnvironment

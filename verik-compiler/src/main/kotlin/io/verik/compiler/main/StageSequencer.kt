@@ -72,7 +72,8 @@ import io.verik.compiler.resolve.SliceResolverStage
 import io.verik.compiler.resolve.TypeReferenceForwarderStage
 import io.verik.compiler.resolve.TypeResolvedCheckerStage
 import io.verik.compiler.resolve.TypeResolverStage
-import io.verik.compiler.serialize.general.ConfigFileSerializerStage
+import io.verik.compiler.serialize.general.DeclarationCounterStage
+import io.verik.compiler.serialize.general.ReportFileSerializerStage
 import io.verik.compiler.serialize.general.WrapperSerializerStage
 import io.verik.compiler.serialize.source.SourceSerializerStage
 import io.verik.compiler.serialize.target.CompositeTargetSerializerStage
@@ -229,7 +230,8 @@ object StageSequencer {
         stageSequence.add(StageType.POST_CHECK, NameRedeclarationCheckerStage)
         stageSequence.add(StageType.POST_CHECK, StatementCheckerStage)
 
-        stageSequence.add(StageType.SERIALIZE, ConfigFileSerializerStage)
+        stageSequence.add(StageType.SERIALIZE, DeclarationCounterStage)
+        stageSequence.add(StageType.SERIALIZE, ReportFileSerializerStage)
         stageSequence.add(StageType.SERIALIZE, CompositeTargetSerializerStage)
         stageSequence.add(StageType.SERIALIZE, SourceSerializerStage)
         stageSequence.add(StageType.SERIALIZE, WrapperSerializerStage)

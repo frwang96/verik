@@ -27,7 +27,7 @@ class Boolean private constructor() {
      * Returns the inverse of this boolean.
      */
     operator fun not(): Boolean {
-        throw IllegalArgumentException()
+        throw VerikException()
     }
 
     /**
@@ -35,7 +35,7 @@ class Boolean private constructor() {
      * function does not perform short-circuit evaluation. Both this and [other] will always be evaluated.
      */
     infix fun and(other: Boolean): Boolean {
-        throw IllegalArgumentException()
+        throw VerikException()
     }
 
     /**
@@ -43,13 +43,13 @@ class Boolean private constructor() {
      * does not perform short-circuit evaluation. Both this and [other] will always be evaluated.
      */
     infix fun or(other: Boolean): Boolean {
-        throw IllegalArgumentException()
+        throw VerikException()
     }
 
     /**
      * Performs a logical xor operation between this Boolean and the [other] one.
      */
     infix fun xor(other: Boolean): Boolean {
-        throw IllegalArgumentException()
+        throw VerikException()
     }
 }

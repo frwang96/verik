@@ -70,6 +70,8 @@ object Core {
 
         object Int {
 
+            val F_unaryPlus = CoreKtInt.F_unaryPlus
+            val F_unaryMinus = CoreKtInt.F_unaryMinus
             val F_plus_Int = CoreKtInt.F_plus_Int
             val F_minus_Int = CoreKtInt.F_minus_Int
             val F_times_Int = CoreKtInt.F_times_Int

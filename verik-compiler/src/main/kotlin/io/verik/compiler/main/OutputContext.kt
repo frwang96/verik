@@ -20,21 +20,19 @@ import io.verik.compiler.common.TextFile
 
 class OutputContext {
 
-    lateinit var configTextFile: TextFile
+    lateinit var reportTextFile: TextFile
     var targetPackageTextFile: TextFile? = null
     var nonRootPackageTextFiles: List<TextFile> = listOf()
     var rootPackageTextFiles: List<TextFile> = listOf()
-    var packageWrapperTextFiles: List<TextFile> = listOf()
-    lateinit var projectWrapperTextFile: TextFile
+    lateinit var wrapperTextFile: TextFile
 
     fun getTextFiles(): List<TextFile> {
         val textFiles = ArrayList<TextFile>()
-        textFiles.add(configTextFile)
+        textFiles.add(reportTextFile)
         targetPackageTextFile?.let { textFiles.add(it) }
         textFiles.addAll(nonRootPackageTextFiles)
         textFiles.addAll(rootPackageTextFiles)
-        textFiles.addAll(packageWrapperTextFiles)
-        textFiles.add(projectWrapperTextFile)
+        textFiles.add(wrapperTextFile)
         return textFiles.sortedBy { it.path }
     }
 

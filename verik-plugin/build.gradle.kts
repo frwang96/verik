@@ -50,7 +50,7 @@ tasks.register("writeProperties", WriteProperties::class) {
         if (version.toString().startsWith("local")) {
             val outputStream = ByteArrayOutputStream()
             project.exec {
-                commandLine = listOf("git", "describe", "--long", "--tags", "--dirty", "--always")
+                commandLine = listOf("git", "describe", "--long", "--abbrev=8", "--tags", "--dirty", "--always")
                 standardOutput = outputStream
             }
             "verik ${String(outputStream.toByteArray()).trim()}"

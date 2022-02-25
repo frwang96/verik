@@ -287,11 +287,11 @@ object Messages {
     )
 
     val NOT_INJECTED_PROPERTY = ErrorMessageTemplate0(
-        "Only injected properties are permitted in Pkg.kt"
+        "Only injected properties are permitted here"
     )
 
     val INJECTED_PROPERTY_NOT_LITERAL = ErrorMessageTemplate0(
-        "Expressions are not permitted in injected properties declared in Pkg.kt"
+        "Expression not permitted in injected property"
     )
 
 //  UPPER TRANSFORM  ///////////////////////////////////////////////////////////////////////////////////////////////////

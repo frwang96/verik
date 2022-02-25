@@ -34,8 +34,22 @@ object EntryPointIndexer {
             projectContext.config.enableDeadCodeElimination,
             projectContext.config.entryPoints
         )
-        projectContext.project.accept(entryPointIndexerVisitor)
+        projectContext.project.regularPackages().forEach {
+            it.accept(entryPointIndexerVisitor)
+        }
+        if (projectContext.config.enableDeadCodeElimination) {
+            projectContext.report.entryPoints = entryPointIndexerVisitor.entryPoints.mapNotNull {
+                if (isTopLevelInjectedProperty(it)) null
+                else it.getQualifiedName()
+            }
+        }
         return entryPointIndexerVisitor.entryPoints
+    }
+
+    private fun isTopLevelInjectedProperty(declaration: EDeclaration): Boolean {
+        return declaration.hasAnnotationEntry(AnnotationEntries.INJ) &&
+            declaration is EProperty &&
+            declaration.parent is EFile
     }
 
     private class EntryPointIndexerVisitor(
@@ -52,15 +66,12 @@ object EntryPointIndexer {
         }
 
         private fun isEntryPoint(declaration: EDeclaration): Boolean {
-            if (declaration.hasAnnotationEntry(AnnotationEntries.INJ) &&
-                declaration is EProperty &&
-                declaration.parent is EFile
-            ) return true
+            if (isTopLevelInjectedProperty(declaration)) return true
             return if (enableDeadCodeElimination) {
                 if (declaration.hasAnnotationEntry(AnnotationEntries.ENTRY)) {
                     when {
                         declaration is TypeParameterized && declaration.typeParameters.isNotEmpty() -> false
-                        entryPointNames.isEmpty() || declaration.name in entryPointNames -> true
+                        entryPointNames.isEmpty() || declaration.getQualifiedName() in entryPointNames -> true
                         else -> false
                     }
                 } else false

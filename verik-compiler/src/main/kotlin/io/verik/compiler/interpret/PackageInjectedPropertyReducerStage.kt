@@ -31,13 +31,15 @@ object PackageInjectedPropertyReducerStage : ProjectStage() {
     }
 
     private fun processPackage(pkg: EPackage) {
-        val file = pkg.files.find { it.name == "Pkg.kt" }
-        if (file != null) {
-            pkg.files.remove(file)
-            val injectedProperties = getInjectedProperties(file)
-            injectedProperties.forEach { it.parent = pkg }
-            pkg.injectedProperties = injectedProperties
-        }
+        pkg.files.find { it.name == "Pkg.kt" }?.let { processFile(it, pkg) }
+        pkg.files.find { it.name == "pkg.kt" }?.let { processFile(it, pkg) }
+    }
+
+    private fun processFile(file: EFile, pkg: EPackage) {
+        pkg.files.remove(file)
+        val injectedProperties = getInjectedProperties(file)
+        injectedProperties.forEach { it.parent = pkg }
+        pkg.injectedProperties = injectedProperties
     }
 
     private fun getInjectedProperties(file: EFile): ArrayList<EInjectedProperty> {

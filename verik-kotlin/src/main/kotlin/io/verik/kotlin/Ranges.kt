@@ -27,5 +27,5 @@ class IntRange private constructor()
  * Returns a range from this value up to but excluding the specified [to] value.
  */
 infix fun Int.until(to: Int): IntRange {
-    throw IllegalArgumentException()
+    throw VerikException()
 }

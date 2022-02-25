@@ -33,6 +33,8 @@ object UnaryExpressionReducerStage : ProjectStage() {
 
     init {
         referenceMap[ReducerEntry(Core.Kt.C_Boolean, KtUnaryOperatorKind.EXCL)] = Core.Kt.Boolean.F_not
+        referenceMap[ReducerEntry(Core.Kt.C_Int, KtUnaryOperatorKind.PLUS)] = Core.Kt.Int.F_unaryPlus
+        referenceMap[ReducerEntry(Core.Kt.C_Int, KtUnaryOperatorKind.MINUS)] = Core.Kt.Int.F_unaryMinus
         referenceMap[ReducerEntry(Core.Vk.C_Ubit, KtUnaryOperatorKind.PLUS)] = Core.Vk.Ubit.F_unaryPlus
         referenceMap[ReducerEntry(Core.Vk.C_Ubit, KtUnaryOperatorKind.MINUS)] = Core.Vk.Ubit.F_unaryMinus
         referenceMap[ReducerEntry(Core.Vk.C_Ubit, KtUnaryOperatorKind.EXCL)] = Core.Vk.Ubit.F_not

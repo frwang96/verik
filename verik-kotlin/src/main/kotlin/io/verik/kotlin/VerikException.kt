@@ -14,20 +14,8 @@
  * limitations under the License.
  */
 
-package io.verik.importer.main
+package io.verik.kotlin
 
-import io.verik.importer.ast.element.common.EProject
-import io.verik.importer.common.TextFile
-import java.nio.file.Path
-
-class ProjectContext(
-    val config: VerikImporterConfig
-) {
-
-    val report = VerikImporterReport()
-    var inputFileContexts: List<InputFileContext> = listOf()
-    var includedTextFiles: HashMap<Path, TextFile> = HashMap()
-    val processedProjectStages = HashSet<ProjectStage>()
-    var project: EProject = EProject(arrayListOf())
-    val outputContext = OutputContext()
-}
+internal class VerikException : Exception(
+    "Verik declaration should not be run as Kotlin"
+)

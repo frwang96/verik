@@ -30,46 +30,7 @@ import java.nio.file.Path
 object WrapperSerializerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
-        val packageWrapperTextFiles = ArrayList<TextFile>()
-        projectContext.project.regularNonRootPackages.forEach {
-            val packageWrapperTextFile = serializePackageWrapper(it, projectContext)
-            if (packageWrapperTextFile != null) {
-                packageWrapperTextFiles.add(packageWrapperTextFile)
-            }
-        }
-        val projectWrapperTextFile = serializeProjectWrapper(projectContext, packageWrapperTextFiles)
-        projectContext.outputContext.packageWrapperTextFiles = packageWrapperTextFiles
-        projectContext.outputContext.projectWrapperTextFile = projectWrapperTextFile
-    }
-
-    private fun serializePackageWrapper(pkg: EPackage, projectContext: ProjectContext): TextFile? {
-        if (pkg.files.all { it.isEmptySerialization() })
-            return null
-
-        val outputPath = pkg.outputPath.resolve("Pkg.sv")
-        val fileHeader = FileHeaderBuilder.build(
-            projectContext.config,
-            null,
-            outputPath,
-            FileHeaderBuilder.CommentStyle.SLASH
-        )
-
-        val builder = StringBuilder()
-        builder.append(fileHeader)
-        builder.appendLine()
-        builder.appendLine("package ${pkg.name};")
-        serializeInjectedProperties(pkg.injectedProperties, builder)
-        serializeFiles(pkg.files, projectContext, builder)
-        builder.appendLine()
-        builder.appendLine("endpackage : ${pkg.name}")
-        return TextFile(outputPath, builder.toString())
-    }
-
-    private fun serializeProjectWrapper(
-        projectContext: ProjectContext,
-        packageWrapperTextFiles: List<TextFile>
-    ): TextFile {
-        val outputPath = projectContext.config.buildDir.resolve("top.sv")
+        val outputPath = projectContext.config.buildDir.resolve("out.sv")
         val fileHeader = FileHeaderBuilder.build(
             projectContext.config,
             null,
@@ -85,12 +46,23 @@ object WrapperSerializerStage : ProjectStage() {
             builder.appendLine()
             builder.appendLine("`define _(n)")
         }
+
         projectContext.outputContext.targetPackageTextFile?.let { serializeInclude(it.path, projectContext, builder) }
-        packageWrapperTextFiles.forEach { serializeInclude(it.path, projectContext, builder) }
+        projectContext.project.regularNonRootPackages.forEach { serializePackage(it, projectContext, builder) }
         val rootPackage = projectContext.project.regularRootPackage
         serializeInjectedProperties(rootPackage.injectedProperties, builder)
         serializeFiles(rootPackage.files, projectContext, builder)
-        return TextFile(outputPath, builder.toString())
+        projectContext.outputContext.wrapperTextFile = TextFile(outputPath, builder.toString())
+    }
+
+    private fun serializePackage(pkg: EPackage, projectContext: ProjectContext, builder: StringBuilder) {
+        if (pkg.files.all { it.isEmptySerialization() }) return
+        builder.appendLine()
+        builder.appendLine("package ${pkg.name};")
+        serializeInjectedProperties(pkg.injectedProperties, builder)
+        serializeFiles(pkg.files, projectContext, builder)
+        builder.appendLine()
+        builder.appendLine("endpackage : ${pkg.name}")
     }
 
     private fun serializeInjectedProperties(injectedProperties: List<EInjectedProperty>, builder: StringBuilder) {

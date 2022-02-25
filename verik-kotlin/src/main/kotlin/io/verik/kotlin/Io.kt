@@ -22,47 +22,47 @@ package io.verik.kotlin
  * Prints the given [message] to the standard output stream.
  */
 fun print(message: Any?) {
-    throw IllegalArgumentException()
+    throw VerikException()
 }
 
 /**
  * Prints the given [message] to the standard output stream.
  */
 fun print(message: Boolean) {
-    throw IllegalArgumentException()
+    throw VerikException()
 }
 
 /**
  * Prints the given [message] to the standard output stream.
  */
 fun print(message: Int) {
-    throw IllegalArgumentException()
+    throw VerikException()
 }
 
 /**
  * Prints the line separator to the standard output stream.
  */
 fun println() {
-    throw IllegalArgumentException()
+    throw VerikException()
 }
 
 /**
  * Prints the given [message] and the line separator to the standard output stream.
  */
 fun println(message: Any?) {
-    throw IllegalArgumentException()
+    throw VerikException()
 }
 
 /**
  * Prints the given [message] and the line separator to the standard output stream.
  */
 fun println(message: Boolean) {
-    throw IllegalArgumentException()
+    throw VerikException()
 }
 
 /**
  * Prints the given [message] and the line separator to the standard output stream.
  */
 fun println(message: Int) {
-    throw IllegalArgumentException()
+    throw VerikException()
 }

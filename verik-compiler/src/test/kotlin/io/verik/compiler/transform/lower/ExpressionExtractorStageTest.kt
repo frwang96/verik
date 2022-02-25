@@ -22,6 +22,32 @@ import org.junit.jupiter.api.Test
 internal class ExpressionExtractorStageTest : BaseTest() {
 
     @Test
+    fun `call expression constructor`() {
+        driveTextFileTest(
+            """
+                class C : Class()
+                fun f() {
+                    println(C())
+                }
+            """.trimIndent(),
+            """
+                class C;
+
+                    function new();
+                    endfunction : new
+
+                endclass : C
+
+                function automatic void f();
+                    C __0;
+                    __0 = C::new();
+                    ${'$'}display(${'$'}sformatf("%p", __0));
+                endfunction : f
+            """.trimIndent()
+        ) { it.nonRootPackageTextFiles[0] }
+    }
+
+    @Test
     fun `constant part select expression`() {
         driveTextFileTest(
             """

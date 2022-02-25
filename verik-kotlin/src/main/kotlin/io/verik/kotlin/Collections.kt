@@ -22,5 +22,5 @@ package io.verik.kotlin
  * Performs the given [action] on each element.
  */
 fun <T> Iterable<T>.forEach(action: (T) -> Unit) {
-    throw IllegalArgumentException()
+    throw VerikException()
 }

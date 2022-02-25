@@ -23,19 +23,19 @@ package io.verik.kotlin
  * as a parameter to [action].
  */
 fun repeat(times: Int, action: (Int) -> Unit) {
-    throw IllegalArgumentException()
+    throw VerikException()
 }
 
 /**
  * Asserts that [value] is true. Raises an error otherwise.
  */
 fun assert(value: Boolean) {
-    throw IllegalArgumentException()
+    throw VerikException()
 }
 
 /**
  * Asserts that [value] is true. Executes [action] otherwise.
  */
 fun assert(value: Boolean, action: () -> Any) {
-    throw IllegalArgumentException()
+    throw VerikException()
 }
