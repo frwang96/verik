@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Francis Wang
+ * Copyright (c) 2021 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,19 +14,13 @@
  * limitations under the License.
  */
 
-@file:Suppress("unused", "UNUSED_PARAMETER")
+package io.verik.compiler.target.declaration
 
-package io.verik.core
+import io.verik.compiler.target.common.PrimitiveTargetFunctionDeclaration
+import io.verik.compiler.target.common.Target
+import io.verik.compiler.target.common.TargetScope
 
-/**
- * A queue of elements of type [E]. It corresponds to a SystemVerilog queue.
- */
-class Queue<E> private constructor() {
+object TargetQueue : TargetScope(Target.C_Queue) {
 
-    /**
-     * Add element [e] to the end of this list.
-     */
-    fun add(e: E) {
-        throw VerikException()
-    }
+    val F_push_back = PrimitiveTargetFunctionDeclaration(parent, "push_back")
 }

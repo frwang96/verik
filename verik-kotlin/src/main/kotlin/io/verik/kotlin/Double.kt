@@ -16,17 +16,24 @@
 
 @file:Suppress("unused", "UNUSED_PARAMETER")
 
-package io.verik.core
+package io.verik.kotlin
 
 /**
- * A queue of elements of type [E]. It corresponds to a SystemVerilog queue.
+ * Represents a double-precision floating point number.
  */
-class Queue<E> private constructor() {
+class Double private constructor() {
 
     /**
-     * Add element [e] to the end of this list.
+     * Adds the [other] value to this value.
      */
-    fun add(e: E) {
+    operator fun plus(other: Double): Double {
+        throw VerikException()
+    }
+
+    /**
+     * Divides this value by the [other] value.
+     */
+    operator fun div(other: Int): Double {
         throw VerikException()
     }
 }

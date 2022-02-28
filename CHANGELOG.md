@@ -1,6 +1,8 @@
 # Changelog
 
 ## [Unreleased]
+### Compiler
+- Support `Double` data type.
 
 ## [0.1.14]
 ### Importer

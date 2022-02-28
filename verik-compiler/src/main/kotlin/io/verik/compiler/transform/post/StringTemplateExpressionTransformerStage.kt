@@ -40,6 +40,7 @@ object StringTemplateExpressionTransformerStage : ProjectStage() {
             return when (type.reference) {
                 Target.C_Boolean -> "%b"
                 Target.C_Int -> "%0d"
+                Target.C_Double -> "%f"
                 Target.C_String -> "%s"
                 Target.C_Ubit, Target.C_Sbit -> "%h"
                 Target.C_Time -> "%0t"

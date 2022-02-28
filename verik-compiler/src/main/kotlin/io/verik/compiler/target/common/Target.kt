@@ -18,13 +18,15 @@ package io.verik.compiler.target.common
 
 import io.verik.compiler.target.declaration.TargetArrayList
 import io.verik.compiler.target.declaration.TargetClasses
+import io.verik.compiler.target.declaration.TargetQueue
 import io.verik.compiler.target.declaration.TargetSystem
 
 object Target {
 
     val C_Void = TargetClasses.C_Void
-    val C_Int = TargetClasses.C_Int
     val C_Boolean = TargetClasses.C_Boolean
+    val C_Int = TargetClasses.C_Int
+    val C_Double = TargetClasses.C_Double
     val C_String = TargetClasses.C_String
     val C_Ubit = TargetClasses.C_Ubit
     val C_Sbit = TargetClasses.C_Sbit
@@ -58,6 +60,11 @@ object Target {
     val F_randomize = TargetSystem.F_randomize
 
     val P_root = TargetSystem.P_root
+
+    object Queue {
+
+        val F_push_back = TargetQueue.F_push_back
+    }
 
     object ArrayList {
 

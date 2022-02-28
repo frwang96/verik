@@ -30,6 +30,7 @@ object AssignmentOperatorReducerStage : ProjectStage() {
     init {
         assignmentOperatorMap[KtBinaryOperatorKind.PLUS_EQ] = KtBinaryOperatorKind.PLUS
         assignmentOperatorMap[KtBinaryOperatorKind.MINUS_EQ] = KtBinaryOperatorKind.MINUS
+        assignmentOperatorMap[KtBinaryOperatorKind.DIV_EQ] = KtBinaryOperatorKind.DIV
     }
 
     override fun process(projectContext: ProjectContext) {

@@ -73,7 +73,7 @@ annotation class Entry
  * Inject a string literal directly as SystemVerilog.
  *
  *  ```
- *  class C {
+ *  class C : Class() {
  *
  *      @Inj
  *      val macro = "`macro(C);"

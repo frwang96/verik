@@ -21,4 +21,4 @@ package io.verik.core
 /**
  * An associative array of elements with key [K] and value [V]. It corresponds to a SystemVerilog associative array.
  */
-class AssociativeArray<K, V>
+class AssociativeArray<K, V> private constructor()

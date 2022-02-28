@@ -24,6 +24,7 @@ import io.verik.compiler.core.declaration.kt.CoreKtAny
 import io.verik.compiler.core.declaration.kt.CoreKtBoolean
 import io.verik.compiler.core.declaration.kt.CoreKtClasses
 import io.verik.compiler.core.declaration.kt.CoreKtCollections
+import io.verik.compiler.core.declaration.kt.CoreKtDouble
 import io.verik.compiler.core.declaration.kt.CoreKtFunctions
 import io.verik.compiler.core.declaration.kt.CoreKtInt
 import io.verik.compiler.core.declaration.kt.CoreKtIo
@@ -37,6 +38,7 @@ import io.verik.compiler.core.declaration.vk.CoreVkComponent
 import io.verik.compiler.core.declaration.vk.CoreVkControl
 import io.verik.compiler.core.declaration.vk.CoreVkMisc
 import io.verik.compiler.core.declaration.vk.CoreVkPacked
+import io.verik.compiler.core.declaration.vk.CoreVkQueue
 import io.verik.compiler.core.declaration.vk.CoreVkRandom
 import io.verik.compiler.core.declaration.vk.CoreVkSbit
 import io.verik.compiler.core.declaration.vk.CoreVkSbitBinary
@@ -55,8 +57,9 @@ object Core {
         val C_Unit = CoreKtClasses.C_Unit
         val C_Nothing = CoreKtClasses.C_Nothing
         val C_Enum = CoreKtClasses.C_Enum
-        val C_Int = CoreKtClasses.C_Int
         val C_Boolean = CoreKtClasses.C_Boolean
+        val C_Int = CoreKtClasses.C_Int
+        val C_Double = CoreKtClasses.C_Double
         val C_String = CoreKtClasses.C_String
 
         val F_repeat_Int_Function = CoreKtFunctions.F_repeat_Int_Function
@@ -66,6 +69,14 @@ object Core {
         object Any {
 
             val F_toString = CoreKtAny.F_toString
+        }
+
+        object Boolean {
+
+            val F_not = CoreKtBoolean.F_not
+            val F_and_Boolean = CoreKtBoolean.F_and_Boolean
+            val F_or_Boolean = CoreKtBoolean.F_or_Boolean
+            val F_xor_Boolean = CoreKtBoolean.F_xor_Boolean
         }
 
         object Int {
@@ -80,12 +91,10 @@ object Core {
             val F_ushr_Int = CoreKtInt.F_ushr_Int
         }
 
-        object Boolean {
+        object Double {
 
-            val F_not = CoreKtBoolean.F_not
-            val F_and_Boolean = CoreKtBoolean.F_and_Boolean
-            val F_or_Boolean = CoreKtBoolean.F_or_Boolean
-            val F_xor_Boolean = CoreKtBoolean.F_xor_Boolean
+            val F_plus_Double = CoreKtDouble.F_plus_Double
+            val F_div_Int = CoreKtDouble.F_div_Int
         }
 
         object Io {
@@ -93,10 +102,12 @@ object Core {
             val F_print_Any = CoreKtIo.F_print_Any
             val F_print_Boolean = CoreKtIo.F_print_Boolean
             val F_print_Int = CoreKtIo.F_print_Int
+            val F_print_Double = CoreKtIo.F_print_Double
             val F_println = CoreKtIo.F_println
             val F_println_Any = CoreKtIo.F_println_Any
             val F_println_Boolean = CoreKtIo.F_println_Boolean
             val F_println_Int = CoreKtIo.F_println_Int
+            val F_println_Double = CoreKtIo.F_println_Double
         }
 
         object Collections {
@@ -359,6 +370,11 @@ object Core {
             val F_set_Ubit_E = CoreVkUnpacked.F_set_Ubit_E
 
             val P_size = CoreVkUnpacked.P_size
+        }
+
+        object Queue {
+
+            val F_add_E = CoreVkQueue.F_add_E
         }
 
         object Class {

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Francis Wang
+ * Copyright (c) 2021 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,19 +14,14 @@
  * limitations under the License.
  */
 
-@file:Suppress("unused", "UNUSED_PARAMETER")
+package io.verik.compiler.core.declaration.vk
 
-package io.verik.core
+import io.verik.compiler.core.common.BasicCoreFunctionDeclaration
+import io.verik.compiler.core.common.Core
+import io.verik.compiler.core.common.CoreScope
+import io.verik.compiler.target.common.Target
 
-/**
- * A queue of elements of type [E]. It corresponds to a SystemVerilog queue.
- */
-class Queue<E> private constructor() {
+object CoreVkQueue : CoreScope(Core.Vk.C_Queue) {
 
-    /**
-     * Add element [e] to the end of this list.
-     */
-    fun add(e: E) {
-        throw VerikException()
-    }
+    val F_add_E = BasicCoreFunctionDeclaration(parent, "add", "fun add(E)", Target.Queue.F_push_back)
 }

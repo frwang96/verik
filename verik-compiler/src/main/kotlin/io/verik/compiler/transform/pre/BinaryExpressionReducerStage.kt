@@ -38,6 +38,10 @@ object BinaryExpressionReducerStage : ProjectStage() {
             Core.Kt.Int.F_plus_Int
         referenceMap[ReducerEntry(Core.Kt.C_Int, Core.Kt.C_Int, KtBinaryOperatorKind.MINUS)] =
             Core.Kt.Int.F_minus_Int
+        referenceMap[ReducerEntry(Core.Kt.C_Double, Core.Kt.C_Double, KtBinaryOperatorKind.PLUS)] =
+            Core.Kt.Double.F_plus_Double
+        referenceMap[ReducerEntry(Core.Kt.C_Double, Core.Kt.C_Int, KtBinaryOperatorKind.DIV)] =
+            Core.Kt.Double.F_div_Int
         referenceMap[ReducerEntry(Core.Vk.C_Ubit, Core.Vk.C_Ubit, KtBinaryOperatorKind.PLUS)] =
             Core.Vk.Ubit.F_plus_Ubit
         referenceMap[ReducerEntry(Core.Vk.C_Ubit, Core.Vk.C_Sbit, KtBinaryOperatorKind.PLUS)] =
