@@ -26,6 +26,13 @@ class Double private constructor() {
     /**
      * Adds the [other] value to this value.
      */
+    operator fun plus(other: Int): Double {
+        throw VerikException()
+    }
+
+    /**
+     * Adds the [other] value to this value.
+     */
     operator fun plus(other: Double): Double {
         throw VerikException()
     }

@@ -21,7 +21,14 @@ import io.verik.compiler.core.common.BinaryCoreFunctionDeclaration
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreScope
 
-object CoreKtDouble : CoreScope(Core.Kt.C_Int) {
+object CoreKtDouble : CoreScope(Core.Kt.C_Double) {
+
+    val F_plus_Int = BinaryCoreFunctionDeclaration(
+        parent,
+        "plus",
+        "fun plus(Int)",
+        SvBinaryOperatorKind.PLUS
+    )
 
     val F_plus_Double = BinaryCoreFunctionDeclaration(
         parent,

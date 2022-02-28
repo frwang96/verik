@@ -23,4 +23,5 @@ import io.verik.compiler.target.common.TargetScope
 object TargetQueue : TargetScope(Target.C_Queue) {
 
     val F_push_back = PrimitiveTargetFunctionDeclaration(parent, "push_back")
+    val F_size = PrimitiveTargetFunctionDeclaration(parent, "size")
 }

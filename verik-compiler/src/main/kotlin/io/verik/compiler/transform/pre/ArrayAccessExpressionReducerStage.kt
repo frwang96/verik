@@ -64,6 +64,9 @@ object ArrayAccessExpressionReducerStage : ProjectStage() {
             GetReducerEntry(Core.Vk.C_Unpacked, listOf(Core.Vk.C_Ubit), Core.Vk.Unpacked.F_get_Ubit)
         )
         getReducerEntries.add(
+            GetReducerEntry(Core.Vk.C_Queue, listOf(Core.Kt.C_Int), Core.Vk.Queue.F_get_Int)
+        )
+        getReducerEntries.add(
             GetReducerEntry(Core.Jv.Util.C_ArrayList, listOf(Core.Kt.C_Int), Core.Jv.Util.ArrayList.F_get_Int)
         )
 

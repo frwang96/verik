@@ -64,6 +64,7 @@ object Target {
     object Queue {
 
         val F_push_back = TargetQueue.F_push_back
+        val F_size = TargetQueue.F_size
     }
 
     object ArrayList {

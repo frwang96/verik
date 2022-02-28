@@ -38,6 +38,8 @@ object BinaryExpressionReducerStage : ProjectStage() {
             Core.Kt.Int.F_plus_Int
         referenceMap[ReducerEntry(Core.Kt.C_Int, Core.Kt.C_Int, KtBinaryOperatorKind.MINUS)] =
             Core.Kt.Int.F_minus_Int
+        referenceMap[ReducerEntry(Core.Kt.C_Double, Core.Kt.C_Int, KtBinaryOperatorKind.PLUS)] =
+            Core.Kt.Double.F_plus_Int
         referenceMap[ReducerEntry(Core.Kt.C_Double, Core.Kt.C_Double, KtBinaryOperatorKind.PLUS)] =
             Core.Kt.Double.F_plus_Double
         referenceMap[ReducerEntry(Core.Kt.C_Double, Core.Kt.C_Int, KtBinaryOperatorKind.DIV)] =
@@ -104,8 +106,9 @@ object BinaryExpressionReducerStage : ProjectStage() {
                     return
                 }
             }
-            if (kind.isReducible())
+            if (kind.isReducible()) {
                 Messages.INTERNAL_ERROR.on(binaryExpression, "Binary expression could not be reduced")
+            }
         }
     }
 }

@@ -93,6 +93,7 @@ object Core {
 
         object Double {
 
+            val F_plus_Int = CoreKtDouble.F_plus_Int
             val F_plus_Double = CoreKtDouble.F_plus_Double
             val F_div_Int = CoreKtDouble.F_div_Int
         }
@@ -375,6 +376,8 @@ object Core {
         object Queue {
 
             val F_add_E = CoreVkQueue.F_add_E
+            val F_get_Int = CoreVkQueue.F_get_Int
+            val F_size = CoreVkQueue.F_size
         }
 
         object Class {
