@@ -3,6 +3,7 @@
 ## [Unreleased]
 ### Compiler
 - Support `Double` data type.
+- Add `monitor` and `strobe` functions.
 
 ## [0.1.14]
 ### Importer

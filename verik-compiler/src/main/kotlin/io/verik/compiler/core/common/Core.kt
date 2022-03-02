@@ -196,6 +196,8 @@ object Core {
 
         val F_optional_Function = CoreVkComponent.F_optional_Function
 
+        val F_strobe_String = CoreVkSystem.F_strobe_String
+        val F_monitor_String = CoreVkSystem.F_monitor_String
         val F_finish = CoreVkSystem.F_finish
         val F_fatal = CoreVkSystem.F_fatal
         val F_fatal_String = CoreVkSystem.F_fatal_String
@@ -312,6 +314,7 @@ object Core {
             val F_toSbit = CoreVkUbit.F_toSbit
             val F_toBinString = CoreVkUbit.F_toBinString
             val F_toDecString = CoreVkUbit.F_toDecString
+            val F_toHexString = CoreVkUbit.F_toHexString
         }
 
         object Sbit {

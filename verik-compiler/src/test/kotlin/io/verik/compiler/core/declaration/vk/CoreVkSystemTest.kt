@@ -23,6 +23,28 @@ import org.junit.jupiter.api.Test
 internal class CoreVkSystemTest : CoreDeclarationTest() {
 
     @Test
+    fun `serialize strobe monitor`() {
+        driveCoreDeclarationTest(
+            listOf(
+                Core.Vk.F_strobe_String,
+                Core.Vk.F_monitor_String
+            ),
+            """
+                fun f() {
+                    strobe("")
+                    monitor("")
+                }
+            """.trimIndent(),
+            """
+                function automatic void f();
+                    ${'$'}strobe("");
+                    ${'$'}monitor("");
+                endfunction : f
+            """.trimIndent()
+        )
+    }
+
+    @Test
     fun `serialize finish fatal`() {
         driveCoreDeclarationTest(
             listOf(

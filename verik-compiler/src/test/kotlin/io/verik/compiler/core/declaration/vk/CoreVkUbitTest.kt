@@ -274,7 +274,8 @@ internal class CoreVkUbitTest : CoreDeclarationTest() {
         driveCoreDeclarationTest(
             listOf(
                 Core.Vk.Ubit.F_toBinString,
-                Core.Vk.Ubit.F_toDecString
+                Core.Vk.Ubit.F_toDecString,
+                Core.Vk.Ubit.F_toHexString
             ),
             """
                 var x = u(0x0)
@@ -282,12 +283,14 @@ internal class CoreVkUbitTest : CoreDeclarationTest() {
                 fun f() {
                     y = x.toBinString()
                     y = x.toDecString()
+                    y = x.toHexString()
                 }
             """.trimIndent(),
             """
                 function automatic void f();
                     y = ${'$'}sformatf("%b", x);
                     y = ${'$'}sformatf("%0d", x);
+                    y = ${'$'}sformatf("%h", x);
                 endfunction : f
             """.trimIndent()
         )

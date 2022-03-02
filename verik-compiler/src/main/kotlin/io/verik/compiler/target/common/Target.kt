@@ -50,11 +50,13 @@ object Target {
     val F_unsigned = TargetSystem.F_unsigned
     val F_signed = TargetSystem.F_signed
     val F_time = TargetSystem.F_time
+    val F_strobe = TargetSystem.F_strobe
+    val F_monitor = TargetSystem.F_monitor
+    val F_finish = TargetSystem.F_finish
     val F_fatal = TargetSystem.F_fatal
     val F_error = TargetSystem.F_error
     val F_warning = TargetSystem.F_warning
     val F_info = TargetSystem.F_info
-    val F_finish = TargetSystem.F_finish
     val F_wait = TargetSystem.F_wait
     val F_name = TargetSystem.F_name
     val F_randomize = TargetSystem.F_randomize
