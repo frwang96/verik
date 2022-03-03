@@ -20,7 +20,7 @@ import io.verik.compiler.ast.common.Declaration
 import io.verik.compiler.ast.element.common.ETypedElement
 import io.verik.compiler.ast.element.declaration.kt.EKtClass
 import io.verik.compiler.ast.property.AnnotationEntry
-import io.verik.compiler.ast.property.PackageType
+import io.verik.compiler.ast.property.PackageKind
 
 abstract class EDeclaration : ETypedElement(), Declaration {
 
@@ -44,7 +44,7 @@ abstract class EDeclaration : ETypedElement(), Declaration {
         return when (val parent = parent) {
             is EFile -> {
                 val pkg = parent.getParentPackage()
-                if (pkg.packageType == PackageType.REGULAR_ROOT) name
+                if (pkg.kind == PackageKind.REGULAR_ROOT) name
                 else "${pkg.name}.$name"
             }
             is EDeclaration -> "${parent.getQualifiedName()}.$name"

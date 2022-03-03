@@ -22,7 +22,7 @@ import io.verik.compiler.ast.element.declaration.common.EDeclaration
 import io.verik.compiler.ast.element.declaration.common.EFile
 import io.verik.compiler.ast.element.declaration.common.EPackage
 import io.verik.compiler.ast.element.declaration.sv.EAbstractContainerComponent
-import io.verik.compiler.ast.property.PackageType
+import io.verik.compiler.ast.property.PackageKind
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
@@ -46,7 +46,7 @@ object DependencyReordererStage : ProjectStage() {
             dependencies.forEach {
                 val fromPackage = it.fromDeclaration.cast<EPackage>()
                 val toPackage = it.toDeclaration.cast<EPackage>()
-                if (fromPackage.packageType == PackageType.REGULAR_NON_ROOT && toPackage.packageType.isRoot()) {
+                if (fromPackage.kind == PackageKind.REGULAR_NON_ROOT && toPackage.kind.isRoot()) {
                     Messages.ILLEGAL_PACKAGE_DEPENDENCY.on(it.element, it)
                 }
             }
@@ -85,7 +85,7 @@ object DependencyReordererStage : ProjectStage() {
         }
 
         override fun visitPackage(pkg: EPackage) {
-            if (!pkg.packageType.isImported()) {
+            if (!pkg.kind.isImported()) {
                 super.visitPackage(pkg)
                 reorderFiles(pkg, dependencyRegistry.getDependencies(pkg))
             }

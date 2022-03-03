@@ -16,8 +16,12 @@
 
 package io.verik.compiler.ast.property
 
-enum class SerializationType {
-    EXPRESSION,
+enum class ExpressionKind {
     STATEMENT,
-    INTERNAL
+    DIRECT_TYPED_SUBEXPRESSION,
+    INDIRECT_TYPED_SUBEXPRESSION;
+
+    fun isSubexpression(): Boolean {
+        return this != STATEMENT
+    }
 }

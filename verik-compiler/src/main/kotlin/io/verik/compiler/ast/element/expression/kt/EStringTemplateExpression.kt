@@ -18,7 +18,7 @@ package io.verik.compiler.ast.element.expression.kt
 
 import io.verik.compiler.ast.element.expression.common.EStringEntryExpression
 import io.verik.compiler.ast.property.ExpressionStringEntry
-import io.verik.compiler.ast.property.SerializationType
+import io.verik.compiler.ast.property.SerializationKind
 import io.verik.compiler.ast.property.StringEntry
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.core.common.Core
@@ -29,7 +29,7 @@ class EStringTemplateExpression(
     override val entries: List<StringEntry>
 ) : EStringEntryExpression() {
 
-    override val serializationType = SerializationType.INTERNAL
+    override val serializationKind = SerializationKind.INTERNAL
 
     init {
         entries.forEach {

@@ -20,7 +20,7 @@ import io.verik.compiler.ast.common.Type
 import io.verik.compiler.ast.element.declaration.common.EAbstractValueParameter
 import io.verik.compiler.ast.element.expression.common.EExpression
 import io.verik.compiler.ast.property.AnnotationEntry
-import io.verik.compiler.ast.property.PortType
+import io.verik.compiler.ast.property.PortKind
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
 
@@ -29,7 +29,7 @@ class EPort(
     override var name: String,
     override var type: Type,
     override var annotationEntries: List<AnnotationEntry>,
-    val portType: PortType
+    val kind: PortKind
 ) : EAbstractValueParameter() {
 
     override var expression: EExpression? = null

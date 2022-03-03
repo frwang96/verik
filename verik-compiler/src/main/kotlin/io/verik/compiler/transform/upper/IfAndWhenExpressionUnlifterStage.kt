@@ -40,7 +40,7 @@ object IfAndWhenExpressionUnlifterStage : ProjectStage() {
 
         override fun visitIfExpression(ifExpression: EIfExpression) {
             super.visitIfExpression(ifExpression)
-            if (ifExpression.getExpressionType().isSubexpression()) {
+            if (ifExpression.getExpressionKind().isSubexpression()) {
                 val property = EProperty.temporary(
                     location = ifExpression.location,
                     type = ifExpression.type.copy(),
@@ -61,7 +61,7 @@ object IfAndWhenExpressionUnlifterStage : ProjectStage() {
 
         override fun visitWhenExpression(whenExpression: EWhenExpression) {
             super.visitWhenExpression(whenExpression)
-            if (whenExpression.getExpressionType().isSubexpression()) {
+            if (whenExpression.getExpressionKind().isSubexpression()) {
                 val property = EProperty.temporary(
                     location = whenExpression.location,
                     type = whenExpression.type.copy(),

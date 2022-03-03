@@ -16,7 +16,7 @@
 
 package io.verik.compiler.ast.element.expression.common
 
-import io.verik.compiler.ast.property.SerializationType
+import io.verik.compiler.ast.property.SerializationKind
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.core.common.Core
@@ -28,7 +28,7 @@ class ENothingExpression(
 
     override var type = Core.Kt.C_Nothing.toType()
 
-    override val serializationType = SerializationType.EXPRESSION
+    override val serializationKind = SerializationKind.EXPRESSION
 
     override fun accept(visitor: Visitor) {
         visitor.visitNothingExpression(this)

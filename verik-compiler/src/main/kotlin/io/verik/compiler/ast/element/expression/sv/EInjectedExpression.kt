@@ -18,7 +18,7 @@ package io.verik.compiler.ast.element.expression.sv
 
 import io.verik.compiler.ast.element.expression.common.EStringEntryExpression
 import io.verik.compiler.ast.property.ExpressionStringEntry
-import io.verik.compiler.ast.property.SerializationType
+import io.verik.compiler.ast.property.SerializationKind
 import io.verik.compiler.ast.property.StringEntry
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
@@ -31,7 +31,7 @@ class EInjectedExpression(
 
     override var type = Target.C_Void.toType()
 
-    override val serializationType = SerializationType.EXPRESSION
+    override val serializationKind = SerializationKind.EXPRESSION
 
     init {
         entries.forEach {

@@ -54,7 +54,7 @@ object FunctionOverloadingTransformerStage : ProjectStage() {
 
         override fun visitPackage(pkg: EPackage) {
             super.visitPackage(pkg)
-            if (!pkg.packageType.isImported()) {
+            if (!pkg.kind.isImported()) {
                 val functions = pkg.files
                     .flatMap { it.declarations }
                     .filterIsInstance<EKtFunction>()

@@ -19,7 +19,7 @@ package io.verik.compiler.ast.element.expression.kt
 import io.verik.compiler.ast.common.Type
 import io.verik.compiler.ast.element.expression.common.EAbstractArrayAccessExpression
 import io.verik.compiler.ast.element.expression.common.EExpression
-import io.verik.compiler.ast.property.SerializationType
+import io.verik.compiler.ast.property.SerializationKind
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.common.replaceIfContains
@@ -32,7 +32,7 @@ class EKtArrayAccessExpression(
     var indices: ArrayList<EExpression>
 ) : EAbstractArrayAccessExpression() {
 
-    override val serializationType = SerializationType.INTERNAL
+    override val serializationKind = SerializationKind.INTERNAL
 
     init {
         array.parent = this

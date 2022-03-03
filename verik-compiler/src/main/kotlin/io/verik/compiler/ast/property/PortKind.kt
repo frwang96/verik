@@ -16,8 +16,10 @@
 
 package io.verik.compiler.ast.property
 
-enum class EdgeType {
-    POSEDGE,
-    NEGEDGE,
-    EDGE
+enum class PortKind {
+    INPUT,
+    OUTPUT,
+    MODULE_INTERFACE,
+    MODULE_PORT,
+    CLOCKING_BLOCK
 }

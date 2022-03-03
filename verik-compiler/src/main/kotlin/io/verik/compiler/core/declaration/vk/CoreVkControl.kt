@@ -25,7 +25,7 @@ import io.verik.compiler.ast.element.expression.sv.EEventExpression
 import io.verik.compiler.ast.element.expression.sv.EForeverStatement
 import io.verik.compiler.ast.element.expression.sv.EForkStatement
 import io.verik.compiler.ast.element.expression.sv.EWaitForkStatement
-import io.verik.compiler.ast.property.EdgeType
+import io.verik.compiler.ast.property.EdgeKind
 import io.verik.compiler.core.common.BasicCoreFunctionDeclaration
 import io.verik.compiler.core.common.CorePackage
 import io.verik.compiler.core.common.CoreScope
@@ -44,7 +44,7 @@ object CoreVkControl : CoreScope(CorePackage.VK) {
             return EEventExpression(
                 callExpression.location,
                 callExpression.valueArguments[0],
-                EdgeType.POSEDGE
+                EdgeKind.POSEDGE
             )
         }
     }
@@ -55,7 +55,7 @@ object CoreVkControl : CoreScope(CorePackage.VK) {
             return EEventExpression(
                 callExpression.location,
                 callExpression.valueArguments[0],
-                EdgeType.NEGEDGE
+                EdgeKind.NEGEDGE
             )
         }
     }

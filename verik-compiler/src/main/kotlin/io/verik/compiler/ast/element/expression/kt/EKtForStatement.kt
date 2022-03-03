@@ -20,7 +20,7 @@ import io.verik.compiler.ast.common.ExpressionContainer
 import io.verik.compiler.ast.element.declaration.kt.EKtValueParameter
 import io.verik.compiler.ast.element.expression.common.EBlockExpression
 import io.verik.compiler.ast.element.expression.common.EExpression
-import io.verik.compiler.ast.property.SerializationType
+import io.verik.compiler.ast.property.SerializationKind
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.core.common.Core
@@ -35,7 +35,7 @@ class EKtForStatement(
 
     override var type = Core.Kt.C_Unit.toType()
 
-    override val serializationType = SerializationType.INTERNAL
+    override val serializationKind = SerializationKind.INTERNAL
 
     init {
         valueParameter.parent = this

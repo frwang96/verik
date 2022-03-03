@@ -49,7 +49,7 @@ import io.verik.compiler.ast.element.expression.sv.ESvBinaryExpression
 import io.verik.compiler.ast.element.expression.sv.ESvForStatement
 import io.verik.compiler.ast.element.expression.sv.ESvUnaryExpression
 import io.verik.compiler.ast.element.expression.sv.EWidthCastExpression
-import io.verik.compiler.ast.property.EdgeType
+import io.verik.compiler.ast.property.EdgeKind
 import io.verik.compiler.ast.property.ExpressionStringEntry
 import io.verik.compiler.ast.property.LiteralStringEntry
 
@@ -392,10 +392,10 @@ object ExpressionSerializer {
     }
 
     fun serializeEventExpression(eventExpression: EEventExpression, serializeContext: SerializeContext) {
-        when (eventExpression.edgeType) {
-            EdgeType.POSEDGE -> serializeContext.append("posedge ")
-            EdgeType.NEGEDGE -> serializeContext.append("negedge ")
-            EdgeType.EDGE -> serializeContext.append("edge ")
+        when (eventExpression.kind) {
+            EdgeKind.POSEDGE -> serializeContext.append("posedge ")
+            EdgeKind.NEGEDGE -> serializeContext.append("negedge ")
+            EdgeKind.EDGE -> serializeContext.append("edge ")
         }
         serializeContext.serializeAsExpression(eventExpression.expression)
     }

@@ -26,7 +26,7 @@ import io.verik.compiler.ast.element.expression.common.EReferenceExpression
 import io.verik.compiler.ast.element.expression.sv.EConstantPartSelectExpression
 import io.verik.compiler.ast.element.expression.sv.EStreamingExpression
 import io.verik.compiler.ast.element.expression.sv.ESvArrayAccessExpression
-import io.verik.compiler.ast.property.ExpressionType
+import io.verik.compiler.ast.property.ExpressionKind
 import io.verik.compiler.common.ExpressionCopier
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
@@ -42,7 +42,7 @@ object ExpressionExtractorStage : ProjectStage() {
 
         override fun visitCallExpression(callExpression: ECallExpression) {
             super.visitCallExpression(callExpression)
-            val isExtractable = callExpression.getExpressionType() == ExpressionType.INDIRECT_TYPED_SUBEXPRESSION ||
+            val isExtractable = callExpression.getExpressionKind() == ExpressionKind.INDIRECT_TYPED_SUBEXPRESSION ||
                 callExpression.parent is ECallExpression
             if (isExtractable && callExpression.reference is ESvConstructor) {
                 val callExpressionReplacement = ExpressionCopier.shallowCopy(callExpression)
@@ -67,7 +67,7 @@ object ExpressionExtractorStage : ProjectStage() {
 
         override fun visitStreamingExpression(streamingExpression: EStreamingExpression) {
             super.visitStreamingExpression(streamingExpression)
-            if (streamingExpression.getExpressionType() == ExpressionType.INDIRECT_TYPED_SUBEXPRESSION) {
+            if (streamingExpression.getExpressionKind() == ExpressionKind.INDIRECT_TYPED_SUBEXPRESSION) {
                 val streamingExpressionReplacement = ExpressionCopier.shallowCopy(streamingExpression)
                 val (propertyStatement, referenceExpression) =
                     getPropertyStatementAndReferenceExpression(streamingExpressionReplacement)

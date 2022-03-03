@@ -20,13 +20,13 @@ import io.verik.compiler.ast.element.common.ETypedElement
 import io.verik.compiler.ast.element.declaration.common.EProperty
 import io.verik.compiler.ast.element.expression.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.expression.kt.EWhenExpression
-import io.verik.compiler.ast.property.ExpressionType
+import io.verik.compiler.ast.property.ExpressionKind
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
-import io.verik.compiler.ast.property.SerializationType
+import io.verik.compiler.ast.property.SerializationKind
 
 abstract class EExpression : ETypedElement() {
 
-    abstract val serializationType: SerializationType
+    abstract val serializationKind: SerializationKind
 
     open fun childBlockExpressionShouldBeReduced(blockExpression: EBlockExpression): Boolean {
         return true
@@ -37,35 +37,35 @@ abstract class EExpression : ETypedElement() {
     }
 
     // TODO more robust mechanism for differentiating statements and expressions
-    fun getExpressionType(): ExpressionType {
+    fun getExpressionKind(): ExpressionKind {
         return when (val parent = this.parent) {
-            is EProperty -> ExpressionType.DIRECT_TYPED_SUBEXPRESSION
+            is EProperty -> ExpressionKind.DIRECT_TYPED_SUBEXPRESSION
             is EBlockExpression -> {
                 val parentParent = parent.parent
                 if (parentParent is EIfExpression && parent.statements.last() == this) {
-                    parentParent.getExpressionType()
-                } else ExpressionType.STATEMENT
+                    parentParent.getExpressionKind()
+                } else ExpressionKind.STATEMENT
             }
             is EKtBinaryExpression -> {
-                if (parent.kind == KtBinaryOperatorKind.EQ) ExpressionType.DIRECT_TYPED_SUBEXPRESSION
-                else ExpressionType.INDIRECT_TYPED_SUBEXPRESSION
+                if (parent.kind == KtBinaryOperatorKind.EQ) ExpressionKind.DIRECT_TYPED_SUBEXPRESSION
+                else ExpressionKind.INDIRECT_TYPED_SUBEXPRESSION
             }
             is ECallExpression -> {
-                if (this in parent.valueArguments) ExpressionType.DIRECT_TYPED_SUBEXPRESSION
-                else ExpressionType.INDIRECT_TYPED_SUBEXPRESSION
+                if (this in parent.valueArguments) ExpressionKind.DIRECT_TYPED_SUBEXPRESSION
+                else ExpressionKind.INDIRECT_TYPED_SUBEXPRESSION
             }
             is EIfExpression -> {
                 when {
-                    this == parent.condition -> ExpressionType.DIRECT_TYPED_SUBEXPRESSION
-                    parent.getExpressionType().isSubexpression() -> ExpressionType.INDIRECT_TYPED_SUBEXPRESSION
-                    else -> ExpressionType.STATEMENT
+                    this == parent.condition -> ExpressionKind.DIRECT_TYPED_SUBEXPRESSION
+                    parent.getExpressionKind().isSubexpression() -> ExpressionKind.INDIRECT_TYPED_SUBEXPRESSION
+                    else -> ExpressionKind.STATEMENT
                 }
             }
             is EWhenExpression -> {
-                if (parent.getExpressionType().isSubexpression()) ExpressionType.INDIRECT_TYPED_SUBEXPRESSION
-                else ExpressionType.STATEMENT
+                if (parent.getExpressionKind().isSubexpression()) ExpressionKind.INDIRECT_TYPED_SUBEXPRESSION
+                else ExpressionKind.STATEMENT
             }
-            else -> ExpressionType.INDIRECT_TYPED_SUBEXPRESSION
+            else -> ExpressionKind.INDIRECT_TYPED_SUBEXPRESSION
         }
     }
 }

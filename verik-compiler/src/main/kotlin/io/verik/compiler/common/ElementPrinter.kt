@@ -124,7 +124,7 @@ class ElementPrinter : Visitor() {
             build(pkg.name)
             build(pkg.files)
             build(pkg.injectedProperties)
-            build(pkg.packageType.toString())
+            build(pkg.kind.toString())
         }
     }
 
@@ -424,7 +424,7 @@ class ElementPrinter : Visitor() {
         build("Port") {
             build(port.name)
             build(port.type.toString())
-            build(port.portType.toString())
+            build(port.kind.toString())
         }
     }
 
@@ -753,7 +753,7 @@ class ElementPrinter : Visitor() {
     override fun visitEventExpression(eventExpression: EEventExpression) {
         build("EdgeExpression") {
             build(eventExpression.type.toString())
-            build(eventExpression.edgeType.toString())
+            build(eventExpression.kind.toString())
             build(eventExpression.expression)
         }
     }

@@ -76,7 +76,7 @@ import io.verik.compiler.ast.element.expression.sv.ESvForStatement
 import io.verik.compiler.ast.element.expression.sv.ESvUnaryExpression
 import io.verik.compiler.ast.element.expression.sv.EWaitForkStatement
 import io.verik.compiler.ast.element.expression.sv.EWidthCastExpression
-import io.verik.compiler.ast.property.SerializationType
+import io.verik.compiler.ast.property.SerializationKind
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.Messages
 
@@ -94,10 +94,10 @@ class SourceSerializerVisitor(
     }
 
     fun serializeAsDeclaration(declaration: EDeclaration) {
-        if (SerializerUtil.declarationIsHidden(declaration))
-            return
-        if (!firstDeclaration && !(lastDeclarationIsProperty && declaration is EProperty))
+        if (SerializerUtil.declarationIsHidden(declaration)) return
+        if (!firstDeclaration && !(lastDeclarationIsProperty && declaration is EProperty)) {
             serializeContext.appendLine()
+        }
         firstDeclaration = false
         lastDeclarationIsProperty = false
         serializeDocumentationLines(declaration, serializeContext)
@@ -106,16 +106,18 @@ class SourceSerializerVisitor(
     }
 
     fun serializeAsExpression(expression: EExpression) {
-        if (expression.serializationType != SerializationType.EXPRESSION)
+        if (expression.serializationKind != SerializationKind.EXPRESSION) {
             Messages.INTERNAL_ERROR.on(expression, "Expression expected but got: $expression")
+        }
         serialize(expression)
     }
 
     fun serializeAsStatement(expression: EExpression) {
-        if (expression.serializationType == SerializationType.INTERNAL)
+        if (expression.serializationKind == SerializationKind.INTERNAL) {
             Messages.INTERNAL_ERROR.on(expression, "Expression or statement expected but got: $expression")
+        }
         serialize(expression)
-        if (expression.serializationType == SerializationType.EXPRESSION) {
+        if (expression.serializationKind == SerializationKind.EXPRESSION) {
             if (expression !is EInjectedExpression) {
                 serializeContext.label(expression) {
                     serializeContext.appendLine(";")

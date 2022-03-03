@@ -19,7 +19,7 @@ package io.verik.compiler.ast.element.expression.sv
 import io.verik.compiler.ast.common.ExpressionContainer
 import io.verik.compiler.ast.common.Type
 import io.verik.compiler.ast.element.expression.common.EExpression
-import io.verik.compiler.ast.property.SerializationType
+import io.verik.compiler.ast.property.SerializationKind
 import io.verik.compiler.ast.property.StructLiteralEntry
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
@@ -31,7 +31,7 @@ class EStructLiteralExpression(
     val entries: List<StructLiteralEntry>
 ) : EExpression(), ExpressionContainer {
 
-    override val serializationType = SerializationType.EXPRESSION
+    override val serializationKind = SerializationKind.EXPRESSION
 
     init {
         entries.forEach { it.expression.parent = this }

@@ -21,7 +21,7 @@ import io.verik.compiler.ast.common.Type
 import io.verik.compiler.ast.element.expression.common.EBlockExpression
 import io.verik.compiler.ast.element.expression.common.EExpression
 import io.verik.compiler.ast.property.CaseEntry
-import io.verik.compiler.ast.property.SerializationType
+import io.verik.compiler.ast.property.SerializationKind
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.common.replaceIfContains
@@ -35,7 +35,7 @@ class ECaseStatement(
     val entries: List<CaseEntry>
 ) : EExpression(), ExpressionContainer {
 
-    override val serializationType = SerializationType.STATEMENT
+    override val serializationKind = SerializationKind.STATEMENT
 
     init {
         subject.parent = this

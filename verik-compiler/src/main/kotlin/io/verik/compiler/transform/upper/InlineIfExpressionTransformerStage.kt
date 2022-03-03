@@ -40,7 +40,7 @@ object InlineIfExpressionTransformerStage : ProjectStage() {
 
         override fun visitIfExpression(ifExpression: EIfExpression) {
             super.visitIfExpression(ifExpression)
-            if (ifExpression.getExpressionType().isSubexpression()) {
+            if (ifExpression.getExpressionKind().isSubexpression()) {
                 val reducedThenExpression = reduceExpression(ifExpression.thenExpression)
                 val reducedElseExpression = reduceExpression(ifExpression.elseExpression)
                 if (reducedThenExpression != null && reducedElseExpression != null) {

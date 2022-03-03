@@ -19,7 +19,7 @@ package io.verik.compiler.ast.element.expression.sv
 import io.verik.compiler.ast.common.Type
 import io.verik.compiler.ast.element.declaration.common.ETypeParameter
 import io.verik.compiler.ast.element.expression.common.EExpression
-import io.verik.compiler.ast.property.SerializationType
+import io.verik.compiler.ast.property.SerializationKind
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
@@ -33,7 +33,7 @@ class EScopeExpression(
 
     override var type = Target.C_Void.toType()
 
-    override val serializationType = SerializationType.EXPRESSION
+    override val serializationKind = SerializationKind.EXPRESSION
 
     override fun accept(visitor: Visitor) {
         visitor.visitScopeExpression(this)

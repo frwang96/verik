@@ -41,7 +41,7 @@ import io.verik.compiler.ast.element.declaration.sv.ESvFunction
 import io.verik.compiler.ast.element.declaration.sv.ESvValueParameter
 import io.verik.compiler.ast.element.declaration.sv.ETask
 import io.verik.compiler.ast.element.declaration.sv.ETypeDefinition
-import io.verik.compiler.ast.property.PortType
+import io.verik.compiler.ast.property.PortKind
 import io.verik.compiler.core.common.AnnotationEntries
 import io.verik.compiler.core.common.Core
 
@@ -276,7 +276,7 @@ object DeclarationSerializer {
                     .zip(modulePortInstantiation.valueArguments)
                 serializeContext.serializeJoinAppendLine(portsAndValueArguments) { (port, valueArgument) ->
                     serializeContext.label(valueArgument.location) {
-                        serializePortType(port.portType, serializeContext)
+                        serializePortKind(port.kind, serializeContext)
                         serializeContext.append(port.name)
                     }
                 }
@@ -299,7 +299,7 @@ object DeclarationSerializer {
                 .zip(clockingBlockInstantiation.valueArguments)
             portsAndValueArguments.forEach { (port, valueArgument) ->
                 serializeContext.label(valueArgument.location) {
-                    serializePortType(port.portType, serializeContext)
+                    serializePortKind(port.kind, serializeContext)
                     serializeContext.appendLine("${port.name};")
                 }
             }
@@ -333,7 +333,7 @@ object DeclarationSerializer {
     }
 
     fun serializePort(port: EPort, serializeContext: SerializeContext) {
-        serializePortType(port.portType, serializeContext)
+        serializePortKind(port.kind, serializeContext)
         serializePropertyTypeAndName(port, false, serializeContext)
     }
 
@@ -356,12 +356,12 @@ object DeclarationSerializer {
         }
     }
 
-    private fun serializePortType(portType: PortType, serializeContext: SerializeContext) {
-        when (portType) {
-            PortType.INPUT -> serializeContext.append("input  ")
-            PortType.OUTPUT -> serializeContext.append("output ")
-            PortType.MODULE_INTERFACE, PortType.MODULE_PORT -> {}
-            PortType.CLOCKING_BLOCK -> serializeContext.append("clocking ")
+    private fun serializePortKind(kind: PortKind, serializeContext: SerializeContext) {
+        when (kind) {
+            PortKind.INPUT -> serializeContext.append("input  ")
+            PortKind.OUTPUT -> serializeContext.append("output ")
+            PortKind.MODULE_INTERFACE, PortKind.MODULE_PORT -> {}
+            PortKind.CLOCKING_BLOCK -> serializeContext.append("clocking ")
         }
     }
 

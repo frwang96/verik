@@ -19,7 +19,7 @@ package io.verik.compiler.ast.element.expression.sv
 import io.verik.compiler.ast.common.ExpressionContainer
 import io.verik.compiler.ast.element.expression.common.EBlockExpression
 import io.verik.compiler.ast.element.expression.common.EExpression
-import io.verik.compiler.ast.property.SerializationType
+import io.verik.compiler.ast.property.SerializationKind
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
@@ -33,7 +33,7 @@ class ERepeatStatement(
 
     override var type = Target.C_Void.toType()
 
-    override val serializationType = SerializationType.STATEMENT
+    override val serializationKind = SerializationKind.STATEMENT
 
     init {
         condition.parent = this
