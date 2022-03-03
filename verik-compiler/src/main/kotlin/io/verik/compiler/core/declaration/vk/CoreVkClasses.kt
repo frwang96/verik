@@ -38,6 +38,7 @@ object CoreVkClasses : CoreScope(CorePackage.VK) {
     val C_Struct = CoreClassDeclaration(parent, "Struct", Core.Kt.C_Any, null)
     val C_Class = CoreClassDeclaration(parent, "Class", Core.Kt.C_Any, null)
     val C_CoverGroup = CoreClassDeclaration(parent, "CoverGroup", Core.Kt.C_Any, null)
+    val C_CoverPoint = CoreClassDeclaration(parent, "CoverPoint", Core.Kt.C_Any, null)
     val C_Component = CoreClassDeclaration(parent, "Component", Core.Kt.C_Any, null)
     val C_Module = CoreClassDeclaration(parent, "Module", C_Component, null)
     val C_ModuleInterface = CoreClassDeclaration(parent, "ModuleInterface", C_Component, null)

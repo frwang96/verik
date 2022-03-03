@@ -32,6 +32,8 @@ class EPort(
     val kind: PortKind
 ) : EAbstractValueParameter() {
 
+    override val endLocation = location
+
     override var expression: EExpression? = null
 
     override fun accept(visitor: Visitor) {

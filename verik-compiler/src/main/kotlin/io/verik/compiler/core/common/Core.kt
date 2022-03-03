@@ -164,6 +164,7 @@ object Core {
         val C_Struct = CoreVkClasses.C_Struct
         val C_Class = CoreVkClasses.C_Class
         val C_CoverGroup = CoreVkClasses.C_CoverGroup
+        val C_CoverPoint = CoreVkClasses.C_CoverPoint
         val C_Component = CoreVkClasses.C_Component
         val C_Module = CoreVkClasses.C_Module
         val C_ModuleInterface = CoreVkClasses.C_ModuleInterface
@@ -228,6 +229,7 @@ object Core {
         val F_s0 = CoreVkSpecial.F_s0
         val F_s1 = CoreVkSpecial.F_s1
         val F_c = CoreVkSpecial.F_c
+        val F_cp_Any = CoreVkSpecial.F_cp_Any
         val P_unknown = CoreVkSpecial.P_unknown
         val P_floating = CoreVkSpecial.P_floating
 

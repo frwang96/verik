@@ -311,6 +311,27 @@ internal class DeclarationSerializerTest : BaseTest() {
     }
 
     @Test
+    fun `cover point simple`() {
+        driveTextFileTest(
+            """
+                class CG(@In var x: Boolean): CoverGroup() {
+                    @Cover
+                    val cp = cp(x)
+                }
+            """.trimIndent(),
+            """
+                covergroup CG(
+                    ref logic x
+                );
+
+                    cp : coverpoint x;
+
+                endgroup : CG
+            """.trimIndent()
+        ) { it.nonRootPackageTextFiles[0] }
+    }
+
+    @Test
     fun `initial block`() {
         driveTextFileTest(
             """

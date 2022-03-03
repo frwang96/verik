@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,30 +16,43 @@
 
 package io.verik.compiler.ast.element.declaration.sv
 
-import io.verik.compiler.ast.common.Type
-import io.verik.compiler.ast.element.declaration.common.EAbstractValueParameter
+import io.verik.compiler.ast.common.ExpressionContainer
+import io.verik.compiler.ast.element.declaration.common.EAbstractProperty
 import io.verik.compiler.ast.element.expression.common.EExpression
 import io.verik.compiler.ast.property.AnnotationEntry
-import io.verik.compiler.ast.property.ValueParameterKind
+import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
+import io.verik.compiler.target.common.Target
 
-class ESvValueParameter(
+class ECoverPoint(
     override val location: SourceLocation,
+    override val endLocation: SourceLocation,
     override var name: String,
-    override var type: Type,
     override var annotationEntries: List<AnnotationEntry>,
-    override var expression: EExpression?,
-    val kind: ValueParameterKind
-) : EAbstractValueParameter() {
+    override var documentationLines: List<String>?,
+    var expression: EExpression
+) : EAbstractProperty(), ExpressionContainer {
 
-    override val endLocation = location
+    override var type = Target.C_Void.toType()
 
     init {
-        expression?.parent = this
+        expression.parent = this
     }
 
     override fun accept(visitor: Visitor) {
-        visitor.visitSvValueParameter(this)
+        visitor.visitCoverPoint(this)
+    }
+
+    override fun acceptChildren(visitor: TreeVisitor) {
+        expression.accept(visitor)
+    }
+
+    override fun replaceChild(oldExpression: EExpression, newExpression: EExpression): Boolean {
+        newExpression.parent = this
+        return if (expression == oldExpression) {
+            expression = newExpression
+            true
+        } else false
     }
 }

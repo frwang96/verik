@@ -51,6 +51,7 @@ import io.verik.compiler.ast.element.declaration.sv.EClockingBlockInstantiation
 import io.verik.compiler.ast.element.declaration.sv.EComponentInstantiation
 import io.verik.compiler.ast.element.declaration.sv.EConstraint
 import io.verik.compiler.ast.element.declaration.sv.ECoverGroup
+import io.verik.compiler.ast.element.declaration.sv.ECoverPoint
 import io.verik.compiler.ast.element.declaration.sv.EEnum
 import io.verik.compiler.ast.element.declaration.sv.EInitialBlock
 import io.verik.compiler.ast.element.declaration.sv.EInjectedProperty
@@ -294,6 +295,10 @@ abstract class Visitor {
 
     open fun visitEnumEntry(enumEntry: EEnumEntry) {
         visitAbstractProperty(enumEntry)
+    }
+
+    open fun visitCoverPoint(coverPoint: ECoverPoint) {
+        visitAbstractProperty(coverPoint)
     }
 
     open fun visitAbstractComponentInstantiation(abstractComponentInstantiation: EAbstractComponentInstantiation) {

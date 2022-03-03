@@ -33,6 +33,8 @@ class EEnumEntry(
     var expression: EExpression?
 ) : EAbstractProperty(), ExpressionContainer {
 
+    override val endLocation = location
+
     init {
         expression?.parent = this
     }

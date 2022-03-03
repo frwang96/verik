@@ -26,6 +26,7 @@ import io.verik.compiler.ast.element.declaration.sv.EClockingBlockInstantiation
 import io.verik.compiler.ast.element.declaration.sv.EComponentInstantiation
 import io.verik.compiler.ast.element.declaration.sv.EConstraint
 import io.verik.compiler.ast.element.declaration.sv.ECoverGroup
+import io.verik.compiler.ast.element.declaration.sv.ECoverPoint
 import io.verik.compiler.ast.element.declaration.sv.EEnum
 import io.verik.compiler.ast.element.declaration.sv.EInitialBlock
 import io.verik.compiler.ast.element.declaration.sv.EInjectedProperty
@@ -233,6 +234,12 @@ object DeclarationSerializer {
             serializeContext.append(" = ")
             serializeContext.serializeAsExpression(expression)
         }
+    }
+
+    fun serializeCoverPoint(coverPoint: ECoverPoint, serializeContext: SerializeContext) {
+        serializeContext.append("${coverPoint.name} : coverpoint ")
+        serializeContext.serializeAsExpression(coverPoint.expression)
+        serializeContext.appendLine(";")
     }
 
     fun serializeComponentInstantiation(
