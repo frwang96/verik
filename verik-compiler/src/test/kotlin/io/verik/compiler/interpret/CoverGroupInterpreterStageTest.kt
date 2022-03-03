@@ -32,7 +32,7 @@ internal class CoverGroupInterpreterStageTest : BaseTest() {
             """
                 CoverGroup(
                     CG, CG, [], [],
-                    SvConstructor(CG, BlockExpression(Unit, []), [SvValueParameter(x, Boolean, null, 1)])
+                    SvConstructor(CG, BlockExpression(Unit, []), [SvValueParameter(x, Boolean, null, REF)])
                 )
             """.trimIndent()
         ) { it.findDeclaration("CG") }

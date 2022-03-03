@@ -22,6 +22,7 @@ import io.verik.compiler.ast.element.declaration.sv.ESvValueParameter
 import io.verik.compiler.ast.element.expression.common.EBlockExpression
 import io.verik.compiler.ast.element.expression.common.ECallExpression
 import io.verik.compiler.ast.element.expression.common.ESuperExpression
+import io.verik.compiler.ast.property.ValueParameterKind
 import io.verik.compiler.common.ReferenceUpdater
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core
@@ -52,7 +53,7 @@ object ConstructorInterpreterStage : ProjectStage() {
                     type = it.type,
                     annotationEntries = it.annotationEntries,
                     expression = it.expression,
-                    isInput = true
+                    kind = ValueParameterKind.INPUT
                 )
                 valueParameters.add(valueParameter)
                 referenceUpdater.update(it, valueParameter)

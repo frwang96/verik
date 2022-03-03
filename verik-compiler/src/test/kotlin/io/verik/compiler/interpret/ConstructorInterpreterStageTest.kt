@@ -32,7 +32,7 @@ internal class ConstructorInterpreterStageTest : BaseTest() {
             """
                 SvClass(
                     C, C, Class, [],
-                    [SvConstructor(C, BlockExpression(*), [SvValueParameter(x, Int, null, 1)])],
+                    [SvConstructor(C, BlockExpression(*), [SvValueParameter(x, Int, null, INPUT)])],
                     0
                 )
             """.trimIndent()

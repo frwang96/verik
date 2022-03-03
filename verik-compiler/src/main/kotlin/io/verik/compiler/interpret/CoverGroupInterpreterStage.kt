@@ -21,8 +21,10 @@ import io.verik.compiler.ast.element.declaration.kt.EPrimaryConstructor
 import io.verik.compiler.ast.element.declaration.sv.ECoverGroup
 import io.verik.compiler.ast.element.declaration.sv.ESvConstructor
 import io.verik.compiler.ast.element.declaration.sv.ESvValueParameter
+import io.verik.compiler.ast.property.ValueParameterKind
 import io.verik.compiler.common.ReferenceUpdater
 import io.verik.compiler.common.TreeVisitor
+import io.verik.compiler.core.common.AnnotationEntries
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
@@ -63,13 +65,18 @@ object CoverGroupInterpreterStage : ProjectStage() {
         private fun interpretConstructor(primaryConstructor: EPrimaryConstructor): ESvConstructor {
             val valueParameters = ArrayList<ESvValueParameter>()
             primaryConstructor.valueParameters.forEach {
+                val kind = if (it.hasAnnotationEntry(AnnotationEntries.IN)) {
+                    ValueParameterKind.REF
+                } else {
+                    ValueParameterKind.INPUT
+                }
                 val valueParameter = ESvValueParameter(
                     location = it.location,
                     name = it.name,
                     type = it.type,
                     annotationEntries = it.annotationEntries,
                     expression = it.expression,
-                    isInput = true
+                    kind = kind
                 )
                 referenceUpdater.update(it, valueParameter)
                 valueParameters.add(valueParameter)

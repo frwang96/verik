@@ -416,7 +416,7 @@ class ElementPrinter : Visitor() {
             build(valueParameter.name)
             build(valueParameter.type.toString())
             build(valueParameter.expression)
-            build(valueParameter.isInput)
+            build(valueParameter.kind.toString())
         }
     }
 

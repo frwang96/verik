@@ -42,6 +42,7 @@ import io.verik.compiler.ast.element.declaration.sv.ESvValueParameter
 import io.verik.compiler.ast.element.declaration.sv.ETask
 import io.verik.compiler.ast.element.declaration.sv.ETypeDefinition
 import io.verik.compiler.ast.property.PortKind
+import io.verik.compiler.ast.property.ValueParameterKind
 import io.verik.compiler.core.common.AnnotationEntries
 import io.verik.compiler.core.common.Core
 
@@ -320,9 +321,10 @@ object DeclarationSerializer {
     }
 
     fun serializeValueParameter(valueParameter: ESvValueParameter, serializeContext: SerializeContext) {
-        when (valueParameter.isInput) {
-            true -> serializeContext.append("input ")
-            false -> serializeContext.append("output ")
+        when (valueParameter.kind) {
+            ValueParameterKind.INPUT -> serializeContext.append("input ")
+            ValueParameterKind.OUTPUT -> serializeContext.append("output ")
+            ValueParameterKind.REF -> serializeContext.append("ref ")
         }
         serializePropertyTypeAndName(valueParameter, true, serializeContext)
         val expression = valueParameter.expression

@@ -81,7 +81,7 @@ internal class DeclarationSerializerTest : BaseTest() {
             """.trimIndent(),
             """
                 covergroup CG(
-                    input logic x
+                    ref logic x
                 );
                 
                 endgroup : CG
