@@ -270,6 +270,14 @@ object Messages {
         "Expected on expression"
     )
 
+    val COVER_CROSS_INSUFFICIENT_ARGUMENTS = ErrorMessageTemplate0(
+        "Cover cross should cross at least two cover points"
+    )
+
+    val COVER_POINT_EXPECTED = ErrorMessageTemplate0(
+        "Cover point expected"
+    )
+
     val MISMATCHED_PORT_NAME = ErrorMessageTemplate1<String>(
         "Port instantiation must match port name: $0"
     )

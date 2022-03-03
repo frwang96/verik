@@ -50,6 +50,7 @@ import io.verik.compiler.ast.element.declaration.sv.EClockingBlock
 import io.verik.compiler.ast.element.declaration.sv.EClockingBlockInstantiation
 import io.verik.compiler.ast.element.declaration.sv.EComponentInstantiation
 import io.verik.compiler.ast.element.declaration.sv.EConstraint
+import io.verik.compiler.ast.element.declaration.sv.ECoverCross
 import io.verik.compiler.ast.element.declaration.sv.ECoverGroup
 import io.verik.compiler.ast.element.declaration.sv.ECoverPoint
 import io.verik.compiler.ast.element.declaration.sv.EEnum
@@ -299,6 +300,10 @@ abstract class Visitor {
 
     open fun visitCoverPoint(coverPoint: ECoverPoint) {
         visitAbstractProperty(coverPoint)
+    }
+
+    open fun visitCoverCross(coverCross: ECoverCross) {
+        visitAbstractProperty(coverCross)
     }
 
     open fun visitAbstractComponentInstantiation(abstractComponentInstantiation: EAbstractComponentInstantiation) {

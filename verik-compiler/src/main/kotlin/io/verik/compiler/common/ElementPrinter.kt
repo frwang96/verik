@@ -37,6 +37,7 @@ import io.verik.compiler.ast.element.declaration.sv.EClockingBlock
 import io.verik.compiler.ast.element.declaration.sv.EClockingBlockInstantiation
 import io.verik.compiler.ast.element.declaration.sv.EComponentInstantiation
 import io.verik.compiler.ast.element.declaration.sv.EConstraint
+import io.verik.compiler.ast.element.declaration.sv.ECoverCross
 import io.verik.compiler.ast.element.declaration.sv.ECoverGroup
 import io.verik.compiler.ast.element.declaration.sv.ECoverPoint
 import io.verik.compiler.ast.element.declaration.sv.EEnum
@@ -374,6 +375,13 @@ class ElementPrinter : Visitor() {
         build("CoverPoint") {
             build(coverPoint.name)
             build(coverPoint.expression)
+        }
+    }
+
+    override fun visitCoverCross(coverCross: ECoverCross) {
+        build("CoverCross") {
+            build(coverCross.name)
+            build(coverCross.coverPoints.map { it.name })
         }
     }
 

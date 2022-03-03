@@ -35,4 +35,36 @@ internal class CoverPropertyInterpreterStageTest : BaseTest() {
             "CoverPoint(cp, ReferenceExpression(Boolean, x, null, 0))"
         ) { it.findDeclaration("cp") }
     }
+
+    @Test
+    fun `interpret cover cross`() {
+        driveElementTest(
+            """
+                class CG(@In var x: Boolean): CoverGroup() {
+                    @Cover
+                    val cp = cp(x)
+                    @Cover
+                    val cc = cc(cp, cp)
+                }
+            """.trimIndent(),
+            CoverPropertyInterpreterStage::class,
+            "CoverCross(cc, [cp, cp])"
+        ) { it.findDeclaration("cc") }
+    }
+
+    @Test
+    fun `interpret cover cross illegal`() {
+        driveMessageTest(
+            """
+                class CG(@In var x: Boolean): CoverGroup() {
+                    @Cover
+                    val cp = cp(x)
+                    @Cover
+                    val cc = cc(cp)
+                }
+            """.trimIndent(),
+            true,
+            "Cover cross should cross at least two cover points"
+        )
+    }
 }

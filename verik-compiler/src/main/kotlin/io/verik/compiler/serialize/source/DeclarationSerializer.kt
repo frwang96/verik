@@ -25,6 +25,7 @@ import io.verik.compiler.ast.element.declaration.sv.EAlwaysSeqBlock
 import io.verik.compiler.ast.element.declaration.sv.EClockingBlockInstantiation
 import io.verik.compiler.ast.element.declaration.sv.EComponentInstantiation
 import io.verik.compiler.ast.element.declaration.sv.EConstraint
+import io.verik.compiler.ast.element.declaration.sv.ECoverCross
 import io.verik.compiler.ast.element.declaration.sv.ECoverGroup
 import io.verik.compiler.ast.element.declaration.sv.ECoverPoint
 import io.verik.compiler.ast.element.declaration.sv.EEnum
@@ -239,6 +240,12 @@ object DeclarationSerializer {
     fun serializeCoverPoint(coverPoint: ECoverPoint, serializeContext: SerializeContext) {
         serializeContext.append("${coverPoint.name} : coverpoint ")
         serializeContext.serializeAsExpression(coverPoint.expression)
+        serializeContext.appendLine(";")
+    }
+
+    fun serializeCoverCross(coverCross: ECoverCross, serializeContext: SerializeContext) {
+        serializeContext.append("${coverCross.name} : cross ")
+        serializeContext.append(coverCross.coverPoints.joinToString { it.name })
         serializeContext.appendLine(";")
     }
 

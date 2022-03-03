@@ -25,6 +25,7 @@ import io.verik.compiler.ast.element.declaration.sv.EAlwaysSeqBlock
 import io.verik.compiler.ast.element.declaration.sv.EClockingBlockInstantiation
 import io.verik.compiler.ast.element.declaration.sv.EComponentInstantiation
 import io.verik.compiler.ast.element.declaration.sv.EConstraint
+import io.verik.compiler.ast.element.declaration.sv.ECoverCross
 import io.verik.compiler.ast.element.declaration.sv.ECoverGroup
 import io.verik.compiler.ast.element.declaration.sv.ECoverPoint
 import io.verik.compiler.ast.element.declaration.sv.EEnum
@@ -199,6 +200,10 @@ class SourceSerializerVisitor(
 
     override fun visitCoverPoint(coverPoint: ECoverPoint) {
         DeclarationSerializer.serializeCoverPoint(coverPoint, serializeContext)
+    }
+
+    override fun visitCoverCross(coverCross: ECoverCross) {
+        DeclarationSerializer.serializeCoverCross(coverCross, serializeContext)
     }
 
     override fun visitComponentInstantiation(componentInstantiation: EComponentInstantiation) {
