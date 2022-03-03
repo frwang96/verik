@@ -195,6 +195,7 @@ class ElementPrinter : Visitor() {
             build(coverGroup.type.toString())
             build(coverGroup.typeParameters)
             build(coverGroup.declarations)
+            build(coverGroup.constructor)
         }
     }
 

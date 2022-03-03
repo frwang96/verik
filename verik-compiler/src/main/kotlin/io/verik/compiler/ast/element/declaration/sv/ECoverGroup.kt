@@ -21,6 +21,7 @@ import io.verik.compiler.ast.element.declaration.common.EAbstractContainerClass
 import io.verik.compiler.ast.element.declaration.common.EDeclaration
 import io.verik.compiler.ast.element.declaration.common.ETypeParameter
 import io.verik.compiler.ast.property.AnnotationEntry
+import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
 import io.verik.compiler.target.common.Target
@@ -34,7 +35,8 @@ class ECoverGroup(
     override var annotationEntries: List<AnnotationEntry>,
     override var documentationLines: List<String>?,
     override var typeParameters: ArrayList<ETypeParameter>,
-    override var declarations: ArrayList<EDeclaration>
+    override var declarations: ArrayList<EDeclaration>,
+    var constructor: ESvConstructor
 ) : EAbstractContainerClass() {
 
     override var superType = Target.C_Void.toType()
@@ -42,9 +44,15 @@ class ECoverGroup(
     init {
         typeParameters.forEach { it.parent = this }
         declarations.forEach { it.parent = this }
+        constructor.parent = this
     }
 
     override fun accept(visitor: Visitor) {
         visitor.visitCoverGroup(this)
+    }
+
+    override fun acceptChildren(visitor: TreeVisitor) {
+        super.acceptChildren(visitor)
+        constructor.accept(visitor)
     }
 }

@@ -25,6 +25,7 @@ import io.verik.compiler.ast.element.declaration.sv.EAlwaysSeqBlock
 import io.verik.compiler.ast.element.declaration.sv.EClockingBlockInstantiation
 import io.verik.compiler.ast.element.declaration.sv.EComponentInstantiation
 import io.verik.compiler.ast.element.declaration.sv.EConstraint
+import io.verik.compiler.ast.element.declaration.sv.ECoverGroup
 import io.verik.compiler.ast.element.declaration.sv.EEnum
 import io.verik.compiler.ast.element.declaration.sv.EInitialBlock
 import io.verik.compiler.ast.element.declaration.sv.EInjectedProperty
@@ -139,6 +140,10 @@ class SourceSerializerVisitor(
 
     override fun visitSvClass(cls: ESvClass) {
         DeclarationSerializer.serializeClass(cls, serializeContext)
+    }
+
+    override fun visitCoverGroup(coverGroup: ECoverGroup) {
+        DeclarationSerializer.serializeCoverGroup(coverGroup, serializeContext)
     }
 
     override fun visitModule(module: EModule) {

@@ -57,6 +57,39 @@ internal class DeclarationSerializerTest : BaseTest() {
     }
 
     @Test
+    fun `class simple`() {
+        driveTextFileTest(
+            """
+                class C : Class()
+            """.trimIndent(),
+            """
+                class C;
+                
+                    function new();
+                    endfunction : new
+                
+                endclass : C
+            """.trimIndent()
+        ) { it.nonRootPackageTextFiles[0] }
+    }
+
+    @Test
+    fun `cover group simple`() {
+        driveTextFileTest(
+            """
+                class CG(@In var x: Boolean) : CoverGroup()
+            """.trimIndent(),
+            """
+                covergroup CG(
+                    input logic x
+                );
+                
+                endgroup : CG
+            """.trimIndent()
+        ) { it.nonRootPackageTextFiles[0] }
+    }
+
+    @Test
     fun `module simple`() {
         driveTextFileTest(
             """
@@ -118,23 +151,6 @@ internal class DeclarationSerializerTest : BaseTest() {
                 endinterface : MI
             """.trimIndent()
         ) { it.rootPackageTextFiles[0] }
-    }
-
-    @Test
-    fun `class simple`() {
-        driveTextFileTest(
-            """
-                class C : Class()
-            """.trimIndent(),
-            """
-                class C;
-                
-                    function new();
-                    endfunction : new
-                
-                endclass : C
-            """.trimIndent()
-        ) { it.nonRootPackageTextFiles[0] }
     }
 
     @Test

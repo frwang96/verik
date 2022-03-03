@@ -25,6 +25,7 @@ import io.verik.compiler.ast.element.declaration.sv.EAlwaysSeqBlock
 import io.verik.compiler.ast.element.declaration.sv.EClockingBlockInstantiation
 import io.verik.compiler.ast.element.declaration.sv.EComponentInstantiation
 import io.verik.compiler.ast.element.declaration.sv.EConstraint
+import io.verik.compiler.ast.element.declaration.sv.ECoverGroup
 import io.verik.compiler.ast.element.declaration.sv.EEnum
 import io.verik.compiler.ast.element.declaration.sv.EInitialBlock
 import io.verik.compiler.ast.element.declaration.sv.EInjectedProperty
@@ -71,6 +72,18 @@ object DeclarationSerializer {
         }
         serializeContext.label(cls.bodyEndLocation) {
             serializeContext.appendLine("endclass : ${cls.name}")
+        }
+    }
+
+    fun serializeCoverGroup(coverGroup: ECoverGroup, serializeContext: SerializeContext) {
+        serializeContext.append("covergroup ${coverGroup.name}")
+        serializeValueParameterList(coverGroup.constructor, serializeContext)
+        serializeContext.indent {
+            coverGroup.declarations.forEach { serializeContext.serializeAsDeclaration(it) }
+            serializeContext.appendLine()
+        }
+        serializeContext.label(coverGroup.bodyEndLocation) {
+            serializeContext.appendLine("endgroup : ${coverGroup.name}")
         }
     }
 

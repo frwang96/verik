@@ -52,6 +52,7 @@ import io.verik.compiler.interpret.CompanionObjectReducerStage
 import io.verik.compiler.interpret.ComponentInstantiationInterpreterStage
 import io.verik.compiler.interpret.ComponentInterpreterStage
 import io.verik.compiler.interpret.ConstructorInterpreterStage
+import io.verik.compiler.interpret.CoverGroupInterpreterStage
 import io.verik.compiler.interpret.EnumInterpreterStage
 import io.verik.compiler.interpret.FileSplitterStage
 import io.verik.compiler.interpret.FunctionInterpreterStage
@@ -174,6 +175,7 @@ object StageSequencer {
         stageSequence.add(StageType.INTERPRET, EnumInterpreterStage)
         stageSequence.add(StageType.INTERPRET, StructInterpreterStage)
         stageSequence.add(StageType.INTERPRET, ComponentInterpreterStage)
+        stageSequence.add(StageType.INTERPRET, CoverGroupInterpreterStage)
         stageSequence.add(StageType.INTERPRET, PrimaryConstructorReducerStage)
         stageSequence.add(StageType.INTERPRET, ClassInterpreterStage)
         stageSequence.add(StageType.INTERPRET, FunctionInterpreterStage)

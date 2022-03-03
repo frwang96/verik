@@ -35,7 +35,9 @@ object StructInterpreterStage : ProjectStage() {
         referenceUpdater.flush()
     }
 
-    private class StructInterpreterVisitor(private val referenceUpdater: ReferenceUpdater) : TreeVisitor() {
+    private class StructInterpreterVisitor(
+        private val referenceUpdater: ReferenceUpdater
+    ) : TreeVisitor() {
 
         override fun visitKtClass(cls: EKtClass) {
             super.visitKtClass(cls)

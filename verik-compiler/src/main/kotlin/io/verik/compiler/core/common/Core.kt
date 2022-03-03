@@ -161,22 +161,22 @@ object Core {
         val C_Time = CoreVkClasses.C_Time
         val C_Event = CoreVkClasses.C_Event
         val C_Constraint = CoreVkClasses.C_Constraint
-        val C_Class = CoreVkClasses.C_Class
         val C_Struct = CoreVkClasses.C_Struct
+        val C_Class = CoreVkClasses.C_Class
+        val C_CoverGroup = CoreVkClasses.C_CoverGroup
         val C_Component = CoreVkClasses.C_Component
         val C_Module = CoreVkClasses.C_Module
         val C_ModuleInterface = CoreVkClasses.C_ModuleInterface
         val C_ModulePort = CoreVkClasses.C_ModulePort
         val C_ClockingBlock = CoreVkClasses.C_ClockingBlock
-        val C_CoverGroup = CoreVkClasses.C_CoverGroup
 
-        val F_Class = CoreVkClasses.F_Class
         val F_Struct = CoreVkClasses.F_Struct
+        val F_Class = CoreVkClasses.F_Class
+        val F_CoverGroup = CoreVkClasses.F_CoverGroup
         val F_Module = CoreVkClasses.F_Module
         val F_ModuleInterface = CoreVkClasses.F_ModuleInterface
         val F_ModulePort = CoreVkClasses.F_ModulePort
         val F_ClockingBlock = CoreVkClasses.F_ClockingBlock
-        val F_CoverGroup = CoreVkClasses.F_CoverGroup
 
         val T_TRUE = CoreVkCardinal.T_TRUE
         val T_FALSE = CoreVkCardinal.T_FALSE
