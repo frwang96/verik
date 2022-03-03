@@ -37,6 +37,7 @@ import io.verik.compiler.ast.element.declaration.sv.EClockingBlock
 import io.verik.compiler.ast.element.declaration.sv.EClockingBlockInstantiation
 import io.verik.compiler.ast.element.declaration.sv.EComponentInstantiation
 import io.verik.compiler.ast.element.declaration.sv.EConstraint
+import io.verik.compiler.ast.element.declaration.sv.ECoverGroup
 import io.verik.compiler.ast.element.declaration.sv.EEnum
 import io.verik.compiler.ast.element.declaration.sv.EInitialBlock
 import io.verik.compiler.ast.element.declaration.sv.EInjectedProperty
@@ -185,6 +186,15 @@ class ElementPrinter : Visitor() {
             build(cls.typeParameters)
             build(cls.declarations)
             build(cls.isObject)
+        }
+    }
+
+    override fun visitCoverGroup(coverGroup: ECoverGroup) {
+        build("CoverGroup") {
+            build(coverGroup.name)
+            build(coverGroup.type.toString())
+            build(coverGroup.typeParameters)
+            build(coverGroup.declarations)
         }
     }
 

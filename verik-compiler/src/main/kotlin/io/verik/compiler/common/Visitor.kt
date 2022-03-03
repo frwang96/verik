@@ -50,6 +50,7 @@ import io.verik.compiler.ast.element.declaration.sv.EClockingBlock
 import io.verik.compiler.ast.element.declaration.sv.EClockingBlockInstantiation
 import io.verik.compiler.ast.element.declaration.sv.EComponentInstantiation
 import io.verik.compiler.ast.element.declaration.sv.EConstraint
+import io.verik.compiler.ast.element.declaration.sv.ECoverGroup
 import io.verik.compiler.ast.element.declaration.sv.EEnum
 import io.verik.compiler.ast.element.declaration.sv.EInitialBlock
 import io.verik.compiler.ast.element.declaration.sv.EInjectedProperty
@@ -181,6 +182,10 @@ abstract class Visitor {
 
     open fun visitSvClass(cls: ESvClass) {
         visitAbstractContainerClass(cls)
+    }
+
+    open fun visitCoverGroup(coverGroup: ECoverGroup) {
+        visitAbstractContainerClass(coverGroup)
     }
 
     open fun visitAbstractComponent(abstractComponent: EAbstractComponent) {

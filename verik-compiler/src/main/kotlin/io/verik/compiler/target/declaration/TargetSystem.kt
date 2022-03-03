@@ -44,6 +44,7 @@ object TargetSystem : TargetScope(TargetPackage) {
     val F_wait = PrimitiveTargetFunctionDeclaration(parent, "wait")
     val F_name = PrimitiveTargetFunctionDeclaration(parent, "name")
     val F_randomize = PrimitiveTargetFunctionDeclaration(parent, "randomize")
+    val F_sample = PrimitiveTargetFunctionDeclaration(parent, "sample")
 
     val P_root = TargetPropertyDeclaration(parent, "\$root")
 }

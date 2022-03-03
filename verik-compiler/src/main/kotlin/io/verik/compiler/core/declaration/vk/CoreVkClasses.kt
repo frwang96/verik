@@ -42,6 +42,7 @@ object CoreVkClasses : CoreScope(CorePackage.VK) {
     val C_ModuleInterface = CoreClassDeclaration(parent, "ModuleInterface", C_Component, null)
     val C_ModulePort = CoreClassDeclaration(parent, "ModulePort", C_Component, null)
     val C_ClockingBlock = CoreClassDeclaration(parent, "ClockingBlock", C_Component, null)
+    val C_CoverGroup = CoreClassDeclaration(parent, "CoverGroup", Core.Kt.C_Any, null)
 
     val F_Class = CoreConstructorDeclaration(C_Class, null)
     val F_Struct = CoreConstructorDeclaration(C_Struct, null)
@@ -49,4 +50,5 @@ object CoreVkClasses : CoreScope(CorePackage.VK) {
     val F_ModuleInterface = CoreConstructorDeclaration(C_ModuleInterface, null)
     val F_ModulePort = CoreConstructorDeclaration(C_ModulePort, null)
     val F_ClockingBlock = CoreConstructorDeclaration(C_ClockingBlock, null)
+    val F_CoverGroup = CoreConstructorDeclaration(C_CoverGroup, null)
 }

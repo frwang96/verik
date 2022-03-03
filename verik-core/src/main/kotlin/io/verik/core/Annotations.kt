@@ -123,7 +123,7 @@ annotation class Cons
 annotation class Assert
 
 /**
- * Annotates cover properties.
+ * Annotates cover properties, cover points, and cover crosses.
  */
 @Target(AnnotationTarget.PROPERTY)
 annotation class Cover

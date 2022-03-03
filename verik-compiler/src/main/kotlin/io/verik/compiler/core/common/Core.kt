@@ -36,6 +36,7 @@ import io.verik.compiler.core.declaration.vk.CoreVkClass
 import io.verik.compiler.core.declaration.vk.CoreVkClasses
 import io.verik.compiler.core.declaration.vk.CoreVkComponent
 import io.verik.compiler.core.declaration.vk.CoreVkControl
+import io.verik.compiler.core.declaration.vk.CoreVkCoverGroup
 import io.verik.compiler.core.declaration.vk.CoreVkMisc
 import io.verik.compiler.core.declaration.vk.CoreVkPacked
 import io.verik.compiler.core.declaration.vk.CoreVkQueue
@@ -167,6 +168,7 @@ object Core {
         val C_ModuleInterface = CoreVkClasses.C_ModuleInterface
         val C_ModulePort = CoreVkClasses.C_ModulePort
         val C_ClockingBlock = CoreVkClasses.C_ClockingBlock
+        val C_CoverGroup = CoreVkClasses.C_CoverGroup
 
         val F_Class = CoreVkClasses.F_Class
         val F_Struct = CoreVkClasses.F_Struct
@@ -174,6 +176,7 @@ object Core {
         val F_ModuleInterface = CoreVkClasses.F_ModuleInterface
         val F_ModulePort = CoreVkClasses.F_ModulePort
         val F_ClockingBlock = CoreVkClasses.F_ClockingBlock
+        val F_CoverGroup = CoreVkClasses.F_CoverGroup
 
         val T_TRUE = CoreVkCardinal.T_TRUE
         val T_FALSE = CoreVkCardinal.T_FALSE
@@ -386,6 +389,11 @@ object Core {
         object Class {
 
             val F_randomize = CoreVkClass.F_randomize
+        }
+
+        object CoverGroup {
+
+            val F_sample = CoreVkCoverGroup.F_sample
         }
     }
 }

@@ -43,6 +43,6 @@ class ESvFunction(
     }
 
     override fun accept(visitor: Visitor) {
-        return visitor.visitSvFunction(this)
+        visitor.visitSvFunction(this)
     }
 }

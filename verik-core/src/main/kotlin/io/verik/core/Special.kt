@@ -214,3 +214,31 @@ fun q(value: Boolean): Sequence {
 fun c(vararg conditions: Boolean): Constraint {
     throw VerikException()
 }
+
+/**
+ * Construct a [CoverPoint] for [value].
+ */
+fun cp(value: Any): CoverPoint {
+    throw VerikException()
+}
+
+/**
+ * Construct a [CoverPoint] for [value] with configuration [config].
+ */
+fun cp(value: Any, config: CoverPoint.(CoverPoint) -> Unit): CoverPoint {
+    throw VerikException()
+}
+
+/**
+ * Construct a [CoverCross] for the cover points.
+ */
+fun cc(vararg cover_point: CoverPoint): CoverCross {
+    throw VerikException()
+}
+
+/**
+ * Construct a [CoverCross] for the cover points with configuration [config].
+ */
+fun cc(vararg cover_point: CoverPoint, config: CoverPoint.(CoverPoint) -> Unit): CoverCross {
+    throw VerikException()
+}

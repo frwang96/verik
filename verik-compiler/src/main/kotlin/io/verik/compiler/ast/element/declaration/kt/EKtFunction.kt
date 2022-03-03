@@ -67,7 +67,7 @@ class EKtFunction(
     }
 
     override fun accept(visitor: Visitor) {
-        return visitor.visitKtFunction(this)
+        visitor.visitKtFunction(this)
     }
 
     override fun acceptChildren(visitor: TreeVisitor) {
