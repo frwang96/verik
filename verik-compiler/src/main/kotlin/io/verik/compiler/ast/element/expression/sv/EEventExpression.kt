@@ -18,8 +18,8 @@ package io.verik.compiler.ast.element.expression.sv
 
 import io.verik.compiler.ast.element.expression.common.EAbstractContainerExpression
 import io.verik.compiler.ast.element.expression.common.EExpression
-import io.verik.compiler.ast.property.EdgeType
-import io.verik.compiler.ast.property.SerializationType
+import io.verik.compiler.ast.property.EdgeKind
+import io.verik.compiler.ast.property.SerializationKind
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
 import io.verik.compiler.target.common.Target
@@ -27,12 +27,12 @@ import io.verik.compiler.target.common.Target
 class EEventExpression(
     override val location: SourceLocation,
     override var expression: EExpression,
-    var edgeType: EdgeType
+    var kind: EdgeKind
 ) : EAbstractContainerExpression() {
 
     override var type = Target.C_Event.toType()
 
-    override val serializationType = SerializationType.EXPRESSION
+    override val serializationKind = SerializationKind.EXPRESSION
 
     init {
         expression.parent = this

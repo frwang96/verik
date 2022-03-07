@@ -26,6 +26,7 @@ import io.verik.compiler.ast.element.expression.common.EReferenceExpression
 import io.verik.compiler.ast.element.expression.common.EReturnStatement
 import io.verik.compiler.ast.element.expression.kt.EKtBinaryExpression
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
+import io.verik.compiler.ast.property.ValueParameterKind
 import io.verik.compiler.common.ExpressionCopier
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core
@@ -48,7 +49,7 @@ object TaskReturnTransformerStage : ProjectStage() {
         override fun visitTask(task: ETask) {
             if (task.valueParameters.isNotEmpty()) {
                 val valueParameter = task.valueParameters.last()
-                if (!valueParameter.isInput) {
+                if (valueParameter.kind == ValueParameterKind.OUTPUT) {
                     returnValueParameter = valueParameter
                     super.visitTask(task)
                     returnValueParameter = null
@@ -89,7 +90,7 @@ object TaskReturnTransformerStage : ProjectStage() {
             if (task is ETask && callExpression.type.reference != Core.Kt.C_Unit) {
                 if (task.valueParameters.isNotEmpty()) {
                     val valueParameter = task.valueParameters.last()
-                    if (!valueParameter.isInput) {
+                    if (valueParameter.kind == ValueParameterKind.OUTPUT) {
                         extract(callExpression, valueParameter)
                         return
                     }

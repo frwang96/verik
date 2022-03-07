@@ -26,7 +26,7 @@ import io.verik.compiler.message.SourceLocation
 
 class EProperty(
     override val location: SourceLocation,
-    val endLocation: SourceLocation,
+    override val endLocation: SourceLocation,
     override var name: String,
     override var type: Type,
     override var annotationEntries: List<AnnotationEntry>,
@@ -57,7 +57,7 @@ class EProperty(
     }
 
     override fun accept(visitor: Visitor) {
-        return visitor.visitProperty(this)
+        visitor.visitProperty(this)
     }
 
     override fun acceptChildren(visitor: TreeVisitor) {

@@ -67,6 +67,13 @@ object CoreKtIo : CoreScope(CorePackage.KT_IO) {
         }
     }
 
+    val F_print_Double = object : TransformableCoreFunctionDeclaration(parent, "print", "fun print(Double)") {
+
+        override fun transform(callExpression: ECallExpression): EExpression {
+            return F_print_Any.transform(callExpression)
+        }
+    }
+
     val F_println = BasicCoreFunctionDeclaration(parent, "println", "fun println()", Target.F_display)
 
     val F_println_Any = object : TransformableCoreFunctionDeclaration(parent, "println", "fun println(Any)") {
@@ -101,6 +108,13 @@ object CoreKtIo : CoreScope(CorePackage.KT_IO) {
     }
 
     val F_println_Int = object : TransformableCoreFunctionDeclaration(parent, "println", "fun println(Int)") {
+
+        override fun transform(callExpression: ECallExpression): EExpression {
+            return F_println_Any.transform(callExpression)
+        }
+    }
+
+    val F_println_Double = object : TransformableCoreFunctionDeclaration(parent, "println", "fun println(Double)") {
 
         override fun transform(callExpression: ECallExpression): EExpression {
             return F_println_Any.transform(callExpression)

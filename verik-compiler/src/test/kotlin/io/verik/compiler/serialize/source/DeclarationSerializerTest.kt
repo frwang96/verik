@@ -57,6 +57,39 @@ internal class DeclarationSerializerTest : BaseTest() {
     }
 
     @Test
+    fun `class simple`() {
+        driveTextFileTest(
+            """
+                class C : Class()
+            """.trimIndent(),
+            """
+                class C;
+                
+                    function new();
+                    endfunction : new
+                
+                endclass : C
+            """.trimIndent()
+        ) { it.nonRootPackageTextFiles[0] }
+    }
+
+    @Test
+    fun `cover group simple`() {
+        driveTextFileTest(
+            """
+                class CG(@In var x: Boolean) : CoverGroup()
+            """.trimIndent(),
+            """
+                covergroup CG(
+                    ref logic x
+                );
+                
+                endgroup : CG
+            """.trimIndent()
+        ) { it.nonRootPackageTextFiles[0] }
+    }
+
+    @Test
     fun `module simple`() {
         driveTextFileTest(
             """
@@ -118,23 +151,6 @@ internal class DeclarationSerializerTest : BaseTest() {
                 endinterface : MI
             """.trimIndent()
         ) { it.rootPackageTextFiles[0] }
-    }
-
-    @Test
-    fun `class simple`() {
-        driveTextFileTest(
-            """
-                class C : Class()
-            """.trimIndent(),
-            """
-                class C;
-                
-                    function new();
-                    endfunction : new
-                
-                endclass : C
-            """.trimIndent()
-        ) { it.nonRootPackageTextFiles[0] }
     }
 
     @Test
@@ -290,6 +306,110 @@ internal class DeclarationSerializerTest : BaseTest() {
                  * ABC
                  */
                 logic x = 1'b0;
+            """.trimIndent()
+        ) { it.nonRootPackageTextFiles[0] }
+    }
+
+    @Test
+    fun `cover point simple`() {
+        driveTextFileTest(
+            """
+                class CG(@In var x: Boolean): CoverGroup() {
+                    @Cover
+                    val cp = cp(x)
+                }
+            """.trimIndent(),
+            """
+                covergroup CG(
+                    ref logic x
+                );
+
+                    cp : coverpoint x;
+
+                endgroup : CG
+            """.trimIndent()
+        ) { it.nonRootPackageTextFiles[0] }
+    }
+
+    @Test
+    fun `cover point with cover bin`() {
+        driveTextFileTest(
+            """
+                class CG(@In var x: Boolean): CoverGroup() {
+                    @Cover
+                    val cp = cp(x) {
+                        bin("b", "{1'b0}")
+                    }
+                }
+            """.trimIndent(),
+            """
+                covergroup CG(
+                    ref logic x
+                );
+
+                    cp : coverpoint x {
+
+                        bins b = {1'b0};
+
+                    }
+
+                endgroup : CG
+            """.trimIndent()
+        ) { it.nonRootPackageTextFiles[0] }
+    }
+
+    @Test
+    fun `cover cross simple`() {
+        driveTextFileTest(
+            """
+                class CG(@In var x: Boolean): CoverGroup() {
+                    @Cover
+                    val cp = cp(x)
+                    @Cover
+                    val cc = cc(cp, cp)
+                }
+            """.trimIndent(),
+            """
+                covergroup CG(
+                    ref logic x
+                );
+
+                    cp : coverpoint x;
+                
+                    cc : cross cp, cp;
+
+                endgroup : CG
+            """.trimIndent()
+        ) { it.nonRootPackageTextFiles[0] }
+    }
+
+    @Test
+    fun `cover cross with cover bins`() {
+        driveTextFileTest(
+            """
+                class CG(@In var x: Boolean): CoverGroup() {
+                    @Cover
+                    val cp = cp(x)
+                    @Cover
+                    val cc = cc(cp, cp) {
+                        bins("b", "binsof(cp)")
+                    }
+                }
+            """.trimIndent(),
+            """
+                covergroup CG(
+                    ref logic x
+                );
+
+                    cp : coverpoint x;
+                
+                    cc : cross cp, cp {
+
+                        bins b[] = binsof(cp);
+
+                    }
+
+                endgroup : CG
             """.trimIndent()
         ) { it.nonRootPackageTextFiles[0] }
     }

@@ -17,6 +17,7 @@
 package io.verik.compiler.common
 
 import io.verik.compiler.ast.element.declaration.common.EProperty
+import io.verik.compiler.ast.element.declaration.kt.EKtValueParameter
 import io.verik.compiler.ast.element.expression.common.EBlockExpression
 import io.verik.compiler.ast.element.expression.common.ECallExpression
 import io.verik.compiler.ast.element.expression.common.EConstantExpression
@@ -25,6 +26,7 @@ import io.verik.compiler.ast.element.expression.common.EIfExpression
 import io.verik.compiler.ast.element.expression.common.ENothingExpression
 import io.verik.compiler.ast.element.expression.common.EPropertyStatement
 import io.verik.compiler.ast.element.expression.common.EReferenceExpression
+import io.verik.compiler.ast.element.expression.kt.EFunctionLiteralExpression
 import io.verik.compiler.ast.element.expression.kt.EIsExpression
 import io.verik.compiler.ast.element.expression.kt.EKtArrayAccessExpression
 import io.verik.compiler.ast.element.expression.kt.EKtBinaryExpression
@@ -60,6 +62,7 @@ object ExpressionCopier {
             is EReferenceExpression -> copyReferenceExpression(expression, isDeepCopy, location)
             is ECallExpression -> copyCallExpression(expression, isDeepCopy, location)
             is EConstantExpression -> copyConstantExpression(expression, isDeepCopy, location)
+            is EFunctionLiteralExpression -> copyFunctionLiteralExpression(expression, isDeepCopy, location)
             is EStringTemplateExpression -> copyStringTemplateExpression(expression, isDeepCopy, location)
             is EKtArrayAccessExpression -> copyKtArrayAccessExpression(expression, isDeepCopy, location)
             is EConcatenationExpression -> copyConcatenationExpression(expression, isDeepCopy, location)
@@ -266,6 +269,44 @@ object ExpressionCopier {
                 location ?: constantExpression.location,
                 constantExpression.type,
                 constantExpression.value
+            )
+        }
+    }
+
+    private fun copyFunctionLiteralExpression(
+        functionLiteralExpression: EFunctionLiteralExpression,
+        isDeepCopy: Boolean,
+        location: SourceLocation?
+    ): EFunctionLiteralExpression {
+        return if (isDeepCopy) {
+            // TODO replace references to value parameters
+            val valueParameters = ArrayList<EKtValueParameter>()
+            functionLiteralExpression.valueParameters.forEach { valueParameter ->
+                if (valueParameter is EKtValueParameter) {
+                    val expression = valueParameter.expression?.let { copy(it, true, location) }
+                    val copiedValueParameter = EKtValueParameter(
+                        valueParameter.location,
+                        valueParameter.name,
+                        valueParameter.type.copy(),
+                        valueParameter.annotationEntries,
+                        expression,
+                        valueParameter.isPrimaryConstructorProperty,
+                        valueParameter.isMutable
+                    )
+                    valueParameters.add(copiedValueParameter)
+                }
+            }
+            val body = copy(functionLiteralExpression.body, true, location)
+            EFunctionLiteralExpression(
+                location ?: functionLiteralExpression.location,
+                ArrayList(valueParameters),
+                body
+            )
+        } else {
+            EFunctionLiteralExpression(
+                location ?: functionLiteralExpression.location,
+                functionLiteralExpression.valueParameters,
+                functionLiteralExpression.body
             )
         }
     }

@@ -82,7 +82,7 @@ abstract class EElement {
     }
 
     fun isImported(): Boolean {
-        return getParentPackage().packageType.isImported()
+        return getParentPackage().kind.isImported()
     }
 
     abstract fun accept(visitor: Visitor)

@@ -19,6 +19,21 @@
 package io.verik.core
 
 /**
+ * Prints the given [message] at the end of the current time step.
+ */
+fun strobe(message: String) {
+    throw VerikException()
+}
+
+/**
+ * Prints the given [message] at the end of each time step if its value has changed. Only one monitor call can be active
+ * at any time.
+ */
+fun monitor(message: String) {
+    throw VerikException()
+}
+
+/**
  * Exits the simulation with no error status.
  */
 fun finish(): Nothing {

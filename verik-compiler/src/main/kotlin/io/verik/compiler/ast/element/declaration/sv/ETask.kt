@@ -43,6 +43,6 @@ class ETask(
     override var type = Core.Kt.C_Unit.toType()
 
     override fun accept(visitor: Visitor) {
-        return visitor.visitTask(this)
+        visitor.visitTask(this)
     }
 }

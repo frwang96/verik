@@ -16,4 +16,9 @@
 
 package io.verik.compiler.ast.element.declaration.common
 
-abstract class EAbstractProperty : EDeclaration()
+import io.verik.compiler.message.SourceLocation
+
+abstract class EAbstractProperty : EDeclaration() {
+
+    abstract val endLocation: SourceLocation
+}

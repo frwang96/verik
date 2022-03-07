@@ -17,7 +17,7 @@
 package io.verik.compiler.ast.element.expression.common
 
 import io.verik.compiler.ast.common.ExpressionContainer
-import io.verik.compiler.ast.property.SerializationType
+import io.verik.compiler.ast.property.SerializationKind
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.core.common.Core
@@ -32,7 +32,7 @@ class EWhileStatement(
 
     override var type = Core.Kt.C_Unit.toType()
 
-    override val serializationType = SerializationType.STATEMENT
+    override val serializationKind = SerializationKind.STATEMENT
 
     init {
         condition.parent = this

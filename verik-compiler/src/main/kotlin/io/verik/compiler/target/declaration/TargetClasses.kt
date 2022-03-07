@@ -41,6 +41,13 @@ object TargetClasses : TargetScope(TargetPackage) {
         }
     }
 
+    val C_Double = object : PrimitiveTargetClassDeclaration(parent, "Double") {
+
+        override fun serializeType(typeArguments: List<Type>, element: EElement): SerializedType {
+            return SerializedType("real")
+        }
+    }
+
     val C_Boolean = object : PrimitiveTargetClassDeclaration(parent, "Boolean") {
 
         override fun serializeType(typeArguments: List<Type>, element: EElement): SerializedType {

@@ -510,7 +510,9 @@ internal class ExpressionSerializerTest : BaseTest() {
             """.trimIndent(),
             """
                 function automatic void f();
-                    for (int i = 0; i < 8; i++) begin
+                    for (int __0 = 0; __0 < 8; __0++) begin
+                        int i;
+                        i = __0;
                     end
                 endfunction : f
             """.trimIndent()

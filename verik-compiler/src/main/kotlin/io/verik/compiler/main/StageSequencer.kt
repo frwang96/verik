@@ -21,6 +21,7 @@ import io.verik.compiler.cast.CasterStage
 import io.verik.compiler.cast.SmartCastReducerStage
 import io.verik.compiler.check.mid.AnnotationEntryCheckerStage
 import io.verik.compiler.check.mid.ArrayAccessMutabilityChecker
+import io.verik.compiler.check.mid.ClassDeclarationCheckerStage
 import io.verik.compiler.check.mid.ComponentInstantiationCheckerStage
 import io.verik.compiler.check.mid.ConstructorCheckerStage
 import io.verik.compiler.check.mid.EntryPointCheckerStage
@@ -52,6 +53,8 @@ import io.verik.compiler.interpret.CompanionObjectReducerStage
 import io.verik.compiler.interpret.ComponentInstantiationInterpreterStage
 import io.verik.compiler.interpret.ComponentInterpreterStage
 import io.verik.compiler.interpret.ConstructorInterpreterStage
+import io.verik.compiler.interpret.CoverGroupInterpreterStage
+import io.verik.compiler.interpret.CoverPropertyInterpreterStage
 import io.verik.compiler.interpret.EnumInterpreterStage
 import io.verik.compiler.interpret.FileSplitterStage
 import io.verik.compiler.interpret.FunctionInterpreterStage
@@ -151,6 +154,7 @@ object StageSequencer {
         stageSequence.add(StageType.MID_CHECK, AnnotationEntryCheckerStage)
         stageSequence.add(StageType.MID_CHECK, OverrideCheckerStage)
         stageSequence.add(StageType.MID_CHECK, ComponentInstantiationCheckerStage)
+        stageSequence.add(StageType.MID_CHECK, ClassDeclarationCheckerStage)
         stageSequence.add(StageType.MID_CHECK, TypeParameterCheckerStage)
         stageSequence.add(StageType.MID_CHECK, TypeArgumentTypeCheckerStage)
         stageSequence.add(StageType.MID_CHECK, ConstructorCheckerStage)
@@ -173,6 +177,7 @@ object StageSequencer {
 
         stageSequence.add(StageType.INTERPRET, EnumInterpreterStage)
         stageSequence.add(StageType.INTERPRET, StructInterpreterStage)
+        stageSequence.add(StageType.INTERPRET, CoverGroupInterpreterStage)
         stageSequence.add(StageType.INTERPRET, ComponentInterpreterStage)
         stageSequence.add(StageType.INTERPRET, PrimaryConstructorReducerStage)
         stageSequence.add(StageType.INTERPRET, ClassInterpreterStage)
@@ -180,6 +185,7 @@ object StageSequencer {
         stageSequence.add(StageType.INTERPRET, ConstructorInterpreterStage)
         stageSequence.add(StageType.INTERPRET, InitializerBlockReducerStage)
         stageSequence.add(StageType.INTERPRET, InjectedPropertyInterpreterStage)
+        stageSequence.add(StageType.INTERPRET, CoverPropertyInterpreterStage)
         stageSequence.add(StageType.INTERPRET, ComponentInstantiationInterpreterStage)
         stageSequence.add(StageType.INTERPRET, PropertyInterpreterStage)
         stageSequence.add(StageType.INTERPRET, FunctionLiteralInterpreterStage)

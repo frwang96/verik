@@ -238,6 +238,39 @@ object CoreVkSpecial : CoreScope(CorePackage.VK) {
         }
     }
 
+    val F_cp_Any = object : TransformableCoreFunctionDeclaration(parent, "cp", "fun cp(Any)") {
+
+        override fun transform(callExpression: ECallExpression): EExpression {
+            Messages.EXPRESSION_OUT_OF_CONTEXT.on(callExpression, name)
+            return ENothingExpression(callExpression.location)
+        }
+    }
+
+    val F_cp_Any_Function = object : TransformableCoreFunctionDeclaration(parent, "cp", "fun cp(Any, Function)") {
+
+        override fun transform(callExpression: ECallExpression): EExpression {
+            return F_cp_Any.transform(callExpression)
+        }
+    }
+
+    val F_cc_Any = object : TransformableCoreFunctionDeclaration(parent, "cc", "fun cc(vararg CoverPoint)") {
+
+        override fun transform(callExpression: ECallExpression): EExpression {
+            return F_cp_Any.transform(callExpression)
+        }
+    }
+
+    val F_cc_Any_Function = object : TransformableCoreFunctionDeclaration(
+        parent,
+        "cc",
+        "fun cc(vararg CoverPoint, Function)"
+    ) {
+
+        override fun transform(callExpression: ECallExpression): EExpression {
+            return F_cp_Any.transform(callExpression)
+        }
+    }
+
     val P_unknown = object : CorePropertyDeclaration(parent, "unknown") {
 
         override fun transform(referenceExpression: EReferenceExpression): EExpression {

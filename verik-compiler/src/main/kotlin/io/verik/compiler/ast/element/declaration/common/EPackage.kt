@@ -18,20 +18,18 @@ package io.verik.compiler.ast.element.declaration.common
 
 import io.verik.compiler.ast.element.declaration.sv.EInjectedProperty
 import io.verik.compiler.ast.property.AnnotationEntry
-import io.verik.compiler.ast.property.PackageType
+import io.verik.compiler.ast.property.PackageKind
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.message.SourceLocation
-import java.nio.file.Path
 
 class EPackage(
     override val location: SourceLocation,
     override var name: String,
     var files: ArrayList<EFile>,
     var injectedProperties: ArrayList<EInjectedProperty>,
-    val outputPath: Path,
-    val packageType: PackageType
+    val kind: PackageKind
 ) : EDeclaration() {
 
     override var type = Core.Kt.C_Unit.toType()

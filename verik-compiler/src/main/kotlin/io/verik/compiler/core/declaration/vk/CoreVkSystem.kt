@@ -28,6 +28,10 @@ import io.verik.compiler.target.common.Target
 
 object CoreVkSystem : CoreScope(CorePackage.VK) {
 
+    val F_strobe_String = BasicCoreFunctionDeclaration(parent, "strobe", "fun strobe(String)", Target.F_strobe)
+
+    val F_monitor_String = BasicCoreFunctionDeclaration(parent, "monitor", "fun monitor(String)", Target.F_monitor)
+
     val F_finish = BasicCoreFunctionDeclaration(parent, "finish", "fun finish()", Target.F_finish)
 
     val F_fatal = BasicCoreFunctionDeclaration(parent, "fatal", "fun fatal()", Target.F_fatal)

@@ -21,6 +21,7 @@ import io.verik.compiler.ast.element.declaration.common.EEnumEntry
 import io.verik.compiler.ast.element.declaration.common.EFile
 import io.verik.compiler.ast.element.declaration.common.EProperty
 import io.verik.compiler.ast.element.declaration.sv.EAbstractComponent
+import io.verik.compiler.ast.element.declaration.sv.ECoverGroup
 import io.verik.compiler.ast.element.declaration.sv.EEnum
 import io.verik.compiler.ast.element.declaration.sv.EInjectedProperty
 import io.verik.compiler.ast.element.declaration.sv.EStruct
@@ -83,6 +84,7 @@ object FileSplitterStage : ProjectStage() {
         return when (declaration) {
             is EAbstractComponent -> true
             is ESvClass -> false
+            is ECoverGroup -> false
             is EEnum -> false
             is EStruct -> false
             is ESvFunction -> false

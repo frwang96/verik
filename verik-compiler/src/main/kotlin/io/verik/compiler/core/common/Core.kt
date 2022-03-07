@@ -24,6 +24,7 @@ import io.verik.compiler.core.declaration.kt.CoreKtAny
 import io.verik.compiler.core.declaration.kt.CoreKtBoolean
 import io.verik.compiler.core.declaration.kt.CoreKtClasses
 import io.verik.compiler.core.declaration.kt.CoreKtCollections
+import io.verik.compiler.core.declaration.kt.CoreKtDouble
 import io.verik.compiler.core.declaration.kt.CoreKtFunctions
 import io.verik.compiler.core.declaration.kt.CoreKtInt
 import io.verik.compiler.core.declaration.kt.CoreKtIo
@@ -35,8 +36,12 @@ import io.verik.compiler.core.declaration.vk.CoreVkClass
 import io.verik.compiler.core.declaration.vk.CoreVkClasses
 import io.verik.compiler.core.declaration.vk.CoreVkComponent
 import io.verik.compiler.core.declaration.vk.CoreVkControl
+import io.verik.compiler.core.declaration.vk.CoreVkCoverCross
+import io.verik.compiler.core.declaration.vk.CoreVkCoverGroup
+import io.verik.compiler.core.declaration.vk.CoreVkCoverPoint
 import io.verik.compiler.core.declaration.vk.CoreVkMisc
 import io.verik.compiler.core.declaration.vk.CoreVkPacked
+import io.verik.compiler.core.declaration.vk.CoreVkQueue
 import io.verik.compiler.core.declaration.vk.CoreVkRandom
 import io.verik.compiler.core.declaration.vk.CoreVkSbit
 import io.verik.compiler.core.declaration.vk.CoreVkSbitBinary
@@ -55,8 +60,9 @@ object Core {
         val C_Unit = CoreKtClasses.C_Unit
         val C_Nothing = CoreKtClasses.C_Nothing
         val C_Enum = CoreKtClasses.C_Enum
-        val C_Int = CoreKtClasses.C_Int
         val C_Boolean = CoreKtClasses.C_Boolean
+        val C_Int = CoreKtClasses.C_Int
+        val C_Double = CoreKtClasses.C_Double
         val C_String = CoreKtClasses.C_String
 
         val F_repeat_Int_Function = CoreKtFunctions.F_repeat_Int_Function
@@ -66,6 +72,14 @@ object Core {
         object Any {
 
             val F_toString = CoreKtAny.F_toString
+        }
+
+        object Boolean {
+
+            val F_not = CoreKtBoolean.F_not
+            val F_and_Boolean = CoreKtBoolean.F_and_Boolean
+            val F_or_Boolean = CoreKtBoolean.F_or_Boolean
+            val F_xor_Boolean = CoreKtBoolean.F_xor_Boolean
         }
 
         object Int {
@@ -80,12 +94,11 @@ object Core {
             val F_ushr_Int = CoreKtInt.F_ushr_Int
         }
 
-        object Boolean {
+        object Double {
 
-            val F_not = CoreKtBoolean.F_not
-            val F_and_Boolean = CoreKtBoolean.F_and_Boolean
-            val F_or_Boolean = CoreKtBoolean.F_or_Boolean
-            val F_xor_Boolean = CoreKtBoolean.F_xor_Boolean
+            val F_plus_Int = CoreKtDouble.F_plus_Int
+            val F_plus_Double = CoreKtDouble.F_plus_Double
+            val F_div_Int = CoreKtDouble.F_div_Int
         }
 
         object Io {
@@ -93,10 +106,12 @@ object Core {
             val F_print_Any = CoreKtIo.F_print_Any
             val F_print_Boolean = CoreKtIo.F_print_Boolean
             val F_print_Int = CoreKtIo.F_print_Int
+            val F_print_Double = CoreKtIo.F_print_Double
             val F_println = CoreKtIo.F_println
             val F_println_Any = CoreKtIo.F_println_Any
             val F_println_Boolean = CoreKtIo.F_println_Boolean
             val F_println_Int = CoreKtIo.F_println_Int
+            val F_println_Double = CoreKtIo.F_println_Double
         }
 
         object Collections {
@@ -148,16 +163,20 @@ object Core {
         val C_Time = CoreVkClasses.C_Time
         val C_Event = CoreVkClasses.C_Event
         val C_Constraint = CoreVkClasses.C_Constraint
-        val C_Class = CoreVkClasses.C_Class
         val C_Struct = CoreVkClasses.C_Struct
+        val C_Class = CoreVkClasses.C_Class
+        val C_CoverGroup = CoreVkClasses.C_CoverGroup
+        val C_CoverPoint = CoreVkClasses.C_CoverPoint
+        val C_CoverCross = CoreVkClasses.C_CoverCross
         val C_Component = CoreVkClasses.C_Component
         val C_Module = CoreVkClasses.C_Module
         val C_ModuleInterface = CoreVkClasses.C_ModuleInterface
         val C_ModulePort = CoreVkClasses.C_ModulePort
         val C_ClockingBlock = CoreVkClasses.C_ClockingBlock
 
-        val F_Class = CoreVkClasses.F_Class
         val F_Struct = CoreVkClasses.F_Struct
+        val F_Class = CoreVkClasses.F_Class
+        val F_CoverGroup = CoreVkClasses.F_CoverGroup
         val F_Module = CoreVkClasses.F_Module
         val F_ModuleInterface = CoreVkClasses.F_ModuleInterface
         val F_ModulePort = CoreVkClasses.F_ModulePort
@@ -184,6 +203,8 @@ object Core {
 
         val F_optional_Function = CoreVkComponent.F_optional_Function
 
+        val F_strobe_String = CoreVkSystem.F_strobe_String
+        val F_monitor_String = CoreVkSystem.F_monitor_String
         val F_finish = CoreVkSystem.F_finish
         val F_fatal = CoreVkSystem.F_fatal
         val F_fatal_String = CoreVkSystem.F_fatal_String
@@ -211,6 +232,10 @@ object Core {
         val F_s0 = CoreVkSpecial.F_s0
         val F_s1 = CoreVkSpecial.F_s1
         val F_c = CoreVkSpecial.F_c
+        val F_cp_Any = CoreVkSpecial.F_cp_Any
+        val F_cp_Any_Function = CoreVkSpecial.F_cp_Any_Function
+        val F_cc_Any = CoreVkSpecial.F_cc_Any
+        val F_cc_Any_Function = CoreVkSpecial.F_cc_Any_Function
         val P_unknown = CoreVkSpecial.P_unknown
         val P_floating = CoreVkSpecial.P_floating
 
@@ -300,6 +325,7 @@ object Core {
             val F_toSbit = CoreVkUbit.F_toSbit
             val F_toBinString = CoreVkUbit.F_toBinString
             val F_toDecString = CoreVkUbit.F_toDecString
+            val F_toHexString = CoreVkUbit.F_toHexString
         }
 
         object Sbit {
@@ -361,9 +387,35 @@ object Core {
             val P_size = CoreVkUnpacked.P_size
         }
 
+        object Queue {
+
+            val F_add_E = CoreVkQueue.F_add_E
+            val F_get_Int = CoreVkQueue.F_get_Int
+            val F_size = CoreVkQueue.F_size
+        }
+
         object Class {
 
             val F_randomize = CoreVkClass.F_randomize
+        }
+
+        object CoverGroup {
+
+            val F_sample = CoreVkCoverGroup.F_sample
+        }
+
+        object CoverPoint {
+
+            val F_bin_String_String = CoreVkCoverPoint.F_bin_String_String
+            val F_bins_String_String = CoreVkCoverPoint.F_bins_String_String
+            val F_ignoreBin_String_String = CoreVkCoverPoint.F_ignoreBin_String_String
+        }
+
+        object CoverCross {
+
+            val F_bin_String_String = CoreVkCoverCross.F_bin_String_String
+            val F_bins_String_String = CoreVkCoverCross.F_bins_String_String
+            val F_ignoreBin_String_String = CoreVkCoverCross.F_ignoreBin_String_String
         }
     }
 }

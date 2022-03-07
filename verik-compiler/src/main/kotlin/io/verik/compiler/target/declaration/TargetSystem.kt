@@ -34,14 +34,17 @@ object TargetSystem : TargetScope(TargetPackage) {
     val F_unsigned = PrimitiveTargetFunctionDeclaration(parent, "\$unsigned")
     val F_signed = PrimitiveTargetFunctionDeclaration(parent, "\$signed")
     val F_time = PrimitiveTargetFunctionDeclaration(parent, "\$time")
+    val F_strobe = PrimitiveTargetFunctionDeclaration(parent, "\$strobe")
+    val F_monitor = PrimitiveTargetFunctionDeclaration(parent, "\$monitor")
+    val F_finish = PrimitiveTargetFunctionDeclaration(parent, "\$finish")
     val F_fatal = PrimitiveTargetFunctionDeclaration(parent, "\$fatal")
     val F_error = PrimitiveTargetFunctionDeclaration(parent, "\$error")
     val F_warning = PrimitiveTargetFunctionDeclaration(parent, "\$warning")
     val F_info = PrimitiveTargetFunctionDeclaration(parent, "\$info")
-    val F_finish = PrimitiveTargetFunctionDeclaration(parent, "\$finish")
     val F_wait = PrimitiveTargetFunctionDeclaration(parent, "wait")
     val F_name = PrimitiveTargetFunctionDeclaration(parent, "name")
     val F_randomize = PrimitiveTargetFunctionDeclaration(parent, "randomize")
+    val F_sample = PrimitiveTargetFunctionDeclaration(parent, "sample")
 
     val P_root = TargetPropertyDeclaration(parent, "\$root")
 }

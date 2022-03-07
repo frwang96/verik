@@ -148,6 +148,10 @@ object Messages {
         "Make annotation out of context"
     )
 
+    val ILLEGAL_CLASS_DECLARATION = ErrorMessageTemplate1<String>(
+        "Declaration is not permitted in $0"
+    )
+
     val PARAMETERIZED_FUNCTION_NOT_TOP = ErrorMessageTemplate1<String>(
         "Function that is not top level cannot be parameterized: $0"
     )
@@ -268,6 +272,22 @@ object Messages {
 
     val EXPECTED_ON_EXPRESSION = ErrorMessageTemplate0(
         "Expected on expression"
+    )
+
+    val COVER_CROSS_INSUFFICIENT_ARGUMENTS = ErrorMessageTemplate0(
+        "Cover cross should cross at least two cover points"
+    )
+
+    val COVER_POINT_EXPECTED = ErrorMessageTemplate0(
+        "Cover point expected"
+    )
+
+    val COVER_BIN_EXPECTED = ErrorMessageTemplate0(
+        "Cover bin expected"
+    )
+
+    val COVER_BIN_NAME_EXPECTED = ErrorMessageTemplate0(
+        "Cover bin name expected"
     )
 
     val MISMATCHED_PORT_NAME = ErrorMessageTemplate1<String>(

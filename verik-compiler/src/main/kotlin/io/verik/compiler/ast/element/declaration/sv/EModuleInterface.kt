@@ -40,6 +40,6 @@ class EModuleInterface(
     }
 
     override fun accept(visitor: Visitor) {
-        return visitor.visitModuleInterface(this)
+        visitor.visitModuleInterface(this)
     }
 }

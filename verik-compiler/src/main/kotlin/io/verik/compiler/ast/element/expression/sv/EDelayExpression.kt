@@ -18,7 +18,7 @@ package io.verik.compiler.ast.element.expression.sv
 
 import io.verik.compiler.ast.element.expression.common.EAbstractContainerExpression
 import io.verik.compiler.ast.element.expression.common.EExpression
-import io.verik.compiler.ast.property.SerializationType
+import io.verik.compiler.ast.property.SerializationKind
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
 import io.verik.compiler.target.common.Target
@@ -30,7 +30,7 @@ class EDelayExpression(
 
     override var type = Target.C_Void.toType()
 
-    override val serializationType = SerializationType.EXPRESSION
+    override val serializationKind = SerializationKind.EXPRESSION
 
     init {
         expression.parent = this

@@ -23,7 +23,7 @@ import io.verik.compiler.ast.element.expression.common.EPropertyStatement
 import io.verik.compiler.ast.element.expression.common.EReceiverExpression
 import io.verik.compiler.ast.element.expression.common.EReferenceExpression
 import io.verik.compiler.ast.element.expression.kt.EKtBinaryExpression
-import io.verik.compiler.ast.property.ExpressionType
+import io.verik.compiler.ast.property.ExpressionKind
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
 import io.verik.compiler.common.ExpressionCopier
 import io.verik.compiler.common.TreeVisitor
@@ -65,7 +65,7 @@ object SafeAccessReducerStage : ProjectStage() {
                 newReferenceExpression.parent = newReceiverExpression
                 newReceiverExpression.isSafeAccess = false
                 newReceiverExpression.receiver = newReferenceExpression
-                if (receiverExpression.getExpressionType() == ExpressionType.STATEMENT) {
+                if (receiverExpression.getExpressionKind() == ExpressionKind.STATEMENT) {
                     val ifExpression = EIfExpression(
                         receiverExpression.location,
                         Core.Kt.C_Unit.toType(),

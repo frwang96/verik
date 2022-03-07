@@ -25,6 +25,17 @@ This project is structured as a Gradle composite build with the following module
 - `verik-plugin`: Gradle plugin that packages the compiler and importer.
 - `verik-sandbox`: Sandbox project for development and debugging.
 
+## Gradle Tasks
+
+- `mainCheck`: Run all tests and lint checks.
+- `mainClean`: Clean all build directories.
+- `mainFormat`: Reformat source code.
+- `mainGenerate`: Run ANTLR parser generator.
+- `mainInstall`: Install plugin.
+- `mainTest`: Run all tests.
+- `mainVerik`: Run verik task in sandbox.
+- `mainVerikImport`: Run verikImport task in sandbox.
+
 ## Local Build
 
 To build the toolchain locally from source clone this repository and execute the `mainInstall` gradle task.

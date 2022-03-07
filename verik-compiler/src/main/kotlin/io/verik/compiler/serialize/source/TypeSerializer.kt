@@ -58,7 +58,7 @@ object TypeSerializer {
     private fun serializeAbstractClass(abstractClass: EAbstractClass, element: EElement): SerializedType {
         val elementPackage = element.getParentPackage()
         val referencePackage = abstractClass.getParentPackage()
-        val base = if (!referencePackage.packageType.isRoot() && referencePackage != elementPackage) {
+        val base = if (!referencePackage.kind.isRoot() && referencePackage != elementPackage) {
             "${referencePackage.name}::${abstractClass.name}"
         } else abstractClass.name
         return if (abstractClass is ESvClass &&

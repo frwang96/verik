@@ -22,7 +22,7 @@ import io.verik.compiler.ast.element.declaration.common.EDeclaration
 import io.verik.compiler.ast.element.declaration.common.EProperty
 import io.verik.compiler.ast.element.expression.common.EBlockExpression
 import io.verik.compiler.ast.element.expression.common.EExpression
-import io.verik.compiler.ast.property.SerializationType
+import io.verik.compiler.ast.property.SerializationKind
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
@@ -38,7 +38,7 @@ class ESvForStatement(
 
     override var type = Target.C_Void.toType()
 
-    override val serializationType = SerializationType.STATEMENT
+    override val serializationKind = SerializationKind.STATEMENT
 
     init {
         property.parent = this

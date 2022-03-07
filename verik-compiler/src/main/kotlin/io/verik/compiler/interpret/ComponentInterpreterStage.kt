@@ -23,7 +23,7 @@ import io.verik.compiler.ast.element.declaration.sv.EModule
 import io.verik.compiler.ast.element.declaration.sv.EModuleInterface
 import io.verik.compiler.ast.element.declaration.sv.EModulePort
 import io.verik.compiler.ast.element.declaration.sv.EPort
-import io.verik.compiler.ast.property.PortType
+import io.verik.compiler.ast.property.PortKind
 import io.verik.compiler.common.ReferenceUpdater
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.AnnotationEntries
@@ -146,15 +146,15 @@ object ComponentInterpreterStage : ProjectStage() {
         }
 
         private fun interpretPort(valueParameter: EKtValueParameter, referenceUpdater: ReferenceUpdater): EPort {
-            val portType = when {
-                valueParameter.hasAnnotationEntry(AnnotationEntries.IN) -> PortType.INPUT
-                valueParameter.hasAnnotationEntry(AnnotationEntries.OUT) -> PortType.OUTPUT
+            val kind = when {
+                valueParameter.hasAnnotationEntry(AnnotationEntries.IN) -> PortKind.INPUT
+                valueParameter.hasAnnotationEntry(AnnotationEntries.OUT) -> PortKind.OUTPUT
                 else -> {
                     when {
-                        valueParameter.type.isSubtype(Core.Vk.C_ModuleInterface) -> PortType.MODULE_INTERFACE
-                        valueParameter.type.isSubtype(Core.Vk.C_ModulePort) -> PortType.MODULE_PORT
-                        valueParameter.type.isSubtype(Core.Vk.C_ClockingBlock) -> PortType.CLOCKING_BLOCK
-                        else -> PortType.INPUT
+                        valueParameter.type.isSubtype(Core.Vk.C_ModuleInterface) -> PortKind.MODULE_INTERFACE
+                        valueParameter.type.isSubtype(Core.Vk.C_ModulePort) -> PortKind.MODULE_PORT
+                        valueParameter.type.isSubtype(Core.Vk.C_ClockingBlock) -> PortKind.CLOCKING_BLOCK
+                        else -> PortKind.INPUT
                     }
                 }
             }
@@ -163,7 +163,7 @@ object ComponentInterpreterStage : ProjectStage() {
                 valueParameter.name,
                 valueParameter.type,
                 valueParameter.annotationEntries,
-                portType
+                kind
             )
             referenceUpdater.update(valueParameter, port)
             return port

@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.property
+package io.verik.compiler.target.declaration
 
-enum class ExpressionType {
-    STATEMENT,
-    DIRECT_TYPED_SUBEXPRESSION,
-    INDIRECT_TYPED_SUBEXPRESSION;
+import io.verik.compiler.target.common.PrimitiveTargetFunctionDeclaration
+import io.verik.compiler.target.common.Target
+import io.verik.compiler.target.common.TargetScope
 
-    fun isSubexpression(): Boolean {
-        return this != STATEMENT
-    }
+object TargetQueue : TargetScope(Target.C_Queue) {
+
+    val F_push_back = PrimitiveTargetFunctionDeclaration(parent, "push_back")
+    val F_size = PrimitiveTargetFunctionDeclaration(parent, "size")
 }

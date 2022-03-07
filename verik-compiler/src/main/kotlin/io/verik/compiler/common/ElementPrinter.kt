@@ -37,6 +37,10 @@ import io.verik.compiler.ast.element.declaration.sv.EClockingBlock
 import io.verik.compiler.ast.element.declaration.sv.EClockingBlockInstantiation
 import io.verik.compiler.ast.element.declaration.sv.EComponentInstantiation
 import io.verik.compiler.ast.element.declaration.sv.EConstraint
+import io.verik.compiler.ast.element.declaration.sv.ECoverBin
+import io.verik.compiler.ast.element.declaration.sv.ECoverCross
+import io.verik.compiler.ast.element.declaration.sv.ECoverGroup
+import io.verik.compiler.ast.element.declaration.sv.ECoverPoint
 import io.verik.compiler.ast.element.declaration.sv.EEnum
 import io.verik.compiler.ast.element.declaration.sv.EInitialBlock
 import io.verik.compiler.ast.element.declaration.sv.EInjectedProperty
@@ -123,7 +127,7 @@ class ElementPrinter : Visitor() {
             build(pkg.name)
             build(pkg.files)
             build(pkg.injectedProperties)
-            build(pkg.packageType.toString())
+            build(pkg.kind.toString())
         }
     }
 
@@ -185,6 +189,16 @@ class ElementPrinter : Visitor() {
             build(cls.typeParameters)
             build(cls.declarations)
             build(cls.isObject)
+        }
+    }
+
+    override fun visitCoverGroup(coverGroup: ECoverGroup) {
+        build("CoverGroup") {
+            build(coverGroup.name)
+            build(coverGroup.type.toString())
+            build(coverGroup.typeParameters)
+            build(coverGroup.declarations)
+            build(coverGroup.constructor)
         }
     }
 
@@ -358,6 +372,31 @@ class ElementPrinter : Visitor() {
         }
     }
 
+    override fun visitCoverPoint(coverPoint: ECoverPoint) {
+        build("CoverPoint") {
+            build(coverPoint.name)
+            build(coverPoint.expression)
+            build(coverPoint.coverBins)
+        }
+    }
+
+    override fun visitCoverCross(coverCross: ECoverCross) {
+        build("CoverCross") {
+            build(coverCross.name)
+            build(coverCross.coverPoints.map { it.name })
+            build(coverCross.coverBins)
+        }
+    }
+
+    override fun visitCoverBin(coverBin: ECoverBin) {
+        build("CoverBin") {
+            build(coverBin.name)
+            build(coverBin.expression)
+            build(coverBin.isIgnored)
+            build(coverBin.isArray)
+        }
+    }
+
     override fun visitComponentInstantiation(componentInstantiation: EComponentInstantiation) {
         build("ComponentInstantiation") {
             build(componentInstantiation.name)
@@ -405,7 +444,7 @@ class ElementPrinter : Visitor() {
             build(valueParameter.name)
             build(valueParameter.type.toString())
             build(valueParameter.expression)
-            build(valueParameter.isInput)
+            build(valueParameter.kind.toString())
         }
     }
 
@@ -413,7 +452,7 @@ class ElementPrinter : Visitor() {
         build("Port") {
             build(port.name)
             build(port.type.toString())
-            build(port.portType.toString())
+            build(port.kind.toString())
         }
     }
 
@@ -742,7 +781,7 @@ class ElementPrinter : Visitor() {
     override fun visitEventExpression(eventExpression: EEventExpression) {
         build("EdgeExpression") {
             build(eventExpression.type.toString())
-            build(eventExpression.edgeType.toString())
+            build(eventExpression.kind.toString())
             build(eventExpression.expression)
         }
     }

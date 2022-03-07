@@ -22,7 +22,7 @@ import io.verik.compiler.ast.element.declaration.common.EAbstractValueParameter
 import io.verik.compiler.ast.element.declaration.common.EDeclaration
 import io.verik.compiler.ast.element.expression.common.EBlockExpression
 import io.verik.compiler.ast.element.expression.common.EExpression
-import io.verik.compiler.ast.property.SerializationType
+import io.verik.compiler.ast.property.SerializationKind
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.common.replaceIfContains
@@ -37,7 +37,7 @@ class EFunctionLiteralExpression(
 
     override var type = Core.Kt.C_Function.toType()
 
-    override val serializationType = SerializationType.INTERNAL
+    override val serializationKind = SerializationKind.INTERNAL
 
     init {
         valueParameters.forEach { it.parent = this }

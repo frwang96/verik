@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,17 +16,8 @@
 
 package io.verik.compiler.ast.property
 
-enum class PackageType {
-    REGULAR_NON_ROOT,
-    REGULAR_ROOT,
-    IMPORTED_NON_ROOT,
-    IMPORTED_ROOT;
-
-    fun isRoot(): Boolean {
-        return this in listOf(REGULAR_ROOT, IMPORTED_ROOT)
-    }
-
-    fun isImported(): Boolean {
-        return this in listOf(IMPORTED_NON_ROOT, IMPORTED_ROOT)
-    }
+enum class ValueParameterKind {
+    INPUT,
+    OUTPUT,
+    REF
 }

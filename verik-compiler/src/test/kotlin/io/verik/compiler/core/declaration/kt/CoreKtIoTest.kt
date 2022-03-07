@@ -28,13 +28,15 @@ internal class CoreKtIoTest : CoreDeclarationTest() {
             listOf(
                 Core.Kt.Io.F_print_Any,
                 Core.Kt.Io.F_print_Boolean,
-                Core.Kt.Io.F_print_Int
+                Core.Kt.Io.F_print_Int,
+                Core.Kt.Io.F_print_Double
             ),
             """
                 fun f() {
                     print("")
                     print(false)
                     print(0)
+                    print(0.0)
                 }
             """.trimIndent(),
             """
@@ -42,6 +44,7 @@ internal class CoreKtIoTest : CoreDeclarationTest() {
                     ${'$'}write("");
                     ${'$'}write(${'$'}sformatf("%b", 1'b0));
                     ${'$'}write(${'$'}sformatf("%0d", 0));
+                    ${'$'}write(${'$'}sformatf("%f", 0.0));
                 endfunction : f
             """.trimIndent()
         )
@@ -54,7 +57,8 @@ internal class CoreKtIoTest : CoreDeclarationTest() {
                 Core.Kt.Io.F_println,
                 Core.Kt.Io.F_println_Any,
                 Core.Kt.Io.F_println_Boolean,
-                Core.Kt.Io.F_println_Int
+                Core.Kt.Io.F_println_Int,
+                Core.Kt.Io.F_println_Double
             ),
             """
                 fun f() {
@@ -62,6 +66,7 @@ internal class CoreKtIoTest : CoreDeclarationTest() {
                     println("")
                     println(false)
                     println(0)
+                    println(0.0)
                 }
             """.trimIndent(),
             """
@@ -70,6 +75,7 @@ internal class CoreKtIoTest : CoreDeclarationTest() {
                     ${'$'}display("");
                     ${'$'}display(${'$'}sformatf("%b", 1'b0));
                     ${'$'}display(${'$'}sformatf("%0d", 0));
+                    ${'$'}display(${'$'}sformatf("%f", 0.0));
                 endfunction : f
             """.trimIndent()
         )

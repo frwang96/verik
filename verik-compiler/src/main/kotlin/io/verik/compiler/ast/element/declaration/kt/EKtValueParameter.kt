@@ -33,6 +33,8 @@ class EKtValueParameter(
     var isMutable: Boolean
 ) : EAbstractValueParameter() {
 
+    override val endLocation = location
+
     init {
         expression?.parent = this
     }

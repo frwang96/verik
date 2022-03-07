@@ -25,6 +25,10 @@ import io.verik.compiler.ast.element.declaration.sv.EAlwaysSeqBlock
 import io.verik.compiler.ast.element.declaration.sv.EClockingBlockInstantiation
 import io.verik.compiler.ast.element.declaration.sv.EComponentInstantiation
 import io.verik.compiler.ast.element.declaration.sv.EConstraint
+import io.verik.compiler.ast.element.declaration.sv.ECoverBin
+import io.verik.compiler.ast.element.declaration.sv.ECoverCross
+import io.verik.compiler.ast.element.declaration.sv.ECoverGroup
+import io.verik.compiler.ast.element.declaration.sv.ECoverPoint
 import io.verik.compiler.ast.element.declaration.sv.EEnum
 import io.verik.compiler.ast.element.declaration.sv.EInitialBlock
 import io.verik.compiler.ast.element.declaration.sv.EInjectedProperty
@@ -40,9 +44,11 @@ import io.verik.compiler.ast.element.declaration.sv.ESvFunction
 import io.verik.compiler.ast.element.declaration.sv.ESvValueParameter
 import io.verik.compiler.ast.element.declaration.sv.ETask
 import io.verik.compiler.ast.element.declaration.sv.ETypeDefinition
-import io.verik.compiler.ast.property.PortType
+import io.verik.compiler.ast.property.PortKind
+import io.verik.compiler.ast.property.ValueParameterKind
 import io.verik.compiler.core.common.AnnotationEntries
 import io.verik.compiler.core.common.Core
+import io.verik.compiler.message.SourceLocation
 
 object DeclarationSerializer {
 
@@ -71,6 +77,18 @@ object DeclarationSerializer {
         }
         serializeContext.label(cls.bodyEndLocation) {
             serializeContext.appendLine("endclass : ${cls.name}")
+        }
+    }
+
+    fun serializeCoverGroup(coverGroup: ECoverGroup, serializeContext: SerializeContext) {
+        serializeContext.append("covergroup ${coverGroup.name}")
+        serializeValueParameterList(coverGroup.constructor, serializeContext)
+        serializeContext.indent {
+            coverGroup.declarations.forEach { serializeContext.serializeAsDeclaration(it) }
+            serializeContext.appendLine()
+        }
+        serializeContext.label(coverGroup.bodyEndLocation) {
+            serializeContext.appendLine("endgroup : ${coverGroup.name}")
         }
     }
 
@@ -221,6 +239,31 @@ object DeclarationSerializer {
         }
     }
 
+    fun serializeCoverPoint(coverPoint: ECoverPoint, serializeContext: SerializeContext) {
+        serializeContext.append("${coverPoint.name} : coverpoint ")
+        serializeContext.serializeAsExpression(coverPoint.expression)
+        serializeCoverBins(coverPoint.coverBins, coverPoint.endLocation, serializeContext)
+    }
+
+    fun serializeCoverCross(coverCross: ECoverCross, serializeContext: SerializeContext) {
+        serializeContext.append("${coverCross.name} : cross ")
+        serializeContext.append(coverCross.coverPoints.joinToString { it.name })
+        serializeCoverBins(coverCross.coverBins, coverCross.endLocation, serializeContext)
+    }
+
+    fun serializeCoverBin(coverBin: ECoverBin, serializeContext: SerializeContext) {
+        if (coverBin.isIgnored) {
+            serializeContext.append("ignore_bins ")
+        } else {
+            serializeContext.append("bins ")
+        }
+        serializeContext.append(coverBin.name)
+        if (coverBin.isArray) serializeContext.append("[]")
+        serializeContext.append(" = ")
+        serializeContext.serializeAsExpression(coverBin.expression)
+        serializeContext.appendLine(";")
+    }
+
     fun serializeComponentInstantiation(
         componentInstantiation: EComponentInstantiation,
         serializeContext: SerializeContext
@@ -263,7 +306,7 @@ object DeclarationSerializer {
                     .zip(modulePortInstantiation.valueArguments)
                 serializeContext.serializeJoinAppendLine(portsAndValueArguments) { (port, valueArgument) ->
                     serializeContext.label(valueArgument.location) {
-                        serializePortType(port.portType, serializeContext)
+                        serializePortKind(port.kind, serializeContext)
                         serializeContext.append(port.name)
                     }
                 }
@@ -286,7 +329,7 @@ object DeclarationSerializer {
                 .zip(clockingBlockInstantiation.valueArguments)
             portsAndValueArguments.forEach { (port, valueArgument) ->
                 serializeContext.label(valueArgument.location) {
-                    serializePortType(port.portType, serializeContext)
+                    serializePortKind(port.kind, serializeContext)
                     serializeContext.appendLine("${port.name};")
                 }
             }
@@ -307,9 +350,10 @@ object DeclarationSerializer {
     }
 
     fun serializeValueParameter(valueParameter: ESvValueParameter, serializeContext: SerializeContext) {
-        when (valueParameter.isInput) {
-            true -> serializeContext.append("input ")
-            false -> serializeContext.append("output ")
+        when (valueParameter.kind) {
+            ValueParameterKind.INPUT -> serializeContext.append("input ")
+            ValueParameterKind.OUTPUT -> serializeContext.append("output ")
+            ValueParameterKind.REF -> serializeContext.append("ref ")
         }
         serializePropertyTypeAndName(valueParameter, true, serializeContext)
         val expression = valueParameter.expression
@@ -320,7 +364,7 @@ object DeclarationSerializer {
     }
 
     fun serializePort(port: EPort, serializeContext: SerializeContext) {
-        serializePortType(port.portType, serializeContext)
+        serializePortKind(port.kind, serializeContext)
         serializePropertyTypeAndName(port, false, serializeContext)
     }
 
@@ -343,12 +387,12 @@ object DeclarationSerializer {
         }
     }
 
-    private fun serializePortType(portType: PortType, serializeContext: SerializeContext) {
-        when (portType) {
-            PortType.INPUT -> serializeContext.append("input  ")
-            PortType.OUTPUT -> serializeContext.append("output ")
-            PortType.MODULE_INTERFACE, PortType.MODULE_PORT -> {}
-            PortType.CLOCKING_BLOCK -> serializeContext.append("clocking ")
+    private fun serializePortKind(kind: PortKind, serializeContext: SerializeContext) {
+        when (kind) {
+            PortKind.INPUT -> serializeContext.append("input  ")
+            PortKind.OUTPUT -> serializeContext.append("output ")
+            PortKind.MODULE_INTERFACE, PortKind.MODULE_PORT -> {}
+            PortKind.CLOCKING_BLOCK -> serializeContext.append("clocking ")
         }
     }
 
@@ -385,6 +429,25 @@ object DeclarationSerializer {
             }
         } else {
             serializeContext.appendLine("();")
+        }
+    }
+
+    private fun serializeCoverBins(
+        coverBins: List<ECoverBin>,
+        endLocation: SourceLocation,
+        serializeContext: SerializeContext
+    ) {
+        if (coverBins.isNotEmpty()) {
+            serializeContext.appendLine(" {")
+            serializeContext.indent {
+                coverBins.forEach { serializeContext.serializeAsDeclaration(it) }
+                serializeContext.appendLine()
+            }
+            serializeContext.label(endLocation) {
+                serializeContext.appendLine("}")
+            }
+        } else {
+            serializeContext.appendLine(";")
         }
     }
 }

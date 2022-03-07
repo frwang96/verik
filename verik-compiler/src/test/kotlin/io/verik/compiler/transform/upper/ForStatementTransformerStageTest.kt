@@ -17,36 +17,56 @@
 package io.verik.compiler.transform.upper
 
 import io.verik.compiler.test.BaseTest
-import io.verik.compiler.test.findExpression
 import org.junit.jupiter.api.Test
 
 internal class ForStatementTransformerStageTest : BaseTest() {
 
     @Test
     fun `transform forEach until`() {
-        driveElementTest(
+        driveTextFileTest(
             """
                 fun f() {
                     @Suppress("ForEachParameterNotUsed")
                     (0 until 8).forEach { }
                 }
             """.trimIndent(),
-            ForStatementTransformerStage::class,
             """
-                SvForStatement(
-                    Void,
-                    Property(it, Int, ConstantExpression(Int, 0), 1, 0),
-                    KtBinaryExpression(Boolean, ReferenceExpression(Int, it, null, 0), ConstantExpression(*), LT),
-                    KtUnaryExpression(Int, ReferenceExpression(*), POST_INC),
-                    BlockExpression(Unit, [])
-                )
+                function automatic void f();
+                    for (int __0 = 0; __0 < 8; __0++) begin
+                        int it;
+                        it = __0;
+                    end
+                endfunction : f
             """.trimIndent()
-        ) { it.findExpression("f") }
+        ) { it.nonRootPackageTextFiles[0] }
+    }
+
+    @Test
+    fun `transform forEach Queue`() {
+        driveTextFileTest(
+            """
+                val a: Queue<Boolean> = nc()
+                fun f() {
+                    @Suppress("ForEachParameterNotUsed")
+                    a.forEach { }
+                }
+            """.trimIndent(),
+            """
+                logic a [$];
+
+                function automatic void f();
+                    for (int __0 = 0; __0 < a.size(); __0++) begin
+                        logic it;
+                        it = a[__0];
+                    end
+                endfunction : f
+            """.trimIndent()
+        ) { it.nonRootPackageTextFiles[0] }
     }
 
     @Test
     fun `transform forEach ArrayList`() {
-        driveElementTest(
+        driveTextFileTest(
             """
                 val a = ArrayList<Boolean>()
                 fun f() {
@@ -54,26 +74,16 @@ internal class ForStatementTransformerStageTest : BaseTest() {
                     a.forEach { }
                 }
             """.trimIndent(),
-            ForStatementTransformerStage::class,
             """
-                SvForStatement(
-                    Void,
-                    Property(<tmp>, Int, ConstantExpression(Int, 0), 1, 0),
-                    KtBinaryExpression(Boolean, ReferenceExpression(Int, <tmp>, null, 0), ReferenceExpression(*), LT),
-                    KtUnaryExpression(Int, ReferenceExpression(Int, <tmp>, null, 0), POST_INC),
-                    BlockExpression(
-                        Unit,
-                        [PropertyStatement(
-                            Unit,
-                            Property(
-                                it, Boolean,
-                                CallExpression(Boolean, get, ReferenceExpression(*), 0, [ReferenceExpression(*)], []),
-                                0, 0
-                            )
-                        )]
-                    )
-                )
+                verik_pkg::ArrayList#(.E(logic)) a = verik_pkg::ArrayList#(.E(logic))::__new();
+
+                function automatic void f();
+                    for (int __0 = 0; __0 < a.size(); __0++) begin
+                        logic it;
+                        it = a.get(__0);
+                    end
+                endfunction : f
             """.trimIndent()
-        ) { it.findExpression("f") }
+        ) { it.nonRootPackageTextFiles[0] }
     }
 }

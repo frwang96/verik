@@ -19,6 +19,6 @@
 package io.verik.core
 
 /**
- * A dynamic array of elements of type [T]. It corresponds to a SystemVerilog dynamic array.
+ * A dynamic array of elements of type [E]. It corresponds to a SystemVerilog dynamic array.
  */
-class DynamicArray<T>
+class DynamicArray<E> private constructor()

@@ -21,7 +21,7 @@ package io.verik.kotlin
 /**
  * Resizable array of elements of type [E].
  */
-class ArrayList<E> {
+class ArrayList<E> : Iterable<E> {
 
     /**
      * Appends element [e] to the end of this list.

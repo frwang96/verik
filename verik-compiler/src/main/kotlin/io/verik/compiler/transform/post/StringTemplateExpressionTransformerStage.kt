@@ -23,6 +23,7 @@ import io.verik.compiler.ast.element.expression.sv.EStringExpression
 import io.verik.compiler.ast.property.ExpressionStringEntry
 import io.verik.compiler.ast.property.LiteralStringEntry
 import io.verik.compiler.common.TreeVisitor
+import io.verik.compiler.constant.ConstantBuilder
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.target.common.Target
@@ -40,8 +41,11 @@ object StringTemplateExpressionTransformerStage : ProjectStage() {
             return when (type.reference) {
                 Target.C_Boolean -> "%b"
                 Target.C_Int -> "%0d"
+                Target.C_Double -> "%f"
                 Target.C_String -> "%s"
-                Target.C_Ubit, Target.C_Sbit -> "%h"
+                Target.C_Ubit, Target.C_Sbit -> {
+                    if (type.asBitWidth(expression) < ConstantBuilder.MIN_HEX_CONSTANT_WIDTH) "%b" else "%h"
+                }
                 Target.C_Time -> "%0t"
                 else -> "%p"
             }

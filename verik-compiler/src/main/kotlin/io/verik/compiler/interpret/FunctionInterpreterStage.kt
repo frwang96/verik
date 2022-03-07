@@ -31,6 +31,7 @@ import io.verik.compiler.ast.element.expression.common.EBlockExpression
 import io.verik.compiler.ast.element.expression.common.ECallExpression
 import io.verik.compiler.ast.element.expression.kt.EFunctionLiteralExpression
 import io.verik.compiler.ast.element.expression.sv.EEventControlExpression
+import io.verik.compiler.ast.property.ValueParameterKind
 import io.verik.compiler.common.ReferenceUpdater
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.constant.BooleanConstantKind
@@ -137,20 +138,20 @@ object FunctionInterpreterStage : ProjectStage() {
                     type = function.type.copy(),
                     annotationEntries = listOf(),
                     expression = null,
-                    isInput = false
+                    kind = ValueParameterKind.OUTPUT
                 )
                 valueParameters.add(valueParameter)
             }
             val isStatic = isStatic(function)
             return ETask(
-                function.location,
-                function.name,
-                function.annotationEntries,
-                function.documentationLines,
-                function.body,
-                function.typeParameters,
-                valueParameters,
-                isStatic
+                location = function.location,
+                name = function.name,
+                annotationEntries = function.annotationEntries,
+                documentationLines = function.documentationLines,
+                body = function.body,
+                typeParameters = function.typeParameters,
+                valueParameters = valueParameters,
+                isStatic = isStatic
             )
         }
 
@@ -160,16 +161,16 @@ object FunctionInterpreterStage : ProjectStage() {
             val isStatic = isStatic(function)
             val isVirtual = if (parent is ESvClass) !parent.isObject else false
             return ESvFunction(
-                function.location,
-                function.name,
-                function.type,
-                function.annotationEntries,
-                function.documentationLines,
-                function.body,
-                function.typeParameters,
-                ArrayList(valueParameters),
-                isStatic,
-                isVirtual
+                location = function.location,
+                name = function.name,
+                type = function.type,
+                annotationEntries = function.annotationEntries,
+                documentationLines = function.documentationLines,
+                body = function.body,
+                typeParameters = function.typeParameters,
+                valueParameters = ArrayList(valueParameters),
+                isStatic = isStatic,
+                isVirtual = isVirtual
             )
         }
 
@@ -179,12 +180,12 @@ object FunctionInterpreterStage : ProjectStage() {
         ): List<ESvValueParameter> {
             return valueParameters.map {
                 val valueParameter = ESvValueParameter(
-                    it.location,
-                    it.name,
-                    it.type,
-                    it.annotationEntries,
-                    it.expression,
-                    true
+                    location = it.location,
+                    name = it.name,
+                    type = it.type,
+                    annotationEntries = it.annotationEntries,
+                    expression = it.expression,
+                    kind = ValueParameterKind.INPUT
                 )
                 referenceUpdater.update(it, valueParameter)
                 valueParameter

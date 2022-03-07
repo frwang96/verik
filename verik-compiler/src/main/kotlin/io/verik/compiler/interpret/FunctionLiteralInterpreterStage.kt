@@ -19,6 +19,7 @@ package io.verik.compiler.interpret
 import io.verik.compiler.ast.element.declaration.kt.EKtValueParameter
 import io.verik.compiler.ast.element.declaration.sv.ESvValueParameter
 import io.verik.compiler.ast.element.expression.kt.EFunctionLiteralExpression
+import io.verik.compiler.ast.property.ValueParameterKind
 import io.verik.compiler.common.ReferenceUpdater
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
@@ -45,7 +46,7 @@ object FunctionLiteralInterpreterStage : ProjectStage() {
                     oldValueParameter.type,
                     oldValueParameter.annotationEntries,
                     oldValueParameter.expression,
-                    true
+                    ValueParameterKind.INPUT
                 )
                 referenceUpdater.replace(oldValueParameter, newValueParameter)
             }

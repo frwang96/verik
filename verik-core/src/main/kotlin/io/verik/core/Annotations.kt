@@ -73,7 +73,7 @@ annotation class Entry
  * Inject a string literal directly as SystemVerilog.
  *
  *  ```
- *  class C {
+ *  class C : Class() {
  *
  *      @Inj
  *      val macro = "`macro(C);"
@@ -123,7 +123,7 @@ annotation class Cons
 annotation class Assert
 
 /**
- * Annotates cover properties.
+ * Annotates cover properties, cover points, and cover crosses.
  */
 @Target(AnnotationTarget.PROPERTY)
 annotation class Cover

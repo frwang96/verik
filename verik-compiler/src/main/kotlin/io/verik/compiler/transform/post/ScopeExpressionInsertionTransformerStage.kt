@@ -76,7 +76,7 @@ object ScopeExpressionInsertionTransformerStage : ProjectStage() {
             file: EFile,
         ): EScopeExpression? {
             val pkg = file.getParentPackage()
-            return if (!pkg.packageType.isRoot() && pkg != parentPackage) {
+            return if (!pkg.kind.isRoot() && pkg != parentPackage) {
                 EScopeExpression(receiverExpression.location, pkg.toType(), listOf())
             } else null
         }
@@ -126,7 +126,7 @@ object ScopeExpressionInsertionTransformerStage : ProjectStage() {
         }
 
         override fun visitPackage(pkg: EPackage) {
-            if (!pkg.packageType.isImported()) {
+            if (!pkg.kind.isImported()) {
                 parentPackage = pkg
                 super.visitPackage(pkg)
                 parentPackage = null
@@ -134,9 +134,10 @@ object ScopeExpressionInsertionTransformerStage : ProjectStage() {
         }
 
         override fun visitAbstractClass(abstractClass: EAbstractClass) {
+            val previousParentClass = parentClass
             parentClass = abstractClass
             super.visitAbstractClass(abstractClass)
-            parentClass = null
+            parentClass = previousParentClass
         }
 
         override fun visitReceiverExpression(receiverExpression: EReceiverExpression) {

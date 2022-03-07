@@ -34,6 +34,7 @@ class EConstraint(
     var body: EBlockExpression
 ) : EAbstractProperty(), ExpressionContainer {
 
+    override val endLocation = location
     override var type = Target.C_Void.toType()
 
     init {

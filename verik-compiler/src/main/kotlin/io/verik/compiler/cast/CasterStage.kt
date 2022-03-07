@@ -19,7 +19,7 @@ package io.verik.compiler.cast
 import io.verik.compiler.ast.element.common.EProject
 import io.verik.compiler.ast.element.declaration.common.EFile
 import io.verik.compiler.ast.element.declaration.common.EPackage
-import io.verik.compiler.ast.property.PackageType
+import io.verik.compiler.ast.property.PackageKind
 import io.verik.compiler.common.location
 import io.verik.compiler.main.Platform
 import io.verik.compiler.main.ProjectContext
@@ -62,8 +62,7 @@ object CasterStage : ProjectStage() {
             "<root>",
             ArrayList(),
             ArrayList(),
-            getPackageOutputPath("", projectContext),
-            PackageType.REGULAR_ROOT
+            PackageKind.REGULAR_ROOT
         )
         val importedNonRootPackages = ArrayList<EPackage>()
         val importedRootPackage = EPackage(
@@ -71,8 +70,7 @@ object CasterStage : ProjectStage() {
             "imported",
             ArrayList(),
             ArrayList(),
-            getPackageOutputPath("imported", projectContext),
-            PackageType.IMPORTED_ROOT
+            PackageKind.IMPORTED_ROOT
         )
 
         filesMap.forEach { (packageName, files) ->
@@ -92,8 +90,7 @@ object CasterStage : ProjectStage() {
                             packageName,
                             files,
                             ArrayList(),
-                            getPackageOutputPath(packageName, projectContext),
-                            PackageType.IMPORTED_NON_ROOT
+                            PackageKind.IMPORTED_NON_ROOT
                         )
                     )
                 }
@@ -104,8 +101,7 @@ object CasterStage : ProjectStage() {
                             packageName,
                             files,
                             ArrayList(),
-                            getPackageOutputPath(packageName, projectContext),
-                            PackageType.REGULAR_NON_ROOT
+                            PackageKind.REGULAR_NON_ROOT
                         )
                     )
                 }

@@ -40,6 +40,13 @@ fun print(message: Int) {
 }
 
 /**
+ * Prints the given [message] to the standard output stream.
+ */
+fun print(message: Double) {
+    throw VerikException()
+}
+
+/**
  * Prints the line separator to the standard output stream.
  */
 fun println() {
@@ -64,5 +71,12 @@ fun println(message: Boolean) {
  * Prints the given [message] and the line separator to the standard output stream.
  */
 fun println(message: Int) {
+    throw VerikException()
+}
+
+/**
+ * Prints the given [message] and the line separator to the standard output stream.
+ */
+fun println(message: Double) {
     throw VerikException()
 }

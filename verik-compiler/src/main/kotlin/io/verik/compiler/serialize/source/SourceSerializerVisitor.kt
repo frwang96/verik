@@ -25,6 +25,10 @@ import io.verik.compiler.ast.element.declaration.sv.EAlwaysSeqBlock
 import io.verik.compiler.ast.element.declaration.sv.EClockingBlockInstantiation
 import io.verik.compiler.ast.element.declaration.sv.EComponentInstantiation
 import io.verik.compiler.ast.element.declaration.sv.EConstraint
+import io.verik.compiler.ast.element.declaration.sv.ECoverBin
+import io.verik.compiler.ast.element.declaration.sv.ECoverCross
+import io.verik.compiler.ast.element.declaration.sv.ECoverGroup
+import io.verik.compiler.ast.element.declaration.sv.ECoverPoint
 import io.verik.compiler.ast.element.declaration.sv.EEnum
 import io.verik.compiler.ast.element.declaration.sv.EInitialBlock
 import io.verik.compiler.ast.element.declaration.sv.EInjectedProperty
@@ -75,7 +79,7 @@ import io.verik.compiler.ast.element.expression.sv.ESvForStatement
 import io.verik.compiler.ast.element.expression.sv.ESvUnaryExpression
 import io.verik.compiler.ast.element.expression.sv.EWaitForkStatement
 import io.verik.compiler.ast.element.expression.sv.EWidthCastExpression
-import io.verik.compiler.ast.property.SerializationType
+import io.verik.compiler.ast.property.SerializationKind
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.Messages
 
@@ -93,10 +97,10 @@ class SourceSerializerVisitor(
     }
 
     fun serializeAsDeclaration(declaration: EDeclaration) {
-        if (SerializerUtil.declarationIsHidden(declaration))
-            return
-        if (!firstDeclaration && !(lastDeclarationIsProperty && declaration is EProperty))
+        if (SerializerUtil.declarationIsHidden(declaration)) return
+        if (!firstDeclaration && !(lastDeclarationIsProperty && declaration is EProperty)) {
             serializeContext.appendLine()
+        }
         firstDeclaration = false
         lastDeclarationIsProperty = false
         serializeDocumentationLines(declaration, serializeContext)
@@ -105,16 +109,18 @@ class SourceSerializerVisitor(
     }
 
     fun serializeAsExpression(expression: EExpression) {
-        if (expression.serializationType != SerializationType.EXPRESSION)
+        if (expression.serializationKind != SerializationKind.EXPRESSION) {
             Messages.INTERNAL_ERROR.on(expression, "Expression expected but got: $expression")
+        }
         serialize(expression)
     }
 
     fun serializeAsStatement(expression: EExpression) {
-        if (expression.serializationType == SerializationType.INTERNAL)
+        if (expression.serializationKind == SerializationKind.INTERNAL) {
             Messages.INTERNAL_ERROR.on(expression, "Expression or statement expected but got: $expression")
+        }
         serialize(expression)
-        if (expression.serializationType == SerializationType.EXPRESSION) {
+        if (expression.serializationKind == SerializationKind.EXPRESSION) {
             if (expression !is EInjectedExpression) {
                 serializeContext.label(expression) {
                     serializeContext.appendLine(";")
@@ -139,6 +145,10 @@ class SourceSerializerVisitor(
 
     override fun visitSvClass(cls: ESvClass) {
         DeclarationSerializer.serializeClass(cls, serializeContext)
+    }
+
+    override fun visitCoverGroup(coverGroup: ECoverGroup) {
+        DeclarationSerializer.serializeCoverGroup(coverGroup, serializeContext)
     }
 
     override fun visitModule(module: EModule) {
@@ -187,6 +197,18 @@ class SourceSerializerVisitor(
 
     override fun visitEnumEntry(enumEntry: EEnumEntry) {
         DeclarationSerializer.serializeEnumEntry(enumEntry, serializeContext)
+    }
+
+    override fun visitCoverPoint(coverPoint: ECoverPoint) {
+        DeclarationSerializer.serializeCoverPoint(coverPoint, serializeContext)
+    }
+
+    override fun visitCoverCross(coverCross: ECoverCross) {
+        DeclarationSerializer.serializeCoverCross(coverCross, serializeContext)
+    }
+
+    override fun visitCoverBin(coverBin: ECoverBin) {
+        DeclarationSerializer.serializeCoverBin(coverBin, serializeContext)
     }
 
     override fun visitComponentInstantiation(componentInstantiation: EComponentInstantiation) {

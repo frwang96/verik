@@ -34,6 +34,7 @@ enum class KtBinaryOperatorKind {
     EXCL_EQ,
     PLUS_EQ,
     MINUS_EQ,
+    DIV_EQ,
     ANDAND,
     OROR;
 
@@ -58,6 +59,7 @@ enum class KtBinaryOperatorKind {
                 "EXCLEQ" -> EXCL_EQ
                 "PLUSEQ" -> PLUS_EQ
                 "MINUSEQ" -> MINUS_EQ
+                "DIVEQ" -> DIV_EQ
                 "ANDAND" -> ANDAND
                 "OROR" -> OROR
                 else -> Messages.INTERNAL_ERROR.on(location, "Unrecognised binary operator kind: $token")

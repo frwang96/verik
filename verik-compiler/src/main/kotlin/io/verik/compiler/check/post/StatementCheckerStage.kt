@@ -26,7 +26,7 @@ import io.verik.compiler.ast.element.expression.sv.EEventControlExpression
 import io.verik.compiler.ast.element.expression.sv.EInjectedExpression
 import io.verik.compiler.ast.element.expression.sv.ESvBinaryExpression
 import io.verik.compiler.ast.element.expression.sv.ESvUnaryExpression
-import io.verik.compiler.ast.property.SerializationType
+import io.verik.compiler.ast.property.SerializationKind
 import io.verik.compiler.ast.property.SvBinaryOperatorKind
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
@@ -50,7 +50,7 @@ object StatementCheckerStage : ProjectStage() {
         }
 
         private fun isValid(statement: EExpression): Boolean {
-            if (statement.serializationType == SerializationType.STATEMENT)
+            if (statement.serializationKind == SerializationKind.STATEMENT)
                 return true
             return when (statement) {
                 is ESvUnaryExpression ->

@@ -23,6 +23,8 @@ import io.verik.compiler.message.SourceLocation
 
 object ConstantBuilder {
 
+    val MIN_HEX_CONSTANT_WIDTH = 8
+
     fun buildNull(location: SourceLocation): EConstantExpression {
         return EConstantExpression(location, Core.Kt.C_Nothing.toType(), "null")
     }
@@ -80,7 +82,7 @@ object ConstantBuilder {
             if (bitConstant.value.allOnes())
                 return if (bitConstant.signed) "${bitConstant.width}'sbz" else "${bitConstant.width}'bz"
         }
-        return if (bitConstant.width < 8 || !bitConstant.kind.allZeroes()) {
+        return if (bitConstant.width < MIN_HEX_CONSTANT_WIDTH || !bitConstant.kind.allZeroes()) {
             formatBinBitConstant(bitConstant)
         } else {
             formatHexBitConstant(bitConstant)

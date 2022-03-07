@@ -22,11 +22,8 @@ import io.verik.compiler.ast.element.declaration.common.EAbstractProperty
 import io.verik.compiler.ast.element.expression.common.EExpression
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.replaceIfContains
-import io.verik.compiler.message.SourceLocation
 
 abstract class EAbstractComponentInstantiation : EAbstractProperty(), ExpressionContainer {
-
-    abstract val endLocation: SourceLocation
 
     abstract val valueArguments: ArrayList<EExpression>
 
