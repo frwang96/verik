@@ -148,6 +148,10 @@ object Messages {
         "Make annotation out of context"
     )
 
+    val ILLEGAL_CLASS_DECLARATION = ErrorMessageTemplate1<String>(
+        "Declaration is not permitted in $0"
+    )
+
     val PARAMETERIZED_FUNCTION_NOT_TOP = ErrorMessageTemplate1<String>(
         "Function that is not top level cannot be parameterized: $0"
     )

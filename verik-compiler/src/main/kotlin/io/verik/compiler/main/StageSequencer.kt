@@ -21,6 +21,7 @@ import io.verik.compiler.cast.CasterStage
 import io.verik.compiler.cast.SmartCastReducerStage
 import io.verik.compiler.check.mid.AnnotationEntryCheckerStage
 import io.verik.compiler.check.mid.ArrayAccessMutabilityChecker
+import io.verik.compiler.check.mid.ClassDeclarationCheckerStage
 import io.verik.compiler.check.mid.ComponentInstantiationCheckerStage
 import io.verik.compiler.check.mid.ConstructorCheckerStage
 import io.verik.compiler.check.mid.EntryPointCheckerStage
@@ -153,6 +154,7 @@ object StageSequencer {
         stageSequence.add(StageType.MID_CHECK, AnnotationEntryCheckerStage)
         stageSequence.add(StageType.MID_CHECK, OverrideCheckerStage)
         stageSequence.add(StageType.MID_CHECK, ComponentInstantiationCheckerStage)
+        stageSequence.add(StageType.MID_CHECK, ClassDeclarationCheckerStage)
         stageSequence.add(StageType.MID_CHECK, TypeParameterCheckerStage)
         stageSequence.add(StageType.MID_CHECK, TypeArgumentTypeCheckerStage)
         stageSequence.add(StageType.MID_CHECK, ConstructorCheckerStage)
