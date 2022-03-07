@@ -48,6 +48,7 @@ import io.verik.compiler.ast.property.PortKind
 import io.verik.compiler.ast.property.ValueParameterKind
 import io.verik.compiler.core.common.AnnotationEntries
 import io.verik.compiler.core.common.Core
+import io.verik.compiler.message.SourceLocation
 
 object DeclarationSerializer {
 
@@ -241,28 +242,22 @@ object DeclarationSerializer {
     fun serializeCoverPoint(coverPoint: ECoverPoint, serializeContext: SerializeContext) {
         serializeContext.append("${coverPoint.name} : coverpoint ")
         serializeContext.serializeAsExpression(coverPoint.expression)
-        if (coverPoint.coverBins.isNotEmpty()) {
-            serializeContext.appendLine(" {")
-            serializeContext.indent {
-                coverPoint.coverBins.forEach { serializeContext.serializeAsDeclaration(it) }
-                serializeContext.appendLine()
-            }
-            serializeContext.label(coverPoint.endLocation) {
-                serializeContext.appendLine("}")
-            }
-        } else {
-            serializeContext.appendLine(";")
-        }
+        serializeCoverBins(coverPoint.coverBins, coverPoint.endLocation, serializeContext)
     }
 
     fun serializeCoverCross(coverCross: ECoverCross, serializeContext: SerializeContext) {
         serializeContext.append("${coverCross.name} : cross ")
         serializeContext.append(coverCross.coverPoints.joinToString { it.name })
-        serializeContext.appendLine(";")
+        serializeCoverBins(coverCross.coverBins, coverCross.endLocation, serializeContext)
     }
 
     fun serializeCoverBin(coverBin: ECoverBin, serializeContext: SerializeContext) {
-        serializeContext.append("bins ${coverBin.name}")
+        if (coverBin.isIgnored) {
+            serializeContext.append("ignore_bins ")
+        } else {
+            serializeContext.append("bins ")
+        }
+        serializeContext.append(coverBin.name)
         if (coverBin.isArray) serializeContext.append("[]")
         serializeContext.append(" = ")
         serializeContext.serializeAsExpression(coverBin.expression)
@@ -434,6 +429,25 @@ object DeclarationSerializer {
             }
         } else {
             serializeContext.appendLine("();")
+        }
+    }
+
+    private fun serializeCoverBins(
+        coverBins: List<ECoverBin>,
+        endLocation: SourceLocation,
+        serializeContext: SerializeContext
+    ) {
+        if (coverBins.isNotEmpty()) {
+            serializeContext.appendLine(" {")
+            serializeContext.indent {
+                coverBins.forEach { serializeContext.serializeAsDeclaration(it) }
+                serializeContext.appendLine()
+            }
+            serializeContext.label(endLocation) {
+                serializeContext.appendLine("}")
+            }
+        } else {
+            serializeContext.appendLine(";")
         }
     }
 }

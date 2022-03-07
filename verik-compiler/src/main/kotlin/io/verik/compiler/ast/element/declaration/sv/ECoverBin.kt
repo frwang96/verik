@@ -29,6 +29,7 @@ class ECoverBin(
     override val location: SourceLocation,
     override var name: String,
     var expression: EExpression,
+    val isIgnored: Boolean,
     val isArray: Boolean
 ) : EAbstractProperty(), ExpressionContainer {
 

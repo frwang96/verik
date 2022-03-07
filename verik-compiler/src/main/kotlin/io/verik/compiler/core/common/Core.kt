@@ -36,6 +36,7 @@ import io.verik.compiler.core.declaration.vk.CoreVkClass
 import io.verik.compiler.core.declaration.vk.CoreVkClasses
 import io.verik.compiler.core.declaration.vk.CoreVkComponent
 import io.verik.compiler.core.declaration.vk.CoreVkControl
+import io.verik.compiler.core.declaration.vk.CoreVkCoverCross
 import io.verik.compiler.core.declaration.vk.CoreVkCoverGroup
 import io.verik.compiler.core.declaration.vk.CoreVkCoverPoint
 import io.verik.compiler.core.declaration.vk.CoreVkMisc
@@ -234,6 +235,7 @@ object Core {
         val F_cp_Any = CoreVkSpecial.F_cp_Any
         val F_cp_Any_Function = CoreVkSpecial.F_cp_Any_Function
         val F_cc_Any = CoreVkSpecial.F_cc_Any
+        val F_cc_Any_Function = CoreVkSpecial.F_cc_Any_Function
         val P_unknown = CoreVkSpecial.P_unknown
         val P_floating = CoreVkSpecial.P_floating
 
@@ -404,7 +406,16 @@ object Core {
 
         object CoverPoint {
 
-            val F_bin = CoreVkCoverPoint.F_bin
+            val F_bin_String_String = CoreVkCoverPoint.F_bin_String_String
+            val F_bins_String_String = CoreVkCoverPoint.F_bins_String_String
+            val F_ignoreBin_String_String = CoreVkCoverPoint.F_ignoreBin_String_String
+        }
+
+        object CoverCross {
+
+            val F_bin_String_String = CoreVkCoverCross.F_bin_String_String
+            val F_bins_String_String = CoreVkCoverCross.F_bins_String_String
+            val F_ignoreBin_String_String = CoreVkCoverCross.F_ignoreBin_String_String
         }
     }
 }

@@ -62,11 +62,22 @@ object CoverPropertyInterpreterStage : ProjectStage() {
             return null
         }
         return when (expression.reference) {
-            Core.Vk.CoverPoint.F_bin -> {
+            Core.Vk.CoverPoint.F_bin_String_String, Core.Vk.CoverCross.F_bin_String_String -> {
                 val name = interpretCoverBinName(expression.valueArguments[0]) ?: return null
-                ECoverBin(expression.location, name, expression.valueArguments[1], false)
+                ECoverBin(expression.location, name, expression.valueArguments[1], isIgnored = false, isArray = false)
             }
-            else -> null
+            Core.Vk.CoverPoint.F_bins_String_String, Core.Vk.CoverCross.F_bins_String_String -> {
+                val name = interpretCoverBinName(expression.valueArguments[0]) ?: return null
+                ECoverBin(expression.location, name, expression.valueArguments[1], isIgnored = false, isArray = true)
+            }
+            Core.Vk.CoverPoint.F_ignoreBin_String_String, Core.Vk.CoverCross.F_ignoreBin_String_String -> {
+                val name = interpretCoverBinName(expression.valueArguments[0]) ?: return null
+                ECoverBin(expression.location, name, expression.valueArguments[1], isIgnored = true, isArray = false)
+            }
+            else -> {
+                Messages.COVER_BIN_EXPECTED.on(expression)
+                null
+            }
         }
     }
 
@@ -133,30 +144,53 @@ object CoverPropertyInterpreterStage : ProjectStage() {
     ) : TreeVisitor() {
 
         private fun interpretCoverCross(property: EProperty, initializer: EExpression) {
-            if (initializer is ECallExpression && initializer.reference == Core.Vk.F_cc_Any) {
-                if (initializer.valueArguments.size < 2) {
-                    Messages.COVER_CROSS_INSUFFICIENT_ARGUMENTS.on(initializer)
-                }
-                val coverPoints = initializer.valueArguments.mapNotNull {
-                    if (it is EReferenceExpression) {
-                        val reference = it.reference
-                        if (reference is ECoverPoint) {
-                            return@mapNotNull reference
+            if (initializer is ECallExpression) {
+                when (initializer.reference) {
+                    Core.Vk.F_cc_Any -> {
+                        if (initializer.valueArguments.size < 2) {
+                            Messages.COVER_CROSS_INSUFFICIENT_ARGUMENTS.on(initializer)
                         }
+                        val coverPoints = initializer.valueArguments.mapNotNull { getCoverPoint(it) }
+                        val coverCross = ECoverCross(
+                            property.location,
+                            property.endLocation,
+                            property.name,
+                            property.annotationEntries,
+                            property.documentationLines,
+                            coverPoints,
+                            listOf()
+                        )
+                        referenceUpdater.replace(property, coverCross)
                     }
-                    Messages.COVER_POINT_EXPECTED.on(it)
-                    null
+                    Core.Vk.F_cc_Any_Function -> {
+                        val valueArguments = initializer.valueArguments.dropLast(1)
+                        if (valueArguments.size < 2) {
+                            Messages.COVER_CROSS_INSUFFICIENT_ARGUMENTS.on(initializer)
+                        }
+                        val coverPoints = valueArguments.mapNotNull { getCoverPoint(it) }
+                        val coverBins = interpretCoverBins(initializer.valueArguments.last().cast())
+                        val coverCross = ECoverCross(
+                            property.location,
+                            property.endLocation,
+                            property.name,
+                            property.annotationEntries,
+                            property.documentationLines,
+                            coverPoints,
+                            coverBins
+                        )
+                        referenceUpdater.replace(property, coverCross)
+                    }
                 }
-                val coverCross = ECoverCross(
-                    property.location,
-                    property.endLocation,
-                    property.name,
-                    property.annotationEntries,
-                    property.documentationLines,
-                    coverPoints
-                )
-                referenceUpdater.replace(property, coverCross)
             }
+        }
+
+        private fun getCoverPoint(expression: EExpression): ECoverPoint? {
+            if (expression is EReferenceExpression) {
+                val reference = expression.reference
+                if (reference is ECoverPoint) return reference
+            }
+            Messages.COVER_POINT_EXPECTED.on(expression)
+            return null
         }
 
         override fun visitProperty(property: EProperty) {

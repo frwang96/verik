@@ -384,6 +384,7 @@ class ElementPrinter : Visitor() {
         build("CoverCross") {
             build(coverCross.name)
             build(coverCross.coverPoints.map { it.name })
+            build(coverCross.coverBins)
         }
     }
 
@@ -391,6 +392,7 @@ class ElementPrinter : Visitor() {
         build("CoverBin") {
             build(coverBin.name)
             build(coverBin.expression)
+            build(coverBin.isIgnored)
             build(coverBin.isArray)
         }
     }

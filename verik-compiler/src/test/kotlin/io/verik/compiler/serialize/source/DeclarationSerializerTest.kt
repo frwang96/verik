@@ -332,6 +332,33 @@ internal class DeclarationSerializerTest : BaseTest() {
     }
 
     @Test
+    fun `cover point with cover bin`() {
+        driveTextFileTest(
+            """
+                class CG(@In var x: Boolean): CoverGroup() {
+                    @Cover
+                    val cp = cp(x) {
+                        bin("b", "{1'b0}")
+                    }
+                }
+            """.trimIndent(),
+            """
+                covergroup CG(
+                    ref logic x
+                );
+
+                    cp : coverpoint x {
+
+                        bins b = {1'b0};
+
+                    }
+
+                endgroup : CG
+            """.trimIndent()
+        ) { it.nonRootPackageTextFiles[0] }
+    }
+
+    @Test
     fun `cover cross simple`() {
         driveTextFileTest(
             """
@@ -357,13 +384,15 @@ internal class DeclarationSerializerTest : BaseTest() {
     }
 
     @Test
-    fun `cover bin simple`() {
+    fun `cover cross with cover bins`() {
         driveTextFileTest(
             """
                 class CG(@In var x: Boolean): CoverGroup() {
                     @Cover
-                    val cp = cp(x) {
-                        bin("b", "{1'b0}")
+                    val cp = cp(x)
+                    @Cover
+                    val cc = cc(cp, cp) {
+                        bins("b", "binsof(cp)")
                     }
                 }
             """.trimIndent(),
@@ -372,9 +401,11 @@ internal class DeclarationSerializerTest : BaseTest() {
                     ref logic x
                 );
 
-                    cp : coverpoint x {
+                    cp : coverpoint x;
+                
+                    cc : cross cp, cp {
 
-                        bins b = {1'b0};
+                        bins b[] = binsof(cp);
 
                     }
 

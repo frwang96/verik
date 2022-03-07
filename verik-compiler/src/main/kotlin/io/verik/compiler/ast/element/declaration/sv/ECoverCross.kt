@@ -29,14 +29,21 @@ class ECoverCross(
     override var name: String,
     override var annotationEntries: List<AnnotationEntry>,
     override var documentationLines: List<String>?,
-    val coverPoints: List<ECoverPoint>
+    val coverPoints: List<ECoverPoint>,
+    val coverBins: List<ECoverBin>
 ) : EAbstractProperty() {
 
     override var type = Target.C_Void.toType()
+
+    init {
+        coverBins.forEach { it.parent = this }
+    }
 
     override fun accept(visitor: Visitor) {
         visitor.visitCoverCross(this)
     }
 
-    override fun acceptChildren(visitor: TreeVisitor) {}
+    override fun acceptChildren(visitor: TreeVisitor) {
+        coverBins.forEach { it.accept(visitor) }
+    }
 }

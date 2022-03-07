@@ -48,7 +48,7 @@ internal class CoverPropertyInterpreterStageTest : BaseTest() {
                 }
             """.trimIndent(),
             CoverPropertyInterpreterStage::class,
-            "CoverCross(cc, [cp, cp])"
+            "CoverCross(cc, [cp, cp], [])"
         ) { it.findDeclaration("cc") }
     }
 
@@ -80,7 +80,25 @@ internal class CoverPropertyInterpreterStageTest : BaseTest() {
                 }
             """.trimIndent(),
             CoverPropertyInterpreterStage::class,
-            "CoverBin(b, StringTemplateExpression(String, [{1'b0}]), 0)"
+            "CoverBin(b, StringTemplateExpression(String, [{1'b0}]), 0, 0)"
+        ) { it.findDeclaration("b") }
+    }
+
+    @Test
+    fun `interpret cover bins`() {
+        driveElementTest(
+            """
+                class CG(@In var x: Boolean): CoverGroup() {
+                    @Cover
+                    val cp = cp(x)
+                    @Cover
+                    val cc = cc(cp, cp) {
+                        bins("b", "binsof(cp)")
+                    }
+                }
+            """.trimIndent(),
+            CoverPropertyInterpreterStage::class,
+            "CoverBin(b, StringTemplateExpression(String, [binsof(cp)]), 0, 1)"
         ) { it.findDeclaration("b") }
     }
 }

@@ -134,9 +134,10 @@ object ScopeExpressionInsertionTransformerStage : ProjectStage() {
         }
 
         override fun visitAbstractClass(abstractClass: EAbstractClass) {
+            val previousParentClass = parentClass
             parentClass = abstractClass
             super.visitAbstractClass(abstractClass)
-            parentClass = null
+            parentClass = previousParentClass
         }
 
         override fun visitReceiverExpression(receiverExpression: EReceiverExpression) {
