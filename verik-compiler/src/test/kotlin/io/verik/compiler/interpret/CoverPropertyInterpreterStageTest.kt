@@ -32,7 +32,7 @@ internal class CoverPropertyInterpreterStageTest : BaseTest() {
                 }
             """.trimIndent(),
             CoverPropertyInterpreterStage::class,
-            "CoverPoint(cp, ReferenceExpression(Boolean, x, null, 0))"
+            "CoverPoint(cp, ReferenceExpression(Boolean, x, null, 0), [])"
         ) { it.findDeclaration("cp") }
     }
 
@@ -66,5 +66,21 @@ internal class CoverPropertyInterpreterStageTest : BaseTest() {
             true,
             "Cover cross should cross at least two cover points"
         )
+    }
+
+    @Test
+    fun `interpret cover bin`() {
+        driveElementTest(
+            """
+                class CG(@In var x: Boolean): CoverGroup() {
+                    @Cover
+                    val cp = cp(x) {
+                        bin("b", "{1'b0}")
+                    }
+                }
+            """.trimIndent(),
+            CoverPropertyInterpreterStage::class,
+            "CoverBin(b, StringTemplateExpression(String, [{1'b0}]), 0)"
+        ) { it.findDeclaration("b") }
     }
 }

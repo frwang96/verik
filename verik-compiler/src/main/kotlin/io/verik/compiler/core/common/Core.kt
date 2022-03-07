@@ -37,6 +37,7 @@ import io.verik.compiler.core.declaration.vk.CoreVkClasses
 import io.verik.compiler.core.declaration.vk.CoreVkComponent
 import io.verik.compiler.core.declaration.vk.CoreVkControl
 import io.verik.compiler.core.declaration.vk.CoreVkCoverGroup
+import io.verik.compiler.core.declaration.vk.CoreVkCoverPoint
 import io.verik.compiler.core.declaration.vk.CoreVkMisc
 import io.verik.compiler.core.declaration.vk.CoreVkPacked
 import io.verik.compiler.core.declaration.vk.CoreVkQueue
@@ -231,6 +232,7 @@ object Core {
         val F_s1 = CoreVkSpecial.F_s1
         val F_c = CoreVkSpecial.F_c
         val F_cp_Any = CoreVkSpecial.F_cp_Any
+        val F_cp_Any_Function = CoreVkSpecial.F_cp_Any_Function
         val F_cc_Any = CoreVkSpecial.F_cc_Any
         val P_unknown = CoreVkSpecial.P_unknown
         val P_floating = CoreVkSpecial.P_floating
@@ -398,6 +400,11 @@ object Core {
         object CoverGroup {
 
             val F_sample = CoreVkCoverGroup.F_sample
+        }
+
+        object CoverPoint {
+
+            val F_bin = CoreVkCoverPoint.F_bin
         }
     }
 }

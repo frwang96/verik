@@ -278,6 +278,14 @@ object Messages {
         "Cover point expected"
     )
 
+    val COVER_BIN_EXPECTED = ErrorMessageTemplate0(
+        "Cover bin expected"
+    )
+
+    val COVER_BIN_NAME_EXPECTED = ErrorMessageTemplate0(
+        "Cover bin name expected"
+    )
+
     val MISMATCHED_PORT_NAME = ErrorMessageTemplate1<String>(
         "Port instantiation must match port name: $0"
     )

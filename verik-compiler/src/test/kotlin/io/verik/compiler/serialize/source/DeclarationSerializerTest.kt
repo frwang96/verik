@@ -357,6 +357,33 @@ internal class DeclarationSerializerTest : BaseTest() {
     }
 
     @Test
+    fun `cover bin simple`() {
+        driveTextFileTest(
+            """
+                class CG(@In var x: Boolean): CoverGroup() {
+                    @Cover
+                    val cp = cp(x) {
+                        bin("b", "{1'b0}")
+                    }
+                }
+            """.trimIndent(),
+            """
+                covergroup CG(
+                    ref logic x
+                );
+
+                    cp : coverpoint x {
+
+                        bins b = {1'b0};
+
+                    }
+
+                endgroup : CG
+            """.trimIndent()
+        ) { it.nonRootPackageTextFiles[0] }
+    }
+
+    @Test
     fun `initial block`() {
         driveTextFileTest(
             """

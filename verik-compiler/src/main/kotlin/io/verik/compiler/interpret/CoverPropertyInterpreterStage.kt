@@ -17,11 +17,15 @@
 package io.verik.compiler.interpret
 
 import io.verik.compiler.ast.element.declaration.common.EProperty
+import io.verik.compiler.ast.element.declaration.sv.ECoverBin
 import io.verik.compiler.ast.element.declaration.sv.ECoverCross
 import io.verik.compiler.ast.element.declaration.sv.ECoverPoint
 import io.verik.compiler.ast.element.expression.common.ECallExpression
 import io.verik.compiler.ast.element.expression.common.EExpression
 import io.verik.compiler.ast.element.expression.common.EReferenceExpression
+import io.verik.compiler.ast.element.expression.kt.EFunctionLiteralExpression
+import io.verik.compiler.ast.element.expression.kt.EStringTemplateExpression
+import io.verik.compiler.ast.property.LiteralStringEntry
 import io.verik.compiler.common.ReferenceUpdater
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.AnnotationEntries
@@ -43,21 +47,73 @@ object CoverPropertyInterpreterStage : ProjectStage() {
         referenceUpdater.flush()
     }
 
+    private fun interpretCoverBins(functionLiteralExpression: EFunctionLiteralExpression): List<ECoverBin> {
+        val coverBins = ArrayList<ECoverBin>()
+        functionLiteralExpression.body.statements.forEach {
+            val coverBin = interpretCoverBin(it)
+            if (coverBin != null) coverBins.add(coverBin)
+        }
+        return coverBins
+    }
+
+    private fun interpretCoverBin(expression: EExpression): ECoverBin? {
+        if (expression !is ECallExpression) {
+            Messages.COVER_BIN_EXPECTED.on(expression)
+            return null
+        }
+        return when (expression.reference) {
+            Core.Vk.CoverPoint.F_bin -> {
+                val name = interpretCoverBinName(expression.valueArguments[0]) ?: return null
+                ECoverBin(expression.location, name, expression.valueArguments[1], false)
+            }
+            else -> null
+        }
+    }
+
+    private fun interpretCoverBinName(expression: EExpression): String? {
+        if (expression is EStringTemplateExpression && expression.entries.size == 1) {
+            val entry = expression.entries[0]
+            if (entry is LiteralStringEntry) {
+                return entry.text
+            }
+        }
+        Messages.COVER_BIN_NAME_EXPECTED.on(expression)
+        return null
+    }
+
     private class CoverPointInterpreterVisitor(
         private val referenceUpdater: ReferenceUpdater
     ) : TreeVisitor() {
 
         private fun interpretCoverPoint(property: EProperty, initializer: EExpression) {
-            if (initializer is ECallExpression && initializer.reference == Core.Vk.F_cp_Any) {
-                val coverPoint = ECoverPoint(
-                    property.location,
-                    property.endLocation,
-                    property.name,
-                    property.annotationEntries,
-                    property.documentationLines,
-                    initializer.valueArguments[0]
-                )
-                referenceUpdater.replace(property, coverPoint)
+            if (initializer is ECallExpression) {
+                when (initializer.reference) {
+                    Core.Vk.F_cp_Any -> {
+                        val coverPoint = ECoverPoint(
+                            property.location,
+                            property.endLocation,
+                            property.name,
+                            property.annotationEntries,
+                            property.documentationLines,
+                            initializer.valueArguments[0],
+                            listOf()
+                        )
+                        referenceUpdater.replace(property, coverPoint)
+                    }
+                    Core.Vk.F_cp_Any_Function -> {
+                        val coverBins = interpretCoverBins(initializer.valueArguments[1].cast())
+                        val coverPoint = ECoverPoint(
+                            property.location,
+                            property.endLocation,
+                            property.name,
+                            property.annotationEntries,
+                            property.documentationLines,
+                            initializer.valueArguments[0],
+                            coverBins
+                        )
+                        referenceUpdater.replace(property, coverPoint)
+                    }
+                }
             }
         }
 

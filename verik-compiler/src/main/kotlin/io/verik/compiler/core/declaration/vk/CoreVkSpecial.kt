@@ -246,6 +246,14 @@ object CoreVkSpecial : CoreScope(CorePackage.VK) {
         }
     }
 
+    val F_cp_Any_Function = object : TransformableCoreFunctionDeclaration(parent, "cp", "fun cp(Any, Function)") {
+
+        override fun transform(callExpression: ECallExpression): EExpression {
+            Messages.EXPRESSION_OUT_OF_CONTEXT.on(callExpression, name)
+            return ENothingExpression(callExpression.location)
+        }
+    }
+
     val F_cc_Any = object : TransformableCoreFunctionDeclaration(parent, "cc", "fun cc(vararg CoverPoint)") {
 
         override fun transform(callExpression: ECallExpression): EExpression {

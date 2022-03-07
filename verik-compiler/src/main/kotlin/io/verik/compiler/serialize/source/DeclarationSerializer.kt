@@ -25,6 +25,7 @@ import io.verik.compiler.ast.element.declaration.sv.EAlwaysSeqBlock
 import io.verik.compiler.ast.element.declaration.sv.EClockingBlockInstantiation
 import io.verik.compiler.ast.element.declaration.sv.EComponentInstantiation
 import io.verik.compiler.ast.element.declaration.sv.EConstraint
+import io.verik.compiler.ast.element.declaration.sv.ECoverBin
 import io.verik.compiler.ast.element.declaration.sv.ECoverCross
 import io.verik.compiler.ast.element.declaration.sv.ECoverGroup
 import io.verik.compiler.ast.element.declaration.sv.ECoverPoint
@@ -240,12 +241,31 @@ object DeclarationSerializer {
     fun serializeCoverPoint(coverPoint: ECoverPoint, serializeContext: SerializeContext) {
         serializeContext.append("${coverPoint.name} : coverpoint ")
         serializeContext.serializeAsExpression(coverPoint.expression)
-        serializeContext.appendLine(";")
+        if (coverPoint.coverBins.isNotEmpty()) {
+            serializeContext.appendLine(" {")
+            serializeContext.indent {
+                coverPoint.coverBins.forEach { serializeContext.serializeAsDeclaration(it) }
+                serializeContext.appendLine()
+            }
+            serializeContext.label(coverPoint.endLocation) {
+                serializeContext.appendLine("}")
+            }
+        } else {
+            serializeContext.appendLine(";")
+        }
     }
 
     fun serializeCoverCross(coverCross: ECoverCross, serializeContext: SerializeContext) {
         serializeContext.append("${coverCross.name} : cross ")
         serializeContext.append(coverCross.coverPoints.joinToString { it.name })
+        serializeContext.appendLine(";")
+    }
+
+    fun serializeCoverBin(coverBin: ECoverBin, serializeContext: SerializeContext) {
+        serializeContext.append("bins ${coverBin.name}")
+        if (coverBin.isArray) serializeContext.append("[]")
+        serializeContext.append(" = ")
+        serializeContext.serializeAsExpression(coverBin.expression)
         serializeContext.appendLine(";")
     }
 

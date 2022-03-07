@@ -25,30 +25,28 @@ import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
 import io.verik.compiler.target.common.Target
 
-class ECoverPoint(
+class ECoverBin(
     override val location: SourceLocation,
-    override val endLocation: SourceLocation,
     override var name: String,
-    override var annotationEntries: List<AnnotationEntry>,
-    override var documentationLines: List<String>?,
     var expression: EExpression,
-    val coverBins: List<ECoverBin>
+    val isArray: Boolean
 ) : EAbstractProperty(), ExpressionContainer {
 
+    override val endLocation = location
     override var type = Target.C_Void.toType()
+    override var annotationEntries: List<AnnotationEntry> = listOf()
+    override var documentationLines: List<String>? = null
 
     init {
         expression.parent = this
-        coverBins.forEach { it.parent = this }
     }
 
     override fun accept(visitor: Visitor) {
-        visitor.visitCoverPoint(this)
+        visitor.visitCoverBin(this)
     }
 
     override fun acceptChildren(visitor: TreeVisitor) {
         expression.accept(visitor)
-        coverBins.forEach { it.accept(visitor) }
     }
 
     override fun replaceChild(oldExpression: EExpression, newExpression: EExpression): Boolean {
