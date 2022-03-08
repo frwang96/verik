@@ -6,6 +6,7 @@
 - Support `monitor` and `strobe` functions.
 - Support `CoverGroup`, `CoverPoint`, and `CoverCross`.
 - Support cover bins for `CoverPoint` and `CoverCross`.
+- Support `fill0`, `fill1`, `fillx`, and `fillz`.
 
 ## [0.1.14]
 ### Importer

@@ -56,6 +56,7 @@ import io.verik.compiler.ast.element.expression.common.EReturnStatement
 import io.verik.compiler.ast.element.expression.common.ESuperExpression
 import io.verik.compiler.ast.element.expression.common.EThisExpression
 import io.verik.compiler.ast.element.expression.common.EWhileStatement
+import io.verik.compiler.ast.element.expression.sv.EArrayLiteralExpression
 import io.verik.compiler.ast.element.expression.sv.ECaseStatement
 import io.verik.compiler.ast.element.expression.sv.EConcatenationExpression
 import io.verik.compiler.ast.element.expression.sv.EConstantPartSelectExpression
@@ -275,6 +276,10 @@ class SourceSerializerVisitor(
 
     override fun visitStructLiteralExpression(structLiteralExpression: EStructLiteralExpression) {
         ExpressionSerializer.serializeStructLiteralExpression(structLiteralExpression, serializeContext)
+    }
+
+    override fun visitArrayLiteralExpression(arrayLiteralExpression: EArrayLiteralExpression) {
+        ExpressionSerializer.serializeArrayLiteralExpression(arrayLiteralExpression, serializeContext)
     }
 
     override fun visitThisExpression(thisExpression: EThisExpression) {

@@ -27,6 +27,7 @@ import io.verik.compiler.ast.element.expression.common.EPropertyStatement
 import io.verik.compiler.ast.element.expression.common.EReferenceExpression
 import io.verik.compiler.ast.element.expression.common.EReturnStatement
 import io.verik.compiler.ast.element.expression.common.EWhileStatement
+import io.verik.compiler.ast.element.expression.sv.EArrayLiteralExpression
 import io.verik.compiler.ast.element.expression.sv.ECaseStatement
 import io.verik.compiler.ast.element.expression.sv.EConcatenationExpression
 import io.verik.compiler.ast.element.expression.sv.EConstantPartSelectExpression
@@ -168,6 +169,13 @@ object ExpressionSerializer {
             serializeContext.serializeAsExpression(it.expression)
         }
         serializeContext.append("}")
+    }
+
+    fun serializeArrayLiteralExpression(
+        arrayLiteralExpression: EArrayLiteralExpression,
+        serializeContext: SerializeContext
+    ) {
+        serializeContext.append("'{default:${arrayLiteralExpression.default}}")
     }
 
     fun serializeThisExpression(serializeContext: SerializeContext) {

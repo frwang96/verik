@@ -77,6 +77,7 @@ import io.verik.compiler.ast.element.expression.kt.EKtForStatement
 import io.verik.compiler.ast.element.expression.kt.EKtUnaryExpression
 import io.verik.compiler.ast.element.expression.kt.EStringTemplateExpression
 import io.verik.compiler.ast.element.expression.kt.EWhenExpression
+import io.verik.compiler.ast.element.expression.sv.EArrayLiteralExpression
 import io.verik.compiler.ast.element.expression.sv.ECaseStatement
 import io.verik.compiler.ast.element.expression.sv.EConcatenationExpression
 import io.verik.compiler.ast.element.expression.sv.EConstantPartSelectExpression
@@ -561,6 +562,13 @@ class ElementPrinter : Visitor() {
                     build(it.expression)
                 }
             }
+        }
+    }
+
+    override fun visitArrayLiteralExpression(arrayLiteralExpression: EArrayLiteralExpression) {
+        build("ArrayLiteralExpression") {
+            build(arrayLiteralExpression.type.toString())
+            build(arrayLiteralExpression.default)
         }
     }
 

@@ -22,6 +22,7 @@ import io.verik.compiler.ast.element.expression.common.EConstantExpression
 import io.verik.compiler.ast.element.expression.common.EExpression
 import io.verik.compiler.ast.element.expression.common.ENothingExpression
 import io.verik.compiler.ast.element.expression.common.EReferenceExpression
+import io.verik.compiler.ast.element.expression.sv.EArrayLiteralExpression
 import io.verik.compiler.ast.element.expression.sv.EInjectedExpression
 import io.verik.compiler.ast.element.expression.sv.EScopeExpression
 import io.verik.compiler.constant.BitComponent
@@ -29,6 +30,7 @@ import io.verik.compiler.constant.BitConstant
 import io.verik.compiler.constant.BooleanConstantKind
 import io.verik.compiler.constant.ConstantBuilder
 import io.verik.compiler.core.common.BasicCoreFunctionDeclaration
+import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CorePackage
 import io.verik.compiler.core.common.CorePropertyDeclaration
 import io.verik.compiler.core.common.CoreScope
@@ -227,6 +229,66 @@ object CoreVkSpecial : CoreScope(CorePackage.VK) {
             val width = callExpression.type.asBitWidth(callExpression)
             val bitConstant = BitConstant(BitComponent.zeroes(width), BitComponent.ones(width), true, width)
             return ConstantBuilder.buildBitConstant(callExpression.location, bitConstant)
+        }
+    }
+
+    val F_fill0 = object : TransformableCoreFunctionDeclaration(parent, "fill0", "fun fill0()") {
+
+        override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
+            return F_imp.getTypeConstraints(callExpression)
+        }
+
+        override fun transform(callExpression: ECallExpression): EExpression {
+            return when (callExpression.type.reference) {
+                Core.Vk.C_Packed, Core.Vk.C_Unpacked ->
+                    EArrayLiteralExpression(callExpression.location, callExpression.type, "'0")
+                else -> Messages.INTERNAL_ERROR.on(callExpression, "Unable to fill ${callExpression.type}")
+            }
+        }
+    }
+
+    val F_fill1 = object : TransformableCoreFunctionDeclaration(parent, "fill1", "fun fill1()") {
+
+        override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
+            return F_imp.getTypeConstraints(callExpression)
+        }
+
+        override fun transform(callExpression: ECallExpression): EExpression {
+            return when (callExpression.type.reference) {
+                Core.Vk.C_Packed, Core.Vk.C_Unpacked ->
+                    EArrayLiteralExpression(callExpression.location, callExpression.type, "'1")
+                else -> Messages.INTERNAL_ERROR.on(callExpression, "Unable to fill ${callExpression.type}")
+            }
+        }
+    }
+
+    val F_fillx = object : TransformableCoreFunctionDeclaration(parent, "fillx", "fun fillx()") {
+
+        override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
+            return F_imp.getTypeConstraints(callExpression)
+        }
+
+        override fun transform(callExpression: ECallExpression): EExpression {
+            return when (callExpression.type.reference) {
+                Core.Vk.C_Packed, Core.Vk.C_Unpacked ->
+                    EArrayLiteralExpression(callExpression.location, callExpression.type, "'x")
+                else -> Messages.INTERNAL_ERROR.on(callExpression, "Unable to fill ${callExpression.type}")
+            }
+        }
+    }
+
+    val F_fillz = object : TransformableCoreFunctionDeclaration(parent, "fillz", "fun fillz()") {
+
+        override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
+            return F_imp.getTypeConstraints(callExpression)
+        }
+
+        override fun transform(callExpression: ECallExpression): EExpression {
+            return when (callExpression.type.reference) {
+                Core.Vk.C_Packed, Core.Vk.C_Unpacked ->
+                    EArrayLiteralExpression(callExpression.location, callExpression.type, "'z")
+                else -> Messages.INTERNAL_ERROR.on(callExpression, "Unable to fill ${callExpression.type}")
+            }
         }
     }
 
