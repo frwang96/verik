@@ -26,6 +26,7 @@ enum class KtBinaryOperatorKind {
     DIV,
     PLUS,
     MINUS,
+    RANGE,
     LT,
     LTEQ,
     GT,
@@ -51,6 +52,7 @@ enum class KtBinaryOperatorKind {
                 "DIV" -> DIV
                 "PLUS" -> PLUS
                 "MINUS" -> MINUS
+                "RANGE" -> RANGE
                 "LT" -> LT
                 "LTEQ" -> LTEQ
                 "GT" -> GT

@@ -22,6 +22,7 @@ import io.verik.compiler.ast.element.expression.common.EExpression
 import io.verik.compiler.ast.property.SvBinaryOperatorKind
 import io.verik.compiler.ast.property.SvUnaryOperatorKind
 import io.verik.compiler.constant.IntConstantEvaluator
+import io.verik.compiler.core.common.BasicCoreFunctionDeclaration
 import io.verik.compiler.core.common.BinaryCoreFunctionDeclaration
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreScope
@@ -43,6 +44,8 @@ object CoreKtInt : CoreScope(Core.Kt.C_Int) {
         "fun unaryMinus()",
         SvUnaryOperatorKind.MINUS
     )
+
+    val F_rangeTo_Int = BasicCoreFunctionDeclaration(parent, "rangeTo", "fun rangeTo(Int)", null)
 
     val F_plus_Int = object : BinaryCoreFunctionDeclaration(
         parent,

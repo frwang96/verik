@@ -38,6 +38,13 @@ class Int private constructor() {
     }
 
     /**
+     * Creates a range from this value to the specified [other] value.
+     */
+    operator fun rangeTo(other: Int): IntRange {
+        throw VerikException()
+    }
+
+    /**
      * Adds the [other] value to this value.
      */
     operator fun plus(other: Int): Int {
