@@ -19,10 +19,10 @@ package io.verik.compiler.reorder
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.EProject
 import io.verik.compiler.ast.element.declaration.common.EAbstractContainerClass
+import io.verik.compiler.ast.element.declaration.common.EAbstractProperty
 import io.verik.compiler.ast.element.declaration.common.EDeclaration
 import io.verik.compiler.ast.element.declaration.common.EFile
 import io.verik.compiler.ast.element.declaration.common.EPackage
-import io.verik.compiler.ast.element.declaration.common.EProperty
 import io.verik.compiler.ast.element.declaration.sv.EAbstractContainerComponent
 import io.verik.compiler.ast.element.declaration.sv.EModuleInterface
 import io.verik.compiler.ast.element.declaration.sv.ESvClass
@@ -97,10 +97,10 @@ class DependencyIndexerVisitor(
         if (reference is EDeclaration) processDependency(cls, reference)
     }
 
-    override fun visitProperty(property: EProperty) {
-        super.visitProperty(property)
-        val reference = property.type.reference
-        if (reference is EDeclaration) processDependency(property, reference)
+    override fun visitAbstractProperty(abstractProperty: EAbstractProperty) {
+        super.visitAbstractProperty(abstractProperty)
+        val reference = abstractProperty.type.reference
+        if (reference is EDeclaration) processDependency(abstractProperty, reference)
     }
 
     override fun visitReceiverExpression(receiverExpression: EReceiverExpression) {
