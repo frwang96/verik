@@ -29,6 +29,7 @@ import io.verik.compiler.core.declaration.kt.CoreKtFunctions
 import io.verik.compiler.core.declaration.kt.CoreKtInt
 import io.verik.compiler.core.declaration.kt.CoreKtIo
 import io.verik.compiler.core.declaration.kt.CoreKtRanges
+import io.verik.compiler.core.declaration.kt.CoreKtString
 import io.verik.compiler.core.declaration.kt.CoreKtText
 import io.verik.compiler.core.declaration.vk.CoreVkBoolean
 import io.verik.compiler.core.declaration.vk.CoreVkCardinal
@@ -100,6 +101,11 @@ object Core {
             val F_plus_Int = CoreKtDouble.F_plus_Int
             val F_plus_Double = CoreKtDouble.F_plus_Double
             val F_div_Int = CoreKtDouble.F_div_Int
+        }
+
+        object String {
+
+            val F_plus_Any = CoreKtString.F_plus_Any
         }
 
         object Io {
