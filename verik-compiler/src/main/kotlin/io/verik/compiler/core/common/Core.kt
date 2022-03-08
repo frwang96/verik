@@ -402,6 +402,7 @@ object Core {
         object CoverGroup {
 
             val F_sample = CoreVkCoverGroup.F_sample
+            val F_getCoverage = CoreVkCoverGroup.F_getCoverage
         }
 
         object CoverPoint {
