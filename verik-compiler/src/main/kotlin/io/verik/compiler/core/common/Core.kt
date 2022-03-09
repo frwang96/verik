@@ -31,6 +31,7 @@ import io.verik.compiler.core.declaration.kt.CoreKtIo
 import io.verik.compiler.core.declaration.kt.CoreKtRanges
 import io.verik.compiler.core.declaration.kt.CoreKtString
 import io.verik.compiler.core.declaration.kt.CoreKtText
+import io.verik.compiler.core.declaration.vk.CoreVkAssociativeArray
 import io.verik.compiler.core.declaration.vk.CoreVkBoolean
 import io.verik.compiler.core.declaration.vk.CoreVkCardinal
 import io.verik.compiler.core.declaration.vk.CoreVkClass
@@ -404,6 +405,12 @@ object Core {
             val F_add_E = CoreVkQueue.F_add_E
             val F_get_Int = CoreVkQueue.F_get_Int
             val F_size = CoreVkQueue.F_size
+        }
+
+        object AssociativeArray {
+
+            val F_set_K_V = CoreVkAssociativeArray.F_set_K_V
+            val F_get_K = CoreVkAssociativeArray.F_get_K
         }
 
         object Class {

@@ -307,7 +307,6 @@ object CoreVkSpecial : CoreScope(CorePackage.VK) {
         }
     }
 
-
     val F_cp_Any = object : TransformableCoreFunctionDeclaration(parent, "cp", "fun cp(Any)") {
 
         override fun transform(callExpression: ECallExpression): EExpression {
