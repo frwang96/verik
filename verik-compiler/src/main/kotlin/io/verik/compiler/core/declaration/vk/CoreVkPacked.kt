@@ -73,12 +73,7 @@ object CoreVkPacked : CoreScope(Core.Vk.C_Packed) {
         }
 
         override fun transform(callExpression: ECallExpression): EExpression {
-            return ESvArrayAccessExpression(
-                callExpression.location,
-                callExpression.type,
-                callExpression.receiver!!,
-                callExpression.valueArguments[0]
-            )
+            return F_get_Int.transform(callExpression)
         }
     }
 
@@ -129,19 +124,7 @@ object CoreVkPacked : CoreScope(Core.Vk.C_Packed) {
         }
 
         override fun transform(callExpression: ECallExpression): EExpression {
-            val receiver = ESvArrayAccessExpression(
-                callExpression.location,
-                callExpression.valueArguments[1].type.copy(),
-                callExpression.receiver!!,
-                callExpression.valueArguments[0]
-            )
-            return EKtBinaryExpression(
-                callExpression.location,
-                callExpression.type,
-                receiver,
-                callExpression.valueArguments[1],
-                KtBinaryOperatorKind.EQ
-            )
+            return F_set_Int_E.transform(callExpression)
         }
     }
 
