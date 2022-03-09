@@ -342,7 +342,10 @@ object DeclarationSerializer {
     fun serializeConstraint(constraint: EConstraint, serializeContext: SerializeContext) {
         serializeContext.appendLine("constraint ${constraint.name} {")
         serializeContext.indent {
-            constraint.body.statements.forEach { serializeContext.serializeAsStatement(it) }
+            constraint.body.statements.forEach {
+                serializeContext.serializeAsExpression(it)
+                serializeContext.appendLine(";")
+            }
         }
         serializeContext.label(constraint.body.endLocation) {
             serializeContext.appendLine("}")

@@ -216,6 +216,13 @@ fun c(vararg conditions: Boolean): Constraint {
 }
 
 /**
+ * Construct a randomization constraint from [conditions]. [conditions] will be injected as SystemVerilog.
+ */
+fun c(vararg conditions: String): Constraint {
+    throw VerikException()
+}
+
+/**
  * Construct a [CoverPoint] for [value].
  */
 fun cp(value: Any): CoverPoint {

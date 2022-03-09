@@ -242,7 +242,8 @@ object Core {
         val F_fill1 = CoreVkSpecial.F_fill1
         val F_fillx = CoreVkSpecial.F_fillx
         val F_fillz = CoreVkSpecial.F_fillz
-        val F_c = CoreVkSpecial.F_c
+        val F_c_Boolean = CoreVkSpecial.F_c_Boolean
+        val F_c_String = CoreVkSpecial.F_c_String
         val F_cp_Any = CoreVkSpecial.F_cp_Any
         val F_cp_Any_Function = CoreVkSpecial.F_cp_Any_Function
         val F_cc_Any = CoreVkSpecial.F_cc_Any

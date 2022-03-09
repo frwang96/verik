@@ -25,7 +25,7 @@ import io.verik.compiler.target.common.Target
 object CoreKtClasses : CoreScope(CorePackage.KT) {
 
     val C_Function = CoreClassDeclaration(parent, "Function", null, Target.C_Void)
-    val C_Any = CoreClassDeclaration(parent, "Any", null, null)
+    val C_Any = CoreClassDeclaration(parent, "Any", null, Target.C_Void)
     val C_Unit = CoreClassDeclaration(parent, "Unit", C_Any, Target.C_Void)
     val C_Nothing = CoreClassDeclaration(parent, "Nothing", null, Target.C_Void)
     val C_Enum = CoreClassDeclaration(parent, "Enum", C_Any, null)

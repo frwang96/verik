@@ -16,6 +16,7 @@
 
 package io.verik.compiler.transform.upper
 
+import io.verik.compiler.ast.element.declaration.sv.EConstraint
 import io.verik.compiler.ast.element.declaration.sv.ECoverBin
 import io.verik.compiler.ast.element.expression.common.ECallExpression
 import io.verik.compiler.ast.element.expression.common.EExpression
@@ -57,8 +58,16 @@ object InjectedExpressionTransformerStage : ProjectStage() {
 
         override fun visitCoverBin(coverBin: ECoverBin) {
             val injectedExpression = getInjectedExpression(coverBin.expression)
-            if (injectedExpression != null) {
-                coverBin.expression.replace(injectedExpression)
+            if (injectedExpression != null) coverBin.expression.replace(injectedExpression)
+        }
+
+        override fun visitConstraint(constraint: EConstraint) {
+            super.visitConstraint(constraint)
+            constraint.body.statements.forEach {
+                if (it.type.reference == Core.Kt.C_String) {
+                    val injectedExpression = getInjectedExpression(it)
+                    if (injectedExpression != null) it.replace(injectedExpression)
+                }
             }
         }
 
@@ -66,9 +75,7 @@ object InjectedExpressionTransformerStage : ProjectStage() {
             super.visitCallExpression(callExpression)
             if (callExpression.reference in listOf(Core.Vk.F_inj_String, Core.Vk.F_inji_String)) {
                 val injectedExpression = getInjectedExpression(callExpression.valueArguments[0])
-                if (injectedExpression != null) {
-                    callExpression.replace(injectedExpression)
-                }
+                if (injectedExpression != null) callExpression.replace(injectedExpression)
             }
         }
     }
