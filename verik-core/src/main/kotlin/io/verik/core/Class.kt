@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-@file:Suppress("unused")
+@file:Suppress("unused", "MemberVisibilityCanBePrivate")
 
 package io.verik.core
 
@@ -28,7 +28,7 @@ package io.verik.core
 abstract class Class {
 
     /**
-     * Randomize all [random][Rand] properties in the class subject to all enabled [constraints][Cons].
+     * Randomize all random properties in the class subject to all enabled [constraints][Cons].
      */
     fun randomize() {}
 

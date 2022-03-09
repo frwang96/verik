@@ -218,7 +218,10 @@ object DeclarationSerializer {
 
     fun serializeProperty(property: EProperty, serializeContext: SerializeContext) {
         if (property.isStatic) serializeContext.append("static ")
-        if (property.hasAnnotationEntry(AnnotationEntries.RAND)) serializeContext.append("rand ")
+        when {
+            property.hasAnnotationEntry(AnnotationEntries.RAND) -> serializeContext.append("rand ")
+            property.hasAnnotationEntry(AnnotationEntries.RANDC) -> serializeContext.append("randc ")
+        }
         serializePropertyTypeAndName(property, true, serializeContext)
         val initializer = property.initializer
         if (initializer != null) {
