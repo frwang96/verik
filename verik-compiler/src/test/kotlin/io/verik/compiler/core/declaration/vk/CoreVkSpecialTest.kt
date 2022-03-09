@@ -137,6 +137,35 @@ internal class CoreVkSpecialTest : CoreDeclarationTest() {
     }
 
     @Test
+    fun `serialize fill0 fill1 fillx fillz`() {
+        driveCoreDeclarationTest(
+            listOf(
+                Core.Vk.F_fill0,
+                Core.Vk.F_fill1,
+                Core.Vk.F_fillx,
+                Core.Vk.F_fillz
+            ),
+            """
+                var x: Packed<`8`, Ubit<`4`>> = nc()
+                fun f() {
+                    x = fill0()
+                    x = fill1()
+                    x = fillx()
+                    x = fillz()
+                }
+            """.trimIndent(),
+            """
+                function automatic void f();
+                    x = '{default:'0};
+                    x = '{default:'1};
+                    x = '{default:'x};
+                    x = '{default:'z};
+                endfunction : f
+            """.trimIndent()
+        )
+    }
+
+    @Test
     fun `serialize unknown floating`() {
         driveCoreDeclarationTest(
             listOf(

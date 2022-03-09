@@ -67,6 +67,9 @@ object ArrayAccessExpressionReducerStage : ProjectStage() {
             GetReducerEntry(Core.Vk.C_Queue, listOf(Core.Kt.C_Int), Core.Vk.Queue.F_get_Int)
         )
         getReducerEntries.add(
+            GetReducerEntry(Core.Vk.C_AssociativeArray, listOf(Core.Kt.C_Any), Core.Vk.AssociativeArray.F_get_K)
+        )
+        getReducerEntries.add(
             GetReducerEntry(Core.Jv.Util.C_ArrayList, listOf(Core.Kt.C_Int), Core.Jv.Util.ArrayList.F_get_Int)
         )
 
@@ -144,6 +147,14 @@ object ArrayAccessExpressionReducerStage : ProjectStage() {
         )
         setReducerEntries.add(
             SetReducerEntry(
+                Core.Vk.C_AssociativeArray,
+                listOf(Core.Kt.C_Any),
+                Core.Kt.C_Any.toType(),
+                Core.Vk.AssociativeArray.F_set_K_V
+            )
+        )
+        setReducerEntries.add(
+            SetReducerEntry(
                 Core.Jv.Util.C_ArrayList,
                 listOf(Core.Kt.C_Int),
                 Core.Kt.C_Any.toType(),
@@ -167,7 +178,8 @@ object ArrayAccessExpressionReducerStage : ProjectStage() {
             indexDeclarations: List<Declaration>
         ): Boolean {
             return this.arrayDeclaration == arrayDeclaration &&
-                this.indexDeclarations == indexDeclarations
+                this.indexDeclarations.size == indexDeclarations.size &&
+                this.indexDeclarations.zip(indexDeclarations).all { it.first in listOf(it.second, Core.Kt.C_Any) }
         }
     }
 
@@ -184,7 +196,8 @@ object ArrayAccessExpressionReducerStage : ProjectStage() {
             expressionType: Type
         ): Boolean {
             return this.arrayDeclaration == arrayDeclaration &&
-                this.indexDeclarations == indexDeclarations &&
+                this.indexDeclarations.size == indexDeclarations.size &&
+                this.indexDeclarations.zip(indexDeclarations).all { it.first in listOf(it.second, Core.Kt.C_Any) } &&
                 expressionType.isSubtype(this.expressionType)
         }
     }

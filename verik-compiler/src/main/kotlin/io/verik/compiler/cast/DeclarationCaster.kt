@@ -212,6 +212,13 @@ object DeclarationCaster {
         val superTypeCallExpression = if (!constructor.hasImplicitDelegationCall()) {
             castSuperTypeCallExpression(constructor.getDelegationCall(), castContext)
         } else null
+        if (superTypeCallExpression != null) {
+            // TODO more general scheme required for multiple inheritance
+            val superTypeListEntry = constructor.getContainingClassOrObject().superTypeListEntries[0]
+            val superType = castContext.castType(superTypeListEntry.typeReference!!)
+            superTypeCallExpression.type = superType.copy()
+            superTypeCallExpression.typeArguments = superType.arguments
+        }
 
         castedSecondaryConstructor.fill(
             type,

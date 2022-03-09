@@ -160,28 +160,28 @@ fun <N : `*`> sz(): Sbit<N> {
 }
 
 /**
- * (UNIMPLEMENTED) Construct a value of type [T] with all bits set to false.
+ * Construct a value of type [T] with all bits set to false.
  */
 fun <T> fill0(): T {
     throw VerikException()
 }
 
 /**
- * (UNIMPLEMENTED) Construct a value of type [T] with all bits set to true.
+ * Construct a value of type [T] with all bits set to true.
  */
 fun <T> fill1(): T {
     throw VerikException()
 }
 
 /**
- * (UNIMPLEMENTED) Construct a value of type [T] with all bits set to unknown.
+ * Construct a value of type [T] with all bits set to unknown.
  */
 fun <T> fillx(): T {
     throw VerikException()
 }
 
 /**
- * (UNIMPLEMENTED) Construct a value of type [T] with all bits set to floating.
+ * Construct a value of type [T] with all bits set to floating.
  */
 fun <T> fillz(): T {
     throw VerikException()
@@ -212,6 +212,13 @@ fun q(value: Boolean): Sequence {
  * Construct a randomization constraint from [conditions].
  */
 fun c(vararg conditions: Boolean): Constraint {
+    throw VerikException()
+}
+
+/**
+ * Construct a randomization constraint from [conditions]. [conditions] will be injected as SystemVerilog.
+ */
+fun c(vararg conditions: String): Constraint {
     throw VerikException()
 }
 

@@ -178,7 +178,7 @@ internal class DeclarationCasterTest : BaseTest() {
         driveElementTest(
             """
                 open class C0<T>(x: Int)
-                class C1 : C0<Int> {
+                class C1 : C0<Ubit<`8`>> {
                     @Suppress("ConvertSecondaryConstructorToPrimary")
                     constructor(x: Int): super(0)
                 }
@@ -186,10 +186,10 @@ internal class DeclarationCasterTest : BaseTest() {
             CasterStage::class,
             """
                 KtClass(
-                    C1, C1, C0<Int>, [],
+                    C1, C1, C0<Ubit<`8`>>, [],
                     [SecondaryConstructor(
                         C1, C1, BlockExpression(*), [KtValueParameter(x, Int, null, 0, 0)],
-                        CallExpression(C0<Int>, C0, null, 0, [ConstantExpression(*)], [Int])
+                        CallExpression(C0<Ubit<`8`>>, C0, null, 0, [ConstantExpression(*)], [Ubit<`8`>])
                     )],
                     null, 0, 0
                 )

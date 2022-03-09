@@ -45,6 +45,7 @@ object TargetSystem : TargetScope(TargetPackage) {
     val F_name = PrimitiveTargetFunctionDeclaration(parent, "name")
     val F_randomize = PrimitiveTargetFunctionDeclaration(parent, "randomize")
     val F_sample = PrimitiveTargetFunctionDeclaration(parent, "sample")
+    val F_get_coverage = PrimitiveTargetFunctionDeclaration(parent, "get_coverage")
 
     val P_root = TargetPropertyDeclaration(parent, "\$root")
 }

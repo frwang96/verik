@@ -118,6 +118,18 @@ internal class ExpressionCasterTest : BaseTest() {
     }
 
     @Test
+    fun `reference expression with enum entry`() {
+        driveElementTest(
+            """
+                enum class E(val value: Ubit<`2`>) { A(u(0b00)) }
+                var x = E.A.value
+            """.trimIndent(),
+            CasterStage::class,
+            "ReferenceExpression(Ubit<`*`>, value, ReferenceExpression(E, A, null, 0), 0)"
+        ) { it.findExpression("x") }
+    }
+
+    @Test
     fun `call expression simple`() {
         driveElementTest(
             """

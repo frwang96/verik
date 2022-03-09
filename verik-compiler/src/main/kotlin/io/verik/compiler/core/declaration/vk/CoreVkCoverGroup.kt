@@ -24,4 +24,6 @@ import io.verik.compiler.target.common.Target
 object CoreVkCoverGroup : CoreScope(Core.Vk.C_CoverGroup) {
 
     val F_sample = BasicCoreFunctionDeclaration(parent, "sample", "fun sample()", Target.F_sample)
+
+    val F_getCoverage = BasicCoreFunctionDeclaration(parent, "getCoverage", "fun getCoverage()", Target.F_get_coverage)
 }

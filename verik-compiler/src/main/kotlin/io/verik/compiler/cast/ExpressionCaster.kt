@@ -17,6 +17,7 @@
 package io.verik.compiler.cast
 
 import io.verik.compiler.ast.common.cast
+import io.verik.compiler.ast.element.declaration.common.EEnumEntry
 import io.verik.compiler.ast.element.declaration.common.EProperty
 import io.verik.compiler.ast.element.declaration.kt.EKtValueParameter
 import io.verik.compiler.ast.element.expression.common.EBlockExpression
@@ -65,6 +66,7 @@ import org.jetbrains.kotlin.psi.KtSimpleNameExpression
 import org.jetbrains.kotlin.psi.KtSuperExpression
 import org.jetbrains.kotlin.psi.KtThisExpression
 import org.jetbrains.kotlin.psi.KtWhileExpression
+import org.jetbrains.kotlin.resolve.descriptorUtil.classValueType
 import org.jetbrains.kotlin.resolve.lazy.descriptors.LazyClassDescriptor
 
 object ExpressionCaster {
@@ -157,7 +159,13 @@ object ExpressionCaster {
         }
         val receiver = when (receiverReferenceTarget) {
             is PackageViewDescriptor -> null
-            is LazyClassDescriptor -> null
+            is LazyClassDescriptor -> {
+                val enumEntry = castContext.resolveDeclaration(receiverReferenceTarget, expression)
+                if (enumEntry is EEnumEntry) {
+                    val enumEntryType = castContext.castType(receiverReferenceTarget.classValueType!!, expression)
+                    EReferenceExpression(location, enumEntryType, enumEntry, null, false)
+                } else null
+            }
             else -> castContext.castExpression(expression.receiverExpression)
         }
 

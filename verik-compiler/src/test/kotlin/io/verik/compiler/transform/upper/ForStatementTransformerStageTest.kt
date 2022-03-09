@@ -22,6 +22,26 @@ import org.junit.jupiter.api.Test
 internal class ForStatementTransformerStageTest : BaseTest() {
 
     @Test
+    fun `transform forEach rangeTo`() {
+        driveTextFileTest(
+            """
+                fun f() {
+                    @Suppress("ForEachParameterNotUsed")
+                    (0 .. 7).forEach { }
+                }
+            """.trimIndent(),
+            """
+                function automatic void f();
+                    for (int __0 = 0; __0 <= 7; __0++) begin
+                        int it;
+                        it = __0;
+                    end
+                endfunction : f
+            """.trimIndent()
+        ) { it.nonRootPackageTextFiles[0] }
+    }
+
+    @Test
     fun `transform forEach until`() {
         driveTextFileTest(
             """

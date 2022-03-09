@@ -59,15 +59,14 @@ object ForStatementTransformerStage : ProjectStage() {
                     .cast<ESvValueParameter>()
                 val receiver = callExpression.receiver!!
                 val forStatement = when {
-                    receiver is ECallExpression && receiver.reference == Core.Kt.Ranges.F_until_Int -> {
+                    receiver is ECallExpression && receiver.reference == Core.Kt.Int.F_rangeTo_Int ->
+                        transformForStatementRangeTo(functionLiteral, valueParameter, receiver)
+                    receiver is ECallExpression && receiver.reference == Core.Kt.Ranges.F_until_Int ->
                         transformForStatementUntil(functionLiteral, valueParameter, receiver)
-                    }
-                    receiver is EReferenceExpression && receiver.type.reference == Core.Vk.C_Queue -> {
+                    receiver is EReferenceExpression && receiver.type.reference == Core.Vk.C_Queue ->
                         transformForStatementQueue(functionLiteral, valueParameter, receiver)
-                    }
-                    receiver is EReferenceExpression && receiver.type.reference == Core.Jv.Util.C_ArrayList -> {
+                    receiver is EReferenceExpression && receiver.type.reference == Core.Jv.Util.C_ArrayList ->
                         transformForStatementArrayList(functionLiteral, valueParameter, receiver)
-                    }
                     else -> null
                 }
                 if (forStatement != null) {
@@ -75,6 +74,22 @@ object ForStatementTransformerStage : ProjectStage() {
                 } else {
                     Messages.INTERNAL_ERROR.on(callExpression, "Unable to transform call expression into for statement")
                 }
+            }
+        }
+
+        private fun transformForStatementRangeTo(
+            functionLiteral: EFunctionLiteralExpression,
+            valueParameter: ESvValueParameter,
+            callExpression: ECallExpression
+        ): ESvForStatement {
+            return transformForStatement(
+                functionLiteral,
+                valueParameter,
+                callExpression.receiver!!,
+                callExpression.valueArguments[0],
+                true
+            ) {
+                EReferenceExpression.of(it)
             }
         }
 
@@ -87,7 +102,8 @@ object ForStatementTransformerStage : ProjectStage() {
                 functionLiteral,
                 valueParameter,
                 callExpression.receiver!!,
-                callExpression.valueArguments[0]
+                callExpression.valueArguments[0],
+                false
             ) {
                 EReferenceExpression.of(it)
             }
@@ -112,7 +128,8 @@ object ForStatementTransformerStage : ProjectStage() {
                 functionLiteral,
                 valueParameter,
                 startExpression,
-                endExpression
+                endExpression,
+                false
             ) {
                 ECallExpression(
                     valueParameter.location,
@@ -143,7 +160,8 @@ object ForStatementTransformerStage : ProjectStage() {
                 functionLiteral,
                 valueParameter,
                 startExpression,
-                endExpression
+                endExpression,
+                false
             ) {
                 ECallExpression(
                     valueParameter.location,
@@ -162,6 +180,7 @@ object ForStatementTransformerStage : ProjectStage() {
             valueParameter: ESvValueParameter,
             startExpression: EExpression,
             endExpression: EExpression,
+            isEndInclusive: Boolean,
             elementExpressionBuilder: (EProperty) -> EExpression
         ): ESvForStatement {
             val indexProperty = EProperty.temporary(
@@ -176,7 +195,7 @@ object ForStatementTransformerStage : ProjectStage() {
                 Core.Kt.C_Boolean.toType(),
                 indexReferenceExpression,
                 endExpression,
-                KtBinaryOperatorKind.LT
+                if (isEndInclusive) KtBinaryOperatorKind.LTEQ else KtBinaryOperatorKind.LT
             )
             val iteration = EKtUnaryExpression(
                 startExpression.location,

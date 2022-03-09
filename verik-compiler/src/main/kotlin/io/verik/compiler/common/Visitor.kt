@@ -97,6 +97,7 @@ import io.verik.compiler.ast.element.expression.kt.EKtForStatement
 import io.verik.compiler.ast.element.expression.kt.EKtUnaryExpression
 import io.verik.compiler.ast.element.expression.kt.EStringTemplateExpression
 import io.verik.compiler.ast.element.expression.kt.EWhenExpression
+import io.verik.compiler.ast.element.expression.sv.EArrayLiteralExpression
 import io.verik.compiler.ast.element.expression.sv.ECaseStatement
 import io.verik.compiler.ast.element.expression.sv.EConcatenationExpression
 import io.verik.compiler.ast.element.expression.sv.EConstantPartSelectExpression
@@ -411,6 +412,10 @@ abstract class Visitor {
 
     open fun visitStructLiteralExpression(structLiteralExpression: EStructLiteralExpression) {
         visitExpression(structLiteralExpression)
+    }
+
+    open fun visitArrayLiteralExpression(arrayLiteralExpression: EArrayLiteralExpression) {
+        visitExpression(arrayLiteralExpression)
     }
 
     open fun visitThisExpression(thisExpression: EThisExpression) {

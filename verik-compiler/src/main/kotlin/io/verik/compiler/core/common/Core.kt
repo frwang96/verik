@@ -29,7 +29,9 @@ import io.verik.compiler.core.declaration.kt.CoreKtFunctions
 import io.verik.compiler.core.declaration.kt.CoreKtInt
 import io.verik.compiler.core.declaration.kt.CoreKtIo
 import io.verik.compiler.core.declaration.kt.CoreKtRanges
+import io.verik.compiler.core.declaration.kt.CoreKtString
 import io.verik.compiler.core.declaration.kt.CoreKtText
+import io.verik.compiler.core.declaration.vk.CoreVkAssociativeArray
 import io.verik.compiler.core.declaration.vk.CoreVkBoolean
 import io.verik.compiler.core.declaration.vk.CoreVkCardinal
 import io.verik.compiler.core.declaration.vk.CoreVkClass
@@ -86,6 +88,7 @@ object Core {
 
             val F_unaryPlus = CoreKtInt.F_unaryPlus
             val F_unaryMinus = CoreKtInt.F_unaryMinus
+            val F_rangeTo_Int = CoreKtInt.F_rangeTo_Int
             val F_plus_Int = CoreKtInt.F_plus_Int
             val F_minus_Int = CoreKtInt.F_minus_Int
             val F_times_Int = CoreKtInt.F_times_Int
@@ -99,6 +102,11 @@ object Core {
             val F_plus_Int = CoreKtDouble.F_plus_Int
             val F_plus_Double = CoreKtDouble.F_plus_Double
             val F_div_Int = CoreKtDouble.F_div_Int
+        }
+
+        object String {
+
+            val F_plus_Any = CoreKtString.F_plus_Any
         }
 
         object Io {
@@ -231,7 +239,12 @@ object Core {
         val F_s_String = CoreVkSpecial.F_s_String
         val F_s0 = CoreVkSpecial.F_s0
         val F_s1 = CoreVkSpecial.F_s1
-        val F_c = CoreVkSpecial.F_c
+        val F_fill0 = CoreVkSpecial.F_fill0
+        val F_fill1 = CoreVkSpecial.F_fill1
+        val F_fillx = CoreVkSpecial.F_fillx
+        val F_fillz = CoreVkSpecial.F_fillz
+        val F_c_Boolean = CoreVkSpecial.F_c_Boolean
+        val F_c_String = CoreVkSpecial.F_c_String
         val F_cp_Any = CoreVkSpecial.F_cp_Any
         val F_cp_Any_Function = CoreVkSpecial.F_cp_Any_Function
         val F_cc_Any = CoreVkSpecial.F_cc_Any
@@ -394,6 +407,12 @@ object Core {
             val F_size = CoreVkQueue.F_size
         }
 
+        object AssociativeArray {
+
+            val F_set_K_V = CoreVkAssociativeArray.F_set_K_V
+            val F_get_K = CoreVkAssociativeArray.F_get_K
+        }
+
         object Class {
 
             val F_randomize = CoreVkClass.F_randomize
@@ -402,6 +421,7 @@ object Core {
         object CoverGroup {
 
             val F_sample = CoreVkCoverGroup.F_sample
+            val F_getCoverage = CoreVkCoverGroup.F_getCoverage
         }
 
         object CoverPoint {

@@ -30,4 +30,11 @@ abstract class CoverGroup {
     fun sample() {
         throw VerikException()
     }
+
+    /**
+     * Returns the coverage as a percentage value.
+     */
+    fun getCoverage() {
+        throw VerikException()
+    }
 }
