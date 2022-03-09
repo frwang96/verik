@@ -35,10 +35,10 @@ abstract class Class {
     /**
      * Object configuration that should happen before a call to [randomize].
      */
-    open fun preRandomize() {}
+    protected open fun preRandomize() {}
 
     /**
      * Object configuration that should happen after a call to [randomize].
      */
-    open fun postRandomize() {}
+    protected open fun postRandomize() {}
 }

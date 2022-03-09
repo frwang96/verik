@@ -416,6 +416,8 @@ object Core {
         object Class {
 
             val F_randomize = CoreVkClass.F_randomize
+            val F_preRandomize = CoreVkClass.F_preRandomize
+            val F_postRandomize = CoreVkClass.F_postRandomize
         }
 
         object CoverGroup {

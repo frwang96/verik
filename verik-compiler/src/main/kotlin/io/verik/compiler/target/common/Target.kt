@@ -60,6 +60,8 @@ object Target {
     val F_wait = TargetSystem.F_wait
     val F_name = TargetSystem.F_name
     val F_randomize = TargetSystem.F_randomize
+    val F_pre_randomize = TargetSystem.F_pre_randomize
+    val F_post_randomize = TargetSystem.F_post_randomize
     val F_sample = TargetSystem.F_sample
     val F_get_coverage = TargetSystem.F_get_coverage
 

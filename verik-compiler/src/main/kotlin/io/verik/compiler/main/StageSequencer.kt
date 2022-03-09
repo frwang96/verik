@@ -108,6 +108,7 @@ import io.verik.compiler.transform.pre.TypeAliasReducerStage
 import io.verik.compiler.transform.pre.UnaryExpressionReducerStage
 import io.verik.compiler.transform.upper.CaseStatementTransformerStage
 import io.verik.compiler.transform.upper.CastTransformerStage
+import io.verik.compiler.transform.upper.CoreFunctionOverrideTransformerStage
 import io.verik.compiler.transform.upper.EnumPropertyReferenceTransformerStage
 import io.verik.compiler.transform.upper.ForStatementTransformerStage
 import io.verik.compiler.transform.upper.IfAndWhenExpressionUnlifterStage
@@ -194,6 +195,7 @@ object StageSequencer {
         stageSequence.add(StageType.INTERPRET, ModulePortParentResolverStage)
         stageSequence.add(StageType.INTERPRET, FileSplitterStage)
 
+        stageSequence.add(StageType.UPPER_TRANSFORM, CoreFunctionOverrideTransformerStage)
         stageSequence.add(StageType.UPPER_TRANSFORM, InjectedExpressionTransformerStage)
         stageSequence.add(StageType.UPPER_TRANSFORM, ToStringTransformerStage)
         stageSequence.add(StageType.UPPER_TRANSFORM, EnumPropertyReferenceTransformerStage)

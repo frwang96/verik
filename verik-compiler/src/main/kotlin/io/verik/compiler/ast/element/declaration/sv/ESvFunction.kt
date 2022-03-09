@@ -33,7 +33,7 @@ class ESvFunction(
     override var typeParameters: ArrayList<ETypeParameter>,
     override var valueParameters: ArrayList<ESvValueParameter>,
     override val isStatic: Boolean,
-    val isVirtual: Boolean
+    var isVirtual: Boolean
 ) : ESvAbstractFunction() {
 
     init {
