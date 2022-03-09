@@ -30,7 +30,7 @@ object AnnotationEntries {
     val RAND = AnnotationEntry("io.verik.core.Rand")
     val RANDC = AnnotationEntry("io.verik.core.Randc")
     val CONS = AnnotationEntry("io.verik.core.Cons")
-    val Cover = AnnotationEntry("io.verik.core.Cover")
+    val COVER = AnnotationEntry("io.verik.core.Cover")
     val COM = AnnotationEntry("io.verik.core.Com")
     val SEQ = AnnotationEntry("io.verik.core.Seq")
     val RUN = AnnotationEntry("io.verik.core.Run")

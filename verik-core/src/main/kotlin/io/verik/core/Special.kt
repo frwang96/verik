@@ -249,3 +249,17 @@ fun cc(vararg cover_point: CoverPoint): CoverCross {
 fun cc(vararg cover_point: CoverPoint, config: CoverPoint.(CoverPoint) -> Unit): CoverCross {
     throw VerikException()
 }
+
+/**
+ * Instantiate a [Cluster] of type [T] and size [N].
+ */
+fun <N : `*`, T> cluster(instantiator: (Int) -> T): Cluster<N, T> {
+    throw VerikException()
+}
+
+/**
+ * Instantiate [T] if the cardinal [X] takes the value one. [X] must take the value of either zero or one.
+ */
+fun <X : `*`, T> optional(instantiator: () -> T): T? {
+    throw VerikException()
+}

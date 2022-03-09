@@ -23,17 +23,3 @@ package io.verik.core
  * [@Make][Make] annotation.
  */
 abstract class Component
-
-/**
- * (UNIMPLEMENTED) Instantiate a [Cluster] of components [C] of size [N].
- */
-fun <N : `*`, C : Component> cluster(instantiator: (Int) -> C): Cluster<N, C> {
-    throw VerikException()
-}
-
-/**
- * Instantiate component [C] if the cardinal [X] takes the value one. [X] must take the value of either zero or one.
- */
-fun <X : `*`, C : Component> optional(instantiator: () -> C): C? {
-    throw VerikException()
-}

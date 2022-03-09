@@ -39,6 +39,7 @@ import io.verik.compiler.ast.property.KtBinaryOperatorKind
 import io.verik.compiler.ast.property.KtUnaryOperatorKind
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core
+import io.verik.compiler.core.common.CoreConstructorDeclaration
 import io.verik.compiler.core.common.CoreFunctionDeclaration
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.message.Messages
@@ -230,9 +231,20 @@ object TypeConstraintCollector {
 
         override fun visitCallExpression(callExpression: ECallExpression) {
             super.visitCallExpression(callExpression)
-            val reference = callExpression.reference
-            if (reference is CoreFunctionDeclaration) {
-                typeConstraints.addAll(reference.getTypeConstraints(callExpression))
+            when (val reference = callExpression.reference) {
+                is CoreFunctionDeclaration -> {
+                    typeConstraints.addAll(reference.getTypeConstraints(callExpression))
+                }
+                is CoreConstructorDeclaration -> {
+                    callExpression.typeArguments.indices.forEach {
+                        val typeConstraint = TypeConstraint(
+                            TypeConstraintKind.EQ_INOUT,
+                            TypeAdapter.ofElement(callExpression, it),
+                            TypeAdapter.ofTypeArgument(callExpression, it)
+                        )
+                        typeConstraints.add(typeConstraint)
+                    }
+                }
             }
         }
 
