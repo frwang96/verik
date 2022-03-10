@@ -185,6 +185,10 @@ object ExpressionSerializer {
         serializeContext.append("super")
     }
 
+    fun serializeBreakStatement(serializeContext: SerializeContext) {
+        serializeContext.appendLine("break;")
+    }
+
     fun serializeReturnStatement(returnStatement: EReturnStatement, serializeContext: SerializeContext) {
         val expression = returnStatement.expression
         if (expression == null) {

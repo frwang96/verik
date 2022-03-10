@@ -601,9 +601,11 @@ internal class DeclarationSerializerTest : BaseTest() {
                 val x = cluster<`8`, Int> { it }
             """.trimIndent(),
             """
-                for (genvar it = 0; it < 8; it++) begin : x
-                    int gen = it;
-                end : x
+                generate
+                    for (genvar it = 0; it < 8; it++) begin : x
+                        int gen = it;
+                    end : x
+                endgenerate
             """.trimIndent()
         ) { it.nonRootPackageTextFiles[0] }
     }

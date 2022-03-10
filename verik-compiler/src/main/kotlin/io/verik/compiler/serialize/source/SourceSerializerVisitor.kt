@@ -45,6 +45,7 @@ import io.verik.compiler.ast.element.declaration.sv.ESvValueParameter
 import io.verik.compiler.ast.element.declaration.sv.ETask
 import io.verik.compiler.ast.element.declaration.sv.ETypeDefinition
 import io.verik.compiler.ast.element.expression.common.EBlockExpression
+import io.verik.compiler.ast.element.expression.common.EBreakStatement
 import io.verik.compiler.ast.element.expression.common.ECallExpression
 import io.verik.compiler.ast.element.expression.common.EConstantExpression
 import io.verik.compiler.ast.element.expression.common.EExpression
@@ -292,6 +293,10 @@ class SourceSerializerVisitor(
 
     override fun visitSuperExpression(superExpression: ESuperExpression) {
         ExpressionSerializer.serializeSuperExpression(serializeContext)
+    }
+
+    override fun visitBreakStatement(breakStatement: EBreakStatement) {
+        ExpressionSerializer.serializeBreakStatement(serializeContext)
     }
 
     override fun visitReturnStatement(returnStatement: EReturnStatement) {

@@ -357,14 +357,25 @@ object DeclarationSerializer {
     }
 
     fun serializeGenerateForBlock(generateForBlock: EGenerateForBlock, serializeContext: SerializeContext) {
-        val indexName = generateForBlock.indexProperty.name
-        serializeContext.append("for (genvar $indexName = 0; $indexName < ${generateForBlock.size}; $indexName++)")
-        serializeContext.appendLine(" begin : ${generateForBlock.name}")
-        serializeContext.indent {
-            serializeContext.serialize(generateForBlock.declaration)
+        fun serializeBody() {
+            val indexName = generateForBlock.indexProperty.name
+            serializeContext.append("for (genvar $indexName = 0; $indexName < ${generateForBlock.size}; $indexName++)")
+            serializeContext.appendLine(" begin : ${generateForBlock.name}")
+            serializeContext.indent {
+                serializeContext.serialize(generateForBlock.declaration)
+            }
+            serializeContext.label(generateForBlock.endLocation) {
+                serializeContext.appendLine("end : ${generateForBlock.name}")
+            }
         }
-        serializeContext.label(generateForBlock.endLocation) {
-            serializeContext.appendLine("end : ${generateForBlock.name}")
+        if (generateForBlock.parent is EGenerateForBlock) {
+            serializeBody()
+        } else {
+            serializeContext.appendLine("generate")
+            serializeContext.indent { serializeBody() }
+            serializeContext.label(generateForBlock.endLocation) {
+                serializeContext.appendLine("endgenerate")
+            }
         }
     }
 

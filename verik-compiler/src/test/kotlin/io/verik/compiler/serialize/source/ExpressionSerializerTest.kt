@@ -192,6 +192,26 @@ internal class ExpressionSerializerTest : BaseTest() {
     }
 
     @Test
+    fun `break statement`() {
+        driveTextFileTest(
+            """
+                fun f() {
+                    for (i in 0 until 1) { break }
+                }
+            """.trimIndent(),
+            """
+                function automatic void f();
+                    for (int __0 = 0; __0 < 1; __0++) begin
+                        int i;
+                        i = __0;
+                        break;
+                    end
+                endfunction : f
+            """.trimIndent()
+        ) { it.nonRootPackageTextFiles[0] }
+    }
+
+    @Test
     fun `return statement`() {
         driveTextFileTest(
             """

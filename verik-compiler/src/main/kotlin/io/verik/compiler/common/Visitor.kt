@@ -75,6 +75,7 @@ import io.verik.compiler.ast.element.expression.common.EAbstractArrayAccessExpre
 import io.verik.compiler.ast.element.expression.common.EAbstractBinaryExpression
 import io.verik.compiler.ast.element.expression.common.EAbstractContainerExpression
 import io.verik.compiler.ast.element.expression.common.EBlockExpression
+import io.verik.compiler.ast.element.expression.common.EBreakStatement
 import io.verik.compiler.ast.element.expression.common.ECallExpression
 import io.verik.compiler.ast.element.expression.common.EConstantExpression
 import io.verik.compiler.ast.element.expression.common.EExpression
@@ -428,6 +429,10 @@ abstract class Visitor {
 
     open fun visitSuperExpression(superExpression: ESuperExpression) {
         visitExpression(superExpression)
+    }
+
+    open fun visitBreakStatement(breakStatement: EBreakStatement) {
+        visitExpression(breakStatement)
     }
 
     open fun visitReturnStatement(returnStatement: EReturnStatement) {

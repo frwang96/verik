@@ -21,6 +21,7 @@ import io.verik.compiler.ast.element.declaration.common.EEnumEntry
 import io.verik.compiler.ast.element.declaration.common.EProperty
 import io.verik.compiler.ast.element.declaration.kt.EKtValueParameter
 import io.verik.compiler.ast.element.expression.common.EBlockExpression
+import io.verik.compiler.ast.element.expression.common.EBreakStatement
 import io.verik.compiler.ast.element.expression.common.ECallExpression
 import io.verik.compiler.ast.element.expression.common.EConstantExpression
 import io.verik.compiler.ast.element.expression.common.EExpression
@@ -48,6 +49,7 @@ import org.jetbrains.kotlin.psi.KtArrayAccessExpression
 import org.jetbrains.kotlin.psi.KtBinaryExpression
 import org.jetbrains.kotlin.psi.KtBinaryExpressionWithTypeRHS
 import org.jetbrains.kotlin.psi.KtBlockExpression
+import org.jetbrains.kotlin.psi.KtBreakExpression
 import org.jetbrains.kotlin.psi.KtCallExpression
 import org.jetbrains.kotlin.psi.KtConstantExpression
 import org.jetbrains.kotlin.psi.KtContainerNodeForControlStructureBody
@@ -213,6 +215,12 @@ object ExpressionCaster {
         val location = expression.location()
         val type = castContext.castType(expression)
         return ESuperExpression(location, type)
+    }
+
+    fun castBreakStatement(expression: KtBreakExpression, castContext: CastContext): EBreakStatement {
+        val location = expression.location()
+        val type = castContext.castType(expression)
+        return EBreakStatement(location, type)
     }
 
     fun castReturnStatement(expression: KtReturnExpression, castContext: CastContext): EReturnStatement {

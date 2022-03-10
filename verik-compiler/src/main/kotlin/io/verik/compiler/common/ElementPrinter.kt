@@ -58,6 +58,7 @@ import io.verik.compiler.ast.element.declaration.sv.ESvValueParameter
 import io.verik.compiler.ast.element.declaration.sv.ETask
 import io.verik.compiler.ast.element.declaration.sv.ETypeDefinition
 import io.verik.compiler.ast.element.expression.common.EBlockExpression
+import io.verik.compiler.ast.element.expression.common.EBreakStatement
 import io.verik.compiler.ast.element.expression.common.ECallExpression
 import io.verik.compiler.ast.element.expression.common.EConstantExpression
 import io.verik.compiler.ast.element.expression.common.EIfExpression
@@ -590,6 +591,12 @@ class ElementPrinter : Visitor() {
     override fun visitSuperExpression(superExpression: ESuperExpression) {
         build("SuperExpression") {
             build(superExpression.type.toString())
+        }
+    }
+
+    override fun visitBreakStatement(breakStatement: EBreakStatement) {
+        build("BreakStatement") {
+            build(breakStatement.type.toString())
         }
     }
 
