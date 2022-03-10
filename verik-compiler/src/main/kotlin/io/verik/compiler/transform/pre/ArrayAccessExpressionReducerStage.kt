@@ -70,6 +70,9 @@ object ArrayAccessExpressionReducerStage : ProjectStage() {
             GetReducerEntry(Core.Vk.C_AssociativeArray, listOf(Core.Kt.C_Any), Core.Vk.AssociativeArray.F_get_K)
         )
         getReducerEntries.add(
+            GetReducerEntry(Core.Vk.C_Cluster, listOf(Core.Kt.C_Int), Core.Vk.Cluster.F_get_Int)
+        )
+        getReducerEntries.add(
             GetReducerEntry(Core.Jv.Util.C_ArrayList, listOf(Core.Kt.C_Int), Core.Jv.Util.ArrayList.F_get_Int)
         )
 

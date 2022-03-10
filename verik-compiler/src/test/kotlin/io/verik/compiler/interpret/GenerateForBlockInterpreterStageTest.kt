@@ -18,6 +18,7 @@ package io.verik.compiler.interpret
 
 import io.verik.compiler.test.BaseTest
 import io.verik.compiler.test.findDeclaration
+import io.verik.compiler.test.findExpression
 import org.junit.jupiter.api.Test
 
 internal class GenerateForBlockInterpreterStageTest : BaseTest() {
@@ -36,5 +37,22 @@ internal class GenerateForBlockInterpreterStageTest : BaseTest() {
                 )
             """.trimIndent()
         ) { it.findDeclaration("x") }
+    }
+
+    @Test
+    fun `transform reference cluster property`() {
+        driveElementTest(
+            """
+                val x = cluster<`8`, Int> { it }
+                val y = x[0]
+            """.trimIndent(),
+            GenerateForBlockInterpreterStage::class,
+            """
+                ReferenceExpression(
+                    Int, gen,
+                    CallExpression(Int, get, ReferenceExpression(Cluster<`8`, Int>, x, null, 0), 0, [*], []), 0
+                )
+            """.trimIndent()
+        ) { it.findExpression("y") }
     }
 }

@@ -16,10 +16,13 @@
 
 package io.verik.compiler.interpret
 
+import io.verik.compiler.ast.common.cast
 import io.verik.compiler.ast.element.declaration.common.EProperty
 import io.verik.compiler.ast.element.declaration.sv.EGenerateForBlock
 import io.verik.compiler.ast.element.expression.common.ECallExpression
+import io.verik.compiler.ast.element.expression.common.EReferenceExpression
 import io.verik.compiler.ast.element.expression.kt.EFunctionLiteralExpression
+import io.verik.compiler.common.ExpressionCopier
 import io.verik.compiler.common.ReferenceUpdater
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core
@@ -34,6 +37,7 @@ object GenerateForBlockInterpreterStage : ProjectStage() {
         val generateForBlockInterpreterVisitor = GenerateForBlockInterpreterVisitor(referenceUpdater)
         projectContext.project.accept(generateForBlockInterpreterVisitor)
         referenceUpdater.flush()
+        projectContext.project.accept(GenerateForBlockReferenceTransformerStage)
     }
 
     private class GenerateForBlockInterpreterVisitor(
@@ -93,6 +97,26 @@ object GenerateForBlockInterpreterStage : ProjectStage() {
                 } else {
                     Messages.EXPECTED_CLUSTER_EXPRESSION.on(property)
                 }
+            }
+        }
+    }
+
+    private object GenerateForBlockReferenceTransformerStage : TreeVisitor() {
+
+        override fun visitCallExpression(callExpression: ECallExpression) {
+            super.visitCallExpression(callExpression)
+            if (callExpression.reference == Core.Vk.Cluster.F_get_Int) {
+                val generateForBlock = callExpression.receiver!!
+                    .cast<EReferenceExpression>()
+                    .reference.cast<EGenerateForBlock>(callExpression)
+                val referenceExpression = EReferenceExpression(
+                    callExpression.location,
+                    callExpression.type.copy(),
+                    generateForBlock.declaration,
+                    ExpressionCopier.shallowCopy(callExpression),
+                    false
+                )
+                callExpression.replace(referenceExpression)
             }
         }
     }

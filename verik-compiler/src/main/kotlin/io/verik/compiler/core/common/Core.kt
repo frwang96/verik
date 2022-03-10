@@ -36,6 +36,7 @@ import io.verik.compiler.core.declaration.vk.CoreVkBoolean
 import io.verik.compiler.core.declaration.vk.CoreVkCardinal
 import io.verik.compiler.core.declaration.vk.CoreVkClass
 import io.verik.compiler.core.declaration.vk.CoreVkClasses
+import io.verik.compiler.core.declaration.vk.CoreVkCluster
 import io.verik.compiler.core.declaration.vk.CoreVkControl
 import io.verik.compiler.core.declaration.vk.CoreVkCoverCross
 import io.verik.compiler.core.declaration.vk.CoreVkCoverGroup
@@ -440,6 +441,11 @@ object Core {
             val F_bin_String_String = CoreVkCoverCross.F_bin_String_String
             val F_bins_String_String = CoreVkCoverCross.F_bins_String_String
             val F_ignoreBin_String_String = CoreVkCoverCross.F_ignoreBin_String_String
+        }
+
+        object Cluster {
+
+            val F_get_Int = CoreVkCluster.F_get_Int
         }
     }
 }
