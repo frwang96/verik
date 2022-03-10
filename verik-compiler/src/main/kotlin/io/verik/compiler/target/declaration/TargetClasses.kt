@@ -62,6 +62,15 @@ object TargetClasses : TargetScope(TargetPackage) {
         }
     }
 
+    val C_ArrayList = CompositeTargetClassDeclaration(
+        parent,
+        "ArrayList",
+        listOf("E"),
+        "class ArrayList #(type E = int);",
+        "E queue [${'$'}];",
+        "endclass : ArrayList"
+    )
+
     val C_Ubit = object : PrimitiveTargetClassDeclaration(parent, "Ubit") {
 
         override fun serializeType(typeArguments: List<Type>, element: EElement): SerializedType {
@@ -150,12 +159,10 @@ object TargetClasses : TargetScope(TargetPackage) {
         }
     }
 
-    val C_ArrayList = CompositeTargetClassDeclaration(
-        parent,
-        "ArrayList",
-        listOf("E"),
-        "class ArrayList #(type E = int);",
-        "E queue [${'$'}];",
-        "endclass : ArrayList"
-    )
+    val C_Mailbox = object : PrimitiveTargetClassDeclaration(parent, "Mailbox") {
+
+        override fun serializeType(typeArguments: List<Type>, element: EElement): SerializedType {
+            return SerializedType("mailbox")
+        }
+    }
 }

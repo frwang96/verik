@@ -10,6 +10,7 @@
 - Support `rangeTo` operator.
 - Support string concatenation.
 - Support associative array `set` and `get`.
+- Support `MailBox` class.
 
 ## [0.1.14]
 ### Importer

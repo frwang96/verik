@@ -18,6 +18,7 @@ package io.verik.compiler.target.common
 
 import io.verik.compiler.target.declaration.TargetArrayList
 import io.verik.compiler.target.declaration.TargetClasses
+import io.verik.compiler.target.declaration.TargetMailbox
 import io.verik.compiler.target.declaration.TargetQueue
 import io.verik.compiler.target.declaration.TargetSystem
 
@@ -28,6 +29,7 @@ object Target {
     val C_Int = TargetClasses.C_Int
     val C_Double = TargetClasses.C_Double
     val C_String = TargetClasses.C_String
+    val C_ArrayList = TargetClasses.C_ArrayList
     val C_Ubit = TargetClasses.C_Ubit
     val C_Sbit = TargetClasses.C_Sbit
     val C_Packed = TargetClasses.C_Packed
@@ -37,7 +39,7 @@ object Target {
     val C_AssociativeArray = TargetClasses.C_AssociativeArray
     val C_Time = TargetClasses.C_Time
     val C_Event = TargetClasses.C_Event
-    val C_ArrayList = TargetClasses.C_ArrayList
+    val C_Mailbox = TargetClasses.C_Mailbox
 
     val F_cast = TargetSystem.F_cast
     val F_display = TargetSystem.F_display
@@ -67,12 +69,6 @@ object Target {
 
     val P_root = TargetSystem.P_root
 
-    object Queue {
-
-        val F_push_back = TargetQueue.F_push_back
-        val F_size = TargetQueue.F_size
-    }
-
     object ArrayList {
 
         val F_new = TargetArrayList.F_new
@@ -80,5 +76,18 @@ object Target {
         val F_get = TargetArrayList.F_get
         val F_set = TargetArrayList.F_set
         val F_size = TargetArrayList.F_size
+    }
+
+    object Queue {
+
+        val F_push_back = TargetQueue.F_push_back
+        val F_size = TargetQueue.F_size
+    }
+
+    object Mailbox {
+
+        val F_new = TargetMailbox.F_new
+        val F_put = TargetMailbox.F_put
+        val F_get = TargetMailbox.F_get
     }
 }

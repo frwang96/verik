@@ -602,9 +602,7 @@ internal class DeclarationSerializerTest : BaseTest() {
             """.trimIndent(),
             """
                 for (genvar it = 0; it < 8; it++) begin : x
-
                     int gen = it;
-
                 end : x
             """.trimIndent()
         ) { it.nonRootPackageTextFiles[0] }

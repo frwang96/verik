@@ -361,10 +361,11 @@ object DeclarationSerializer {
         serializeContext.append("for (genvar $indexName = 0; $indexName < ${generateForBlock.size}; $indexName++)")
         serializeContext.appendLine(" begin : ${generateForBlock.name}")
         serializeContext.indent {
-            serializeContext.serializeAsDeclaration(generateForBlock.declaration)
-            serializeContext.appendLine()
+            serializeContext.serialize(generateForBlock.declaration)
         }
-        serializeContext.appendLine("end : ${generateForBlock.name}")
+        serializeContext.label(generateForBlock.endLocation) {
+            serializeContext.appendLine("end : ${generateForBlock.name}")
+        }
     }
 
     fun serializeValueParameter(valueParameter: ESvValueParameter, serializeContext: SerializeContext) {
