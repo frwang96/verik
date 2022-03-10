@@ -102,7 +102,6 @@ import io.verik.compiler.ast.element.expression.sv.EArrayLiteralExpression
 import io.verik.compiler.ast.element.expression.sv.ECaseStatement
 import io.verik.compiler.ast.element.expression.sv.EConcatenationExpression
 import io.verik.compiler.ast.element.expression.sv.EConstantPartSelectExpression
-import io.verik.compiler.ast.element.expression.sv.EDelayExpression
 import io.verik.compiler.ast.element.expression.sv.EEventControlExpression
 import io.verik.compiler.ast.element.expression.sv.EEventExpression
 import io.verik.compiler.ast.element.expression.sv.EForeverStatement
@@ -549,9 +548,5 @@ abstract class Visitor {
 
     open fun visitEventControlExpression(eventControlExpression: EEventControlExpression) {
         visitExpression(eventControlExpression)
-    }
-
-    open fun visitDelayExpression(delayExpression: EDelayExpression) {
-        visitAbstractContainerExpression(delayExpression)
     }
 }

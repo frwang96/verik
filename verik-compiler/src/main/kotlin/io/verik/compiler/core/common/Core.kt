@@ -42,6 +42,7 @@ import io.verik.compiler.core.declaration.vk.CoreVkCoverCross
 import io.verik.compiler.core.declaration.vk.CoreVkCoverGroup
 import io.verik.compiler.core.declaration.vk.CoreVkCoverPoint
 import io.verik.compiler.core.declaration.vk.CoreVkData
+import io.verik.compiler.core.declaration.vk.CoreVkEvent
 import io.verik.compiler.core.declaration.vk.CoreVkMailbox
 import io.verik.compiler.core.declaration.vk.CoreVkMisc
 import io.verik.compiler.core.declaration.vk.CoreVkPacked
@@ -417,6 +418,11 @@ object Core {
 
             val F_set_K_V = CoreVkAssociativeArray.F_set_K_V
             val F_get_K = CoreVkAssociativeArray.F_get_K
+        }
+
+        object Event {
+
+            val F_trigger = CoreVkEvent.F_trigger
         }
 
         object Mailbox {

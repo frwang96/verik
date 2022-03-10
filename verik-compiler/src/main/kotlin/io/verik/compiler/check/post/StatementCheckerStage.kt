@@ -21,7 +21,6 @@ import io.verik.compiler.ast.element.expression.common.EBlockExpression
 import io.verik.compiler.ast.element.expression.common.ECallExpression
 import io.verik.compiler.ast.element.expression.common.EExpression
 import io.verik.compiler.ast.element.expression.common.EIfExpression
-import io.verik.compiler.ast.element.expression.sv.EDelayExpression
 import io.verik.compiler.ast.element.expression.sv.EEventControlExpression
 import io.verik.compiler.ast.element.expression.sv.EInjectedExpression
 import io.verik.compiler.ast.element.expression.sv.ESvBinaryExpression
@@ -53,15 +52,13 @@ object StatementCheckerStage : ProjectStage() {
             if (statement.serializationKind == SerializationKind.STATEMENT)
                 return true
             return when (statement) {
-                is ESvUnaryExpression ->
-                    statement.kind.isIncrementOrDecrement()
+                is ESvUnaryExpression -> statement.kind.isStatement()
                 is ESvBinaryExpression ->
                     statement.kind in listOf(SvBinaryOperatorKind.ASSIGN, SvBinaryOperatorKind.ARROW_ASSIGN)
                 is ECallExpression -> true
                 is EInjectedExpression -> true
                 is EIfExpression -> true
                 is EEventControlExpression -> true
-                is EDelayExpression -> true
                 else -> false
             }
         }

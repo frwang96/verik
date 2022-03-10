@@ -82,7 +82,6 @@ import io.verik.compiler.ast.element.expression.sv.EArrayLiteralExpression
 import io.verik.compiler.ast.element.expression.sv.ECaseStatement
 import io.verik.compiler.ast.element.expression.sv.EConcatenationExpression
 import io.verik.compiler.ast.element.expression.sv.EConstantPartSelectExpression
-import io.verik.compiler.ast.element.expression.sv.EDelayExpression
 import io.verik.compiler.ast.element.expression.sv.EEventControlExpression
 import io.verik.compiler.ast.element.expression.sv.EEventExpression
 import io.verik.compiler.ast.element.expression.sv.EForeverStatement
@@ -808,13 +807,6 @@ class ElementPrinter : Visitor() {
         build("EventControlExpression") {
             build(eventControlExpression.type.toString())
             build(eventControlExpression.expressions)
-        }
-    }
-
-    override fun visitDelayExpression(delayExpression: EDelayExpression) {
-        build("DelayExpression") {
-            build(delayExpression.type.toString())
-            build(delayExpression.expression)
         }
     }
 

@@ -31,7 +31,6 @@ import io.verik.compiler.ast.element.expression.sv.EArrayLiteralExpression
 import io.verik.compiler.ast.element.expression.sv.ECaseStatement
 import io.verik.compiler.ast.element.expression.sv.EConcatenationExpression
 import io.verik.compiler.ast.element.expression.sv.EConstantPartSelectExpression
-import io.verik.compiler.ast.element.expression.sv.EDelayExpression
 import io.verik.compiler.ast.element.expression.sv.EEventControlExpression
 import io.verik.compiler.ast.element.expression.sv.EEventExpression
 import io.verik.compiler.ast.element.expression.sv.EForeverStatement
@@ -417,11 +416,6 @@ object ExpressionSerializer {
             serializeContext.serializeAsExpression(it)
         }
         serializeContext.append(")")
-    }
-
-    fun serializeDelayExpression(delayExpression: EDelayExpression, serializeContext: SerializeContext) {
-        serializeContext.append("#")
-        serializeContext.serializeAsExpression(delayExpression.expression)
     }
 
     private fun serializePropertyInline(property: EProperty, serializeContext: SerializeContext) {

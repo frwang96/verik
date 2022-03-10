@@ -27,4 +27,12 @@ class Time
 /**
  * A simulation event.
  */
-class Event
+class Event {
+
+    /**
+     * Trigger the event.
+     */
+    fun trigger() {
+        throw VerikException()
+    }
+}
