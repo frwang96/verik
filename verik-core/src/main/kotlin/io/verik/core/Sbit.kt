@@ -26,21 +26,21 @@ class Sbit<N : `*`> private constructor() {
     /**
      * (UNIMPLEMENTED) Returns true if any bit is unknown.
      */
-    fun isx(): Boolean {
+    fun hasx(): Boolean {
         throw VerikException()
     }
 
     /**
      * (UNIMPLEMENTED) Returns true if any bit is floating.
      */
-    fun isz(): Boolean {
+    fun hasz(): Boolean {
         throw VerikException()
     }
 
     /**
      * (UNIMPLEMENTED) Returns true if any bit is unknown or floating.
      */
-    fun isxz(): Boolean {
+    fun hasxz(): Boolean {
         throw VerikException()
     }
 

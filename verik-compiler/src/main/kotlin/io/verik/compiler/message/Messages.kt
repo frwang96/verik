@@ -124,8 +124,8 @@ object Messages {
         "Type parameters not permitted on entry points"
     )
 
-    val PROCEDURAL_ASSIGNMENT_NOT_MUTABLE = ErrorMessageTemplate2<String, String>(
-        "$0 assignment must be declared as var: $1"
+    val PROPERTY_NOT_MUTABLE = ErrorMessageTemplate1<String>(
+        "Property must be declared as var: $0"
     )
 
     val FUNCTION_IS_TASK = ErrorMessageTemplate1<String>(
@@ -261,6 +261,14 @@ object Messages {
     )
 
 //  INTERPRET  /////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    val EXPECTED_CLUSTER_EXPRESSION = ErrorMessageTemplate0(
+        "Expected cluster expression"
+    )
+
+    val INVALID_CLUSTER_INITIALIZER = ErrorMessageTemplate0(
+        "Invalid cluster initializer"
+    )
 
     val ENUM_PROPERTY_ILLEGAL = ErrorMessageTemplate1<String>(
         "Illegal enum property: $0"

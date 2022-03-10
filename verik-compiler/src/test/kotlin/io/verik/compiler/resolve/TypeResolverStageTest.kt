@@ -133,6 +133,17 @@ internal class TypeResolverStageTest : BaseTest() {
     }
 
     @Test
+    fun `resolve call expression constructor`() {
+        driveElementTest(
+            """
+                val x = ArrayList<Ubit<`8`>>()
+            """.trimIndent(),
+            TypeResolverStage::class,
+            "CallExpression(ArrayList<Ubit<`8`>>, ArrayList, null, 0, [], [Ubit<`8`>])"
+        ) { it.findExpression("x") }
+    }
+
+    @Test
     fun `resolve return statement`() {
         driveElementTest(
             """

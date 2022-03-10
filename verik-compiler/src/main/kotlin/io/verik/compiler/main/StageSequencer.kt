@@ -59,6 +59,7 @@ import io.verik.compiler.interpret.EnumInterpreterStage
 import io.verik.compiler.interpret.FileSplitterStage
 import io.verik.compiler.interpret.FunctionInterpreterStage
 import io.verik.compiler.interpret.FunctionLiteralInterpreterStage
+import io.verik.compiler.interpret.GenerateForBlockInterpreterStage
 import io.verik.compiler.interpret.InitializerBlockReducerStage
 import io.verik.compiler.interpret.InjectedPropertyInterpreterStage
 import io.verik.compiler.interpret.ModulePortParentResolverStage
@@ -108,6 +109,7 @@ import io.verik.compiler.transform.pre.TypeAliasReducerStage
 import io.verik.compiler.transform.pre.UnaryExpressionReducerStage
 import io.verik.compiler.transform.upper.CaseStatementTransformerStage
 import io.verik.compiler.transform.upper.CastTransformerStage
+import io.verik.compiler.transform.upper.CoreFunctionOverrideTransformerStage
 import io.verik.compiler.transform.upper.EnumPropertyReferenceTransformerStage
 import io.verik.compiler.transform.upper.ForStatementTransformerStage
 import io.verik.compiler.transform.upper.IfAndWhenExpressionUnlifterStage
@@ -175,6 +177,7 @@ object StageSequencer {
         stageSequence.add(StageType.EVALUATE, ExpressionEvaluatorStage)
         stageSequence.add(StageType.EVALUATE, ConstantPropertyEliminatorStage)
 
+        stageSequence.add(StageType.INTERPRET, GenerateForBlockInterpreterStage)
         stageSequence.add(StageType.INTERPRET, EnumInterpreterStage)
         stageSequence.add(StageType.INTERPRET, StructInterpreterStage)
         stageSequence.add(StageType.INTERPRET, CoverGroupInterpreterStage)
@@ -194,6 +197,7 @@ object StageSequencer {
         stageSequence.add(StageType.INTERPRET, ModulePortParentResolverStage)
         stageSequence.add(StageType.INTERPRET, FileSplitterStage)
 
+        stageSequence.add(StageType.UPPER_TRANSFORM, CoreFunctionOverrideTransformerStage)
         stageSequence.add(StageType.UPPER_TRANSFORM, InjectedExpressionTransformerStage)
         stageSequence.add(StageType.UPPER_TRANSFORM, ToStringTransformerStage)
         stageSequence.add(StageType.UPPER_TRANSFORM, EnumPropertyReferenceTransformerStage)

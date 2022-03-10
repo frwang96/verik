@@ -55,6 +55,7 @@ import io.verik.compiler.ast.element.declaration.sv.ECoverCross
 import io.verik.compiler.ast.element.declaration.sv.ECoverGroup
 import io.verik.compiler.ast.element.declaration.sv.ECoverPoint
 import io.verik.compiler.ast.element.declaration.sv.EEnum
+import io.verik.compiler.ast.element.declaration.sv.EGenerateForBlock
 import io.verik.compiler.ast.element.declaration.sv.EInitialBlock
 import io.verik.compiler.ast.element.declaration.sv.EInjectedProperty
 import io.verik.compiler.ast.element.declaration.sv.EModule
@@ -330,6 +331,10 @@ abstract class Visitor {
 
     open fun visitConstraint(constraint: EConstraint) {
         visitAbstractProperty(constraint)
+    }
+
+    open fun visitGenerateForBlock(generateForBlock: EGenerateForBlock) {
+        visitAbstractProperty(generateForBlock)
     }
 
     open fun visitAbstractValueParameter(abstractValueParameter: EAbstractValueParameter) {

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Francis Wang
+ * Copyright (c) 2021 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,18 @@
 
 package io.verik.compiler.core.declaration.vk
 
-import io.verik.compiler.core.common.BasicCoreFunctionDeclaration
-import io.verik.compiler.core.common.CorePackage
+import io.verik.compiler.ast.element.expression.common.ECallExpression
+import io.verik.compiler.ast.element.expression.common.EExpression
+import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreScope
+import io.verik.compiler.core.common.TransformableCoreFunctionDeclaration
 
-object CoreVkComponent : CoreScope(CorePackage.VK) {
+object CoreVkCluster : CoreScope(Core.Vk.C_Cluster) {
 
-    val F_optional_Function = BasicCoreFunctionDeclaration(parent, "optional", "fun optional(Function)", null)
+    val F_get_Int = object : TransformableCoreFunctionDeclaration(parent, "get", "fun get(Int)") {
+
+        override fun transform(callExpression: ECallExpression): EExpression {
+            return CoreVkPacked.F_get_Int.transform(callExpression)
+        }
+    }
 }

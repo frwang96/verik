@@ -20,6 +20,7 @@ import io.verik.compiler.ast.element.expression.common.ECallExpression
 import io.verik.compiler.ast.element.expression.common.EExpression
 import io.verik.compiler.ast.element.expression.sv.EImmediateAssertStatement
 import io.verik.compiler.common.ExpressionCopier
+import io.verik.compiler.core.common.BasicCoreFunctionDeclaration
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreScope
 import io.verik.compiler.core.common.TransformableCoreFunctionDeclaration
@@ -35,4 +36,18 @@ object CoreVkClass : CoreScope(Core.Vk.C_Class) {
             return EImmediateAssertStatement(callExpression.location, copiedCallExpression, null)
         }
     }
+
+    val F_preRandomize = BasicCoreFunctionDeclaration(
+        parent,
+        "preRandomize",
+        "fun preRandomize()",
+        Target.F_pre_randomize
+    )
+
+    val F_postRandomize = BasicCoreFunctionDeclaration(
+        parent,
+        "postRandomize",
+        "fun postRandomize()",
+        Target.F_post_randomize
+    )
 }

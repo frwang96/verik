@@ -19,7 +19,7 @@
 package io.verik.core
 
 /**
- * Randomization constraint for [random][Rand] properties of [classes][Class].
+ * Randomization constraint for random properties of [classes][Class].
  */
 class Constraint private constructor() {
 

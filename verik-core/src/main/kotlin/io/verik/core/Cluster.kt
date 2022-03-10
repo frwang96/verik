@@ -19,18 +19,18 @@
 package io.verik.core
 
 /**
- * (UNIMPLEMENTED) A cluster of components [C] of size [N].
+ * A cluster of type [T] and size [N].
  */
-class Cluster<N : `*`, C : Component> private constructor() : Component(), Iterable<C> {
+class Cluster<N : `*`, T> private constructor() : Component(), Iterable<T> {
 
-    override fun iterator(): Iterator<C> {
+    override fun iterator(): Iterator<T> {
         throw VerikException()
     }
 
     /**
-     * (UNIMPLEMENTED) Returns the component at the specified [index].
+     * Returns the component at the specified [index].
      */
-    operator fun get(index: Int): C {
+    operator fun get(index: Int): T {
         throw VerikException()
     }
 }

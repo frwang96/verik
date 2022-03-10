@@ -21,21 +21,21 @@ package io.verik.core
 /**
  * (UNIMPLEMENTED) Returns true if the boolean is unknown.
  */
-fun Boolean.isx(): Boolean {
+fun Boolean.hasx(): Boolean {
     throw VerikException()
 }
 
 /**
  * (UNIMPLEMENTED) Returns true if the boolean is floating.
  */
-fun Boolean.isz(): Boolean {
+fun Boolean.hasz(): Boolean {
     throw VerikException()
 }
 
 /**
  * (UNIMPLEMENTED) Returns true if the boolean is unknown or floating.
  */
-fun Boolean.isxz(): Boolean {
+fun Boolean.hasxz(): Boolean {
     throw VerikException()
 }
 
@@ -52,13 +52,3 @@ fun <N : `*`> Boolean.toUbit(): Ubit<N> {
 fun <N : `*`> Boolean.toSbit(): Sbit<N> {
     throw VerikException()
 }
-
-/**
- * Unknown boolean value.
- */
-val unknown: Boolean by VerikExceptionDelegate()
-
-/**
- * Floating boolean value.
- */
-val floating: Boolean by VerikExceptionDelegate()

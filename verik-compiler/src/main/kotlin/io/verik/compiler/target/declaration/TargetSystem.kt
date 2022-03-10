@@ -44,6 +44,8 @@ object TargetSystem : TargetScope(TargetPackage) {
     val F_wait = PrimitiveTargetFunctionDeclaration(parent, "wait")
     val F_name = PrimitiveTargetFunctionDeclaration(parent, "name")
     val F_randomize = PrimitiveTargetFunctionDeclaration(parent, "randomize")
+    val F_pre_randomize = PrimitiveTargetFunctionDeclaration(parent, "pre_randomize")
+    val F_post_randomize = PrimitiveTargetFunctionDeclaration(parent, "post_randomize")
     val F_sample = PrimitiveTargetFunctionDeclaration(parent, "sample")
     val F_get_coverage = PrimitiveTargetFunctionDeclaration(parent, "get_coverage")
 

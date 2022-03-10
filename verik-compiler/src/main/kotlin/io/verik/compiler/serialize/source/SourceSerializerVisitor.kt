@@ -30,6 +30,7 @@ import io.verik.compiler.ast.element.declaration.sv.ECoverCross
 import io.verik.compiler.ast.element.declaration.sv.ECoverGroup
 import io.verik.compiler.ast.element.declaration.sv.ECoverPoint
 import io.verik.compiler.ast.element.declaration.sv.EEnum
+import io.verik.compiler.ast.element.declaration.sv.EGenerateForBlock
 import io.verik.compiler.ast.element.declaration.sv.EInitialBlock
 import io.verik.compiler.ast.element.declaration.sv.EInjectedProperty
 import io.verik.compiler.ast.element.declaration.sv.EModule
@@ -226,6 +227,10 @@ class SourceSerializerVisitor(
 
     override fun visitConstraint(constraint: EConstraint) {
         DeclarationSerializer.serializeConstraint(constraint, serializeContext)
+    }
+
+    override fun visitGenerateForBlock(generateForBlock: EGenerateForBlock) {
+        DeclarationSerializer.serializeGenerateForBlock(generateForBlock, serializeContext)
     }
 
     override fun visitSvValueParameter(valueParameter: ESvValueParameter) {

@@ -72,23 +72,7 @@ internal class AnnotationEntryCheckerStageTest : BaseTest() {
                 }
             """.trimIndent(),
             true,
-            "Combinational assignment must be declared as var: y"
-        )
-    }
-
-    @Test
-    fun `property seq not mutable`() {
-        driveMessageTest(
-            """
-                @Suppress("MemberVisibilityCanBePrivate")
-                class M : Module() {
-                    var x: Boolean = nc()
-                    @Seq
-                    val y = on(posedge(false)) { x }
-                }
-            """.trimIndent(),
-            true,
-            "Sequential assignment must be declared as var: y"
+            "Property must be declared as var: y"
         )
     }
 

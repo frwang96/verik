@@ -45,6 +45,13 @@ object AnnotationEntryCheckerStage : ProjectStage() {
             AnnotationEntries.TASK
         )
 
+        private val mutablePropertyAnnotationEntries = listOf(
+            AnnotationEntries.RAND,
+            AnnotationEntries.RANDC,
+            AnnotationEntries.COM,
+            AnnotationEntries.SEQ
+        )
+
         override fun visitDeclaration(declaration: EDeclaration) {
             super.visitDeclaration(declaration)
             val isEntryPoint = declaration.hasAnnotationEntry(AnnotationEntries.ENTRY)
@@ -75,21 +82,13 @@ object AnnotationEntryCheckerStage : ProjectStage() {
 
         override fun visitProperty(property: EProperty) {
             super.visitProperty(property)
-            val isComAssignment = property.hasAnnotationEntry(AnnotationEntries.COM)
-            val isSeqAssignment = property.hasAnnotationEntry(AnnotationEntries.SEQ)
-            when {
-                isComAssignment && isSeqAssignment ->
-                    Messages.CONFLICTING_ANNOTATIONS.on(property, AnnotationEntries.COM, AnnotationEntries.SEQ)
-                isComAssignment -> {
-                    if (!property.isMutable) {
-                        Messages.PROCEDURAL_ASSIGNMENT_NOT_MUTABLE.on(property, "Combinational", property.name)
-                    }
-                }
-                isSeqAssignment -> {
-                    if (!property.isMutable) {
-                        Messages.PROCEDURAL_ASSIGNMENT_NOT_MUTABLE.on(property, "Sequential", property.name)
-                    }
-                }
+            if (mutablePropertyAnnotationEntries.any { property.hasAnnotationEntry(it) } && !property.isMutable) {
+                Messages.PROPERTY_NOT_MUTABLE.on(property, property.name)
+            }
+            if (property.hasAnnotationEntry(AnnotationEntries.COM) &&
+                property.hasAnnotationEntry(AnnotationEntries.SEQ)
+            ) {
+                Messages.CONFLICTING_ANNOTATIONS.on(property, AnnotationEntries.COM, AnnotationEntries.SEQ)
             }
         }
 

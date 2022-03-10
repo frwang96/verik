@@ -131,7 +131,7 @@ object CoverPropertyInterpreterStage : ProjectStage() {
         override fun visitProperty(property: EProperty) {
             super.visitProperty(property)
             val initializer = property.initializer
-            if (property.hasAnnotationEntry(AnnotationEntries.Cover) && initializer != null) {
+            if (property.hasAnnotationEntry(AnnotationEntries.COVER) && initializer != null) {
                 if (property.type.reference == Core.Vk.C_CoverPoint) {
                     interpretCoverPoint(property, initializer)
                 }
@@ -196,7 +196,7 @@ object CoverPropertyInterpreterStage : ProjectStage() {
         override fun visitProperty(property: EProperty) {
             super.visitProperty(property)
             val initializer = property.initializer
-            if (property.hasAnnotationEntry(AnnotationEntries.Cover) && initializer != null) {
+            if (property.hasAnnotationEntry(AnnotationEntries.COVER) && initializer != null) {
                 if (property.type.reference == Core.Vk.C_CoverCross) {
                     interpretCoverCross(property, initializer)
                 }

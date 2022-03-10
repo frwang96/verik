@@ -111,6 +111,12 @@ annotation class Out
 annotation class Rand
 
 /**
+ * Annotates that a property in a [Class] should be randomized cyclically.
+ */
+@Target(AnnotationTarget.PROPERTY)
+annotation class Randc
+
+/**
  * Annotates randomization constraints in a [Class].
  */
 @Target(AnnotationTarget.PROPERTY)
