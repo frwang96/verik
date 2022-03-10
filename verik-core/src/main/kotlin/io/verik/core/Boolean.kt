@@ -52,13 +52,3 @@ fun <N : `*`> Boolean.toUbit(): Ubit<N> {
 fun <N : `*`> Boolean.toSbit(): Sbit<N> {
     throw VerikException()
 }
-
-/**
- * Unknown boolean value.
- */
-val unknown: Boolean by VerikExceptionDelegate()
-
-/**
- * Floating boolean value.
- */
-val floating: Boolean by VerikExceptionDelegate()

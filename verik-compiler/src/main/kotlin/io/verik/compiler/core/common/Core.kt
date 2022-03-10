@@ -36,11 +36,11 @@ import io.verik.compiler.core.declaration.vk.CoreVkBoolean
 import io.verik.compiler.core.declaration.vk.CoreVkCardinal
 import io.verik.compiler.core.declaration.vk.CoreVkClass
 import io.verik.compiler.core.declaration.vk.CoreVkClasses
-import io.verik.compiler.core.declaration.vk.CoreVkComponent
 import io.verik.compiler.core.declaration.vk.CoreVkControl
 import io.verik.compiler.core.declaration.vk.CoreVkCoverCross
 import io.verik.compiler.core.declaration.vk.CoreVkCoverGroup
 import io.verik.compiler.core.declaration.vk.CoreVkCoverPoint
+import io.verik.compiler.core.declaration.vk.CoreVkData
 import io.verik.compiler.core.declaration.vk.CoreVkMisc
 import io.verik.compiler.core.declaration.vk.CoreVkPacked
 import io.verik.compiler.core.declaration.vk.CoreVkQueue
@@ -181,6 +181,7 @@ object Core {
         val C_ModuleInterface = CoreVkClasses.C_ModuleInterface
         val C_ModulePort = CoreVkClasses.C_ModulePort
         val C_ClockingBlock = CoreVkClasses.C_ClockingBlock
+        val C_Cluster = CoreVkClasses.C_Cluster
 
         val F_Struct = CoreVkClasses.F_Struct
         val F_Class = CoreVkClasses.F_Class
@@ -209,8 +210,6 @@ object Core {
         val T_WIDTH = CoreVkCardinal.T_WIDTH
         val T_EXP = CoreVkCardinal.T_EXP
 
-        val F_optional_Function = CoreVkComponent.F_optional_Function
-
         val F_strobe_String = CoreVkSystem.F_strobe_String
         val F_monitor_String = CoreVkSystem.F_monitor_String
         val F_finish = CoreVkSystem.F_finish
@@ -226,31 +225,34 @@ object Core {
         val F_inji_String = CoreVkSpecial.F_inji_String
         val F_t = CoreVkSpecial.F_t
         val F_nc = CoreVkSpecial.F_nc
-        val F_b = CoreVkSpecial.F_b
-        val F_i = CoreVkSpecial.F_i
-        val F_u = CoreVkSpecial.F_u
-        val F_u_Int = CoreVkSpecial.F_u_Int
-        val F_u_String = CoreVkSpecial.F_u_String
-        val F_u0 = CoreVkSpecial.F_u0
-        val F_u1 = CoreVkSpecial.F_u1
-        val F_ux = CoreVkSpecial.F_ux
-        val F_uz = CoreVkSpecial.F_uz
-        val F_s_Int = CoreVkSpecial.F_s_Int
-        val F_s_String = CoreVkSpecial.F_s_String
-        val F_s0 = CoreVkSpecial.F_s0
-        val F_s1 = CoreVkSpecial.F_s1
-        val F_fill0 = CoreVkSpecial.F_fill0
-        val F_fill1 = CoreVkSpecial.F_fill1
-        val F_fillx = CoreVkSpecial.F_fillx
-        val F_fillz = CoreVkSpecial.F_fillz
         val F_c_Boolean = CoreVkSpecial.F_c_Boolean
         val F_c_String = CoreVkSpecial.F_c_String
         val F_cp_Any = CoreVkSpecial.F_cp_Any
         val F_cp_Any_Function = CoreVkSpecial.F_cp_Any_Function
         val F_cc_Any = CoreVkSpecial.F_cc_Any
         val F_cc_Any_Function = CoreVkSpecial.F_cc_Any_Function
-        val P_unknown = CoreVkSpecial.P_unknown
-        val P_floating = CoreVkSpecial.P_floating
+        val F_optional_Function = CoreVkSpecial.F_optional_Function
+        val F_cluster_Function = CoreVkSpecial.F_cluster_Function
+
+        val F_b = CoreVkData.F_b
+        val F_i = CoreVkData.F_i
+        val F_u = CoreVkData.F_u
+        val F_u_Int = CoreVkData.F_u_Int
+        val F_u_String = CoreVkData.F_u_String
+        val F_u0 = CoreVkData.F_u0
+        val F_u1 = CoreVkData.F_u1
+        val F_ux = CoreVkData.F_ux
+        val F_uz = CoreVkData.F_uz
+        val F_s_Int = CoreVkData.F_s_Int
+        val F_s_String = CoreVkData.F_s_String
+        val F_s0 = CoreVkData.F_s0
+        val F_s1 = CoreVkData.F_s1
+        val F_fill0 = CoreVkData.F_fill0
+        val F_fill1 = CoreVkData.F_fill1
+        val F_fillx = CoreVkData.F_fillx
+        val F_fillz = CoreVkData.F_fillz
+        val P_unknown = CoreVkData.P_unknown
+        val P_floating = CoreVkData.P_floating
 
         val F_posedge_Boolean = CoreVkControl.F_posedge_Boolean
         val F_negedge_Boolean = CoreVkControl.F_negedge_Boolean

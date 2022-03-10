@@ -16,6 +16,7 @@
 
 package io.verik.compiler.check.mid
 
+import io.verik.compiler.ast.common.Type
 import io.verik.compiler.ast.element.declaration.common.EProperty
 import io.verik.compiler.ast.element.declaration.kt.EKtClass
 import io.verik.compiler.common.TreeVisitor
@@ -33,20 +34,29 @@ object ComponentInstantiationCheckerStage : ProjectStage() {
 
     private object ComponentInstantiationCheckerVisitor : TreeVisitor() {
 
+        private fun unwrapType(type: Type): Type {
+            return if (type.reference == Core.Vk.C_Cluster) {
+                unwrapType(type.arguments[1])
+            } else type
+        }
+
         override fun visitProperty(property: EProperty) {
             super.visitProperty(property)
-            if (property.type.isSubtype(Core.Vk.C_Component)) {
+            if (unwrapType(property.type).isSubtype(Core.Vk.C_Component)) {
                 val parent = property.parent
                 if (parent is EKtClass && parent.type.isSubtype(Core.Vk.C_Component)) {
-                    if (!property.hasAnnotationEntry(AnnotationEntries.MAKE))
+                    if (!property.hasAnnotationEntry(AnnotationEntries.MAKE)) {
                         Messages.MISSING_MAKE_ANNOTATION.on(property)
+                    }
                 } else {
-                    if (property.hasAnnotationEntry(AnnotationEntries.MAKE))
+                    if (property.hasAnnotationEntry(AnnotationEntries.MAKE)) {
                         Messages.MAKE_OUT_OF_CONTEXT.on(property)
+                    }
                 }
             } else {
-                if (property.hasAnnotationEntry(AnnotationEntries.MAKE))
+                if (property.hasAnnotationEntry(AnnotationEntries.MAKE)) {
                     Messages.ILLEGAL_MAKE_ANNOTATION.on(property)
+                }
             }
         }
     }

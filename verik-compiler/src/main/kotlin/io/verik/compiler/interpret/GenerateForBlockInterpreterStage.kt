@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Francis Wang
+ * Copyright (c) 2021 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,13 +14,17 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.core.declaration.vk
+package io.verik.compiler.interpret
 
-import io.verik.compiler.core.common.BasicCoreFunctionDeclaration
-import io.verik.compiler.core.common.CorePackage
-import io.verik.compiler.core.common.CoreScope
+import io.verik.compiler.common.TreeVisitor
+import io.verik.compiler.main.ProjectContext
+import io.verik.compiler.main.ProjectStage
 
-object CoreVkComponent : CoreScope(CorePackage.VK) {
+object GenerateForBlockInterpreterStage : ProjectStage() {
 
-    val F_optional_Function = BasicCoreFunctionDeclaration(parent, "optional", "fun optional(Function)", null)
+    override fun process(projectContext: ProjectContext) {
+        projectContext.project.accept(GenerateForBlockInterpreterVisitor)
+    }
+
+    private object GenerateForBlockInterpreterVisitor : TreeVisitor()
 }
