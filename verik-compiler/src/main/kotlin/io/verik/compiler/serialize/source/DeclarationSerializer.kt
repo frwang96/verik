@@ -30,6 +30,7 @@ import io.verik.compiler.ast.element.declaration.sv.ECoverCross
 import io.verik.compiler.ast.element.declaration.sv.ECoverGroup
 import io.verik.compiler.ast.element.declaration.sv.ECoverPoint
 import io.verik.compiler.ast.element.declaration.sv.EEnum
+import io.verik.compiler.ast.element.declaration.sv.EGenerateForBlock
 import io.verik.compiler.ast.element.declaration.sv.EInitialBlock
 import io.verik.compiler.ast.element.declaration.sv.EInjectedProperty
 import io.verik.compiler.ast.element.declaration.sv.EModule
@@ -353,6 +354,17 @@ object DeclarationSerializer {
         serializeContext.label(constraint.body.endLocation) {
             serializeContext.appendLine("}")
         }
+    }
+
+    fun serializeGenerateForBlock(generateForBlock: EGenerateForBlock, serializeContext: SerializeContext) {
+        val indexName = generateForBlock.indexProperty.name
+        serializeContext.append("for (genvar $indexName = 0; $indexName < ${generateForBlock.size}; $indexName++)")
+        serializeContext.appendLine(" begin : ${generateForBlock.name}")
+        serializeContext.indent {
+            serializeContext.serializeAsDeclaration(generateForBlock.declaration)
+            serializeContext.appendLine()
+        }
+        serializeContext.appendLine("end : ${generateForBlock.name}")
     }
 
     fun serializeValueParameter(valueParameter: ESvValueParameter, serializeContext: SerializeContext) {

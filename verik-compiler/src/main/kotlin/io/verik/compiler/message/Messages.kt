@@ -262,6 +262,14 @@ object Messages {
 
 //  INTERPRET  /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    val EXPECTED_CLUSTER_EXPRESSION = ErrorMessageTemplate0(
+        "Expected cluster expression"
+    )
+
+    val INVALID_CLUSTER_INITIALIZER = ErrorMessageTemplate0(
+        "Invalid cluster initializer"
+    )
+
     val ENUM_PROPERTY_ILLEGAL = ErrorMessageTemplate1<String>(
         "Illegal enum property: $0"
     )

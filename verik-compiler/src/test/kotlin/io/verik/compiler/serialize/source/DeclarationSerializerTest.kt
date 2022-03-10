@@ -593,4 +593,20 @@ internal class DeclarationSerializerTest : BaseTest() {
             """.trimIndent()
         ) { it.nonRootPackageTextFiles[0] }
     }
+
+    @Test
+    fun `generate for block simple`() {
+        driveTextFileTest(
+            """
+                val x = cluster<`8`, Int> { it }
+            """.trimIndent(),
+            """
+                for (genvar it = 0; it < 8; it++) begin : x
+
+                    int gen = it;
+
+                end : x
+            """.trimIndent()
+        ) { it.nonRootPackageTextFiles[0] }
+    }
 }
