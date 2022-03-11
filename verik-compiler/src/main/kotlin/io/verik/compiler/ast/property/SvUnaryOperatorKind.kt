@@ -26,10 +26,19 @@ enum class SvUnaryOperatorKind {
     POST_DEC,
     AND,
     OR,
-    XOR;
+    XOR,
+    DELAY,
+    TRIGGER;
 
-    fun isIncrementOrDecrement(): Boolean {
-        return this in listOf(PRE_INC, PRE_DEC, POST_INC, POST_DEC)
+    fun isStatement(): Boolean {
+        return this in listOf(
+            PRE_INC,
+            PRE_DEC,
+            POST_INC,
+            POST_DEC,
+            DELAY,
+            TRIGGER
+        )
     }
 
     fun serializePrefix(): String? {
@@ -42,6 +51,8 @@ enum class SvUnaryOperatorKind {
             AND -> "&"
             OR -> "|"
             XOR -> "^"
+            DELAY -> "#"
+            TRIGGER -> "->"
             else -> null
         }
     }

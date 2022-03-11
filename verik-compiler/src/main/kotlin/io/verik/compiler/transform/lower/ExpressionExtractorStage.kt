@@ -32,6 +32,7 @@ import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 
+// TODO move before ForEachUnrollTransformerStage
 object ExpressionExtractorStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

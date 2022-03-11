@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,25 +14,26 @@
  * limitations under the License.
  */
 
-@file:Suppress("unused")
+@file:Suppress("unused", "UNUSED_PARAMETER")
 
 package io.verik.core
 
 /**
- * Simulation time. Corresponds to the SystemVerilog type time. The current simulation time can be found with the [time]
- * function.
+ * A mailbox of type [T] that is synchronized across processes. It corresponds to a SystemVerilog mailbox.
  */
-class Time
-
-/**
- * A simulation event.
- */
-class Event {
+class Mailbox<T> {
 
     /**
-     * Trigger the event.
+     * Put [value] into the mailbox.
      */
-    fun trigger() {
+    fun put(value: T) {
+        throw VerikException()
+    }
+
+    /**
+     * Get the next value from the mailbox.
+     */
+    fun get(): T {
         throw VerikException()
     }
 }

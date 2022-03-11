@@ -45,6 +45,7 @@ import io.verik.compiler.ast.element.declaration.sv.ESvValueParameter
 import io.verik.compiler.ast.element.declaration.sv.ETask
 import io.verik.compiler.ast.element.declaration.sv.ETypeDefinition
 import io.verik.compiler.ast.element.expression.common.EBlockExpression
+import io.verik.compiler.ast.element.expression.common.EBreakStatement
 import io.verik.compiler.ast.element.expression.common.ECallExpression
 import io.verik.compiler.ast.element.expression.common.EConstantExpression
 import io.verik.compiler.ast.element.expression.common.EExpression
@@ -61,7 +62,6 @@ import io.verik.compiler.ast.element.expression.sv.EArrayLiteralExpression
 import io.verik.compiler.ast.element.expression.sv.ECaseStatement
 import io.verik.compiler.ast.element.expression.sv.EConcatenationExpression
 import io.verik.compiler.ast.element.expression.sv.EConstantPartSelectExpression
-import io.verik.compiler.ast.element.expression.sv.EDelayExpression
 import io.verik.compiler.ast.element.expression.sv.EEventControlExpression
 import io.verik.compiler.ast.element.expression.sv.EEventExpression
 import io.verik.compiler.ast.element.expression.sv.EForeverStatement
@@ -295,6 +295,10 @@ class SourceSerializerVisitor(
         ExpressionSerializer.serializeSuperExpression(serializeContext)
     }
 
+    override fun visitBreakStatement(breakStatement: EBreakStatement) {
+        ExpressionSerializer.serializeBreakStatement(serializeContext)
+    }
+
     override fun visitReturnStatement(returnStatement: EReturnStatement) {
         ExpressionSerializer.serializeReturnStatement(returnStatement, serializeContext)
     }
@@ -377,10 +381,6 @@ class SourceSerializerVisitor(
 
     override fun visitEventControlExpression(eventControlExpression: EEventControlExpression) {
         ExpressionSerializer.serializeEventControlExpression(eventControlExpression, serializeContext)
-    }
-
-    override fun visitDelayExpression(delayExpression: EDelayExpression) {
-        ExpressionSerializer.serializeDelayExpression(delayExpression, serializeContext)
     }
 
     private fun serializeDocumentationLines(declaration: EDeclaration, serializeContext: SerializeContext) {

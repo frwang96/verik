@@ -43,7 +43,7 @@ object TypeSerializer {
             is EModulePort -> {
                 val parentModuleInterface = reference.parentModuleInterface
                 if (parentModuleInterface != null) {
-                    SerializedType(parentModuleInterface.name)
+                    SerializedType(parentModuleInterface.name, null, true)
                 } else {
                     Messages.INTERNAL_ERROR.on(element, "Module port has no parent module interface")
                 }

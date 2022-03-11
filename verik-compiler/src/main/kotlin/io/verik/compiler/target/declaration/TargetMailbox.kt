@@ -14,25 +14,15 @@
  * limitations under the License.
  */
 
-@file:Suppress("unused")
+package io.verik.compiler.target.declaration
 
-package io.verik.core
+import io.verik.compiler.target.common.PrimitiveTargetFunctionDeclaration
+import io.verik.compiler.target.common.Target
+import io.verik.compiler.target.common.TargetScope
 
-/**
- * Simulation time. Corresponds to the SystemVerilog type time. The current simulation time can be found with the [time]
- * function.
- */
-class Time
+object TargetMailbox : TargetScope(Target.C_Mailbox) {
 
-/**
- * A simulation event.
- */
-class Event {
-
-    /**
-     * Trigger the event.
-     */
-    fun trigger() {
-        throw VerikException()
-    }
+    val F_new = PrimitiveTargetFunctionDeclaration(parent, "new")
+    val F_put = PrimitiveTargetFunctionDeclaration(parent, "put")
+    val F_get = PrimitiveTargetFunctionDeclaration(parent, "get")
 }

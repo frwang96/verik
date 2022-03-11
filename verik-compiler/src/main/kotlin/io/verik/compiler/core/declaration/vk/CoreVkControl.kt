@@ -19,14 +19,16 @@ package io.verik.compiler.core.declaration.vk
 import io.verik.compiler.ast.element.expression.common.ECallExpression
 import io.verik.compiler.ast.element.expression.common.EExpression
 import io.verik.compiler.ast.element.expression.kt.EFunctionLiteralExpression
-import io.verik.compiler.ast.element.expression.sv.EDelayExpression
 import io.verik.compiler.ast.element.expression.sv.EEventControlExpression
 import io.verik.compiler.ast.element.expression.sv.EEventExpression
 import io.verik.compiler.ast.element.expression.sv.EForeverStatement
 import io.verik.compiler.ast.element.expression.sv.EForkStatement
+import io.verik.compiler.ast.element.expression.sv.ESvUnaryExpression
 import io.verik.compiler.ast.element.expression.sv.EWaitForkStatement
 import io.verik.compiler.ast.property.EdgeKind
+import io.verik.compiler.ast.property.SvUnaryOperatorKind
 import io.verik.compiler.core.common.BasicCoreFunctionDeclaration
+import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CorePackage
 import io.verik.compiler.core.common.CoreScope
 import io.verik.compiler.core.common.TransformableCoreFunctionDeclaration
@@ -120,7 +122,12 @@ object CoreVkControl : CoreScope(CorePackage.VK) {
     val F_delay_Int = object : TransformableCoreFunctionDeclaration(parent, "delay", "fun delay(Int)") {
 
         override fun transform(callExpression: ECallExpression): EExpression {
-            return EDelayExpression(callExpression.location, callExpression.valueArguments[0])
+            return ESvUnaryExpression(
+                callExpression.location,
+                Core.Kt.C_Unit.toType(),
+                callExpression.valueArguments[0],
+                SvUnaryOperatorKind.DELAY
+            )
         }
     }
 

@@ -34,6 +34,7 @@ object CoreVkClasses : CoreScope(CorePackage.VK) {
     val C_AssociativeArray = CoreClassDeclaration(parent, "AssociativeArray", Core.Kt.C_Any, Target.C_AssociativeArray)
     val C_Time = CoreClassDeclaration(parent, "Time", Core.Kt.C_Any, Target.C_Time)
     val C_Event = CoreClassDeclaration(parent, "Event", Core.Kt.C_Any, Target.C_Event)
+    val C_Mailbox = CoreClassDeclaration(parent, "Mailbox", Core.Kt.C_Any, Target.C_Mailbox)
     val C_Constraint = CoreClassDeclaration(parent, "Constraint", Core.Kt.C_Any, Target.C_Void)
     val C_Struct = CoreClassDeclaration(parent, "Struct", Core.Kt.C_Any, null)
     val C_Class = CoreClassDeclaration(parent, "Class", Core.Kt.C_Any, null)
@@ -47,6 +48,7 @@ object CoreVkClasses : CoreScope(CorePackage.VK) {
     val C_ClockingBlock = CoreClassDeclaration(parent, "ClockingBlock", C_Component, null)
     val C_Cluster = CoreClassDeclaration(parent, "Cluster", Core.Kt.C_Any, Target.C_Void)
 
+    val F_Mailbox = CoreConstructorDeclaration(C_Mailbox, Target.Mailbox.F_new)
     val F_Struct = CoreConstructorDeclaration(C_Struct, null)
     val F_Class = CoreConstructorDeclaration(C_Class, null)
     val F_CoverGroup = CoreConstructorDeclaration(C_CoverGroup, null)

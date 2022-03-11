@@ -30,6 +30,7 @@ import io.verik.compiler.ast.element.declaration.kt.EKtValueParameter
 import io.verik.compiler.ast.element.declaration.kt.EPrimaryConstructor
 import io.verik.compiler.ast.element.declaration.kt.ESecondaryConstructor
 import io.verik.compiler.ast.element.expression.common.EBlockExpression
+import io.verik.compiler.ast.element.expression.common.EBreakStatement
 import io.verik.compiler.ast.element.expression.common.ECallExpression
 import io.verik.compiler.ast.element.expression.common.EConstantExpression
 import io.verik.compiler.ast.element.expression.common.EIfExpression
@@ -98,6 +99,8 @@ object SpecializerCopier {
                 copyThisExpression(element)
             is ESuperExpression ->
                 copySuperExpression(element)
+            is EBreakStatement ->
+                copyBreakStatement(element)
             is EReturnStatement ->
                 copyReturnStatement(element, typeArguments, specializeContext)
             is EFunctionLiteralExpression ->
@@ -429,18 +432,17 @@ object SpecializerCopier {
 
     private fun copyThisExpression(thisExpression: EThisExpression): EThisExpression {
         val type = thisExpression.type.copy()
-        return EThisExpression(
-            thisExpression.location,
-            type
-        )
+        return EThisExpression(thisExpression.location, type)
     }
 
     private fun copySuperExpression(superExpression: ESuperExpression): ESuperExpression {
         val type = superExpression.type.copy()
-        return ESuperExpression(
-            superExpression.location,
-            type
-        )
+        return ESuperExpression(superExpression.location, type)
+    }
+
+    private fun copyBreakStatement(breakStatement: EBreakStatement): EBreakStatement {
+        val type = breakStatement.type.copy()
+        return EBreakStatement(breakStatement.location, type)
     }
 
     private fun copyReturnStatement(

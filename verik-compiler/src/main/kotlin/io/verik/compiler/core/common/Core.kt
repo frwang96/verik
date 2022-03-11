@@ -42,6 +42,8 @@ import io.verik.compiler.core.declaration.vk.CoreVkCoverCross
 import io.verik.compiler.core.declaration.vk.CoreVkCoverGroup
 import io.verik.compiler.core.declaration.vk.CoreVkCoverPoint
 import io.verik.compiler.core.declaration.vk.CoreVkData
+import io.verik.compiler.core.declaration.vk.CoreVkEvent
+import io.verik.compiler.core.declaration.vk.CoreVkMailbox
 import io.verik.compiler.core.declaration.vk.CoreVkMisc
 import io.verik.compiler.core.declaration.vk.CoreVkPacked
 import io.verik.compiler.core.declaration.vk.CoreVkQueue
@@ -171,6 +173,7 @@ object Core {
         val C_AssociativeArray = CoreVkClasses.C_AssociativeArray
         val C_Time = CoreVkClasses.C_Time
         val C_Event = CoreVkClasses.C_Event
+        val C_Mailbox = CoreVkClasses.C_Mailbox
         val C_Constraint = CoreVkClasses.C_Constraint
         val C_Struct = CoreVkClasses.C_Struct
         val C_Class = CoreVkClasses.C_Class
@@ -184,6 +187,7 @@ object Core {
         val C_ClockingBlock = CoreVkClasses.C_ClockingBlock
         val C_Cluster = CoreVkClasses.C_Cluster
 
+        val F_Mailbox = CoreVkClasses.F_Mailbox
         val F_Struct = CoreVkClasses.F_Struct
         val F_Class = CoreVkClasses.F_Class
         val F_CoverGroup = CoreVkClasses.F_CoverGroup
@@ -414,6 +418,17 @@ object Core {
 
             val F_set_K_V = CoreVkAssociativeArray.F_set_K_V
             val F_get_K = CoreVkAssociativeArray.F_get_K
+        }
+
+        object Event {
+
+            val F_trigger = CoreVkEvent.F_trigger
+        }
+
+        object Mailbox {
+
+            val F_put_T = CoreVkMailbox.F_put_T
+            val F_get = CoreVkMailbox.F_get
         }
 
         object Class {

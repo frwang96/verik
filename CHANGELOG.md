@@ -10,6 +10,9 @@
 - Support `rangeTo` operator.
 - Support string concatenation.
 - Support associative array `set` and `get`.
+- Support `MailBox` class.
+- Support break statements.
+- Unroll loops indexing into generate for blocks.
 
 ## [0.1.14]
 ### Importer

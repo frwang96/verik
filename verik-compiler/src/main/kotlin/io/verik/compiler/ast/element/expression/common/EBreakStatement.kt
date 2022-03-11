@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,29 +14,24 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.ast.element.expression.sv
+package io.verik.compiler.ast.element.expression.common
 
-import io.verik.compiler.ast.element.expression.common.EAbstractContainerExpression
-import io.verik.compiler.ast.element.expression.common.EExpression
+import io.verik.compiler.ast.common.Type
 import io.verik.compiler.ast.property.SerializationKind
+import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
-import io.verik.compiler.target.common.Target
 
-class EDelayExpression(
+class EBreakStatement(
     override val location: SourceLocation,
-    override var expression: EExpression
-) : EAbstractContainerExpression() {
+    override var type: Type
+) : EExpression() {
 
-    override var type = Target.C_Void.toType()
-
-    override val serializationKind = SerializationKind.EXPRESSION
-
-    init {
-        expression.parent = this
-    }
+    override val serializationKind = SerializationKind.STATEMENT
 
     override fun accept(visitor: Visitor) {
-        visitor.visitDelayExpression(this)
+        visitor.visitBreakStatement(this)
     }
+
+    override fun acceptChildren(visitor: TreeVisitor) {}
 }

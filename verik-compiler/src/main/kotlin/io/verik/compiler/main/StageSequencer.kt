@@ -111,6 +111,7 @@ import io.verik.compiler.transform.upper.CaseStatementTransformerStage
 import io.verik.compiler.transform.upper.CastTransformerStage
 import io.verik.compiler.transform.upper.CoreFunctionOverrideTransformerStage
 import io.verik.compiler.transform.upper.EnumPropertyReferenceTransformerStage
+import io.verik.compiler.transform.upper.ForEachUnrollTransformerStage
 import io.verik.compiler.transform.upper.ForStatementTransformerStage
 import io.verik.compiler.transform.upper.IfAndWhenExpressionUnlifterStage
 import io.verik.compiler.transform.upper.InjectedExpressionTransformerStage
@@ -205,11 +206,12 @@ object StageSequencer {
         stageSequence.add(StageType.UPPER_TRANSFORM, TaskReturnTransformerStage)
         stageSequence.add(StageType.UPPER_TRANSFORM, UninitializedPropertyTransformerStage)
         stageSequence.add(StageType.UPPER_TRANSFORM, ProceduralAssignmentTransformerStage)
-        stageSequence.add(StageType.UPPER_TRANSFORM, ForStatementTransformerStage)
         stageSequence.add(StageType.UPPER_TRANSFORM, SafeAccessReducerStage)
         stageSequence.add(StageType.UPPER_TRANSFORM, InlineIfExpressionTransformerStage)
         stageSequence.add(StageType.UPPER_TRANSFORM, IfAndWhenExpressionUnlifterStage)
         stageSequence.add(StageType.UPPER_TRANSFORM, CaseStatementTransformerStage)
+        stageSequence.add(StageType.UPPER_TRANSFORM, ForEachUnrollTransformerStage)
+        stageSequence.add(StageType.UPPER_TRANSFORM, ForStatementTransformerStage)
 
         stageSequence.add(StageType.LOWER_TRANSFORM, FunctionTransformerStage)
         stageSequence.add(StageType.LOWER_TRANSFORM, PropertyTransformerStage)

@@ -23,6 +23,7 @@ import org.jetbrains.kotlin.psi.KtArrayAccessExpression
 import org.jetbrains.kotlin.psi.KtBinaryExpression
 import org.jetbrains.kotlin.psi.KtBinaryExpressionWithTypeRHS
 import org.jetbrains.kotlin.psi.KtBlockExpression
+import org.jetbrains.kotlin.psi.KtBreakExpression
 import org.jetbrains.kotlin.psi.KtCallExpression
 import org.jetbrains.kotlin.psi.KtClassInitializer
 import org.jetbrains.kotlin.psi.KtClassOrObject
@@ -159,6 +160,10 @@ class CasterVisitor(private val castContext: CastContext) : KtVisitor<EElement, 
 
     override fun visitSuperExpression(expression: KtSuperExpression, data: Unit?): EElement {
         return ExpressionCaster.castSuperExpression(expression, castContext)
+    }
+
+    override fun visitBreakExpression(expression: KtBreakExpression, data: Unit?): EElement {
+        return ExpressionCaster.castBreakStatement(expression, castContext)
     }
 
     override fun visitReturnExpression(expression: KtReturnExpression, data: Unit?): EElement {

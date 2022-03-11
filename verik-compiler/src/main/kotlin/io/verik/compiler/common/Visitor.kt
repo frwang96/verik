@@ -75,6 +75,7 @@ import io.verik.compiler.ast.element.expression.common.EAbstractArrayAccessExpre
 import io.verik.compiler.ast.element.expression.common.EAbstractBinaryExpression
 import io.verik.compiler.ast.element.expression.common.EAbstractContainerExpression
 import io.verik.compiler.ast.element.expression.common.EBlockExpression
+import io.verik.compiler.ast.element.expression.common.EBreakStatement
 import io.verik.compiler.ast.element.expression.common.ECallExpression
 import io.verik.compiler.ast.element.expression.common.EConstantExpression
 import io.verik.compiler.ast.element.expression.common.EExpression
@@ -102,7 +103,6 @@ import io.verik.compiler.ast.element.expression.sv.EArrayLiteralExpression
 import io.verik.compiler.ast.element.expression.sv.ECaseStatement
 import io.verik.compiler.ast.element.expression.sv.EConcatenationExpression
 import io.verik.compiler.ast.element.expression.sv.EConstantPartSelectExpression
-import io.verik.compiler.ast.element.expression.sv.EDelayExpression
 import io.verik.compiler.ast.element.expression.sv.EEventControlExpression
 import io.verik.compiler.ast.element.expression.sv.EEventExpression
 import io.verik.compiler.ast.element.expression.sv.EForeverStatement
@@ -431,6 +431,10 @@ abstract class Visitor {
         visitExpression(superExpression)
     }
 
+    open fun visitBreakStatement(breakStatement: EBreakStatement) {
+        visitExpression(breakStatement)
+    }
+
     open fun visitReturnStatement(returnStatement: EReturnStatement) {
         visitExpression(returnStatement)
     }
@@ -549,9 +553,5 @@ abstract class Visitor {
 
     open fun visitEventControlExpression(eventControlExpression: EEventControlExpression) {
         visitExpression(eventControlExpression)
-    }
-
-    open fun visitDelayExpression(delayExpression: EDelayExpression) {
-        visitAbstractContainerExpression(delayExpression)
     }
 }

@@ -23,7 +23,7 @@ import io.verik.compiler.message.SourceLocation
 
 object ConstantBuilder {
 
-    val MIN_HEX_CONSTANT_WIDTH = 8
+    const val MIN_HEX_CONSTANT_WIDTH = 8
 
     fun buildNull(location: SourceLocation): EConstantExpression {
         return EConstantExpression(location, Core.Kt.C_Nothing.toType(), "null")

@@ -58,6 +58,7 @@ import io.verik.compiler.ast.element.declaration.sv.ESvValueParameter
 import io.verik.compiler.ast.element.declaration.sv.ETask
 import io.verik.compiler.ast.element.declaration.sv.ETypeDefinition
 import io.verik.compiler.ast.element.expression.common.EBlockExpression
+import io.verik.compiler.ast.element.expression.common.EBreakStatement
 import io.verik.compiler.ast.element.expression.common.ECallExpression
 import io.verik.compiler.ast.element.expression.common.EConstantExpression
 import io.verik.compiler.ast.element.expression.common.EIfExpression
@@ -82,7 +83,6 @@ import io.verik.compiler.ast.element.expression.sv.EArrayLiteralExpression
 import io.verik.compiler.ast.element.expression.sv.ECaseStatement
 import io.verik.compiler.ast.element.expression.sv.EConcatenationExpression
 import io.verik.compiler.ast.element.expression.sv.EConstantPartSelectExpression
-import io.verik.compiler.ast.element.expression.sv.EDelayExpression
 import io.verik.compiler.ast.element.expression.sv.EEventControlExpression
 import io.verik.compiler.ast.element.expression.sv.EEventExpression
 import io.verik.compiler.ast.element.expression.sv.EForeverStatement
@@ -594,6 +594,12 @@ class ElementPrinter : Visitor() {
         }
     }
 
+    override fun visitBreakStatement(breakStatement: EBreakStatement) {
+        build("BreakStatement") {
+            build(breakStatement.type.toString())
+        }
+    }
+
     override fun visitReturnStatement(returnStatement: EReturnStatement) {
         build("ReturnStatement") {
             build(returnStatement.type.toString())
@@ -808,13 +814,6 @@ class ElementPrinter : Visitor() {
         build("EventControlExpression") {
             build(eventControlExpression.type.toString())
             build(eventControlExpression.expressions)
-        }
-    }
-
-    override fun visitDelayExpression(delayExpression: EDelayExpression) {
-        build("DelayExpression") {
-            build(delayExpression.type.toString())
-            build(delayExpression.expression)
         }
     }
 
