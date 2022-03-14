@@ -37,7 +37,8 @@ object CoreVkClasses : CoreScope(CorePackage.VK) {
     val C_Mailbox = CoreClassDeclaration(parent, "Mailbox", Core.Kt.C_Any, Target.C_Mailbox)
     val C_Constraint = CoreClassDeclaration(parent, "Constraint", Core.Kt.C_Any, Target.C_Void)
     val C_Struct = CoreClassDeclaration(parent, "Struct", Core.Kt.C_Any, null)
-    val C_Class = CoreClassDeclaration(parent, "Class", Core.Kt.C_Any, null)
+    val C_Union = CoreClassDeclaration(parent, "Union", Core.Kt.C_Any, null)
+    val C_Class = CoreClassDeclaration(parent, "Class", Core.Kt.C_Any, Target.C_Void)
     val C_CoverGroup = CoreClassDeclaration(parent, "CoverGroup", Core.Kt.C_Any, null)
     val C_CoverPoint = CoreClassDeclaration(parent, "CoverPoint", Core.Kt.C_Any, Target.C_Void)
     val C_CoverCross = CoreClassDeclaration(parent, "CoverCross", Core.Kt.C_Any, Target.C_Void)
@@ -50,6 +51,7 @@ object CoreVkClasses : CoreScope(CorePackage.VK) {
 
     val F_Mailbox = CoreConstructorDeclaration(C_Mailbox, Target.Mailbox.F_new)
     val F_Struct = CoreConstructorDeclaration(C_Struct, null)
+    val F_Union = CoreConstructorDeclaration(C_Union, null)
     val F_Class = CoreConstructorDeclaration(C_Class, null)
     val F_CoverGroup = CoreConstructorDeclaration(C_CoverGroup, null)
     val F_Module = CoreConstructorDeclaration(C_Module, null)

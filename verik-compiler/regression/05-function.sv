@@ -36,7 +36,7 @@ module M;
 
     initial begin : f3
         $display($sformatf("%b", f0()));
-        $display($sformatf("%h", f1(.x(8'h00))));
+        $display($sformatf("0x%h", f1(.x(8'h00))));
         f2(.x(0), .y(0));
         f2(.x(0), .y());
         f2(.x(), .y());

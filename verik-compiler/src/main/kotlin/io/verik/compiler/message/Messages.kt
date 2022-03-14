@@ -278,6 +278,10 @@ object Messages {
         "Illegal type for enum property: $0"
     )
 
+    val UNION_INSUFFICIENT_ARGUMENTS = ErrorMessageTemplate1<String>(
+        "Union should have at least two properties: $0"
+    )
+
     val EXPECTED_ON_EXPRESSION = ErrorMessageTemplate0(
         "Expected on expression"
     )

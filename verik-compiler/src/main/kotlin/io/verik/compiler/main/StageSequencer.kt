@@ -66,7 +66,7 @@ import io.verik.compiler.interpret.ModulePortParentResolverStage
 import io.verik.compiler.interpret.PackageInjectedPropertyReducerStage
 import io.verik.compiler.interpret.PrimaryConstructorReducerStage
 import io.verik.compiler.interpret.PropertyInterpreterStage
-import io.verik.compiler.interpret.StructInterpreterStage
+import io.verik.compiler.interpret.StructUnionInterpreterStage
 import io.verik.compiler.kotlin.KotlinCompilerAnalyzerStage
 import io.verik.compiler.kotlin.KotlinCompilerParserStage
 import io.verik.compiler.kotlin.KotlinEnvironmentBuilderStage
@@ -180,7 +180,7 @@ object StageSequencer {
 
         stageSequence.add(StageType.INTERPRET, GenerateForBlockInterpreterStage)
         stageSequence.add(StageType.INTERPRET, EnumInterpreterStage)
-        stageSequence.add(StageType.INTERPRET, StructInterpreterStage)
+        stageSequence.add(StageType.INTERPRET, StructUnionInterpreterStage)
         stageSequence.add(StageType.INTERPRET, CoverGroupInterpreterStage)
         stageSequence.add(StageType.INTERPRET, ComponentInterpreterStage)
         stageSequence.add(StageType.INTERPRET, PrimaryConstructorReducerStage)

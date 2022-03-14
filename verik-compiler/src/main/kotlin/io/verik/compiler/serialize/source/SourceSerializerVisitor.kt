@@ -44,6 +44,7 @@ import io.verik.compiler.ast.element.declaration.sv.ESvFunction
 import io.verik.compiler.ast.element.declaration.sv.ESvValueParameter
 import io.verik.compiler.ast.element.declaration.sv.ETask
 import io.verik.compiler.ast.element.declaration.sv.ETypeDefinition
+import io.verik.compiler.ast.element.declaration.sv.EUnion
 import io.verik.compiler.ast.element.expression.common.EBlockExpression
 import io.verik.compiler.ast.element.expression.common.EBreakStatement
 import io.verik.compiler.ast.element.expression.common.ECallExpression
@@ -167,6 +168,10 @@ class SourceSerializerVisitor(
 
     override fun visitStruct(struct: EStruct) {
         DeclarationSerializer.serializeStruct(struct, serializeContext)
+    }
+
+    override fun visitUnion(union: EUnion) {
+        DeclarationSerializer.serializeUnion(union, serializeContext)
     }
 
     override fun visitSvFunction(function: ESvFunction) {

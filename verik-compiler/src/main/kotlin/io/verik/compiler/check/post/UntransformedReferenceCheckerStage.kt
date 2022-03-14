@@ -19,6 +19,7 @@ package io.verik.compiler.check.post
 import io.verik.compiler.ast.common.Type
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.ETypedElement
+import io.verik.compiler.ast.element.declaration.common.EAbstractClass
 import io.verik.compiler.ast.element.expression.common.EReceiverExpression
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.CoreDeclaration
@@ -39,6 +40,7 @@ object UntransformedReferenceCheckerStage : ProjectStage() {
         override fun visitTypedElement(typedElement: ETypedElement) {
             super.visitTypedElement(typedElement)
             checkType(typedElement.type, typedElement)
+            if (typedElement is EAbstractClass) checkType(typedElement.superType, typedElement)
         }
 
         override fun visitReceiverExpression(receiverExpression: EReceiverExpression) {

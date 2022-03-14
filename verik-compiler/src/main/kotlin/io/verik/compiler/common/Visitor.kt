@@ -71,6 +71,7 @@ import io.verik.compiler.ast.element.declaration.sv.ESvFunction
 import io.verik.compiler.ast.element.declaration.sv.ESvValueParameter
 import io.verik.compiler.ast.element.declaration.sv.ETask
 import io.verik.compiler.ast.element.declaration.sv.ETypeDefinition
+import io.verik.compiler.ast.element.declaration.sv.EUnion
 import io.verik.compiler.ast.element.expression.common.EAbstractArrayAccessExpression
 import io.verik.compiler.ast.element.expression.common.EAbstractBinaryExpression
 import io.verik.compiler.ast.element.expression.common.EAbstractContainerExpression
@@ -223,6 +224,10 @@ abstract class Visitor {
 
     open fun visitStruct(struct: EStruct) {
         visitAbstractClass(struct)
+    }
+
+    open fun visitUnion(union: EUnion) {
+        visitAbstractClass(union)
     }
 
 // FUNCTION ////////////////////////////////////////////////////////////////////////////////////////////////////////////

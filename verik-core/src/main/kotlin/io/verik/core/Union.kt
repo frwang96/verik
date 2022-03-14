@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,16 +19,10 @@
 package io.verik.core
 
 /**
- * The base class of all structs. Corresponds to SystemVerilog packed structs.
- *
- *  ```
- *  class S(
- *      var a: Boolean,
- *      var b: Boolean
- *  ): Struct()
- *  ```
+ * The base class of all unions. Corresponds to SystemVerilog packed unions. All members of the union must have the same
+ * width.
  */
-abstract class Struct {
+abstract class Union {
 
     /**
      * (UNIMPLEMENTED) Returns true if any bit is unknown.

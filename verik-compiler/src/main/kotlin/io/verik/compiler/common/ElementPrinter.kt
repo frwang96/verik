@@ -57,6 +57,7 @@ import io.verik.compiler.ast.element.declaration.sv.ESvFunction
 import io.verik.compiler.ast.element.declaration.sv.ESvValueParameter
 import io.verik.compiler.ast.element.declaration.sv.ETask
 import io.verik.compiler.ast.element.declaration.sv.ETypeDefinition
+import io.verik.compiler.ast.element.declaration.sv.EUnion
 import io.verik.compiler.ast.element.expression.common.EBlockExpression
 import io.verik.compiler.ast.element.expression.common.EBreakStatement
 import io.verik.compiler.ast.element.expression.common.ECallExpression
@@ -254,6 +255,14 @@ class ElementPrinter : Visitor() {
             build(struct.name)
             build(struct.type.toString())
             build(struct.properties)
+        }
+    }
+
+    override fun visitUnion(union: EUnion) {
+        build("Union") {
+            build(union.name)
+            build(union.type.toString())
+            build(union.properties)
         }
     }
 

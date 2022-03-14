@@ -176,6 +176,7 @@ object Core {
         val C_Mailbox = CoreVkClasses.C_Mailbox
         val C_Constraint = CoreVkClasses.C_Constraint
         val C_Struct = CoreVkClasses.C_Struct
+        val C_Union = CoreVkClasses.C_Union
         val C_Class = CoreVkClasses.C_Class
         val C_CoverGroup = CoreVkClasses.C_CoverGroup
         val C_CoverPoint = CoreVkClasses.C_CoverPoint
@@ -189,6 +190,7 @@ object Core {
 
         val F_Mailbox = CoreVkClasses.F_Mailbox
         val F_Struct = CoreVkClasses.F_Struct
+        val F_Union = CoreVkClasses.F_Union
         val F_Class = CoreVkClasses.F_Class
         val F_CoverGroup = CoreVkClasses.F_CoverGroup
         val F_Module = CoreVkClasses.F_Module

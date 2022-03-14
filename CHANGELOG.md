@@ -13,6 +13,7 @@
 - Support `MailBox` class.
 - Support break statements.
 - Unroll loops indexing into generate for blocks.
+- Support union types.
 
 ## [0.1.14]
 ### Importer

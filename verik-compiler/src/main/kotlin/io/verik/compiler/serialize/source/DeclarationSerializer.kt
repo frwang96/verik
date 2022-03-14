@@ -45,11 +45,12 @@ import io.verik.compiler.ast.element.declaration.sv.ESvFunction
 import io.verik.compiler.ast.element.declaration.sv.ESvValueParameter
 import io.verik.compiler.ast.element.declaration.sv.ETask
 import io.verik.compiler.ast.element.declaration.sv.ETypeDefinition
+import io.verik.compiler.ast.element.declaration.sv.EUnion
 import io.verik.compiler.ast.property.PortKind
 import io.verik.compiler.ast.property.ValueParameterKind
 import io.verik.compiler.core.common.AnnotationEntries
-import io.verik.compiler.core.common.Core
 import io.verik.compiler.message.SourceLocation
+import io.verik.compiler.target.common.Target
 
 object DeclarationSerializer {
 
@@ -66,7 +67,7 @@ object DeclarationSerializer {
     fun serializeClass(cls: ESvClass, serializeContext: SerializeContext) {
         serializeContext.append("class ${cls.name}")
         val superType = cls.superType
-        if (superType.reference != Core.Vk.C_Class) {
+        if (superType.reference != Target.C_Void) {
             val serializedSuperType = TypeSerializer.serialize(superType, cls)
             serializedSuperType.checkNoVariableDimension(cls)
             serializeContext.append(" extends ${serializedSuperType.base}")
@@ -145,6 +146,18 @@ object DeclarationSerializer {
         }
         serializeContext.label(struct.bodyEndLocation) {
             serializeContext.appendLine("} ${struct.name};")
+        }
+    }
+
+    fun serializeUnion(union: EUnion, serializeContext: SerializeContext) {
+        serializeContext.appendLine("typedef union packed {")
+        serializeContext.indent {
+            union.properties.forEach {
+                serializeContext.serialize(it)
+            }
+        }
+        serializeContext.label(union.bodyEndLocation) {
+            serializeContext.appendLine("} ${union.name};")
         }
     }
 

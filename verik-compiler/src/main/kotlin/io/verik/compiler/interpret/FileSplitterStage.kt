@@ -29,6 +29,7 @@ import io.verik.compiler.ast.element.declaration.sv.EStruct
 import io.verik.compiler.ast.element.declaration.sv.ESvClass
 import io.verik.compiler.ast.element.declaration.sv.ESvFunction
 import io.verik.compiler.ast.element.declaration.sv.ETask
+import io.verik.compiler.ast.element.declaration.sv.EUnion
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
@@ -88,6 +89,7 @@ object FileSplitterStage : ProjectStage() {
             is ECoverGroup -> false
             is EEnum -> false
             is EStruct -> false
+            is EUnion -> false
             is ESvFunction -> false
             is ETask -> false
             is EInjectedProperty -> false

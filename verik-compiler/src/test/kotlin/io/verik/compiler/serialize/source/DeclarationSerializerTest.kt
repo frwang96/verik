@@ -197,6 +197,21 @@ internal class DeclarationSerializerTest : BaseTest() {
     }
 
     @Test
+    fun `union simple`() {
+        driveTextFileTest(
+            """
+                class U(var x: Boolean, var y: Ubit<`1`>): Union()
+            """.trimIndent(),
+            """
+                typedef union packed {
+                    logic       x;
+                    logic [0:0] y;
+                } U;
+            """.trimIndent()
+        ) { it.nonRootPackageTextFiles[0] }
+    }
+
+    @Test
     fun `function simple`() {
         driveTextFileTest(
             """

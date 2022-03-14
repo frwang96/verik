@@ -19,6 +19,7 @@ package io.verik.compiler.transform.post
 import io.verik.compiler.ast.common.Type
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.ETypedElement
+import io.verik.compiler.ast.element.declaration.common.EAbstractClass
 import io.verik.compiler.ast.element.expression.common.ECallExpression
 import io.verik.compiler.ast.element.expression.sv.EScopeExpression
 import io.verik.compiler.common.TreeVisitor
@@ -38,6 +39,7 @@ object TypeReferenceTransformerStage : ProjectStage() {
         override fun visitTypedElement(typedElement: ETypedElement) {
             super.visitTypedElement(typedElement)
             transform(typedElement.type, typedElement)
+            if (typedElement is EAbstractClass) transform(typedElement.superType, typedElement)
         }
 
         override fun visitCallExpression(callExpression: ECallExpression) {
