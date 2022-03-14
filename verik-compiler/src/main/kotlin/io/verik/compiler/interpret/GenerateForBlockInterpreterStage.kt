@@ -45,7 +45,7 @@ object GenerateForBlockInterpreterStage : ProjectStage() {
     ) : TreeVisitor() {
 
         private fun interpretGenerateForBlock(property: EProperty, expression: ECallExpression) {
-            val functionLiteralExpression = expression.valueArguments[0] as EFunctionLiteralExpression
+            val functionLiteralExpression = expression.valueArguments[1] as EFunctionLiteralExpression
             if (functionLiteralExpression.body.statements.size != 1) {
                 Messages.INVALID_CLUSTER_INITIALIZER.on(functionLiteralExpression)
                 return
@@ -74,7 +74,7 @@ object GenerateForBlockInterpreterStage : ProjectStage() {
                 isMutable = true,
                 isStatic = false
             )
-            val size = expression.typeArguments[0].asCardinalValue(expression)
+            val size = expression.type.arguments[0].asCardinalValue(expression)
             val generateForBlock = EGenerateForBlock(
                 property.location,
                 property.endLocation,
@@ -92,7 +92,7 @@ object GenerateForBlockInterpreterStage : ProjectStage() {
             super.visitProperty(property)
             if (property.type.reference == Core.Vk.C_Cluster) {
                 val initializer = property.initializer
-                if (initializer is ECallExpression && initializer.reference == Core.Vk.F_cluster_Function) {
+                if (initializer is ECallExpression && initializer.reference == Core.Vk.F_cluster_Int_Function) {
                     interpretGenerateForBlock(property, initializer)
                 } else {
                     Messages.EXPECTED_CLUSTER_EXPRESSION.on(property)

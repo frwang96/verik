@@ -25,7 +25,7 @@ internal class ForEachUnrollTransformerStageTest : BaseTest() {
     fun `unroll simple`() {
         driveTextFileTest(
             """
-                val x = cluster<`2`, Int> { it }
+                val x = cluster(2) { it }
                 fun f() {
                     var y = 0
                     for (i in 0 until 2) {
@@ -54,7 +54,7 @@ internal class ForEachUnrollTransformerStageTest : BaseTest() {
     fun `unroll with property`() {
         driveTextFileTest(
             """
-                val x = cluster<`2`, Int> { it }
+                val x = cluster(2) { it }
                 fun f() {
                     for (i in 0 until 2) {
                         val y = x[i]

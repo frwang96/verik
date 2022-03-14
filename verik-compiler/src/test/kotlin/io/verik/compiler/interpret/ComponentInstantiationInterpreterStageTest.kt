@@ -44,7 +44,7 @@ internal class ComponentInstantiationInterpreterStageTest : BaseTest() {
                 class M0 : Module()
                 class M1 : Module() {
                     @Make
-                    val m = optional<FALSE, M0> { M0() }
+                    val m = optional(false) { M0() }
                 }
             """.trimIndent(),
             ComponentInstantiationInterpreterStage::class,

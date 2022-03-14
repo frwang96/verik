@@ -230,6 +230,14 @@ object Messages {
         "Property assigned as optional must be declared as val"
     )
 
+    val OPTIONAL_MULTIPLE_STATEMENTS = ErrorMessageTemplate0(
+        "Multiple statements not permitted for optional"
+    )
+
+    val EXPRESSION_NOT_CONSTANT = ErrorMessageTemplate0(
+        "Expression is not compile time constant"
+    )
+
 //  RESOLVE  ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     val INDETERMINATE_SLICE_WIDTH = ErrorMessageTemplate0(

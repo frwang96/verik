@@ -81,9 +81,9 @@ class Ubit<N : `*`> private constructor() {
     }
 
     /**
-     * Get bits from the most significant bit at index [start_index] to the least significant bit at index [end_index].
+     * Get bits from the most significant bit at index [start] to the least significant bit at index [end].
      */
-    operator fun get(start_index: Int, end_index: Int): Ubit<`*`> {
+    operator fun get(start: Int, end: Int): Ubit<`*`> {
         throw VerikException()
     }
 

@@ -20,7 +20,7 @@ import io.verik.compiler.test.BaseTest
 import io.verik.compiler.test.findExpression
 import org.junit.jupiter.api.Test
 
-internal class SliceResolverStageTest : BaseTest() {
+internal class SpecialTypeResolverStageTest : BaseTest() {
 
     @Test
     fun `slice constant`() {
@@ -29,7 +29,7 @@ internal class SliceResolverStageTest : BaseTest() {
                 var x = u(0x00)
                 var y = x[1, 0]
             """.trimIndent(),
-            SliceResolverStage::class,
+            SpecialTypeResolverStage::class,
             "CallExpression(Ubit<`*`>, get, ReferenceExpression(*), 0, [*], [`2`])"
         ) { it.findExpression("y") }
     }
@@ -45,5 +45,20 @@ internal class SliceResolverStageTest : BaseTest() {
             true,
             "Unable to determine width of slice"
         )
+    }
+
+    @Test
+    fun `cluster simple`() {
+        driveElementTest(
+            """
+                class MI : ModuleInterface()
+                class M : Module() {
+                    @Make
+                    val mi = cluster(4) { MI() }
+                }
+            """.trimIndent(),
+            SpecialTypeResolverStage::class,
+            "CallExpression(Cluster<`4`, MI>, cluster, null, 0, [*], [MI])"
+        ) { it.findExpression("mi") }
     }
 }

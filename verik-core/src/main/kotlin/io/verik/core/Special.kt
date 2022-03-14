@@ -118,15 +118,15 @@ fun <T> unpack(value: Ubit<`*`>): T {
 }
 
 /**
- * Instantiate [T] if the cardinal [X] takes the value one. [X] must take the value of either zero or one.
+ * Conditionally instantiate [T] based on [value]. [value] must be a compile time constant.
  */
-fun <X : `*`, T> optional(instantiator: () -> T): T? {
+fun <T> optional(value: Boolean, instantiator: () -> T): T? {
     throw VerikException()
 }
 
 /**
- * Instantiate a [Cluster] of type [T] and size [N].
+ * Instantiate a [Cluster] of type [T] with [size] members. [size] must be a compile time constant.
  */
-fun <N : `*`, T> cluster(instantiator: (Int) -> T): Cluster<N, T> {
+fun <T> cluster(size: Int, instantiator: (Int) -> T): Cluster<`*`, T> {
     throw VerikException()
 }

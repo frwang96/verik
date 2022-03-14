@@ -238,8 +238,8 @@ object Core {
         val F_cp_Any_Function = CoreVkSpecial.F_cp_Any_Function
         val F_cc_Any = CoreVkSpecial.F_cc_Any
         val F_cc_Any_Function = CoreVkSpecial.F_cc_Any_Function
-        val F_optional_Function = CoreVkSpecial.F_optional_Function
-        val F_cluster_Function = CoreVkSpecial.F_cluster_Function
+        val F_optional_Boolean_Function = CoreVkSpecial.F_optional_Boolean_Function
+        val F_cluster_Int_Function = CoreVkSpecial.F_cluster_Int_Function
 
         val F_b = CoreVkData.F_b
         val F_i = CoreVkData.F_i

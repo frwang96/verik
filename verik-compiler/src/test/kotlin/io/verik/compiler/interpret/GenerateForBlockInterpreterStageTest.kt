@@ -27,7 +27,7 @@ internal class GenerateForBlockInterpreterStageTest : BaseTest() {
     fun `interpret cluster property`() {
         driveElementTest(
             """
-                val x = cluster<`8`, Int> { it }
+                val x = cluster(8) { it }
             """.trimIndent(),
             GenerateForBlockInterpreterStage::class,
             """
@@ -43,7 +43,7 @@ internal class GenerateForBlockInterpreterStageTest : BaseTest() {
     fun `transform reference cluster property`() {
         driveElementTest(
             """
-                val x = cluster<`8`, Int> { it }
+                val x = cluster(8) { it }
                 val y = x[0]
             """.trimIndent(),
             GenerateForBlockInterpreterStage::class,

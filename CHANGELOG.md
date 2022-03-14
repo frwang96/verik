@@ -14,6 +14,7 @@
 - Support break statements.
 - Unroll loops indexing into generate for blocks.
 - Support union types.
+- Modify interface for functions `optional` and `cluster`.
 
 ## [0.1.14]
 ### Importer

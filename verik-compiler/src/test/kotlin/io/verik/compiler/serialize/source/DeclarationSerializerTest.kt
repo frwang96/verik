@@ -613,7 +613,7 @@ internal class DeclarationSerializerTest : BaseTest() {
     fun `generate for block simple`() {
         driveTextFileTest(
             """
-                val x = cluster<`8`, Int> { it }
+                val x = cluster(8) { it }
             """.trimIndent(),
             """
                 generate

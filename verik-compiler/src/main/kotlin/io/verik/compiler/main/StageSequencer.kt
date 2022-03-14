@@ -73,7 +73,7 @@ import io.verik.compiler.kotlin.KotlinCompilerParserStage
 import io.verik.compiler.kotlin.KotlinEnvironmentBuilderStage
 import io.verik.compiler.reorder.DependencyReordererStage
 import io.verik.compiler.reorder.PropertyStatementReordererStage
-import io.verik.compiler.resolve.SliceResolverStage
+import io.verik.compiler.resolve.SpecialTypeResolverStage
 import io.verik.compiler.resolve.TypeReferenceForwarderStage
 import io.verik.compiler.resolve.TypeResolvedCheckerStage
 import io.verik.compiler.resolve.TypeResolverStage
@@ -171,7 +171,7 @@ object StageSequencer {
 
         stageSequence.add(StageType.SPECIALIZE, SpecializerStage)
 
-        stageSequence.add(StageType.RESOLVE, SliceResolverStage)
+        stageSequence.add(StageType.RESOLVE, SpecialTypeResolverStage)
         stageSequence.add(StageType.RESOLVE, TypeResolverStage)
         stageSequence.add(StageType.RESOLVE, TypeResolvedCheckerStage)
         stageSequence.add(StageType.RESOLVE, TypeReferenceForwarderStage)
