@@ -110,6 +110,7 @@ import io.verik.compiler.transform.pre.TypeAliasReducerStage
 import io.verik.compiler.transform.pre.UnaryExpressionReducerStage
 import io.verik.compiler.transform.upper.CaseStatementTransformerStage
 import io.verik.compiler.transform.upper.CastTransformerStage
+import io.verik.compiler.transform.upper.ClusterReferenceTransformerStage
 import io.verik.compiler.transform.upper.CoreFunctionOverrideTransformerStage
 import io.verik.compiler.transform.upper.EnumPropertyReferenceTransformerStage
 import io.verik.compiler.transform.upper.ForEachUnrollTransformerStage
@@ -214,6 +215,7 @@ object StageSequencer {
         stageSequence.add(StageType.UPPER_TRANSFORM, CaseStatementTransformerStage)
         stageSequence.add(StageType.UPPER_TRANSFORM, ForEachUnrollTransformerStage)
         stageSequence.add(StageType.UPPER_TRANSFORM, ForStatementTransformerStage)
+        stageSequence.add(StageType.UPPER_TRANSFORM, ClusterReferenceTransformerStage)
 
         stageSequence.add(StageType.LOWER_TRANSFORM, FunctionTransformerStage)
         stageSequence.add(StageType.LOWER_TRANSFORM, PropertyTransformerStage)

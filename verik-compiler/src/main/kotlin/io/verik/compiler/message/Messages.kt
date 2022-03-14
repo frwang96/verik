@@ -370,6 +370,10 @@ object Messages {
         "Circular dependency between declarations: $0"
     )
 
+    val CLUSTER_INDEX_INVALID = ErrorMessageTemplate1<Int>(
+        "Cluster index out of bounds: $0"
+    )
+
 //  POST TRANSFORM  ////////////////////////////////////////////////////////////////////////////////////////////////////
 
     val EXPRESSION_OUT_OF_CONTEXT = ErrorMessageTemplate1<String>(

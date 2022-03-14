@@ -40,8 +40,8 @@ internal class ForEachUnrollTransformerStageTest : BaseTest() {
                 function automatic void f();
                     int y;
                     y = 0;
-                    y = y + x[0];
-                    y = y + x[1];
+                    y = y + x_0;
+                    y = y + x_1;
                 endfunction : f
             """.trimIndent()
         ) { it.nonRootPackageTextFiles[0] }
@@ -64,8 +64,8 @@ internal class ForEachUnrollTransformerStageTest : BaseTest() {
 
                 function automatic void f();
                     int y;
-                    y = x[0];
-                    y = x[1];
+                    y = x_0;
+                    y = x_1;
                 endfunction : f
             """.trimIndent()
         ) { it.nonRootPackageTextFiles[0] }
