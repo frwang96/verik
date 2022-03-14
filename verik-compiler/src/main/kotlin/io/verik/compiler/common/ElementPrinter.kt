@@ -35,6 +35,7 @@ import io.verik.compiler.ast.element.declaration.sv.EAlwaysComBlock
 import io.verik.compiler.ast.element.declaration.sv.EAlwaysSeqBlock
 import io.verik.compiler.ast.element.declaration.sv.EClockingBlock
 import io.verik.compiler.ast.element.declaration.sv.EClockingBlockInstantiation
+import io.verik.compiler.ast.element.declaration.sv.ECluster
 import io.verik.compiler.ast.element.declaration.sv.EComponentInstantiation
 import io.verik.compiler.ast.element.declaration.sv.EConstraint
 import io.verik.compiler.ast.element.declaration.sv.ECoverBin
@@ -42,7 +43,6 @@ import io.verik.compiler.ast.element.declaration.sv.ECoverCross
 import io.verik.compiler.ast.element.declaration.sv.ECoverGroup
 import io.verik.compiler.ast.element.declaration.sv.ECoverPoint
 import io.verik.compiler.ast.element.declaration.sv.EEnum
-import io.verik.compiler.ast.element.declaration.sv.EGenerateForBlock
 import io.verik.compiler.ast.element.declaration.sv.EInitialBlock
 import io.verik.compiler.ast.element.declaration.sv.EInjectedProperty
 import io.verik.compiler.ast.element.declaration.sv.EModule
@@ -440,12 +440,10 @@ class ElementPrinter : Visitor() {
         }
     }
 
-    override fun visitGenerateForBlock(generateForBlock: EGenerateForBlock) {
-        build("GenerateForBlock") {
-            build(generateForBlock.name)
-            build(generateForBlock.indexProperty)
-            build(generateForBlock.declaration)
-            build(generateForBlock.size)
+    override fun visitCluster(cluster: ECluster) {
+        build("Cluster") {
+            build(cluster.name)
+            build(cluster.declarations)
         }
     }
 

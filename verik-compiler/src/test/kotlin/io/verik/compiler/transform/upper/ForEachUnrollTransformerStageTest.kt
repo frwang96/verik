@@ -34,17 +34,14 @@ internal class ForEachUnrollTransformerStageTest : BaseTest() {
                 }
             """.trimIndent(),
             """
-                generate
-                    for (genvar it = 0; it < 2; it++) begin : x
-                        int gen = it;
-                    end : x
-                endgenerate
+                int x_0 = 0;
+                int x_1 = 1;
 
                 function automatic void f();
                     int y;
                     y = 0;
-                    y = y + x[0].gen;
-                    y = y + x[1].gen;
+                    y = y + x[0];
+                    y = y + x[1];
                 endfunction : f
             """.trimIndent()
         ) { it.nonRootPackageTextFiles[0] }
@@ -62,16 +59,13 @@ internal class ForEachUnrollTransformerStageTest : BaseTest() {
                 }
             """.trimIndent(),
             """
-                generate
-                    for (genvar it = 0; it < 2; it++) begin : x
-                        int gen = it;
-                    end : x
-                endgenerate
+                int x_0 = 0;
+                int x_1 = 1;
 
                 function automatic void f();
                     int y;
-                    y = x[0].gen;
-                    y = x[1].gen;
+                    y = x[0];
+                    y = x[1];
                 endfunction : f
             """.trimIndent()
         ) { it.nonRootPackageTextFiles[0] }

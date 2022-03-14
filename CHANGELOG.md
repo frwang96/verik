@@ -15,6 +15,7 @@
 - Unroll loops indexing into generate for blocks.
 - Support union types.
 - Modify interface for functions `optional` and `cluster`.
+- Replace generate for blocks with elaborated clusters.
 
 ## [0.1.14]
 ### Importer

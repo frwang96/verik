@@ -23,6 +23,7 @@ import io.verik.compiler.ast.element.declaration.common.EProperty
 import io.verik.compiler.ast.element.declaration.sv.EAlwaysComBlock
 import io.verik.compiler.ast.element.declaration.sv.EAlwaysSeqBlock
 import io.verik.compiler.ast.element.declaration.sv.EClockingBlockInstantiation
+import io.verik.compiler.ast.element.declaration.sv.ECluster
 import io.verik.compiler.ast.element.declaration.sv.EComponentInstantiation
 import io.verik.compiler.ast.element.declaration.sv.EConstraint
 import io.verik.compiler.ast.element.declaration.sv.ECoverBin
@@ -30,7 +31,6 @@ import io.verik.compiler.ast.element.declaration.sv.ECoverCross
 import io.verik.compiler.ast.element.declaration.sv.ECoverGroup
 import io.verik.compiler.ast.element.declaration.sv.ECoverPoint
 import io.verik.compiler.ast.element.declaration.sv.EEnum
-import io.verik.compiler.ast.element.declaration.sv.EGenerateForBlock
 import io.verik.compiler.ast.element.declaration.sv.EInitialBlock
 import io.verik.compiler.ast.element.declaration.sv.EInjectedProperty
 import io.verik.compiler.ast.element.declaration.sv.EModule
@@ -101,6 +101,10 @@ class SourceSerializerVisitor(
 
     fun serializeAsDeclaration(declaration: EDeclaration) {
         if (SerializerUtil.declarationIsHidden(declaration)) return
+        if (declaration is ECluster) {
+            declaration.declarations.forEach { serializeAsDeclaration(it) }
+            return
+        }
         if (!firstDeclaration && !(lastDeclarationIsProperty && declaration is EProperty)) {
             serializeContext.appendLine()
         }
@@ -232,10 +236,6 @@ class SourceSerializerVisitor(
 
     override fun visitConstraint(constraint: EConstraint) {
         DeclarationSerializer.serializeConstraint(constraint, serializeContext)
-    }
-
-    override fun visitGenerateForBlock(generateForBlock: EGenerateForBlock) {
-        DeclarationSerializer.serializeGenerateForBlock(generateForBlock, serializeContext)
     }
 
     override fun visitSvValueParameter(valueParameter: ESvValueParameter) {

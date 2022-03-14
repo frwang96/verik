@@ -19,45 +19,38 @@ package io.verik.compiler.ast.element.declaration.sv
 import io.verik.compiler.ast.common.DeclarationContainer
 import io.verik.compiler.ast.element.declaration.common.EAbstractProperty
 import io.verik.compiler.ast.element.declaration.common.EDeclaration
-import io.verik.compiler.ast.element.declaration.common.EProperty
 import io.verik.compiler.ast.property.AnnotationEntry
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
+import io.verik.compiler.common.replaceIfContains
 import io.verik.compiler.message.SourceLocation
 import io.verik.compiler.target.common.Target
 
-class EGenerateForBlock(
+class ECluster(
     override val location: SourceLocation,
     override val endLocation: SourceLocation,
     override var name: String,
-    override var documentationLines: List<String>?,
-    val indexProperty: EProperty,
-    var declaration: EDeclaration,
-    val size: Int
+    var declarations: ArrayList<EDeclaration>
 ) : EAbstractProperty(), DeclarationContainer {
 
     override var type = Target.C_Void.toType()
     override var annotationEntries: List<AnnotationEntry> = listOf()
+    override var documentationLines: List<String>? = null
 
     init {
-        indexProperty.parent = this
-        declaration.parent = this
+        declarations.forEach { it.parent = this }
     }
 
     override fun accept(visitor: Visitor) {
-        visitor.visitGenerateForBlock(this)
+        visitor.visitCluster(this)
     }
 
     override fun acceptChildren(visitor: TreeVisitor) {
-        indexProperty.accept(visitor)
-        declaration.accept(visitor)
+        declarations.forEach { it.accept(visitor) }
     }
 
     override fun replaceChild(oldDeclaration: EDeclaration, newDeclaration: EDeclaration): Boolean {
         newDeclaration.parent = this
-        return if (declaration == oldDeclaration) {
-            declaration = newDeclaration
-            true
-        } else false
+        return declarations.replaceIfContains(oldDeclaration, newDeclaration)
     }
 }

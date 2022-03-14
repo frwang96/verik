@@ -50,6 +50,7 @@ import io.verik.compiler.evaluate.ConstantPropagatorStage
 import io.verik.compiler.evaluate.ConstantPropertyEliminatorStage
 import io.verik.compiler.evaluate.ExpressionEvaluatorStage
 import io.verik.compiler.interpret.ClassInterpreterStage
+import io.verik.compiler.interpret.ClusterInterpreterStage
 import io.verik.compiler.interpret.CompanionObjectReducerStage
 import io.verik.compiler.interpret.ComponentInstantiationInterpreterStage
 import io.verik.compiler.interpret.ComponentInterpreterStage
@@ -60,7 +61,6 @@ import io.verik.compiler.interpret.EnumInterpreterStage
 import io.verik.compiler.interpret.FileSplitterStage
 import io.verik.compiler.interpret.FunctionInterpreterStage
 import io.verik.compiler.interpret.FunctionLiteralInterpreterStage
-import io.verik.compiler.interpret.GenerateForBlockInterpreterStage
 import io.verik.compiler.interpret.InitializerBlockReducerStage
 import io.verik.compiler.interpret.InjectedPropertyInterpreterStage
 import io.verik.compiler.interpret.ModulePortParentResolverStage
@@ -180,7 +180,7 @@ object StageSequencer {
         stageSequence.add(StageType.EVALUATE, ExpressionEvaluatorStage)
         stageSequence.add(StageType.EVALUATE, ConstantPropertyEliminatorStage)
 
-        stageSequence.add(StageType.INTERPRET, GenerateForBlockInterpreterStage)
+        stageSequence.add(StageType.INTERPRET, ClusterInterpreterStage)
         stageSequence.add(StageType.INTERPRET, EnumInterpreterStage)
         stageSequence.add(StageType.INTERPRET, StructUnionInterpreterStage)
         stageSequence.add(StageType.INTERPRET, CoverGroupInterpreterStage)
