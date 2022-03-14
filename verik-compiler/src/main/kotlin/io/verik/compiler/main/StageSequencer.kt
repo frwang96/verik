@@ -33,6 +33,7 @@ import io.verik.compiler.check.mid.ProceduralBlockReferenceCheckerStage
 import io.verik.compiler.check.mid.SuperTypeCheckerStage
 import io.verik.compiler.check.mid.TypeArgumentTypeCheckerStage
 import io.verik.compiler.check.mid.TypeParameterCheckerStage
+import io.verik.compiler.check.mid.ValueParameterCheckerStage
 import io.verik.compiler.check.post.FileCheckerStage
 import io.verik.compiler.check.post.KeywordCheckerStage
 import io.verik.compiler.check.post.NameRedeclarationCheckerStage
@@ -164,6 +165,7 @@ object StageSequencer {
         stageSequence.add(StageType.MID_CHECK, ObjectCheckerStage)
         stageSequence.add(StageType.MID_CHECK, PortCheckerStage)
         stageSequence.add(StageType.MID_CHECK, PortInstantiationCheckerStage)
+        stageSequence.add(StageType.MID_CHECK, ValueParameterCheckerStage)
         stageSequence.add(StageType.MID_CHECK, ProceduralBlockReferenceCheckerStage)
         stageSequence.add(StageType.MID_CHECK, ArrayAccessMutabilityChecker)
 

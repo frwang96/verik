@@ -196,6 +196,10 @@ object Messages {
         "Illegal expression for output port"
     )
 
+    val ILLEGAL_VALUE_PARAMETER_TYPE = ErrorMessageTemplate1<Type>(
+        "Illegal value parameter type: $0"
+    )
+
     val PROCEDURAL_BLOCK_ILLEGAL_REFERENCE = ErrorMessageTemplate1<String>(
         "Illegal reference to procedural block: $0"
     )
