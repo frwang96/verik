@@ -17,7 +17,6 @@
 package io.verik.compiler.evaluate
 
 import io.verik.compiler.test.BaseTest
-import io.verik.compiler.test.findDeclaration
 import io.verik.compiler.test.findExpression
 import org.junit.jupiter.api.Test
 
@@ -31,12 +30,12 @@ internal class ClusterUnrollTransformerStageTest : BaseTest() {
             """.trimIndent(),
             ClusterUnrollTransformerStage::class,
             """
-                Cluster(x, [
+                [
                     Property(x_0, Int, ConstantExpression(Int, 0), 0, 0),
                     Property(x_1, Int, ConstantExpression(Int, 1), 0, 0)
-                ])
+                ]
             """.trimIndent()
-        ) { it.findDeclaration("x") }
+        ) { it.regularFiles()[0].declarations }
     }
 
     @Test

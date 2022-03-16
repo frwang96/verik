@@ -35,7 +35,6 @@ import io.verik.compiler.ast.element.declaration.sv.EAlwaysComBlock
 import io.verik.compiler.ast.element.declaration.sv.EAlwaysSeqBlock
 import io.verik.compiler.ast.element.declaration.sv.EClockingBlock
 import io.verik.compiler.ast.element.declaration.sv.EClockingBlockInstantiation
-import io.verik.compiler.ast.element.declaration.sv.ECluster
 import io.verik.compiler.ast.element.declaration.sv.EComponentInstantiation
 import io.verik.compiler.ast.element.declaration.sv.EConstraint
 import io.verik.compiler.ast.element.declaration.sv.ECoverBin
@@ -437,13 +436,6 @@ class ElementPrinter : Visitor() {
         build("Constraint") {
             build(constraint.name)
             build(constraint.body)
-        }
-    }
-
-    override fun visitCluster(cluster: ECluster) {
-        build("Cluster") {
-            build(cluster.name)
-            build(cluster.declarations)
         }
     }
 

@@ -16,17 +16,16 @@
 
 package io.verik.compiler.evaluate
 
-import io.verik.compiler.ast.common.cast
 import io.verik.compiler.ast.element.declaration.common.EAbstractValueParameter
 import io.verik.compiler.ast.element.declaration.common.EDeclaration
+import io.verik.compiler.ast.element.declaration.common.EFile
 import io.verik.compiler.ast.element.declaration.common.EProperty
-import io.verik.compiler.ast.element.declaration.sv.ECluster
+import io.verik.compiler.ast.element.declaration.kt.EKtClass
 import io.verik.compiler.ast.element.expression.common.EBlockExpression
 import io.verik.compiler.ast.element.expression.common.ECallExpression
 import io.verik.compiler.ast.element.expression.common.EReferenceExpression
 import io.verik.compiler.ast.element.expression.kt.EFunctionLiteralExpression
 import io.verik.compiler.common.ExpressionCopier
-import io.verik.compiler.common.ReferenceUpdater
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.constant.ConstantBuilder
 import io.verik.compiler.constant.ConstantNormalizer
@@ -34,72 +33,50 @@ import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
-import org.jetbrains.kotlin.utils.addToStdlib.cast
 
 object ClusterUnrollTransformerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
-        val referenceUpdater = ReferenceUpdater(projectContext)
-        val clusterUnrollTransformerVisitor = ClusterUnrollTransformerVisitor(referenceUpdater)
-        projectContext.project.accept(clusterUnrollTransformerVisitor)
-        referenceUpdater.flush()
-        projectContext.project.accept(ClusterReferenceTransformerVisitor)
+        val clusterIndexerVisitor = ClusterIndexerVisitor()
+        projectContext.project.accept(clusterIndexerVisitor)
+        val clusterCallExpressionTransformerVisitor = ClusterCallExpressionTransformerVisitor(
+            clusterIndexerVisitor.propertyClusterMap
+        )
+        projectContext.project.accept(clusterCallExpressionTransformerVisitor)
+        val clusterDeclarationTransformerVisitor = ClusterDeclarationTransformerVisitor(
+            clusterIndexerVisitor.propertyClusterMap
+        )
+        projectContext.project.accept(clusterDeclarationTransformerVisitor)
     }
 
-    private class ClusterUnrollTransformerVisitor(
-        private val referenceUpdater: ReferenceUpdater
-    ) : TreeVisitor() {
+    private class ClusterIndexerVisitor : TreeVisitor() {
+
+        val propertyClusterMap = HashMap<EProperty, List<EProperty>>()
 
         override fun visitProperty(property: EProperty) {
             super.visitProperty(property)
             if (property.type.reference == Core.Vk.C_Cluster) {
                 val initializer = property.initializer
                 if (initializer is ECallExpression && initializer.reference == Core.Vk.F_cluster_Int_Function) {
-                    interpretCluster(property, initializer)
+                    indexProperty(property, initializer)
                 } else {
                     Messages.EXPECTED_CLUSTER_EXPRESSION.on(property)
                 }
             }
         }
 
-        private fun interpretCluster(property: EProperty, expression: ECallExpression) {
+        private fun indexProperty(property: EProperty, expression: ECallExpression) {
             val functionLiteralExpression = expression.valueArguments[1] as EFunctionLiteralExpression
             if (functionLiteralExpression.body.statements.size != 1) {
                 Messages.INVALID_CLUSTER_INITIALIZER.on(functionLiteralExpression)
                 return
             }
-            val initializer = functionLiteralExpression.body.statements[0]
-            val initializerProperty = EProperty(
-                location = property.location,
-                endLocation = property.endLocation,
-                name = property.name,
-                type = initializer.type.copy(),
-                annotationEntries = property.annotationEntries,
-                documentationLines = property.documentationLines,
-                initializer = initializer,
-                isMutable = false,
-                isStatic = false
-            )
-            val valueParameter = functionLiteralExpression.valueParameters[0]
             val size = expression.type.arguments[0].asCardinalValue(expression)
-            val properties = copyProperties(initializerProperty, valueParameter, size)
-            val cluster = ECluster(
-                property.location,
-                property.endLocation,
-                property.name,
-                properties
-            )
-            referenceUpdater.replace(property, cluster)
-        }
-
-        private fun copyProperties(
-            property: EProperty,
-            valueParameter: EAbstractValueParameter,
-            size: Int
-        ): ArrayList<EDeclaration> {
-            val properties = ArrayList<EDeclaration>()
+            val initializer = functionLiteralExpression.body.statements[0]
+            val valueParameter = functionLiteralExpression.valueParameters[0]
+            val copiedProperties = ArrayList<EProperty>()
             for (index in 0 until size) {
-                val copiedInitializer = ExpressionCopier.deepCopy(property.initializer!!)
+                val copiedInitializer = ExpressionCopier.deepCopy(initializer)
                 val blockExpression = EBlockExpression.wrap(copiedInitializer)
                 val valueParameterSubstitutorVisitor = ValueParameterSubstitutorVisitor(valueParameter, index)
                 blockExpression.accept(valueParameterSubstitutorVisitor)
@@ -107,52 +84,85 @@ object ClusterUnrollTransformerStage : ProjectStage() {
                     location = property.location,
                     endLocation = property.endLocation,
                     name = "${property.name}_$index",
-                    type = property.type.copy(),
+                    type = initializer.type.copy(),
                     annotationEntries = property.annotationEntries,
                     documentationLines = if (index == 0) property.documentationLines else null,
                     initializer = blockExpression.statements[0],
                     isMutable = false,
                     isStatic = false
                 )
-                properties.add(copiedProperty)
+                copiedProperties.add(copiedProperty)
             }
-            return properties
+            propertyClusterMap[property] = copiedProperties
+        }
+
+        private class ValueParameterSubstitutorVisitor(
+            private val valueParameter: EAbstractValueParameter,
+            private val index: Int
+        ) : TreeVisitor() {
+
+            override fun visitReferenceExpression(referenceExpression: EReferenceExpression) {
+                super.visitReferenceExpression(referenceExpression)
+                if (referenceExpression.reference == valueParameter) {
+                    val constantExpression = ConstantBuilder.buildInt(referenceExpression, index)
+                    referenceExpression.replace(constantExpression)
+                }
+            }
         }
     }
 
-    private class ValueParameterSubstitutorVisitor(
-        private val valueParameter: EAbstractValueParameter,
-        private val index: Int
+    private class ClusterCallExpressionTransformerVisitor(
+        private val propertyClusterMap: HashMap<EProperty, List<EProperty>>
     ) : TreeVisitor() {
-
-        override fun visitReferenceExpression(referenceExpression: EReferenceExpression) {
-            super.visitReferenceExpression(referenceExpression)
-            if (referenceExpression.reference == valueParameter) {
-                val constantExpression = ConstantBuilder.buildInt(referenceExpression, index)
-                referenceExpression.replace(constantExpression)
-            }
-        }
-    }
-
-    private object ClusterReferenceTransformerVisitor : TreeVisitor() {
 
         override fun visitCallExpression(callExpression: ECallExpression) {
             super.visitCallExpression(callExpression)
-            if (callExpression.reference == Core.Vk.Cluster.F_get_Int) {
-                val cluster = callExpression.receiver
-                    .cast<EReferenceExpression>()
-                    .reference
-                    .cast<ECluster>(callExpression)
-                val index = ConstantNormalizer.parseIntOrNull(callExpression.valueArguments[0])
+            val receiver = callExpression.receiver
+            if (callExpression.reference == Core.Vk.Cluster.F_get_Int && receiver is EReferenceExpression) {
+                val properties = propertyClusterMap[receiver.reference] ?: return
+                val constantExpression = callExpression.valueArguments[0]
+                val index = ConstantNormalizer.parseIntOrNull(constantExpression)
                 if (index == null) {
-                    Messages.EXPRESSION_NOT_CONSTANT.on(callExpression.valueArguments[0])
-                } else if (index < 0 || index >= cluster.declarations.size) {
-                    Messages.CLUSTER_INDEX_INVALID.on(callExpression.valueArguments[0], index)
+                    Messages.EXPRESSION_NOT_CONSTANT.on(constantExpression)
+                } else if (index < 0 || index >= properties.size) {
+                    Messages.CLUSTER_INDEX_INVALID.on(constantExpression, index)
                 } else {
-                    val referenceExpression = EReferenceExpression.of(cluster.declarations[index])
+                    val referenceExpression = EReferenceExpression.of(properties[index])
                     callExpression.replace(referenceExpression)
                 }
             }
+        }
+    }
+
+    private class ClusterDeclarationTransformerVisitor(
+        private val propertyClusterMap: HashMap<EProperty, List<EProperty>>
+    ) : TreeVisitor() {
+
+        override fun visitFile(file: EFile) {
+            super.visitFile(file)
+            file.declarations = transformDeclarations(file, file.declarations)
+        }
+
+        override fun visitKtClass(cls: EKtClass) {
+            super.visitKtClass(cls)
+            cls.declarations = transformDeclarations(cls, cls.declarations)
+        }
+
+        private fun transformDeclarations(
+            parent: EDeclaration,
+            declarations: List<EDeclaration>,
+        ): ArrayList<EDeclaration> {
+            val transformedDeclarations = ArrayList<EDeclaration>()
+            declarations.forEach { declaration ->
+                val properties = propertyClusterMap[declaration]
+                if (properties != null) {
+                    properties.forEach { it.parent = parent }
+                    transformedDeclarations.addAll(properties)
+                } else {
+                    transformedDeclarations.add(declaration)
+                }
+            }
+            return transformedDeclarations
         }
     }
 }

@@ -48,7 +48,6 @@ import io.verik.compiler.ast.element.declaration.sv.EAlwaysComBlock
 import io.verik.compiler.ast.element.declaration.sv.EAlwaysSeqBlock
 import io.verik.compiler.ast.element.declaration.sv.EClockingBlock
 import io.verik.compiler.ast.element.declaration.sv.EClockingBlockInstantiation
-import io.verik.compiler.ast.element.declaration.sv.ECluster
 import io.verik.compiler.ast.element.declaration.sv.EComponentInstantiation
 import io.verik.compiler.ast.element.declaration.sv.EConstraint
 import io.verik.compiler.ast.element.declaration.sv.ECoverBin
@@ -336,10 +335,6 @@ abstract class Visitor {
 
     open fun visitConstraint(constraint: EConstraint) {
         visitAbstractProperty(constraint)
-    }
-
-    open fun visitCluster(cluster: ECluster) {
-        visitAbstractProperty(cluster)
     }
 
     open fun visitAbstractValueParameter(abstractValueParameter: EAbstractValueParameter) {

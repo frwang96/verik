@@ -23,7 +23,6 @@ import io.verik.compiler.ast.element.declaration.common.EProperty
 import io.verik.compiler.ast.element.declaration.sv.EAlwaysComBlock
 import io.verik.compiler.ast.element.declaration.sv.EAlwaysSeqBlock
 import io.verik.compiler.ast.element.declaration.sv.EClockingBlockInstantiation
-import io.verik.compiler.ast.element.declaration.sv.ECluster
 import io.verik.compiler.ast.element.declaration.sv.EComponentInstantiation
 import io.verik.compiler.ast.element.declaration.sv.EConstraint
 import io.verik.compiler.ast.element.declaration.sv.ECoverBin
@@ -101,10 +100,6 @@ class SourceSerializerVisitor(
 
     fun serializeAsDeclaration(declaration: EDeclaration) {
         if (SerializerUtil.declarationIsHidden(declaration)) return
-        if (declaration is ECluster) {
-            declaration.declarations.forEach { serializeAsDeclaration(it) }
-            return
-        }
         if (!firstDeclaration && !(lastDeclarationIsProperty && declaration is EProperty)) {
             serializeContext.appendLine()
         }
