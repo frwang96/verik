@@ -16,13 +16,17 @@
 
 package io.verik.compiler.evaluate
 
+import io.verik.compiler.ast.common.Declaration
 import io.verik.compiler.ast.element.declaration.common.EAbstractValueParameter
 import io.verik.compiler.ast.element.declaration.common.EDeclaration
 import io.verik.compiler.ast.element.declaration.common.EFile
 import io.verik.compiler.ast.element.declaration.common.EProperty
+import io.verik.compiler.ast.element.declaration.kt.EKtAbstractFunction
 import io.verik.compiler.ast.element.declaration.kt.EKtClass
+import io.verik.compiler.ast.element.declaration.kt.EKtValueParameter
 import io.verik.compiler.ast.element.expression.common.EBlockExpression
 import io.verik.compiler.ast.element.expression.common.ECallExpression
+import io.verik.compiler.ast.element.expression.common.EExpression
 import io.verik.compiler.ast.element.expression.common.EReferenceExpression
 import io.verik.compiler.ast.element.expression.kt.EFunctionLiteralExpression
 import io.verik.compiler.common.ExpressionCopier
@@ -40,11 +44,13 @@ object ClusterUnrollTransformerStage : ProjectStage() {
         val clusterIndexerVisitor = ClusterIndexerVisitor()
         projectContext.project.accept(clusterIndexerVisitor)
         val clusterCallExpressionTransformerVisitor = ClusterCallExpressionTransformerVisitor(
-            clusterIndexerVisitor.propertyClusterMap
+            clusterIndexerVisitor.propertyClusterMap,
+            clusterIndexerVisitor.valueParameterClusterMap
         )
         projectContext.project.accept(clusterCallExpressionTransformerVisitor)
         val clusterDeclarationTransformerVisitor = ClusterDeclarationTransformerVisitor(
-            clusterIndexerVisitor.propertyClusterMap
+            clusterIndexerVisitor.propertyClusterMap,
+            clusterIndexerVisitor.valueParameterClusterMap
         )
         projectContext.project.accept(clusterDeclarationTransformerVisitor)
     }
@@ -52,6 +58,7 @@ object ClusterUnrollTransformerStage : ProjectStage() {
     private class ClusterIndexerVisitor : TreeVisitor() {
 
         val propertyClusterMap = HashMap<EProperty, List<EProperty>>()
+        val valueParameterClusterMap = HashMap<EKtValueParameter, List<EKtValueParameter>>()
 
         override fun visitProperty(property: EProperty) {
             super.visitProperty(property)
@@ -61,6 +68,15 @@ object ClusterUnrollTransformerStage : ProjectStage() {
                     indexProperty(property, initializer)
                 } else {
                     Messages.EXPECTED_CLUSTER_EXPRESSION.on(property)
+                }
+            }
+        }
+
+        override fun visitKtAbstractFunction(abstractFunction: EKtAbstractFunction) {
+            super.visitKtAbstractFunction(abstractFunction)
+            abstractFunction.valueParameters.forEach {
+                if (it.type.reference == Core.Vk.C_Cluster) {
+                    indexValueParameter(it)
                 }
             }
         }
@@ -96,6 +112,25 @@ object ClusterUnrollTransformerStage : ProjectStage() {
             propertyClusterMap[property] = copiedProperties
         }
 
+        private fun indexValueParameter(valueParameter: EKtValueParameter) {
+            val size = valueParameter.type.arguments[0].asCardinalValue(valueParameter)
+            val type = valueParameter.type.arguments[1]
+            val valueParameters = ArrayList<EKtValueParameter>()
+            for (index in 0 until size) {
+                val copiedValueParameter = EKtValueParameter(
+                    location = valueParameter.location,
+                    name = "${valueParameter.name}_$index",
+                    type = type.copy(),
+                    annotationEntries = valueParameter.annotationEntries,
+                    expression = null,
+                    isPrimaryConstructorProperty = valueParameter.isPrimaryConstructorProperty,
+                    isMutable = valueParameter.isMutable
+                )
+                valueParameters.add(copiedValueParameter)
+            }
+            valueParameterClusterMap[valueParameter] = valueParameters
+        }
+
         private class ValueParameterSubstitutorVisitor(
             private val valueParameter: EAbstractValueParameter,
             private val index: Int
@@ -112,30 +147,62 @@ object ClusterUnrollTransformerStage : ProjectStage() {
     }
 
     private class ClusterCallExpressionTransformerVisitor(
-        private val propertyClusterMap: HashMap<EProperty, List<EProperty>>
+        private val propertyClusterMap: HashMap<EProperty, List<EProperty>>,
+        private val valueParameterClusterMap: HashMap<EKtValueParameter, List<EKtValueParameter>>
     ) : TreeVisitor() {
 
         override fun visitCallExpression(callExpression: ECallExpression) {
             super.visitCallExpression(callExpression)
+            val reference = callExpression.reference
             val receiver = callExpression.receiver
-            if (callExpression.reference == Core.Vk.Cluster.F_get_Int && receiver is EReferenceExpression) {
-                val properties = propertyClusterMap[receiver.reference] ?: return
-                val constantExpression = callExpression.valueArguments[0]
-                val index = ConstantNormalizer.parseIntOrNull(constantExpression)
-                if (index == null) {
-                    Messages.EXPRESSION_NOT_CONSTANT.on(constantExpression)
-                } else if (index < 0 || index >= properties.size) {
-                    Messages.CLUSTER_INDEX_INVALID.on(constantExpression, index)
-                } else {
-                    val referenceExpression = EReferenceExpression.of(properties[index])
-                    callExpression.replace(referenceExpression)
-                }
+            if (reference == Core.Vk.Cluster.F_get_Int && receiver is EReferenceExpression) {
+                transformIndex(callExpression, receiver)
+            } else if (reference is EKtAbstractFunction) {
+                transformValueArguments(callExpression, reference)
             }
+        }
+
+        private fun transformIndex(callExpression: ECallExpression, receiver: EReferenceExpression) {
+            val declarations = getClusterDeclarations(receiver.reference) ?: return
+            val constantExpression = callExpression.valueArguments[0]
+            val index = ConstantNormalizer.parseIntOrNull(constantExpression)
+            if (index == null) {
+                Messages.EXPRESSION_NOT_CONSTANT.on(constantExpression)
+            } else if (index < 0 || index >= declarations.size) {
+                Messages.CLUSTER_INDEX_INVALID.on(constantExpression, index)
+            } else {
+                val referenceExpression = EReferenceExpression.of(callExpression.location, declarations[index])
+                callExpression.replace(referenceExpression)
+            }
+        }
+
+        private fun transformValueArguments(callExpression: ECallExpression, function: EKtAbstractFunction) {
+            if (function.valueParameters.any { it.type.reference == Core.Vk.C_Cluster }) {
+                val valueArguments = ArrayList<EExpression>()
+                callExpression.valueArguments.zip(function.valueParameters).forEach { (valueArgument, valueParameter) ->
+                    if (valueParameter.type.reference == Core.Vk.C_Cluster) {
+                        val referenceExpression = valueArgument as? EReferenceExpression ?: return
+                        val declarations = getClusterDeclarations(referenceExpression.reference) ?: return
+                        declarations.forEach {
+                            valueArguments.add(EReferenceExpression.of(referenceExpression.location, it))
+                        }
+                    } else {
+                        valueArguments.add(valueArgument)
+                    }
+                }
+                valueArguments.forEach { it.parent = callExpression }
+                callExpression.valueArguments = valueArguments
+            }
+        }
+
+        private fun getClusterDeclarations(reference: Declaration): List<EDeclaration>? {
+            return propertyClusterMap[reference] ?: valueParameterClusterMap[reference]
         }
     }
 
     private class ClusterDeclarationTransformerVisitor(
-        private val propertyClusterMap: HashMap<EProperty, List<EProperty>>
+        private val propertyClusterMap: HashMap<EProperty, List<EProperty>>,
+        private val valueParameterClusterMap: HashMap<EKtValueParameter, List<EKtValueParameter>>
     ) : TreeVisitor() {
 
         override fun visitFile(file: EFile) {
@@ -146,6 +213,21 @@ object ClusterUnrollTransformerStage : ProjectStage() {
         override fun visitKtClass(cls: EKtClass) {
             super.visitKtClass(cls)
             cls.declarations = transformDeclarations(cls, cls.declarations)
+        }
+
+        override fun visitKtAbstractFunction(abstractFunction: EKtAbstractFunction) {
+            super.visitKtAbstractFunction(abstractFunction)
+            val transformedValueParameters = ArrayList<EKtValueParameter>()
+            abstractFunction.valueParameters.forEach { valueParameter ->
+                val valueParameters = valueParameterClusterMap[valueParameter]
+                if (valueParameters != null) {
+                    valueParameters.forEach { it.parent = abstractFunction }
+                    transformedValueParameters.addAll(valueParameters)
+                } else {
+                    transformedValueParameters.add(valueParameter)
+                }
+            }
+            abstractFunction.valueParameters = transformedValueParameters
         }
 
         private fun transformDeclarations(

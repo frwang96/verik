@@ -107,7 +107,7 @@ object ForEachUnrollTransformerStage : ProjectStage() {
                     if (it is EPropertyStatement) {
                         val initializer = it.property.initializer
                         if (initializer != null) {
-                            val referenceExpression = EReferenceExpression.of(it.property)
+                            val referenceExpression = EReferenceExpression.of(it.location, it.property)
                             val binaryExpression = EKtBinaryExpression(
                                 it.location,
                                 Core.Kt.C_Unit.toType(),

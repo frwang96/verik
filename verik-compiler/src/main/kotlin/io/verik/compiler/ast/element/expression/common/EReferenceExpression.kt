@@ -43,9 +43,9 @@ class EReferenceExpression(
 
     companion object {
 
-        fun of(declaration: EDeclaration): EReferenceExpression {
+        fun of(location: SourceLocation, declaration: EDeclaration): EReferenceExpression {
             return EReferenceExpression(
-                declaration.location,
+                location,
                 declaration.type.copy(),
                 declaration,
                 null,

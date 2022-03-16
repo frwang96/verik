@@ -89,7 +89,7 @@ object ExpressionExtractorStage : ProjectStage() {
                 expression.location,
                 property
             )
-            val referenceExpression = EReferenceExpression.of(property)
+            val referenceExpression = EReferenceExpression.of(property.location, property)
             return Pair(propertyStatement, referenceExpression)
         }
     }

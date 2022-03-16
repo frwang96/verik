@@ -17,29 +17,14 @@
 package io.verik.compiler.evaluate
 
 import io.verik.compiler.test.BaseTest
+import io.verik.compiler.test.findDeclaration
 import io.verik.compiler.test.findExpression
 import org.junit.jupiter.api.Test
 
 internal class ClusterUnrollTransformerStageTest : BaseTest() {
 
     @Test
-    fun `unroll cluster`() {
-        driveElementTest(
-            """
-                val x = cluster(2) { it }
-            """.trimIndent(),
-            ClusterUnrollTransformerStage::class,
-            """
-                [
-                    Property(x_0, Int, ConstantExpression(Int, 0), 0, 0),
-                    Property(x_1, Int, ConstantExpression(Int, 1), 0, 0)
-                ]
-            """.trimIndent()
-        ) { it.regularFiles()[0].declarations }
-    }
-
-    @Test
-    fun `transform cluster reference`() {
+    fun `cluster index property`() {
         driveElementTest(
             """
                 val x = cluster(2) { it }
@@ -51,7 +36,20 @@ internal class ClusterUnrollTransformerStageTest : BaseTest() {
     }
 
     @Test
-    fun `transform cluster reference not constant`() {
+    fun `cluster index value parameter`() {
+        driveElementTest(
+            """
+                fun f(y: Cluster<`2`, Int>): Int {
+                    return y[0]
+                }
+            """.trimIndent(),
+            ClusterUnrollTransformerStage::class,
+            "ReturnStatement(Nothing, ReferenceExpression(Int, y_0, null, 0))"
+        ) { it.findExpression("f") }
+    }
+
+    @Test
+    fun `cluster index not constant`() {
         driveMessageTest(
             """
                 val x = cluster(2) { it }
@@ -64,7 +62,7 @@ internal class ClusterUnrollTransformerStageTest : BaseTest() {
     }
 
     @Test
-    fun `transform cluster reference out of bounds`() {
+    fun `cluster index out of bounds`() {
         driveMessageTest(
             """
                 val x = cluster(2) { it }
@@ -73,5 +71,57 @@ internal class ClusterUnrollTransformerStageTest : BaseTest() {
             true,
             "Cluster index out of bounds: 2"
         )
+    }
+
+    @Test
+    fun `cluster value argument`() {
+        driveElementTest(
+            """
+                val x = cluster(2) { it }
+                fun f(y: Cluster<`2`, Int>) {}
+                fun g() {
+                    f(x)
+                }
+            """.trimIndent(),
+            ClusterUnrollTransformerStage::class,
+            """
+                CallExpression(
+                    Unit, f, null, 0,
+                    [ReferenceExpression(Int, x_0, null, 0), ReferenceExpression(Int, x_1, null, 0)], []
+                )
+            """.trimIndent()
+        ) { it.findExpression("g") }
+    }
+
+    @Test
+    fun `cluster value parameter`() {
+        driveElementTest(
+            """
+                fun f(y: Cluster<`2`, Int>) {}
+            """.trimIndent(),
+            ClusterUnrollTransformerStage::class,
+            """
+                KtFunction(
+                    f, Unit, BlockExpression(Unit, []),
+                    [KtValueParameter(y_0, Int, null, 0, 0), KtValueParameter(y_1, Int, null, 0, 0)], [], 0
+                )
+            """.trimIndent()
+        ) { it.findDeclaration("f") }
+    }
+
+    @Test
+    fun `cluster property`() {
+        driveElementTest(
+            """
+                val x = cluster(2) { it }
+            """.trimIndent(),
+            ClusterUnrollTransformerStage::class,
+            """
+                [
+                    Property(x_0, Int, ConstantExpression(Int, 0), 0, 0),
+                    Property(x_1, Int, ConstantExpression(Int, 1), 0, 0)
+                ]
+            """.trimIndent()
+        ) { it.regularFiles()[0].declarations }
     }
 }

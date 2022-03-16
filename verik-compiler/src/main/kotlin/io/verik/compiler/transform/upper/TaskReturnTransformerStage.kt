@@ -107,7 +107,7 @@ object TaskReturnTransformerStage : ProjectStage() {
                 isMutable = true
             )
             val propertyStatement = EPropertyStatement(callExpression.location, property)
-            val referenceExpression = EReferenceExpression.of(property)
+            val referenceExpression = EReferenceExpression.of(property.location, property)
             val newCallExpression = ExpressionCopier.shallowCopy(callExpression)
             referenceExpression.parent = newCallExpression
             newCallExpression.valueArguments.add(referenceExpression)
