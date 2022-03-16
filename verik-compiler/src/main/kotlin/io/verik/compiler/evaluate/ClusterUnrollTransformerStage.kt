@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Francis Wang
+ * Copyright (c) 2022 Francis Wang
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.interpret
+package io.verik.compiler.evaluate
 
+import io.verik.compiler.ast.common.cast
 import io.verik.compiler.ast.element.declaration.common.EAbstractValueParameter
 import io.verik.compiler.ast.element.declaration.common.EDeclaration
 import io.verik.compiler.ast.element.declaration.common.EProperty
@@ -28,21 +29,24 @@ import io.verik.compiler.common.ExpressionCopier
 import io.verik.compiler.common.ReferenceUpdater
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.constant.ConstantBuilder
+import io.verik.compiler.constant.ConstantNormalizer
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
+import org.jetbrains.kotlin.utils.addToStdlib.cast
 
-object ClusterInterpreterStage : ProjectStage() {
+object ClusterUnrollTransformerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
         val referenceUpdater = ReferenceUpdater(projectContext)
-        val clusterInterpreterVisitor = ClusterInterpreterVisitor(referenceUpdater)
-        projectContext.project.accept(clusterInterpreterVisitor)
+        val clusterUnrollTransformerVisitor = ClusterUnrollTransformerVisitor(referenceUpdater)
+        projectContext.project.accept(clusterUnrollTransformerVisitor)
         referenceUpdater.flush()
+        projectContext.project.accept(ClusterReferenceTransformerVisitor)
     }
 
-    private class ClusterInterpreterVisitor(
+    private class ClusterUnrollTransformerVisitor(
         private val referenceUpdater: ReferenceUpdater
     ) : TreeVisitor() {
 
@@ -114,17 +118,39 @@ object ClusterInterpreterStage : ProjectStage() {
             }
             return properties
         }
+    }
 
-        private class ValueParameterSubstitutorVisitor(
-            private val valueParameter: EAbstractValueParameter,
-            private val index: Int
-        ) : TreeVisitor() {
+    private class ValueParameterSubstitutorVisitor(
+        private val valueParameter: EAbstractValueParameter,
+        private val index: Int
+    ) : TreeVisitor() {
 
-            override fun visitReferenceExpression(referenceExpression: EReferenceExpression) {
-                super.visitReferenceExpression(referenceExpression)
-                if (referenceExpression.reference == valueParameter) {
-                    val constantExpression = ConstantBuilder.buildInt(referenceExpression, index)
-                    referenceExpression.replace(constantExpression)
+        override fun visitReferenceExpression(referenceExpression: EReferenceExpression) {
+            super.visitReferenceExpression(referenceExpression)
+            if (referenceExpression.reference == valueParameter) {
+                val constantExpression = ConstantBuilder.buildInt(referenceExpression, index)
+                referenceExpression.replace(constantExpression)
+            }
+        }
+    }
+
+    private object ClusterReferenceTransformerVisitor : TreeVisitor() {
+
+        override fun visitCallExpression(callExpression: ECallExpression) {
+            super.visitCallExpression(callExpression)
+            if (callExpression.reference == Core.Vk.Cluster.F_get_Int) {
+                val cluster = callExpression.receiver
+                    .cast<EReferenceExpression>()
+                    .reference
+                    .cast<ECluster>(callExpression)
+                val index = ConstantNormalizer.parseIntOrNull(callExpression.valueArguments[0])
+                if (index == null) {
+                    Messages.EXPRESSION_NOT_CONSTANT.on(callExpression.valueArguments[0])
+                } else if (index < 0 || index >= cluster.declarations.size) {
+                    Messages.CLUSTER_INDEX_INVALID.on(callExpression.valueArguments[0], index)
+                } else {
+                    val referenceExpression = EReferenceExpression.of(cluster.declarations[index])
+                    callExpression.replace(referenceExpression)
                 }
             }
         }

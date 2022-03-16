@@ -46,11 +46,12 @@ import io.verik.compiler.check.pre.FileAnnotationCheckerStage
 import io.verik.compiler.check.pre.PreNameCheckerStage
 import io.verik.compiler.check.pre.UnsupportedElementCheckerStage
 import io.verik.compiler.check.pre.UnsupportedModifierCheckerStage
+import io.verik.compiler.evaluate.ClusterUnrollTransformerStage
 import io.verik.compiler.evaluate.ConstantPropagatorStage
 import io.verik.compiler.evaluate.ConstantPropertyEliminatorStage
 import io.verik.compiler.evaluate.ExpressionEvaluatorStage
+import io.verik.compiler.evaluate.ForEachUnrollTransformerStage
 import io.verik.compiler.interpret.ClassInterpreterStage
-import io.verik.compiler.interpret.ClusterInterpreterStage
 import io.verik.compiler.interpret.CompanionObjectReducerStage
 import io.verik.compiler.interpret.ComponentInstantiationInterpreterStage
 import io.verik.compiler.interpret.ComponentInterpreterStage
@@ -110,10 +111,8 @@ import io.verik.compiler.transform.pre.TypeAliasReducerStage
 import io.verik.compiler.transform.pre.UnaryExpressionReducerStage
 import io.verik.compiler.transform.upper.CaseStatementTransformerStage
 import io.verik.compiler.transform.upper.CastTransformerStage
-import io.verik.compiler.transform.upper.ClusterReferenceTransformerStage
 import io.verik.compiler.transform.upper.CoreFunctionOverrideTransformerStage
 import io.verik.compiler.transform.upper.EnumPropertyReferenceTransformerStage
-import io.verik.compiler.transform.upper.ForEachUnrollTransformerStage
 import io.verik.compiler.transform.upper.ForStatementTransformerStage
 import io.verik.compiler.transform.upper.IfAndWhenExpressionUnlifterStage
 import io.verik.compiler.transform.upper.InjectedExpressionTransformerStage
@@ -177,11 +176,12 @@ object StageSequencer {
         stageSequence.add(StageType.RESOLVE, TypeResolvedCheckerStage)
         stageSequence.add(StageType.RESOLVE, TypeReferenceForwarderStage)
 
+        stageSequence.add(StageType.EVALUATE, ForEachUnrollTransformerStage)
         stageSequence.add(StageType.EVALUATE, ConstantPropagatorStage)
         stageSequence.add(StageType.EVALUATE, ExpressionEvaluatorStage)
         stageSequence.add(StageType.EVALUATE, ConstantPropertyEliminatorStage)
+        stageSequence.add(StageType.EVALUATE, ClusterUnrollTransformerStage)
 
-        stageSequence.add(StageType.INTERPRET, ClusterInterpreterStage)
         stageSequence.add(StageType.INTERPRET, EnumInterpreterStage)
         stageSequence.add(StageType.INTERPRET, StructUnionInterpreterStage)
         stageSequence.add(StageType.INTERPRET, CoverGroupInterpreterStage)
@@ -213,9 +213,7 @@ object StageSequencer {
         stageSequence.add(StageType.UPPER_TRANSFORM, InlineIfExpressionTransformerStage)
         stageSequence.add(StageType.UPPER_TRANSFORM, IfAndWhenExpressionUnlifterStage)
         stageSequence.add(StageType.UPPER_TRANSFORM, CaseStatementTransformerStage)
-        stageSequence.add(StageType.UPPER_TRANSFORM, ForEachUnrollTransformerStage)
         stageSequence.add(StageType.UPPER_TRANSFORM, ForStatementTransformerStage)
-        stageSequence.add(StageType.UPPER_TRANSFORM, ClusterReferenceTransformerStage)
 
         stageSequence.add(StageType.LOWER_TRANSFORM, FunctionTransformerStage)
         stageSequence.add(StageType.LOWER_TRANSFORM, PropertyTransformerStage)

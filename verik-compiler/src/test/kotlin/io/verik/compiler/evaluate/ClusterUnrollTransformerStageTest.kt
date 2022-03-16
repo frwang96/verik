@@ -14,13 +14,30 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.transform.upper
+package io.verik.compiler.evaluate
 
 import io.verik.compiler.test.BaseTest
+import io.verik.compiler.test.findDeclaration
 import io.verik.compiler.test.findExpression
 import org.junit.jupiter.api.Test
 
-internal class ClusterReferenceTransformerStageTest : BaseTest() {
+internal class ClusterUnrollTransformerStageTest : BaseTest() {
+
+    @Test
+    fun `unroll cluster`() {
+        driveElementTest(
+            """
+                val x = cluster(2) { it }
+            """.trimIndent(),
+            ClusterUnrollTransformerStage::class,
+            """
+                Cluster(x, [
+                    Property(x_0, Int, ConstantExpression(Int, 0), 0, 0),
+                    Property(x_1, Int, ConstantExpression(Int, 1), 0, 0)
+                ])
+            """.trimIndent()
+        ) { it.findDeclaration("x") }
+    }
 
     @Test
     fun `transform cluster reference`() {
@@ -29,7 +46,7 @@ internal class ClusterReferenceTransformerStageTest : BaseTest() {
                 val x = cluster(2) { it }
                 val y = x[0]
             """.trimIndent(),
-            ClusterReferenceTransformerStage::class,
+            ClusterUnrollTransformerStage::class,
             "ReferenceExpression(Int, x_0, null, 0)"
         ) { it.findExpression("y") }
     }

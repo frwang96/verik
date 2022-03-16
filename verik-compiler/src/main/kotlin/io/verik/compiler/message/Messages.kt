@@ -272,7 +272,7 @@ object Messages {
         "Cardinal type is negative: $0"
     )
 
-//  INTERPRET  /////////////////////////////////////////////////////////////////////////////////////////////////////////
+//  EVALUATE  //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     val EXPECTED_CLUSTER_EXPRESSION = ErrorMessageTemplate0(
         "Expected cluster expression"
@@ -281,6 +281,12 @@ object Messages {
     val INVALID_CLUSTER_INITIALIZER = ErrorMessageTemplate0(
         "Invalid cluster initializer"
     )
+
+    val CLUSTER_INDEX_INVALID = ErrorMessageTemplate1<Int>(
+        "Cluster index out of bounds: $0"
+    )
+
+//  INTERPRET  /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     val ENUM_PROPERTY_ILLEGAL = ErrorMessageTemplate1<String>(
         "Illegal enum property: $0"
@@ -368,10 +374,6 @@ object Messages {
 
     val CIRCULAR_DECLARATION_DEPENDENCY = ErrorMessageTemplate1<Dependency>(
         "Circular dependency between declarations: $0"
-    )
-
-    val CLUSTER_INDEX_INVALID = ErrorMessageTemplate1<Int>(
-        "Cluster index out of bounds: $0"
     )
 
 //  POST TRANSFORM  ////////////////////////////////////////////////////////////////////////////////////////////////////

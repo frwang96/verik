@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.transform.upper
+package io.verik.compiler.evaluate
 
 import io.verik.compiler.test.BaseTest
 import org.junit.jupiter.api.Test
