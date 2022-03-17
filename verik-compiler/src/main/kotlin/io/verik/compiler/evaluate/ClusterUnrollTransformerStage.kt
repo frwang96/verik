@@ -17,7 +17,6 @@
 package io.verik.compiler.evaluate
 
 import io.verik.compiler.ast.common.Declaration
-import io.verik.compiler.ast.element.declaration.common.EAbstractValueParameter
 import io.verik.compiler.ast.element.declaration.common.EDeclaration
 import io.verik.compiler.ast.element.declaration.common.EFile
 import io.verik.compiler.ast.element.declaration.common.EProperty
@@ -94,8 +93,11 @@ object ClusterUnrollTransformerStage : ProjectStage() {
             for (index in 0 until size) {
                 val copiedInitializer = ExpressionCopier.deepCopy(initializer)
                 val blockExpression = EBlockExpression.wrap(copiedInitializer)
-                val valueParameterSubstitutorVisitor = ValueParameterSubstitutorVisitor(valueParameter, index)
-                blockExpression.accept(valueParameterSubstitutorVisitor)
+                UnrollUtil.substituteValueParameter(
+                    blockExpression,
+                    valueParameter,
+                    ConstantBuilder.buildInt(valueParameter.location, index)
+                )
                 val copiedProperty = EProperty(
                     location = property.location,
                     endLocation = property.endLocation,
@@ -129,20 +131,6 @@ object ClusterUnrollTransformerStage : ProjectStage() {
                 valueParameters.add(copiedValueParameter)
             }
             valueParameterClusterMap[valueParameter] = valueParameters
-        }
-
-        private class ValueParameterSubstitutorVisitor(
-            private val valueParameter: EAbstractValueParameter,
-            private val index: Int
-        ) : TreeVisitor() {
-
-            override fun visitReferenceExpression(referenceExpression: EReferenceExpression) {
-                super.visitReferenceExpression(referenceExpression)
-                if (referenceExpression.reference == valueParameter) {
-                    val constantExpression = ConstantBuilder.buildInt(referenceExpression, index)
-                    referenceExpression.replace(constantExpression)
-                }
-            }
         }
     }
 
@@ -181,11 +169,8 @@ object ClusterUnrollTransformerStage : ProjectStage() {
                 val valueArguments = ArrayList<EExpression>()
                 callExpression.valueArguments.zip(function.valueParameters).forEach { (valueArgument, valueParameter) ->
                     if (valueParameter.type.reference == Core.Vk.C_Cluster) {
-                        val referenceExpression = valueArgument as? EReferenceExpression ?: return
-                        val declarations = getClusterDeclarations(referenceExpression.reference) ?: return
-                        declarations.forEach {
-                            valueArguments.add(EReferenceExpression.of(referenceExpression.location, it))
-                        }
+                        val expressions = transformExpression(valueArgument) ?: return
+                        valueArguments.addAll(expressions)
                     } else {
                         valueArguments.add(valueArgument)
                     }
@@ -193,6 +178,24 @@ object ClusterUnrollTransformerStage : ProjectStage() {
                 valueArguments.forEach { it.parent = callExpression }
                 callExpression.valueArguments = valueArguments
             }
+        }
+
+        private fun transformExpression(expression: EExpression): List<EExpression>? {
+            return if (expression is EReferenceExpression) {
+                val declarations = getClusterDeclarations(expression.reference) ?: return null
+                declarations.map { EReferenceExpression.of(expression.location, it) }
+            } else if (expression is ECallExpression && expression.reference == Core.Vk.Cluster.F_map_Function) {
+                val expressions = transformExpression(expression.receiver!!) ?: return null
+                val functionLiteralExpression = expression.valueArguments[0] as EFunctionLiteralExpression
+                val valueParameter = functionLiteralExpression.valueParameters[0]
+                if (functionLiteralExpression.body.statements.size != 1) return null
+                expressions.map {
+                    val copiedExpression = ExpressionCopier.deepCopy(functionLiteralExpression.body.statements[0])
+                    val blockExpression = EBlockExpression.wrap(copiedExpression)
+                    UnrollUtil.substituteValueParameter(blockExpression, valueParameter, it)
+                    blockExpression.statements[0]
+                }
+            } else null
         }
 
         private fun getClusterDeclarations(reference: Declaration): List<EDeclaration>? {

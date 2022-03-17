@@ -33,4 +33,12 @@ class Cluster<N : `*`, T> private constructor() : Component(), Iterable<T> {
     operator fun get(index: Int): T {
         throw VerikException()
     }
+
+    /**
+     * Returns a cluster containing the results of applying the given [transform] to each element in the original
+     * cluster.
+     */
+    fun <R> map(transform: (T) -> R): Cluster<N, R> {
+        throw VerikException()
+    }
 }

@@ -125,11 +125,8 @@ object ForEachUnrollTransformerStage : ProjectStage() {
             }
             val valueParameter = functionLiteralExpression.valueParameters[0].cast<EKtValueParameter>()
             statementGroups.forEachIndexed { index, statements ->
-                val valueParameterSubstitutorVisitor = ValueParameterSubstitutorVisitor(
-                    valueParameter,
-                    index + indices.first
-                )
-                statements.forEach { it.acceptChildren(valueParameterSubstitutorVisitor) }
+                val constantExpression = ConstantBuilder.buildInt(valueParameter.location, index)
+                statements.forEach { UnrollUtil.substituteValueParameter(it, valueParameter, constantExpression) }
             }
             val blockExpression = EBlockExpression(
                 callExpression.location,
@@ -147,20 +144,6 @@ object ForEachUnrollTransformerStage : ProjectStage() {
                 if (functionLiteralExpression.valueParameters[0] in references) {
                     val indices = getIndices(callExpression.receiver!!)
                     if (indices != null) unroll(callExpression, functionLiteralExpression, indices)
-                }
-            }
-        }
-
-        private class ValueParameterSubstitutorVisitor(
-            private val valueParameter: EKtValueParameter,
-            private val index: Int
-        ) : TreeVisitor() {
-
-            override fun visitReferenceExpression(referenceExpression: EReferenceExpression) {
-                super.visitReferenceExpression(referenceExpression)
-                if (referenceExpression.reference == valueParameter) {
-                    val constantExpression = ConstantBuilder.buildInt(referenceExpression, index)
-                    referenceExpression.replace(constantExpression)
                 }
             }
         }

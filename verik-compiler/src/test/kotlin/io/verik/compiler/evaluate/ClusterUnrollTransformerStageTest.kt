@@ -94,6 +94,26 @@ internal class ClusterUnrollTransformerStageTest : BaseTest() {
     }
 
     @Test
+    fun `cluster value argument map`() {
+        driveElementTest(
+            """
+                val x = cluster(1) { ArrayList<Int>() }
+                fun f(y: Cluster<`1`, Int>) {}
+                fun g() {
+                    f(x.map { it.size })
+                }
+            """.trimIndent(),
+            ClusterUnrollTransformerStage::class,
+            """
+                CallExpression(
+                    Unit, f, null, 0,
+                    [ReferenceExpression(Int, size, ReferenceExpression(ArrayList<Int>, x_0, null, 0), 0)], []
+                )
+            """.trimIndent()
+        ) { it.findExpression("g") }
+    }
+
+    @Test
     fun `cluster value parameter`() {
         driveElementTest(
             """

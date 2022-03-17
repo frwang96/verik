@@ -463,6 +463,7 @@ object Core {
         object Cluster {
 
             val F_get_Int = CoreVkCluster.F_get_Int
+            val F_map_Function = CoreVkCluster.F_map_Function
         }
     }
 }
