@@ -23,12 +23,12 @@ import io.verik.compiler.ast.element.declaration.common.EProperty
 import io.verik.compiler.ast.element.declaration.sv.EAbstractComponent
 import io.verik.compiler.ast.element.declaration.sv.ECoverGroup
 import io.verik.compiler.ast.element.declaration.sv.EEnum
-import io.verik.compiler.ast.element.declaration.sv.EGenerateForBlock
 import io.verik.compiler.ast.element.declaration.sv.EInjectedProperty
 import io.verik.compiler.ast.element.declaration.sv.EStruct
 import io.verik.compiler.ast.element.declaration.sv.ESvClass
 import io.verik.compiler.ast.element.declaration.sv.ESvFunction
 import io.verik.compiler.ast.element.declaration.sv.ETask
+import io.verik.compiler.ast.element.declaration.sv.EUnion
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
@@ -88,12 +88,12 @@ object FileSplitterStage : ProjectStage() {
             is ECoverGroup -> false
             is EEnum -> false
             is EStruct -> false
+            is EUnion -> false
             is ESvFunction -> false
             is ETask -> false
             is EInjectedProperty -> false
             is EProperty -> false
             is EEnumEntry -> false
-            is EGenerateForBlock -> isRootPackageDeclaration(declaration.declaration)
             else -> Messages.INTERNAL_ERROR.on(
                 declaration,
                 "Unexpected declaration type: ${declaration::class.simpleName}"

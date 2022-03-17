@@ -55,7 +55,6 @@ import io.verik.compiler.ast.element.declaration.sv.ECoverCross
 import io.verik.compiler.ast.element.declaration.sv.ECoverGroup
 import io.verik.compiler.ast.element.declaration.sv.ECoverPoint
 import io.verik.compiler.ast.element.declaration.sv.EEnum
-import io.verik.compiler.ast.element.declaration.sv.EGenerateForBlock
 import io.verik.compiler.ast.element.declaration.sv.EInitialBlock
 import io.verik.compiler.ast.element.declaration.sv.EInjectedProperty
 import io.verik.compiler.ast.element.declaration.sv.EModule
@@ -71,6 +70,7 @@ import io.verik.compiler.ast.element.declaration.sv.ESvFunction
 import io.verik.compiler.ast.element.declaration.sv.ESvValueParameter
 import io.verik.compiler.ast.element.declaration.sv.ETask
 import io.verik.compiler.ast.element.declaration.sv.ETypeDefinition
+import io.verik.compiler.ast.element.declaration.sv.EUnion
 import io.verik.compiler.ast.element.expression.common.EAbstractArrayAccessExpression
 import io.verik.compiler.ast.element.expression.common.EAbstractBinaryExpression
 import io.verik.compiler.ast.element.expression.common.EAbstractContainerExpression
@@ -225,6 +225,10 @@ abstract class Visitor {
         visitAbstractClass(struct)
     }
 
+    open fun visitUnion(union: EUnion) {
+        visitAbstractClass(union)
+    }
+
 // FUNCTION ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     open fun visitAbstractFunction(abstractFunction: EAbstractFunction) {
@@ -331,10 +335,6 @@ abstract class Visitor {
 
     open fun visitConstraint(constraint: EConstraint) {
         visitAbstractProperty(constraint)
-    }
-
-    open fun visitGenerateForBlock(generateForBlock: EGenerateForBlock) {
-        visitAbstractProperty(generateForBlock)
     }
 
     open fun visitAbstractValueParameter(abstractValueParameter: EAbstractValueParameter) {

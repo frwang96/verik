@@ -176,6 +176,7 @@ object Core {
         val C_Mailbox = CoreVkClasses.C_Mailbox
         val C_Constraint = CoreVkClasses.C_Constraint
         val C_Struct = CoreVkClasses.C_Struct
+        val C_Union = CoreVkClasses.C_Union
         val C_Class = CoreVkClasses.C_Class
         val C_CoverGroup = CoreVkClasses.C_CoverGroup
         val C_CoverPoint = CoreVkClasses.C_CoverPoint
@@ -189,6 +190,7 @@ object Core {
 
         val F_Mailbox = CoreVkClasses.F_Mailbox
         val F_Struct = CoreVkClasses.F_Struct
+        val F_Union = CoreVkClasses.F_Union
         val F_Class = CoreVkClasses.F_Class
         val F_CoverGroup = CoreVkClasses.F_CoverGroup
         val F_Module = CoreVkClasses.F_Module
@@ -236,8 +238,8 @@ object Core {
         val F_cp_Any_Function = CoreVkSpecial.F_cp_Any_Function
         val F_cc_Any = CoreVkSpecial.F_cc_Any
         val F_cc_Any_Function = CoreVkSpecial.F_cc_Any_Function
-        val F_optional_Function = CoreVkSpecial.F_optional_Function
-        val F_cluster_Function = CoreVkSpecial.F_cluster_Function
+        val F_optional_Boolean_Function = CoreVkSpecial.F_optional_Boolean_Function
+        val F_cluster_Int_Function = CoreVkSpecial.F_cluster_Int_Function
 
         val F_b = CoreVkData.F_b
         val F_i = CoreVkData.F_i
@@ -461,6 +463,7 @@ object Core {
         object Cluster {
 
             val F_get_Int = CoreVkCluster.F_get_Int
+            val F_map_Function = CoreVkCluster.F_map_Function
         }
     }
 }

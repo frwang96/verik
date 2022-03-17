@@ -27,7 +27,7 @@ internal class OptionalReducerSubstageTest : BaseTest() {
         driveElementTest(
             """
                 class M : Module()
-                val m = optional<TRUE, M> { M() }
+                val m = optional(true) { M() }
             """.trimIndent(),
             SpecializerStage::class,
             "Property(m, M, CallExpression(M, M, null, 0, [], []), 0, 0)"
@@ -39,7 +39,7 @@ internal class OptionalReducerSubstageTest : BaseTest() {
         driveElementTest(
             """
                 class M : Module()
-                val m = optional<FALSE, M> { M() }
+                val m = optional(false) { M() }
             """.trimIndent(),
             SpecializerStage::class,
             "Property(m, Nothing, ConstantExpression(Nothing, null), 0, 0)"
@@ -53,7 +53,7 @@ internal class OptionalReducerSubstageTest : BaseTest() {
                 class M : Module()
                 var m: M? = nc()
                 fun f() {
-                    m = optional<TRUE, M> { M() }
+                    m = optional(true) { M() }
                 }
             """.trimIndent(),
             true,
@@ -66,7 +66,7 @@ internal class OptionalReducerSubstageTest : BaseTest() {
         driveMessageTest(
             """
                 class M : Module()
-                var m = optional<TRUE, M> { M() }
+                var m = optional(true) { M() }
             """.trimIndent(),
             true,
             "Property assigned as optional must be declared as val"

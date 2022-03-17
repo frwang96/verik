@@ -25,7 +25,7 @@ import io.verik.compiler.main.ProjectStage
 
 /**
  * Most constant propagation happens in [ConstantPropagatorSubstage] during specialization. This catches remaining
- * constant expressions that need to be propagated after resolve.
+ * constant expressions that need to be propagated.
  */
 object ConstantPropagatorStage : ProjectStage() {
 

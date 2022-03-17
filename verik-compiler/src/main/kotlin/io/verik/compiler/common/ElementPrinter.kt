@@ -42,7 +42,6 @@ import io.verik.compiler.ast.element.declaration.sv.ECoverCross
 import io.verik.compiler.ast.element.declaration.sv.ECoverGroup
 import io.verik.compiler.ast.element.declaration.sv.ECoverPoint
 import io.verik.compiler.ast.element.declaration.sv.EEnum
-import io.verik.compiler.ast.element.declaration.sv.EGenerateForBlock
 import io.verik.compiler.ast.element.declaration.sv.EInitialBlock
 import io.verik.compiler.ast.element.declaration.sv.EInjectedProperty
 import io.verik.compiler.ast.element.declaration.sv.EModule
@@ -57,6 +56,7 @@ import io.verik.compiler.ast.element.declaration.sv.ESvFunction
 import io.verik.compiler.ast.element.declaration.sv.ESvValueParameter
 import io.verik.compiler.ast.element.declaration.sv.ETask
 import io.verik.compiler.ast.element.declaration.sv.ETypeDefinition
+import io.verik.compiler.ast.element.declaration.sv.EUnion
 import io.verik.compiler.ast.element.expression.common.EBlockExpression
 import io.verik.compiler.ast.element.expression.common.EBreakStatement
 import io.verik.compiler.ast.element.expression.common.ECallExpression
@@ -257,6 +257,14 @@ class ElementPrinter : Visitor() {
         }
     }
 
+    override fun visitUnion(union: EUnion) {
+        build("Union") {
+            build(union.name)
+            build(union.type.toString())
+            build(union.properties)
+        }
+    }
+
 //  Function  //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     override fun visitKtFunction(function: EKtFunction) {
@@ -428,15 +436,6 @@ class ElementPrinter : Visitor() {
         build("Constraint") {
             build(constraint.name)
             build(constraint.body)
-        }
-    }
-
-    override fun visitGenerateForBlock(generateForBlock: EGenerateForBlock) {
-        build("GenerateForBlock") {
-            build(generateForBlock.name)
-            build(generateForBlock.indexProperty)
-            build(generateForBlock.declaration)
-            build(generateForBlock.size)
         }
     }
 

@@ -14,30 +14,22 @@
  * limitations under the License.
  */
 
-// Test.sv /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+package io.verik.compiler.check.mid
 
-module M;
+import io.verik.compiler.test.BaseTest
+import org.junit.jupiter.api.Test
 
-    task automatic f0();
-        #1;
-    endtask : f0
+internal class ValueParameterCheckerStageTest : BaseTest() {
 
-    task automatic f1(
-        input logic [7:0]  x,
-        output logic [7:0] __0
-    );
-        #1;
-        __0 = ~x;
-        return;
-    endtask : f1
-
-    initial begin : f2
-        logic [7:0] __1;
-        logic [7:0] x;
-        f0();
-        f1(.x(8'h00), .__0(__1));
-        x = __1;
-        $display($sformatf("0x%h", x));
-    end : f2
-
-endmodule : M
+    @Test
+    fun `value parameter module`() {
+        driveMessageTest(
+            """
+                class M : Module()
+                fun f(m: M) {}
+            """.trimIndent(),
+            true,
+            "Illegal value parameter type: M"
+        )
+    }
+}

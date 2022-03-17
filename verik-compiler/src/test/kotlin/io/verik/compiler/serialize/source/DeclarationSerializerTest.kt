@@ -197,6 +197,21 @@ internal class DeclarationSerializerTest : BaseTest() {
     }
 
     @Test
+    fun `union simple`() {
+        driveTextFileTest(
+            """
+                class U(var x: Boolean, var y: Ubit<`1`>): Union()
+            """.trimIndent(),
+            """
+                typedef union packed {
+                    logic       x;
+                    logic [0:0] y;
+                } U;
+            """.trimIndent()
+        ) { it.nonRootPackageTextFiles[0] }
+    }
+
+    @Test
     fun `function simple`() {
         driveTextFileTest(
             """
@@ -595,17 +610,14 @@ internal class DeclarationSerializerTest : BaseTest() {
     }
 
     @Test
-    fun `generate for block simple`() {
+    fun `cluster simple`() {
         driveTextFileTest(
             """
-                val x = cluster<`8`, Int> { it }
+                val x = cluster(2) { it }
             """.trimIndent(),
             """
-                generate
-                    for (genvar it = 0; it < 8; it++) begin : x
-                        int gen = it;
-                    end : x
-                endgenerate
+                int x_0 = 0;
+                int x_1 = 1;
             """.trimIndent()
         ) { it.nonRootPackageTextFiles[0] }
     }

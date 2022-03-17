@@ -196,6 +196,10 @@ object Messages {
         "Illegal expression for output port"
     )
 
+    val ILLEGAL_VALUE_PARAMETER_TYPE = ErrorMessageTemplate1<Type>(
+        "Illegal value parameter type: $0"
+    )
+
     val PROCEDURAL_BLOCK_ILLEGAL_REFERENCE = ErrorMessageTemplate1<String>(
         "Illegal reference to procedural block: $0"
     )
@@ -224,6 +228,14 @@ object Messages {
 
     val OPTIONAL_NOT_VAL = ErrorMessageTemplate0(
         "Property assigned as optional must be declared as val"
+    )
+
+    val OPTIONAL_MULTIPLE_STATEMENTS = ErrorMessageTemplate0(
+        "Multiple statements not permitted for optional"
+    )
+
+    val EXPRESSION_NOT_CONSTANT = ErrorMessageTemplate0(
+        "Expression is not compile time constant"
     )
 
 //  RESOLVE  ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -260,7 +272,7 @@ object Messages {
         "Cardinal type is negative: $0"
     )
 
-//  INTERPRET  /////////////////////////////////////////////////////////////////////////////////////////////////////////
+//  EVALUATE  //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     val EXPECTED_CLUSTER_EXPRESSION = ErrorMessageTemplate0(
         "Expected cluster expression"
@@ -270,12 +282,22 @@ object Messages {
         "Invalid cluster initializer"
     )
 
+    val CLUSTER_INDEX_INVALID = ErrorMessageTemplate1<Int>(
+        "Cluster index out of bounds: $0"
+    )
+
+//  INTERPRET  /////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     val ENUM_PROPERTY_ILLEGAL = ErrorMessageTemplate1<String>(
         "Illegal enum property: $0"
     )
 
     val ENUM_PROPERTY_ILLEGAL_TYPE = ErrorMessageTemplate1<Type>(
         "Illegal type for enum property: $0"
+    )
+
+    val UNION_INSUFFICIENT_ARGUMENTS = ErrorMessageTemplate1<String>(
+        "Union should have at least two properties: $0"
     )
 
     val EXPECTED_ON_EXPRESSION = ErrorMessageTemplate0(

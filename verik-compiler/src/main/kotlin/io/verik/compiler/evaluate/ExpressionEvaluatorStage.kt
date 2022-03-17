@@ -23,7 +23,7 @@ import io.verik.compiler.main.ProjectStage
 
 /**
  * Most expression evaluation happens in [ExpressionEvaluatorSubstage] during specialization. This catches remaining
- * expressions that need to be evaluated after resolve.
+ * expressions that need to be evaluated.
  */
 object ExpressionEvaluatorStage : ProjectStage() {
 
@@ -36,8 +36,9 @@ object ExpressionEvaluatorStage : ProjectStage() {
         override fun visitExpression(expression: EExpression) {
             super.visitExpression(expression)
             val evaluatedExpression = ExpressionEvaluator.evaluate(expression)
-            if (evaluatedExpression != null)
+            if (evaluatedExpression != null) {
                 expression.replace(evaluatedExpression)
+            }
         }
     }
 }

@@ -139,10 +139,10 @@ object CoreVkSpecial : CoreScope(CorePackage.VK) {
         }
     }
 
-    val F_optional_Function = object : TransformableCoreFunctionDeclaration(
+    val F_optional_Boolean_Function = object : TransformableCoreFunctionDeclaration(
         parent,
         "optional",
-        "fun optional(Function)"
+        "fun optional(Boolean, Function)"
     ) {
 
         override fun transform(callExpression: ECallExpression): EExpression {
@@ -151,23 +151,18 @@ object CoreVkSpecial : CoreScope(CorePackage.VK) {
         }
     }
 
-    val F_cluster_Function = object : TransformableCoreFunctionDeclaration(
+    val F_cluster_Int_Function = object : TransformableCoreFunctionDeclaration(
         parent,
         "cluster",
-        "fun cluster(Function)"
+        "fun cluster(Int, Function)"
     ) {
 
         override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
             return listOf(
                 TypeConstraint(
                     TypeConstraintKind.EQ_INOUT,
-                    TypeAdapter.ofElement(callExpression, 0),
-                    TypeAdapter.ofTypeArgument(callExpression, 0)
-                ),
-                TypeConstraint(
-                    TypeConstraintKind.EQ_INOUT,
                     TypeAdapter.ofElement(callExpression, 1),
-                    TypeAdapter.ofTypeArgument(callExpression, 1)
+                    TypeAdapter.ofTypeArgument(callExpression, 0)
                 )
             )
         }

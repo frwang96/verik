@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package io.verik.compiler.transform.upper
+package io.verik.compiler.evaluate
 
-import io.verik.compiler.ast.element.declaration.sv.ESvValueParameter
+import io.verik.compiler.ast.element.declaration.kt.EKtValueParameter
 import io.verik.compiler.ast.element.expression.common.EBlockExpression
 import io.verik.compiler.ast.element.expression.common.ECallExpression
 import io.verik.compiler.ast.element.expression.common.EExpression
@@ -48,7 +48,7 @@ object ForEachUnrollTransformerStage : ProjectStage() {
 
     private class GenerateForBlockReferenceIndexerVisitor : TreeVisitor() {
 
-        val references = HashSet<ESvValueParameter>()
+        val references = HashSet<EKtValueParameter>()
 
         private val innerReferenceIndexerVisitor = InnerReferenceIndexerVisitor()
 
@@ -63,13 +63,13 @@ object ForEachUnrollTransformerStage : ProjectStage() {
 
             override fun visitReferenceExpression(referenceExpression: EReferenceExpression) {
                 val reference = referenceExpression.reference
-                if (reference is ESvValueParameter) references.add(reference)
+                if (reference is EKtValueParameter) references.add(reference)
             }
         }
     }
 
     private class ForEachUnrollTransformerVisitor(
-        private val references: HashSet<ESvValueParameter>
+        private val references: HashSet<EKtValueParameter>
     ) : TreeVisitor() {
 
         private fun getIndices(expression: EExpression): Pair<Int, Int>? {
@@ -107,7 +107,7 @@ object ForEachUnrollTransformerStage : ProjectStage() {
                     if (it is EPropertyStatement) {
                         val initializer = it.property.initializer
                         if (initializer != null) {
-                            val referenceExpression = EReferenceExpression.of(it.property)
+                            val referenceExpression = EReferenceExpression.of(it.location, it.property)
                             val binaryExpression = EKtBinaryExpression(
                                 it.location,
                                 Core.Kt.C_Unit.toType(),
@@ -123,13 +123,10 @@ object ForEachUnrollTransformerStage : ProjectStage() {
                 }
                 statementGroups.add(statements)
             }
-            val valueParameter = functionLiteralExpression.valueParameters[0].cast<ESvValueParameter>()
+            val valueParameter = functionLiteralExpression.valueParameters[0].cast<EKtValueParameter>()
             statementGroups.forEachIndexed { index, statements ->
-                val valueParameterSubstitutorVisitor = ValueParameterSubstitutorVisitor(
-                    valueParameter,
-                    index + indices.first
-                )
-                statements.forEach { it.acceptChildren(valueParameterSubstitutorVisitor) }
+                val constantExpression = ConstantBuilder.buildInt(valueParameter.location, index)
+                statements.forEach { UnrollUtil.substituteValueParameter(it, valueParameter, constantExpression) }
             }
             val blockExpression = EBlockExpression(
                 callExpression.location,
@@ -147,20 +144,6 @@ object ForEachUnrollTransformerStage : ProjectStage() {
                 if (functionLiteralExpression.valueParameters[0] in references) {
                     val indices = getIndices(callExpression.receiver!!)
                     if (indices != null) unroll(callExpression, functionLiteralExpression, indices)
-                }
-            }
-        }
-
-        private class ValueParameterSubstitutorVisitor(
-            private val valueParameter: ESvValueParameter,
-            private val index: Int
-        ) : TreeVisitor() {
-
-            override fun visitReferenceExpression(referenceExpression: EReferenceExpression) {
-                super.visitReferenceExpression(referenceExpression)
-                if (referenceExpression.reference == valueParameter) {
-                    val constantExpression = ConstantBuilder.buildInt(referenceExpression, index)
-                    referenceExpression.replace(constantExpression)
                 }
             }
         }

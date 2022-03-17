@@ -30,7 +30,6 @@ import io.verik.compiler.ast.element.declaration.sv.ECoverCross
 import io.verik.compiler.ast.element.declaration.sv.ECoverGroup
 import io.verik.compiler.ast.element.declaration.sv.ECoverPoint
 import io.verik.compiler.ast.element.declaration.sv.EEnum
-import io.verik.compiler.ast.element.declaration.sv.EGenerateForBlock
 import io.verik.compiler.ast.element.declaration.sv.EInitialBlock
 import io.verik.compiler.ast.element.declaration.sv.EInjectedProperty
 import io.verik.compiler.ast.element.declaration.sv.EModule
@@ -44,6 +43,7 @@ import io.verik.compiler.ast.element.declaration.sv.ESvFunction
 import io.verik.compiler.ast.element.declaration.sv.ESvValueParameter
 import io.verik.compiler.ast.element.declaration.sv.ETask
 import io.verik.compiler.ast.element.declaration.sv.ETypeDefinition
+import io.verik.compiler.ast.element.declaration.sv.EUnion
 import io.verik.compiler.ast.element.expression.common.EBlockExpression
 import io.verik.compiler.ast.element.expression.common.EBreakStatement
 import io.verik.compiler.ast.element.expression.common.ECallExpression
@@ -169,6 +169,10 @@ class SourceSerializerVisitor(
         DeclarationSerializer.serializeStruct(struct, serializeContext)
     }
 
+    override fun visitUnion(union: EUnion) {
+        DeclarationSerializer.serializeUnion(union, serializeContext)
+    }
+
     override fun visitSvFunction(function: ESvFunction) {
         DeclarationSerializer.serializeFunction(function, serializeContext)
     }
@@ -227,10 +231,6 @@ class SourceSerializerVisitor(
 
     override fun visitConstraint(constraint: EConstraint) {
         DeclarationSerializer.serializeConstraint(constraint, serializeContext)
-    }
-
-    override fun visitGenerateForBlock(generateForBlock: EGenerateForBlock) {
-        DeclarationSerializer.serializeGenerateForBlock(generateForBlock, serializeContext)
     }
 
     override fun visitSvValueParameter(valueParameter: ESvValueParameter) {

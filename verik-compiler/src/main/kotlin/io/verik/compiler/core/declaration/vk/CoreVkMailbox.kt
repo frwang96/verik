@@ -43,7 +43,7 @@ object CoreVkMailbox : CoreScope(Core.Vk.C_Mailbox) {
                 isMutable = true
             )
             val propertyStatement = EPropertyStatement(property.location, property)
-            val referenceExpression = EReferenceExpression.of(property)
+            val referenceExpression = EReferenceExpression.of(property.location, property)
             val newCallExpression = ExpressionCopier.shallowCopy(callExpression)
             newCallExpression.reference = Target.Mailbox.F_get
             referenceExpression.parent = newCallExpression

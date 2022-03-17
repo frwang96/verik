@@ -1,4 +1,4 @@
-# Verik
+[![Verik](https://verik.io/img/logo-banner.svg)](https://verik.io)
 
 [![Test](https://github.com/frwang96/verik/actions/workflows/Sanity.yml/badge.svg)](
 https://github.com/frwang96/verik)
@@ -8,15 +8,24 @@ https://search.maven.org/search?q=io.verik)
 https://opensource.org/licenses/Apache-2.0)
 
 
-[Verik](https://verik.io) is a hardware description language that compiles transparently to SystemVerilog. It
-borrows the syntax of Kotlin, a modern, general-purpose programming language, and reinterprets it with the semantics of
-an HDL. The goal of Verik is to be a drop-in replacement for SystemVerilog that enables engineers to benefit from the
-productivity gains of a modern programming language without giving up the close-to-the-metal control that SystemVerilog
-enables. Refer to [examples](https://github.com/frwang96/verik-examples) for examples and
-[template](https://github.com/frwang96/verik-template) for a template project. Setup instructions and tutorials can
-be found in the [docs](https://verik.io/docs/overview).
+[Verik](https://verik.io) is a hardware description language for designing and simulating digital integrated circuits.
+The goal of Verik is to be a drop-in replacement of for SystemVerilog that leverages the productivity gains of a modern
+programming language to reduce development time and cut down on engineering costs associated with design and
+verification.
+Verik builds upon [Kotlin](https://kotlinlang.org), a modern general-purpose programming language with a clean and
+expressive syntax.
+Verik is Kotlin reinterpreted with the semantics of an HDL.
+It can directly make use of tools built for the vibrant Kotlin ecosystem, such as the widely used
+[IntelliJ IDEA IDE](https://www.jetbrains.com/idea/).
+Verik is translated to SystemVerilog by the Verik compiler.
+It supports both the synthesizable and non-synthesizable aspects of SystemVerilog and is designed to integrate well with
+existing infrastructure and back-end tool flows.
 
-This project is structured as a Gradle composite build with the following modules:
+Refer to [examples](https://github.com/frwang96/verik-examples) for examples and
+[template](https://github.com/frwang96/verik-template) for a template project.
+Setup instructions and tutorials can be found in the [docs](https://verik.io/docs/overview).
+
+The Verik toolchain is structured as a Gradle composite build with the following modules:
 
 - `verik-compiler`: Compiler that generates SystemVerilog output from Verik sources.
 - `verik-core`: Core library for Verik projects.
@@ -46,7 +55,7 @@ cd verik
 ./gradlew mainInstall
 ```
 
-In the Verik project set the version of the plugin in `build.gradle.kts` to `local-SNAPSHOT`.
+To use the local build set the version of the plugin in `build.gradle.kts` to `local-SNAPSHOT`.
 
 ```kotlin
 plugins {

@@ -89,7 +89,7 @@ object ForStatementTransformerStage : ProjectStage() {
                 callExpression.valueArguments[0],
                 true
             ) {
-                EReferenceExpression.of(it)
+                EReferenceExpression.of(it.location, it)
             }
         }
 
@@ -105,7 +105,7 @@ object ForStatementTransformerStage : ProjectStage() {
                 callExpression.valueArguments[0],
                 false
             ) {
-                EReferenceExpression.of(it)
+                EReferenceExpression.of(it.location, it)
             }
         }
 
@@ -137,7 +137,7 @@ object ForStatementTransformerStage : ProjectStage() {
                     Core.Vk.Queue.F_get_Int,
                     ExpressionCopier.deepCopy(referenceExpression),
                     false,
-                    arrayListOf(EReferenceExpression.of(it)),
+                    arrayListOf(EReferenceExpression.of(valueParameter.location, it)),
                     ArrayList()
                 )
             }
@@ -169,7 +169,7 @@ object ForStatementTransformerStage : ProjectStage() {
                     Core.Jv.Util.ArrayList.F_get_Int,
                     ExpressionCopier.deepCopy(referenceExpression),
                     false,
-                    arrayListOf(EReferenceExpression.of(it)),
+                    arrayListOf(EReferenceExpression.of(valueParameter.location, it)),
                     ArrayList()
                 )
             }
@@ -189,7 +189,7 @@ object ForStatementTransformerStage : ProjectStage() {
                 startExpression,
                 true
             )
-            val indexReferenceExpression = EReferenceExpression.of(indexProperty)
+            val indexReferenceExpression = EReferenceExpression.of(indexProperty.location, indexProperty)
             val condition = EKtBinaryExpression(
                 startExpression.location,
                 Core.Kt.C_Boolean.toType(),

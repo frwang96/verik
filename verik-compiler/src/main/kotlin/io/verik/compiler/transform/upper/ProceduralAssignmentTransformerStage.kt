@@ -72,7 +72,7 @@ object ProceduralAssignmentTransformerStage : ProjectStage() {
             val initializer = property.initializer
             return if (initializer != null) {
                 property.initializer = null
-                val referenceExpression = EReferenceExpression.of(property)
+                val referenceExpression = EReferenceExpression.of(property.location, property)
                 val binaryExpression = EKtBinaryExpression(
                     property.location,
                     Core.Kt.C_Unit.toType(),
@@ -103,7 +103,7 @@ object ProceduralAssignmentTransformerStage : ProjectStage() {
             val initializer = property.initializer
             return if (initializer is ECallExpression && initializer.reference == Core.Vk.F_oni_Event_Event_Function) {
                 property.initializer = null
-                val referenceExpression = EReferenceExpression.of(property)
+                val referenceExpression = EReferenceExpression.of(property.location, property)
                 val body = initializer.valueArguments.last().cast<EFunctionLiteralExpression>().body
                 if (body.isEmpty()) {
                     Messages.SEQ_ASSIGNMENT_NO_ONR_EXPRESSION.on(property)

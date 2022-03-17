@@ -52,7 +52,7 @@ object SafeAccessReducerStage : ProjectStage() {
                     false
                 )
                 val propertyStatement = EPropertyStatement(receiverExpression.location, property)
-                val referenceExpression = EReferenceExpression.of(property)
+                val referenceExpression = EReferenceExpression.of(property.location, property)
                 val conditionBinaryExpression = EKtBinaryExpression(
                     receiverExpression.location,
                     Core.Kt.C_Boolean.toType(),

@@ -16,6 +16,7 @@
 
 package io.verik.compiler.check.mid
 
+import io.verik.compiler.ast.common.Type
 import io.verik.compiler.ast.element.declaration.kt.EKtClass
 import io.verik.compiler.ast.element.declaration.kt.EKtValueParameter
 import io.verik.compiler.common.TreeVisitor
@@ -47,21 +48,22 @@ object PortCheckerStage : ProjectStage() {
         }
 
         private fun checkPort(valueParameter: EKtValueParameter) {
+            val type = unwrapType(valueParameter.type)
             when {
                 valueParameter.hasAnnotationEntry(AnnotationEntries.IN) -> {}
                 valueParameter.hasAnnotationEntry(AnnotationEntries.OUT) -> {
                     if (!valueParameter.isMutable)
                         Messages.PORT_NOT_MUTABLE.on(valueParameter, "Output", valueParameter.name)
                 }
-                valueParameter.type.isSubtype(Core.Vk.C_ModuleInterface) -> {
+                type.isSubtype(Core.Vk.C_ModuleInterface) -> {
                     if (valueParameter.isMutable)
                         Messages.PORT_MUTABLE.on(valueParameter, "Module interface", valueParameter.name)
                 }
-                valueParameter.type.isSubtype(Core.Vk.C_ModulePort) -> {
+                type.isSubtype(Core.Vk.C_ModulePort) -> {
                     if (valueParameter.isMutable)
                         Messages.PORT_MUTABLE.on(valueParameter, "Module", valueParameter.name)
                 }
-                valueParameter.type.isSubtype(Core.Vk.C_ClockingBlock) -> {
+                type.isSubtype(Core.Vk.C_ClockingBlock) -> {
                     if (valueParameter.isMutable)
                         Messages.PORT_MUTABLE.on(valueParameter, "Clocking block", valueParameter.name)
                 }
@@ -69,6 +71,12 @@ object PortCheckerStage : ProjectStage() {
                     Messages.PORT_NO_DIRECTIONALITY.on(valueParameter, valueParameter.name)
                 }
             }
+        }
+
+        private fun unwrapType(type: Type): Type {
+            return if (type.reference == Core.Vk.C_Cluster) {
+                type.arguments[1]
+            } else type
         }
     }
 }

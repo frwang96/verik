@@ -18,7 +18,7 @@ package io.verik.compiler.ast.element.expression.common
 
 import io.verik.compiler.ast.common.Declaration
 import io.verik.compiler.ast.common.Type
-import io.verik.compiler.ast.element.declaration.common.EAbstractProperty
+import io.verik.compiler.ast.element.declaration.common.EDeclaration
 import io.verik.compiler.ast.property.SerializationKind
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
@@ -43,11 +43,11 @@ class EReferenceExpression(
 
     companion object {
 
-        fun of(property: EAbstractProperty): EReferenceExpression {
+        fun of(location: SourceLocation, declaration: EDeclaration): EReferenceExpression {
             return EReferenceExpression(
-                property.location,
-                property.type.copy(),
-                property,
+                location,
+                declaration.type.copy(),
+                declaration,
                 null,
                 false
             )

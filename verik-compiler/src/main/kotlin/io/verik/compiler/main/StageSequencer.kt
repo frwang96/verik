@@ -33,6 +33,7 @@ import io.verik.compiler.check.mid.ProceduralBlockReferenceCheckerStage
 import io.verik.compiler.check.mid.SuperTypeCheckerStage
 import io.verik.compiler.check.mid.TypeArgumentTypeCheckerStage
 import io.verik.compiler.check.mid.TypeParameterCheckerStage
+import io.verik.compiler.check.mid.ValueParameterCheckerStage
 import io.verik.compiler.check.post.FileCheckerStage
 import io.verik.compiler.check.post.KeywordCheckerStage
 import io.verik.compiler.check.post.NameRedeclarationCheckerStage
@@ -45,9 +46,11 @@ import io.verik.compiler.check.pre.FileAnnotationCheckerStage
 import io.verik.compiler.check.pre.PreNameCheckerStage
 import io.verik.compiler.check.pre.UnsupportedElementCheckerStage
 import io.verik.compiler.check.pre.UnsupportedModifierCheckerStage
+import io.verik.compiler.evaluate.ClusterUnrollTransformerStage
 import io.verik.compiler.evaluate.ConstantPropagatorStage
 import io.verik.compiler.evaluate.ConstantPropertyEliminatorStage
 import io.verik.compiler.evaluate.ExpressionEvaluatorStage
+import io.verik.compiler.evaluate.ForEachUnrollTransformerStage
 import io.verik.compiler.interpret.ClassInterpreterStage
 import io.verik.compiler.interpret.CompanionObjectReducerStage
 import io.verik.compiler.interpret.ComponentInstantiationInterpreterStage
@@ -59,20 +62,19 @@ import io.verik.compiler.interpret.EnumInterpreterStage
 import io.verik.compiler.interpret.FileSplitterStage
 import io.verik.compiler.interpret.FunctionInterpreterStage
 import io.verik.compiler.interpret.FunctionLiteralInterpreterStage
-import io.verik.compiler.interpret.GenerateForBlockInterpreterStage
 import io.verik.compiler.interpret.InitializerBlockReducerStage
 import io.verik.compiler.interpret.InjectedPropertyInterpreterStage
 import io.verik.compiler.interpret.ModulePortParentResolverStage
 import io.verik.compiler.interpret.PackageInjectedPropertyReducerStage
 import io.verik.compiler.interpret.PrimaryConstructorReducerStage
 import io.verik.compiler.interpret.PropertyInterpreterStage
-import io.verik.compiler.interpret.StructInterpreterStage
+import io.verik.compiler.interpret.StructUnionInterpreterStage
 import io.verik.compiler.kotlin.KotlinCompilerAnalyzerStage
 import io.verik.compiler.kotlin.KotlinCompilerParserStage
 import io.verik.compiler.kotlin.KotlinEnvironmentBuilderStage
 import io.verik.compiler.reorder.DependencyReordererStage
 import io.verik.compiler.reorder.PropertyStatementReordererStage
-import io.verik.compiler.resolve.SliceResolverStage
+import io.verik.compiler.resolve.SpecialTypeResolverStage
 import io.verik.compiler.resolve.TypeReferenceForwarderStage
 import io.verik.compiler.resolve.TypeResolvedCheckerStage
 import io.verik.compiler.resolve.TypeResolverStage
@@ -111,7 +113,6 @@ import io.verik.compiler.transform.upper.CaseStatementTransformerStage
 import io.verik.compiler.transform.upper.CastTransformerStage
 import io.verik.compiler.transform.upper.CoreFunctionOverrideTransformerStage
 import io.verik.compiler.transform.upper.EnumPropertyReferenceTransformerStage
-import io.verik.compiler.transform.upper.ForEachUnrollTransformerStage
 import io.verik.compiler.transform.upper.ForStatementTransformerStage
 import io.verik.compiler.transform.upper.IfAndWhenExpressionUnlifterStage
 import io.verik.compiler.transform.upper.InjectedExpressionTransformerStage
@@ -164,23 +165,25 @@ object StageSequencer {
         stageSequence.add(StageType.MID_CHECK, ObjectCheckerStage)
         stageSequence.add(StageType.MID_CHECK, PortCheckerStage)
         stageSequence.add(StageType.MID_CHECK, PortInstantiationCheckerStage)
+        stageSequence.add(StageType.MID_CHECK, ValueParameterCheckerStage)
         stageSequence.add(StageType.MID_CHECK, ProceduralBlockReferenceCheckerStage)
         stageSequence.add(StageType.MID_CHECK, ArrayAccessMutabilityChecker)
 
         stageSequence.add(StageType.SPECIALIZE, SpecializerStage)
 
-        stageSequence.add(StageType.RESOLVE, SliceResolverStage)
+        stageSequence.add(StageType.RESOLVE, SpecialTypeResolverStage)
         stageSequence.add(StageType.RESOLVE, TypeResolverStage)
         stageSequence.add(StageType.RESOLVE, TypeResolvedCheckerStage)
         stageSequence.add(StageType.RESOLVE, TypeReferenceForwarderStage)
 
+        stageSequence.add(StageType.EVALUATE, ForEachUnrollTransformerStage)
         stageSequence.add(StageType.EVALUATE, ConstantPropagatorStage)
         stageSequence.add(StageType.EVALUATE, ExpressionEvaluatorStage)
         stageSequence.add(StageType.EVALUATE, ConstantPropertyEliminatorStage)
+        stageSequence.add(StageType.EVALUATE, ClusterUnrollTransformerStage)
 
-        stageSequence.add(StageType.INTERPRET, GenerateForBlockInterpreterStage)
         stageSequence.add(StageType.INTERPRET, EnumInterpreterStage)
-        stageSequence.add(StageType.INTERPRET, StructInterpreterStage)
+        stageSequence.add(StageType.INTERPRET, StructUnionInterpreterStage)
         stageSequence.add(StageType.INTERPRET, CoverGroupInterpreterStage)
         stageSequence.add(StageType.INTERPRET, ComponentInterpreterStage)
         stageSequence.add(StageType.INTERPRET, PrimaryConstructorReducerStage)
@@ -210,7 +213,6 @@ object StageSequencer {
         stageSequence.add(StageType.UPPER_TRANSFORM, InlineIfExpressionTransformerStage)
         stageSequence.add(StageType.UPPER_TRANSFORM, IfAndWhenExpressionUnlifterStage)
         stageSequence.add(StageType.UPPER_TRANSFORM, CaseStatementTransformerStage)
-        stageSequence.add(StageType.UPPER_TRANSFORM, ForEachUnrollTransformerStage)
         stageSequence.add(StageType.UPPER_TRANSFORM, ForStatementTransformerStage)
 
         stageSequence.add(StageType.LOWER_TRANSFORM, FunctionTransformerStage)

@@ -44,7 +44,7 @@ object StringTemplateExpressionTransformerStage : ProjectStage() {
                 Target.C_Double -> "%f"
                 Target.C_String -> "%s"
                 Target.C_Ubit, Target.C_Sbit -> {
-                    if (type.asBitWidth(expression) < ConstantBuilder.MIN_HEX_CONSTANT_WIDTH) "%b" else "%h"
+                    if (type.asBitWidth(expression) < ConstantBuilder.MIN_HEX_CONSTANT_WIDTH) "0b%b" else "0x%h"
                 }
                 Target.C_Time -> "%0t"
                 else -> "%p"
