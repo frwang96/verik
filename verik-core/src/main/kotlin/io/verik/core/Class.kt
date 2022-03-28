@@ -16,7 +16,7 @@ package io.verik.core
 abstract class Class {
 
     /**
-     * Randomize random properties in the class subject to enabled [constraints][Cons].
+     * Randomize random properties in the class subject to the enabled [constraints][Cons].
      */
     fun randomize() {}
 

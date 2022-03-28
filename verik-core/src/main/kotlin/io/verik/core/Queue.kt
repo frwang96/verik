@@ -7,7 +7,7 @@
 package io.verik.core
 
 /**
- * A queue of elements of type [E]. It corresponds to a SystemVerilog queue.
+ * A queue of elements of type [E]. They correspond to SystemVerilog queues.
  */
 class Queue<E> private constructor() : Iterable<E> {
 
@@ -21,9 +21,9 @@ class Queue<E> private constructor() : Iterable<E> {
     }
 
     /**
-     * Add element [e] to the end of this queue.
+     * Add [value] to the end of this queue.
      */
-    fun add(e: E) {
+    fun add(value: E) {
         throw VerikException()
     }
 

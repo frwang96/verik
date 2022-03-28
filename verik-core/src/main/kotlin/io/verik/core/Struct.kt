@@ -13,7 +13,7 @@ package io.verik.core
  *  class S(
  *      var a: Boolean,
  *      var b: Boolean
- *  ): Struct()
+ *  ) : Struct()
  *  ```
  */
 abstract class Struct {

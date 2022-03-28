@@ -77,14 +77,14 @@ fun wait(value: Boolean) {
 }
 
 /**
- * Wait until event [event] occurs.
+ * Wait until [event] occurs.
  */
 fun wait(event: Event) {
     throw VerikException()
 }
 
 /**
- * Wait until clocking block event occurs.
+ * Wait until the clocking block event occurs.
  */
 fun wait(cb: ClockingBlock) {
     throw VerikException()

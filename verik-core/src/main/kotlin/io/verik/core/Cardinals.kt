@@ -11,27 +11,27 @@ sealed class Cardinal
 typealias `*` = Cardinal
 
 /**
- * Cardinal with value one representing logical true.
+ * Cardinal of value one representing logical true.
  */
 typealias TRUE = `*`
 
 /**
- * Cardinal with value zero representing logical false.
+ * Cardinal of value zero representing logical false.
  */
 typealias FALSE = `*`
 
 /**
- * Logical not of the cardinal X.
+ * Logical not of the cardinal X. X must take the value of either zero or one.
  */
 typealias NOT<X> = `*`
 
 /**
- * Logical and of the cardinals X and Y.
+ * Logical and of the cardinals X and Y. X and Y must take the value of either zero or one.
  */
 typealias AND<X, Y> = `*`
 
 /**
- * Logical or of the cardinals X and Y.
+ * Logical or of the cardinals X and Y. X and Y must take the value of either zero or one.
  */
 typealias OR<X, Y> = `*`
 
@@ -72,17 +72,17 @@ typealias MAX<N, M> = `*`
 typealias MIN<N, M> = `*`
 
 /**
- * The cardinal N. Used for shielding the type parameter from the Kotlin type system.
+ * The cardinal N. Used for shielding type parameters from the Kotlin type system.
  */
 typealias OF<N> = `*`
 
 /**
- * Increments the cardinal N.
+ * The cardinal N incremented by one.
  */
 typealias INC<N> = `*`
 
 /**
- * Decrements the cardinal N.
+ * The cardinal N decremented by one.
  */
 typealias DEC<N> = `*`
 

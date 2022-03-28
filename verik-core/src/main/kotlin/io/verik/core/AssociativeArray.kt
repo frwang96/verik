@@ -7,8 +7,8 @@
 package io.verik.core
 
 /**
- * An associative array of elements with keys of type [K] and values of type [V]. It corresponds to a SystemVerilog
- * associative array.
+ * An associative array of elements with keys of type [K] and values of type [V]. They correspond to SystemVerilog
+ * associative arrays.
  */
 class AssociativeArray<K, V> private constructor() {
 

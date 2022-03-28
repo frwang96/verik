@@ -7,7 +7,7 @@
 package io.verik.core
 
 /**
- * A packed array of size [N] of elements of type [E].
+ * A packed array of size [N] of elements of type [E]. They correspond to SystemVerilog packed arrays.
  */
 class Packed<N : `*`, E> private constructor() : Iterable<E> {
 

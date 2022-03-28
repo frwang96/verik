@@ -7,7 +7,18 @@
 package io.verik.core
 
 /**
- * A cluster of type [T] and size [N].
+ * A cluster of type [T] and size [N]. Clusters can be used to declare multiple [components][Component]. Construct a
+ * cluster with the [cluster] function. Clusters are statically elaborated by the compiler.
+ *
+ *  ```
+ *  class M : Module()
+ *
+ *  class Top : Module() {
+ *
+ *      @Make
+ *      val m = cluster(4) { M() }
+ *  }
+ *  ```
  */
 class Cluster<N : `*`, T> private constructor() : Component(), Iterable<T> {
 
@@ -16,7 +27,8 @@ class Cluster<N : `*`, T> private constructor() : Component(), Iterable<T> {
     }
 
     /**
-     * Returns the component at the specified [index].
+     * Returns the component at the specified [index]. [index] must either be a compile time constant or a loop index
+     * with bounds that are compile time constants.
      */
     operator fun get(index: Int): T {
         throw VerikException()

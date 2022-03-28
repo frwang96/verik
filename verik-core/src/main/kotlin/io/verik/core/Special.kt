@@ -61,6 +61,17 @@ fun q(value: Boolean): Sequence {
 
 /**
  * Construct a randomization constraint from [conditions].
+ *
+ *  ```
+ *  class C : Class() {
+ *
+ *      @Rand
+ *      var x = 0
+ *
+ *      @Cons
+ *      val c = c(x > 0, x <= 6)
+ *  }
+ *  ```
  */
 fun c(vararg conditions: Boolean): Constraint {
     throw VerikException()
@@ -106,6 +117,16 @@ fun <T> unpack(value: Ubit<`*`>): T {
 
 /**
  * Conditionally instantiate [T] based on [value]. [value] must be a compile time constant.
+ *
+ *  ```
+ *  class M : Module()
+ *
+ *  class Top : Module() {
+ *
+ *      @Make
+ *      val m = optional(true) { M() }
+ *  }
+ *  ```
  */
 fun <T> optional(value: Boolean, instantiator: () -> T): T? {
     throw VerikException()
@@ -113,6 +134,16 @@ fun <T> optional(value: Boolean, instantiator: () -> T): T? {
 
 /**
  * Instantiate a [Cluster] of type [T] with [size] members. [size] must be a compile time constant.
+ *
+ *  ```
+ *  class M : Module()
+ *
+ *  class Top : Module() {
+ *
+ *      @Make
+ *      val m = cluster(4) { M() }
+ *  }
+ *  ```
  */
 fun <T> cluster(size: Int, instantiator: (Int) -> T): Cluster<`*`, T> {
     throw VerikException()

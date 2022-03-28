@@ -7,12 +7,12 @@
 package io.verik.core
 
 /**
- * Unknown boolean value.
+ * Unknown boolean value. Also referred to as the x value.
  */
 val unknown: Boolean by VerikExceptionDelegate()
 
 /**
- * Floating boolean value.
+ * Floating boolean value. Also referred to as the z value.
  */
 val floating: Boolean by VerikExceptionDelegate()
 
