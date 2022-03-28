@@ -7,7 +7,7 @@
 package io.verik.core
 
 /**
- * Represents a sequence of [N] bits that is signed. Corresponds to SystemVerilog packed signed logic.
+ * Represents a sequence of [N] bits that is signed. It corresponds to SystemVerilog packed signed logic.
  */
 class Sbit<N : `*`> private constructor() {
 

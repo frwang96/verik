@@ -7,7 +7,7 @@
 package io.verik.core
 
 /**
- * The base class of all structs. Corresponds to SystemVerilog packed structs.
+ * The base class of all structs. They corresponds to SystemVerilog packed structs.
  *
  *  ```
  *  class S(

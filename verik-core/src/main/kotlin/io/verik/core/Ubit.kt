@@ -7,7 +7,7 @@
 package io.verik.core
 
 /**
- * Represents a sequence of [N] bits that is unsigned. Corresponds to SystemVerilog packed logic.
+ * Represents a sequence of [N] bits that is unsigned. It corresponds to SystemVerilog packed logic.
  */
 class Ubit<N : `*`> private constructor() {
 

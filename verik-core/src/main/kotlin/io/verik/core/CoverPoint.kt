@@ -7,6 +7,7 @@
 package io.verik.core
 
 /**
- * A cover point within a [cover group][CoverGroup] that specifies a value to be covered.
+ * A cover point within a [cover group][CoverGroup] that specifies a value to be covered. Construct a cover point with
+ * the [cp] function.
  */
-abstract class CoverPoint
+class CoverPoint private constructor()

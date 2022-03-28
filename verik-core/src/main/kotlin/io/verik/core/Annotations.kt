@@ -10,7 +10,7 @@ package io.verik.core
  * Annotates Verik source files. This enables inspections by the
  * [Verik IntelliJ plugin](https://plugins.jetbrains.com/plugin/18275-verik).
  *
- * Verik source files should begin with the Verik annotation and an import for `io.verik.core`.
+ * Verik source files should begin with the Verik annotation and an import of `io.verik.core`.
  *
  *  ```
  *  @file:Verik
@@ -121,7 +121,7 @@ annotation class Randc
 annotation class Cons
 
 /**
- * Annotates assertion properties.
+ * (UNIMPLEMENTED) Annotates assertion properties.
  */
 @Target(AnnotationTarget.PROPERTY)
 annotation class Assert

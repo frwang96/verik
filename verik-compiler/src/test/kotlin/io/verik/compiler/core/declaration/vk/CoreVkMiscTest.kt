@@ -14,7 +14,7 @@ internal class CoreVkMiscTest : CoreDeclarationTest() {
     fun `serialize cat rep`() {
         driveCoreDeclarationTest(
             listOf(
-                Core.Vk.F_cat_Any_Any,
+                Core.Vk.F_cat_Any,
                 Core.Vk.F_rep_Any
             ),
             """
@@ -38,9 +38,9 @@ internal class CoreVkMiscTest : CoreDeclarationTest() {
     fun `serialize max`() {
         driveCoreDeclarationTest(
             listOf(
-                Core.Vk.F_max_Int_Int,
-                Core.Vk.F_max_Ubit_Ubit,
-                Core.Vk.F_max_Sbit_Sbit,
+                Core.Vk.F_max_Int,
+                Core.Vk.F_max_Ubit,
+                Core.Vk.F_max_Sbit,
             ),
             """
                 var x = 0
@@ -66,9 +66,9 @@ internal class CoreVkMiscTest : CoreDeclarationTest() {
     fun `serialize min`() {
         driveCoreDeclarationTest(
             listOf(
-                Core.Vk.F_min_Int_Int,
-                Core.Vk.F_min_Ubit_Ubit,
-                Core.Vk.F_min_Sbit_Sbit,
+                Core.Vk.F_min_Int,
+                Core.Vk.F_min_Ubit,
+                Core.Vk.F_min_Sbit,
             ),
             """
                 var x = 0

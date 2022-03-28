@@ -7,7 +7,7 @@
 package io.verik.core
 
 /**
- * A boolean expression evaluated over a single or multiple clock cycles. Sequences are used to define
+ * (UNIMPLEMENTED) A boolean expression evaluated over a single or multiple clock cycles. Sequences are used to define
  * [assertion properties][Assert] and [cover properties][Cover].
  */
 class Sequence internal constructor()

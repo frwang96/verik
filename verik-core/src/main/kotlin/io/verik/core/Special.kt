@@ -22,28 +22,38 @@ fun inj(content: String) {
 }
 
 /**
- * Inject [content] directly as an inline SystemVerilog expression. The injected expression has type [T].
+ * Inject [content] directly as an inline SystemVerilog expression. The injected expression has type [T]. To inject a
+ * statement use [inj].
  */
 fun <T> inji(content: String): T {
     throw VerikException()
 }
 
 /**
- * Returns the SystemVerilog representation of type [T]. This should only be used in injected string literals.
+ * Returns the SystemVerilog representation of type [T]. This should only be used in injected string literals to inject
+ * the type [T].
+ *
+ *  ```
+ *  class C : Class() {
+ *
+ *      @Inj
+ *      val macro = "`macro(${t<C>()})"
+ *  }
+ *  ```
  */
 fun <T> t(): String {
     throw VerikException()
 }
 
 /**
- * Represents a value that is not connected in output port connections or property declarations.
+ * Represents a value that is not connected in port connections or property declarations.
  */
 fun <T> nc(): T {
     throw VerikException()
 }
 
 /**
- * Construct a [Sequence] that evaluates [value] on the current cycle.
+ * (UNIMPLEMENTED) Construct a [Sequence] that evaluates [value] on the current cycle.
  */
 fun q(value: Boolean): Sequence {
     throw VerikException()

@@ -12,6 +12,11 @@ package io.verik.core
 class DynamicArray<E> private constructor() {
 
     /**
+     * The size of the dynamic array.
+     */
+    var size: Int by VerikExceptionDelegate()
+
+    /**
      * Returns the element at the specified [index].
      */
     operator fun get(index: Int): E {
@@ -22,13 +27,6 @@ class DynamicArray<E> private constructor() {
      * Sets the element at the specified [index] to [value].
      */
     operator fun set(index: Int, value: E) {
-        throw VerikException()
-    }
-
-    /**
-     * Returns the number of elements in this array.
-     */
-    fun size(): Int {
         throw VerikException()
     }
 }

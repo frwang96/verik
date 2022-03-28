@@ -11,12 +11,12 @@ sealed class Cardinal
 typealias `*` = Cardinal
 
 /**
- * True cardinal with value one.
+ * Cardinal with value one representing logical true.
  */
 typealias TRUE = `*`
 
 /**
- * False cardinal with value zero.
+ * Cardinal with value zero representing logical false.
  */
 typealias FALSE = `*`
 
@@ -36,7 +36,7 @@ typealias AND<X, Y> = `*`
 typealias OR<X, Y> = `*`
 
 /**
- * Evaluate as the cardinal Y if the cardinal X is one and the cardinal Z otherwise. X must take the value of either
+ * Evaluates to the cardinal Y if the cardinal X is one and the cardinal Z otherwise. X must take the value of either
  * zero or one.
  */
 typealias IF<X, Y, Z> = `*`

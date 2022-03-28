@@ -139,11 +139,10 @@ object Core {
 
             object ArrayList {
 
+                val P_size = CoreJvArrayList.P_size
                 val F_add_E = CoreJvArrayList.F_add_E
                 val F_get_Int = CoreJvArrayList.F_get_Int
                 val F_set_Int_E = CoreJvArrayList.F_set_Int_E
-
-                val P_size = CoreJvArrayList.P_size
             }
         }
     }
@@ -225,6 +224,8 @@ object Core {
         val F_optional_Boolean_Function = CoreVkSpecial.F_optional_Boolean_Function
         val F_cluster_Int_Function = CoreVkSpecial.F_cluster_Int_Function
 
+        val P_unknown = CoreVkData.P_unknown
+        val P_floating = CoreVkData.P_floating
         val F_b = CoreVkData.F_b
         val F_i = CoreVkData.F_i
         val F_u = CoreVkData.F_u
@@ -242,13 +243,11 @@ object Core {
         val F_fill1 = CoreVkData.F_fill1
         val F_fillx = CoreVkData.F_fillx
         val F_fillz = CoreVkData.F_fillz
-        val P_unknown = CoreVkData.P_unknown
-        val P_floating = CoreVkData.P_floating
 
         val F_posedge_Boolean = CoreVkControl.F_posedge_Boolean
         val F_negedge_Boolean = CoreVkControl.F_negedge_Boolean
-        val F_on_Event_Event_Function = CoreVkControl.F_on_Event_Event_Function
-        val F_oni_Event_Event_Function = CoreVkControl.F_oni_Event_Event_Function
+        val F_on_Event_Function = CoreVkControl.F_on_Event_Function
+        val F_oni_Event_Function = CoreVkControl.F_oni_Event_Function
         val F_forever_Function = CoreVkControl.F_forever_Function
         val F_delay_Int = CoreVkControl.F_delay_Int
         val F_wait_Boolean = CoreVkControl.F_wait_Boolean
@@ -257,14 +256,14 @@ object Core {
         val F_fork_Function = CoreVkControl.F_fork_Function
         val F_join = CoreVkControl.F_join
 
-        val F_cat_Any_Any = CoreVkMisc.F_cat_Any_Any
+        val F_cat_Any = CoreVkMisc.F_cat_Any
         val F_rep_Any = CoreVkMisc.F_rep_Any
-        val F_max_Int_Int = CoreVkMisc.F_max_Int_Int
-        val F_max_Ubit_Ubit = CoreVkMisc.F_max_Ubit_Ubit
-        val F_max_Sbit_Sbit = CoreVkMisc.F_max_Sbit_Sbit
-        val F_min_Int_Int = CoreVkMisc.F_min_Int_Int
-        val F_min_Ubit_Ubit = CoreVkMisc.F_min_Ubit_Ubit
-        val F_min_Sbit_Sbit = CoreVkMisc.F_min_Sbit_Sbit
+        val F_max_Int = CoreVkMisc.F_max_Int
+        val F_max_Ubit = CoreVkMisc.F_max_Ubit
+        val F_max_Sbit = CoreVkMisc.F_max_Sbit
+        val F_min_Int = CoreVkMisc.F_min_Int
+        val F_min_Ubit = CoreVkMisc.F_min_Ubit
+        val F_min_Sbit = CoreVkMisc.F_min_Sbit
         val F_log_Int = CoreVkMisc.F_log_Int
         val F_exp_Int = CoreVkMisc.F_exp_Int
 
@@ -375,29 +374,27 @@ object Core {
 
         object Packed {
 
+            val P_size = CoreVkPacked.P_size
             val F_get_Int = CoreVkPacked.F_get_Int
             val F_get_Ubit = CoreVkPacked.F_get_Ubit
             val F_set_Int_E = CoreVkPacked.F_set_Int_E
             val F_set_Ubit_E = CoreVkPacked.F_set_Ubit_E
-
-            val P_size = CoreVkPacked.P_size
         }
 
         object Unpacked {
 
+            val P_size = CoreVkUnpacked.P_size
             val F_get_Int = CoreVkUnpacked.F_get_Int
             val F_get_Ubit = CoreVkUnpacked.F_get_Ubit
             val F_set_Int_E = CoreVkUnpacked.F_set_Int_E
             val F_set_Ubit_E = CoreVkUnpacked.F_set_Ubit_E
-
-            val P_size = CoreVkUnpacked.P_size
         }
 
         object Queue {
 
+            val P_size = CoreVkQueue.P_size
             val F_add_E = CoreVkQueue.F_add_E
             val F_get_Int = CoreVkQueue.F_get_Int
-            val F_size = CoreVkQueue.F_size
         }
 
         object AssociativeArray {

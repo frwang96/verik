@@ -7,9 +7,9 @@
 package io.verik.core
 
 /**
- * Returns the concatenation of the arguments.
+ * Returns the concatenation of the [values]. [values] should not be empty.
  */
-fun cat(value: Any, vararg additional_values: Any): Ubit<`*`> {
+fun cat(vararg values: Any): Ubit<`*`> {
     throw VerikException()
 }
 
@@ -21,44 +21,44 @@ fun <N : `*`> rep(value: Any): Ubit<`*`> {
 }
 
 /**
- * Returns the maximum of the arguments.
+ * Returns the maximum of the [values]. [values] should have at least two arguments.
  */
-fun max(value: Int, vararg additional_values: Int): Int {
+fun max(vararg values: Int): Int {
     throw VerikException()
 }
 
 /**
- * Returns the maximum of the arguments.
+ * Returns the maximum of the [values]. [values] should have at least two arguments
  */
-fun max(value: Ubit<`*`>, vararg additional_values: Ubit<`*`>): Ubit<`*`> {
+fun max(vararg values: Ubit<`*`>): Ubit<`*`> {
     throw VerikException()
 }
 
 /**
- * Returns the maximum of the arguments.
+ * Returns the maximum of the [values]. [values] should have at least two arguments
  */
-fun max(value: Sbit<`*`>, vararg additional_values: Sbit<`*`>): Sbit<`*`> {
+fun max(vararg values: Sbit<`*`>): Sbit<`*`> {
     throw VerikException()
 }
 
 /**
- * Returns the minimum of the arguments.
+ * Returns the minimum of the [values]. [values] should have at least two arguments
  */
-fun min(value: Int, vararg additional_values: Int): Int {
+fun min(vararg values: Int): Int {
     throw VerikException()
 }
 
 /**
- * Returns the minimum of the arguments.
+ * Returns the minimum of the [values]. [values] should have at least two arguments
  */
-fun min(value: Ubit<`*`>, vararg additional_values: Ubit<`*`>): Ubit<`*`> {
+fun min(vararg values: Ubit<`*`>): Ubit<`*`> {
     throw VerikException()
 }
 
 /**
- * Returns the minimum of the arguments.
+ * Returns the minimum of the [values]. [values] should have at least two arguments
  */
-fun min(value: Sbit<`*`>, vararg additional_values: Sbit<`*`>): Sbit<`*`> {
+fun min(vararg values: Sbit<`*`>): Sbit<`*`> {
     throw VerikException()
 }
 

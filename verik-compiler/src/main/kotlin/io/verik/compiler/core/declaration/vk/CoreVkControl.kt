@@ -50,10 +50,10 @@ object CoreVkControl : CoreScope(CorePackage.VK) {
         }
     }
 
-    val F_on_Event_Event_Function = object : TransformableCoreFunctionDeclaration(
+    val F_on_Event_Function = object : TransformableCoreFunctionDeclaration(
         parent,
         "on",
-        "fun on(Event, vararg Event, Function)"
+        "fun on(vararg Event, Function)"
     ) {
 
         override fun transform(callExpression: ECallExpression): EExpression {
@@ -62,10 +62,10 @@ object CoreVkControl : CoreScope(CorePackage.VK) {
         }
     }
 
-    val F_oni_Event_Event_Function = object : TransformableCoreFunctionDeclaration(
+    val F_oni_Event_Function = object : TransformableCoreFunctionDeclaration(
         parent,
         "oni",
-        "fun oni(Event, vararg Event, Function)"
+        "fun oni(vararg Event, Function)"
     ) {
 
         override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {

@@ -12,7 +12,7 @@ package io.verik.core
 class Constraint private constructor() {
 
     /**
-     * Whether this randomization constraint is enabled.
+     * (UNIMPLEMENTED) Whether this randomization constraint is enabled.
      */
-    var enable: Boolean by VerikExceptionDelegate()
+    var enabled: Boolean by VerikExceptionDelegate()
 }

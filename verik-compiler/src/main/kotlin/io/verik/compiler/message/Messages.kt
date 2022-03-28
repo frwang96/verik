@@ -288,6 +288,10 @@ object Messages {
         "Union should have at least two properties: $0"
     )
 
+    val CALL_EXPRESSION_INSUFFICIENT_ARGUMENTS = ErrorMessageTemplate1<String>(
+        "Insufficient arguments to call expression: $0"
+    )
+
     val EXPECTED_ON_EXPRESSION = ErrorMessageTemplate0(
         "Expected on expression"
     )

@@ -11,6 +11,11 @@ package io.verik.core
  */
 class Queue<E> private constructor() : Iterable<E> {
 
+    /**
+     * The size of the queue.
+     */
+    var size: Int by VerikExceptionDelegate()
+
     override fun iterator(): Iterator<E> {
         throw VerikException()
     }
@@ -26,13 +31,6 @@ class Queue<E> private constructor() : Iterable<E> {
      * Returns the element at the specified [index].
      */
     operator fun get(index: Int): E {
-        throw VerikException()
-    }
-
-    /**
-     * Returns the number of elements in this queue.
-     */
-    fun size(): Int {
         throw VerikException()
     }
 }

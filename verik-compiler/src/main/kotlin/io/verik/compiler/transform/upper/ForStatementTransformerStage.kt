@@ -103,14 +103,12 @@ object ForStatementTransformerStage : ProjectStage() {
             referenceExpression: EReferenceExpression
         ): ESvForStatement {
             val startExpression = ConstantBuilder.buildInt(referenceExpression.location, 0)
-            val endExpression = ECallExpression(
+            val endExpression = EReferenceExpression(
                 referenceExpression.location,
                 Core.Kt.C_Int.toType(),
-                Core.Vk.Queue.F_size,
+                Core.Vk.Queue.P_size,
                 referenceExpression,
-                false,
-                ArrayList(),
-                ArrayList()
+                false
             )
             return transformForStatement(
                 functionLiteral,

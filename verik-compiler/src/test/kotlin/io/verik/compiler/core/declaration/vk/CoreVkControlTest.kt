@@ -16,8 +16,8 @@ internal class CoreVkControlTest : CoreDeclarationTest() {
             listOf(
                 Core.Vk.F_posedge_Boolean,
                 Core.Vk.F_negedge_Boolean,
-                Core.Vk.F_on_Event_Event_Function,
-                Core.Vk.F_oni_Event_Event_Function
+                Core.Vk.F_on_Event_Function,
+                Core.Vk.F_oni_Event_Function
             ),
             """
                 @Suppress("MemberVisibilityCanBePrivate")

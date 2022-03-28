@@ -11,14 +11,14 @@ package io.verik.core
  */
 class Unpacked<X : `*`, E> private constructor() : Iterable<E> {
 
-    override fun iterator(): Iterator<E> {
-        throw VerikException()
-    }
-
     /**
      * The size of the array.
      */
     var size: Int by VerikExceptionDelegate()
+
+    override fun iterator(): Iterator<E> {
+        throw VerikException()
+    }
 
     /**
      * Returns the array element at the specified [index].
