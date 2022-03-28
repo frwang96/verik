@@ -139,7 +139,7 @@ class Type(
     private fun getSuperType(): Type? {
         return when (val reference = reference) {
             is ETypeAlias -> reference.type.getSuperType()
-            is ETypeParameter -> reference.type.getSuperType()
+            is ETypeParameter -> reference.type
             is EKtClass -> {
                 val type = reference.superType.copy()
                 type.substituteTypeParameters(reference.typeParameters, arguments)
