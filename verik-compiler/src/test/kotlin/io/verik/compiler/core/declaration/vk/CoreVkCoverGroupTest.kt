@@ -15,14 +15,15 @@ internal class CoreVkCoverGroupTest : CoreDeclarationTest() {
         driveCoreDeclarationTest(
             listOf(
                 Core.Vk.CoverGroup.F_sample,
-                Core.Vk.CoverGroup.F_getCoverage
+                Core.Vk.CoverGroup.F_coverage
             ),
             """
                 class CG : CoverGroup()
                 val cg = CG()
+                var x = 0.0
                 fun f() { 
                     cg.sample()
-                    cg.getCoverage()
+                    x = cg.coverage()
                 }
             """.trimIndent(),
             """
@@ -32,7 +33,7 @@ internal class CoreVkCoverGroupTest : CoreDeclarationTest() {
 
                 function automatic void f();
                     cg.sample();
-                    cg.get_coverage();
+                    x = cg.get_coverage();
                 endfunction : f
             """.trimIndent()
         )

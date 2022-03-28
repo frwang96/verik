@@ -83,14 +83,6 @@ object CoreVkSpecial : CoreScope(CorePackage.VK) {
         }
     }
 
-    val F_c_String = object : TransformableCoreFunctionDeclaration(parent, "c", "fun c(vararg String)") {
-
-        override fun transform(callExpression: ECallExpression): EExpression {
-            Messages.EXPRESSION_OUT_OF_CONTEXT.on(callExpression, name)
-            return ENothingExpression(callExpression.location)
-        }
-    }
-
     val F_cp_Any = object : TransformableCoreFunctionDeclaration(parent, "cp", "fun cp(Any)") {
 
         override fun transform(callExpression: ECallExpression): EExpression {

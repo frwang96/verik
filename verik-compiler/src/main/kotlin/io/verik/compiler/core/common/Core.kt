@@ -221,7 +221,6 @@ object Core {
         val F_t = CoreVkSpecial.F_t
         val F_nc = CoreVkSpecial.F_nc
         val F_c_Boolean = CoreVkSpecial.F_c_Boolean
-        val F_c_String = CoreVkSpecial.F_c_String
         val F_cp_Any = CoreVkSpecial.F_cp_Any
         val F_cp_Any_Function = CoreVkSpecial.F_cp_Any_Function
         val F_cc_Any = CoreVkSpecial.F_cc_Any
@@ -431,7 +430,7 @@ object Core {
         object CoverGroup {
 
             val F_sample = CoreVkCoverGroup.F_sample
-            val F_getCoverage = CoreVkCoverGroup.F_getCoverage
+            val F_coverage = CoreVkCoverGroup.F_coverage
         }
 
         object CoverPoint {
