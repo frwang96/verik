@@ -13,7 +13,6 @@ import io.verik.compiler.ast.element.declaration.sv.EAlwaysSeqBlock
 import io.verik.compiler.ast.element.declaration.sv.EClockingBlockInstantiation
 import io.verik.compiler.ast.element.declaration.sv.EComponentInstantiation
 import io.verik.compiler.ast.element.declaration.sv.EConstraint
-import io.verik.compiler.ast.element.declaration.sv.ECoverBin
 import io.verik.compiler.ast.element.declaration.sv.ECoverCross
 import io.verik.compiler.ast.element.declaration.sv.ECoverGroup
 import io.verik.compiler.ast.element.declaration.sv.ECoverPoint
@@ -33,6 +32,7 @@ import io.verik.compiler.ast.element.declaration.sv.ESvValueParameter
 import io.verik.compiler.ast.element.declaration.sv.ETask
 import io.verik.compiler.ast.element.declaration.sv.ETypeDefinition
 import io.verik.compiler.ast.element.declaration.sv.EUnion
+import io.verik.compiler.ast.element.expression.common.EExpression
 import io.verik.compiler.ast.property.PortKind
 import io.verik.compiler.ast.property.ValueParameterKind
 import io.verik.compiler.core.common.AnnotationEntries
@@ -246,26 +246,13 @@ object DeclarationSerializer {
     fun serializeCoverPoint(coverPoint: ECoverPoint, serializeContext: SerializeContext) {
         serializeContext.append("${coverPoint.name} : coverpoint ")
         serializeContext.serializeAsExpression(coverPoint.expression)
-        serializeCoverBins(coverPoint.coverBins, coverPoint.endLocation, serializeContext)
+        serializeBinExpressions(coverPoint.binExpressions, coverPoint.endLocation, serializeContext)
     }
 
     fun serializeCoverCross(coverCross: ECoverCross, serializeContext: SerializeContext) {
         serializeContext.append("${coverCross.name} : cross ")
         serializeContext.append(coverCross.coverPoints.joinToString { it.name })
-        serializeCoverBins(coverCross.coverBins, coverCross.endLocation, serializeContext)
-    }
-
-    fun serializeCoverBin(coverBin: ECoverBin, serializeContext: SerializeContext) {
-        if (coverBin.isIgnored) {
-            serializeContext.append("ignore_bins ")
-        } else {
-            serializeContext.append("bins ")
-        }
-        serializeContext.append(coverBin.name)
-        if (coverBin.isArray) serializeContext.append("[]")
-        serializeContext.append(" = ")
-        serializeContext.serializeAsExpression(coverBin.expression)
-        serializeContext.appendLine(";")
+        serializeBinExpressions(coverCross.binExpressions, coverCross.endLocation, serializeContext)
     }
 
     fun serializeComponentInstantiation(
@@ -440,15 +427,19 @@ object DeclarationSerializer {
         }
     }
 
-    private fun serializeCoverBins(
-        coverBins: List<ECoverBin>,
+    private fun serializeBinExpressions(
+        binExpressions: List<EExpression>,
         endLocation: SourceLocation,
         serializeContext: SerializeContext
     ) {
-        if (coverBins.isNotEmpty()) {
+        if (binExpressions.isNotEmpty()) {
             serializeContext.appendLine(" {")
             serializeContext.indent {
-                coverBins.forEach { serializeContext.serializeAsDeclaration(it) }
+                binExpressions.forEach {
+                    serializeContext.appendLine()
+                    serializeContext.serializeAsExpression(it)
+                    serializeContext.appendLine(";")
+                }
                 serializeContext.appendLine()
             }
             serializeContext.label(endLocation) {

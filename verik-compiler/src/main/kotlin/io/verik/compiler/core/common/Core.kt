@@ -26,9 +26,7 @@ import io.verik.compiler.core.declaration.vk.CoreVkClass
 import io.verik.compiler.core.declaration.vk.CoreVkClasses
 import io.verik.compiler.core.declaration.vk.CoreVkCluster
 import io.verik.compiler.core.declaration.vk.CoreVkControl
-import io.verik.compiler.core.declaration.vk.CoreVkCoverCross
 import io.verik.compiler.core.declaration.vk.CoreVkCoverGroup
-import io.verik.compiler.core.declaration.vk.CoreVkCoverPoint
 import io.verik.compiler.core.declaration.vk.CoreVkData
 import io.verik.compiler.core.declaration.vk.CoreVkEvent
 import io.verik.compiler.core.declaration.vk.CoreVkMailbox
@@ -221,10 +219,9 @@ object Core {
         val F_t = CoreVkSpecial.F_t
         val F_nc = CoreVkSpecial.F_nc
         val F_c_Boolean = CoreVkSpecial.F_c_Boolean
-        val F_cp_Any = CoreVkSpecial.F_cp_Any
-        val F_cp_Any_Function = CoreVkSpecial.F_cp_Any_Function
-        val F_cc_Any = CoreVkSpecial.F_cc_Any
-        val F_cc_Any_Function = CoreVkSpecial.F_cc_Any_Function
+        val F_cp_Any_String = CoreVkSpecial.F_cp_Any_String
+        val F_cc_CoverPoint_CoverPoint_String = CoreVkSpecial.F_cc_CoverPoint_CoverPoint_String
+        val F_cc_CoverPoint_CoverPoint_CoverPoint_String = CoreVkSpecial.F_cc_CoverPoint_CoverPoint_CoverPoint_String
         val F_optional_Boolean_Function = CoreVkSpecial.F_optional_Boolean_Function
         val F_cluster_Int_Function = CoreVkSpecial.F_cluster_Int_Function
 
@@ -431,20 +428,6 @@ object Core {
 
             val F_sample = CoreVkCoverGroup.F_sample
             val F_coverage = CoreVkCoverGroup.F_coverage
-        }
-
-        object CoverPoint {
-
-            val F_bin_String_String = CoreVkCoverPoint.F_bin_String_String
-            val F_bins_String_String = CoreVkCoverPoint.F_bins_String_String
-            val F_ignoreBin_String_String = CoreVkCoverPoint.F_ignoreBin_String_String
-        }
-
-        object CoverCross {
-
-            val F_bin_String_String = CoreVkCoverCross.F_bin_String_String
-            val F_bins_String_String = CoreVkCoverCross.F_bins_String_String
-            val F_ignoreBin_String_String = CoreVkCoverCross.F_ignoreBin_String_String
         }
 
         object Cluster {

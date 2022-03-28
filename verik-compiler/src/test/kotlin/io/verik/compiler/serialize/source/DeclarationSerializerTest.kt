@@ -340,9 +340,7 @@ internal class DeclarationSerializerTest : BaseTest() {
             """
                 class CG(@In var x: Boolean): CoverGroup() {
                     @Cover
-                    val cp = cp(x) {
-                        bin("b", "{1'b0}")
-                    }
+                    val cp = cp(x, "bins b = {1'b0}")
                 }
             """.trimIndent(),
             """
@@ -394,9 +392,7 @@ internal class DeclarationSerializerTest : BaseTest() {
                     @Cover
                     val cp = cp(x)
                     @Cover
-                    val cc = cc(cp, cp) {
-                        bins("b", "binsof(cp)")
-                    }
+                    val cc = cc(cp, cp, "bins b[] = binsof(cp)")
                 }
             """.trimIndent(),
             """

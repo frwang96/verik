@@ -57,30 +57,26 @@ fun c(vararg conditions: Boolean): Constraint {
 }
 
 /**
- * Construct a [CoverPoint] for [value].
+ * Construct a [CoverPoint] for [value]. Optionally, specify the [bins] to be used. [bins] will be injected as
+ * SystemVerilog.
  */
-fun cp(value: Any): CoverPoint {
+fun cp(value: Any, vararg bins: String): CoverPoint {
     throw VerikException()
 }
 
 /**
- * Construct a [CoverPoint] for [value] with configuration [config].
+ * Construct a [CoverCross] for cover points [x] and [y]. Optionally, specify the [bins] to be used. [bins] will be
+ * injected as SystemVerilog.
  */
-fun cp(value: Any, config: CoverPoint.(CoverPoint) -> Unit): CoverPoint {
+fun cc(x: CoverPoint, y: CoverPoint, vararg bins: String): CoverCross {
     throw VerikException()
 }
 
 /**
- * Construct a [CoverCross] for the cover points.
+ * Construct a [CoverCross] for cover points [x], [y], and [z]. Optionally, specify the [bins] to be used. [bins] will
+ * be injected as SystemVerilog.
  */
-fun cc(vararg cover_point: CoverPoint): CoverCross {
-    throw VerikException()
-}
-
-/**
- * Construct a [CoverCross] for the cover points with configuration [config].
- */
-fun cc(vararg cover_point: CoverPoint, config: CoverPoint.(CoverPoint) -> Unit): CoverCross {
+fun cc(x: CoverPoint, y: CoverPoint, z: CoverPoint, vararg bins: String): CoverCross {
     throw VerikException()
 }
 

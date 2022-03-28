@@ -25,7 +25,6 @@ import io.verik.compiler.ast.element.declaration.sv.EClockingBlock
 import io.verik.compiler.ast.element.declaration.sv.EClockingBlockInstantiation
 import io.verik.compiler.ast.element.declaration.sv.EComponentInstantiation
 import io.verik.compiler.ast.element.declaration.sv.EConstraint
-import io.verik.compiler.ast.element.declaration.sv.ECoverBin
 import io.verik.compiler.ast.element.declaration.sv.ECoverCross
 import io.verik.compiler.ast.element.declaration.sv.ECoverGroup
 import io.verik.compiler.ast.element.declaration.sv.ECoverPoint
@@ -374,7 +373,7 @@ class ElementPrinter : Visitor() {
         build("CoverPoint") {
             build(coverPoint.name)
             build(coverPoint.expression)
-            build(coverPoint.coverBins)
+            build(coverPoint.binExpressions)
         }
     }
 
@@ -382,16 +381,7 @@ class ElementPrinter : Visitor() {
         build("CoverCross") {
             build(coverCross.name)
             build(coverCross.coverPoints.map { it.name })
-            build(coverCross.coverBins)
-        }
-    }
-
-    override fun visitCoverBin(coverBin: ECoverBin) {
-        build("CoverBin") {
-            build(coverBin.name)
-            build(coverBin.expression)
-            build(coverBin.isIgnored)
-            build(coverBin.isArray)
+            build(coverCross.binExpressions)
         }
     }
 

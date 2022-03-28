@@ -4,10 +4,13 @@
 
 package io.verik.compiler.ast.element.declaration.sv
 
+import io.verik.compiler.ast.common.ExpressionContainer
 import io.verik.compiler.ast.element.declaration.common.EAbstractProperty
+import io.verik.compiler.ast.element.expression.common.EExpression
 import io.verik.compiler.ast.property.AnnotationEntry
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
+import io.verik.compiler.common.replaceIfContains
 import io.verik.compiler.message.SourceLocation
 import io.verik.compiler.target.common.Target
 
@@ -18,13 +21,13 @@ class ECoverCross(
     override var annotationEntries: List<AnnotationEntry>,
     override var documentationLines: List<String>?,
     val coverPoints: List<ECoverPoint>,
-    val coverBins: List<ECoverBin>
-) : EAbstractProperty() {
+    val binExpressions: ArrayList<EExpression>
+) : EAbstractProperty(), ExpressionContainer {
 
     override var type = Target.C_Void.toType()
 
     init {
-        coverBins.forEach { it.parent = this }
+        binExpressions.forEach { it.parent = this }
     }
 
     override fun accept(visitor: Visitor) {
@@ -32,6 +35,11 @@ class ECoverCross(
     }
 
     override fun acceptChildren(visitor: TreeVisitor) {
-        coverBins.forEach { it.accept(visitor) }
+        binExpressions.forEach { it.accept(visitor) }
+    }
+
+    override fun replaceChild(oldExpression: EExpression, newExpression: EExpression): Boolean {
+        newExpression.parent = this
+        return binExpressions.replaceIfContains(oldExpression, newExpression)
     }
 }
