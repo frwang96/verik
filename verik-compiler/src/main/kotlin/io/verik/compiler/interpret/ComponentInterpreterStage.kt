@@ -137,6 +137,7 @@ object ComponentInterpreterStage : ProjectStage() {
             val kind = when {
                 valueParameter.hasAnnotationEntry(AnnotationEntries.IN) -> PortKind.INPUT
                 valueParameter.hasAnnotationEntry(AnnotationEntries.OUT) -> PortKind.OUTPUT
+                valueParameter.hasAnnotationEntry(AnnotationEntries.WIRE) -> PortKind.INOUT
                 else -> {
                     when {
                         valueParameter.type.isSubtype(Core.Vk.C_ModuleInterface) -> PortKind.MODULE_INTERFACE

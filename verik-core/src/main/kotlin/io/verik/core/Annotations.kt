@@ -93,6 +93,16 @@ annotation class In
 annotation class Out
 
 /**
+ * Annotates wire ports of a component. Wire ports are bidirectional and must be declared as var.
+ *
+ *  ```
+ *  class M(@Wire var x: Boolean) : Module()
+ *  ```
+ */
+@Target(AnnotationTarget.PROPERTY)
+annotation class Wire
+
+/**
  * Annotates that a property in a [Class] should be randomized.
  */
 @Target(AnnotationTarget.PROPERTY)

@@ -398,6 +398,7 @@ object DeclarationSerializer {
         when (kind) {
             PortKind.INPUT -> serializeContext.append("input  ")
             PortKind.OUTPUT -> serializeContext.append("output ")
+            PortKind.INOUT -> serializeContext.append("inout ")
             PortKind.MODULE_INTERFACE, PortKind.MODULE_PORT -> {}
             PortKind.CLOCKING_BLOCK -> serializeContext.append("clocking ")
         }
