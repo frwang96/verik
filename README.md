@@ -1,10 +1,10 @@
 [![Verik](https://verik.io/img/logo-banner.svg)](https://verik.io)
 
-[![Test](https://github.com/frwang96/verik/actions/workflows/Sanity.yml/badge.svg)](
+[![Test](https://img.shields.io/github/workflow/status/frwang96/verik/Sanity)](
 https://github.com/frwang96/verik)
-[![Maven](https://img.shields.io/maven-central/v/io.verik/verik-core)](
+[![Maven](https://img.shields.io/github/v/release/frwang96/verik)](
 https://search.maven.org/search?q=io.verik)
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](
+[![License](https://img.shields.io/github/license/frwang96/verik)](
 https://opensource.org/licenses/Apache-2.0)
 
 
@@ -31,7 +31,8 @@ Going towards the right, the Verik compiler translates Verik source code into Sy
 However, we can also go in the other direction.
 If we had SystemVerilog source code that we would like to reference from the Kotlin environment, the Verik importer can
 be used to import the declaration headers.
-This allows us to make use of SystemVerilog libraries such as the UVM directly in Verik.
+This allows us to make use of SystemVerilog libraries such as the
+[UVM](https://www.accellera.org/downloads/standards/uvm) directly in Verik.
 It also enables us to benefit from the productivity improvements of Verik without having to rewrite any legacy code.
 
 To see examples of Verik projects refer to [examples](https://github.com/frwang96/verik-examples).
@@ -72,11 +73,12 @@ Install JDK 17 and set up IntelliJ IDEA as specified in [setup](https://verik.io
 In order for a pull request to be merged onto the `master` branch, it must pass all of the tests and lint checks.
 Run these checks by executing the `mainCheck` gradle task.
 
-To run a broader regression, install the local build of the toolchain with `mainInstall` and run the `verik` gradle task
-on all of the [examples](https://github.com/frwang96/verik-examples) to check for unexpected error messages.
-This regression, as well as the compilation and execution of the generated SystemVerilog, is
+To run a wider regression test, install the local build of the toolchain with `mainInstall` and run the `verik` gradle
+task on all of the [example projects](https://github.com/frwang96/verik-examples) to check for unexpected error
+messages.
+This regression test, as well as the compilation and execution of the generated SystemVerilog, is
 [automatically run](https://verik.io/docs/regression) when new changes are introduced.
-If you have a Verik project that you are willing to share, I would love to add it to this regression.
+If you have a Verik project that you are willing to share, I would love to add it to this regression test.
 
 ## Gradle Modules
 
@@ -93,7 +95,7 @@ anywhere else in the toolchain.
 
 ### `verik-core`
 The core library that is imported in all Verik projects that is used to express HDL semantics.
-The Verik importer and compiler recognize these as built-in declarations.
+The Verik compiler and importer recognize these as built-in declarations.
 
 ### `verik-importer`
 The importer that brings in SystemVerilog declarations to be used in Verik projects. 
@@ -112,7 +114,7 @@ blocks that are specified in `build.gradle.kts`.
 
 ### `verik-sandbox`
 A sandbox project that can be used for quick development and debugging.
-The toolchain is automatically recompiled when the sandbox project is run.
+The toolchain is automatically recompiled when the sandbox project is run, so there is no need to execute `mainInstall`.
 Verilog or SystemVerilog source code to be imported should be placed under `verik-sandbox/src/main/verilog` and Verik
 source code to be compiled should be placed under `verik-sandbox/src/main/kotlin`.
 

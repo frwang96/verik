@@ -50,6 +50,10 @@ tasks.runKtlintCheckOverMainSourceSet {
     dependsOn(tasks.generateGrammarSource)
 }
 
+tasks.dokkaJavadoc {
+    dependsOn(tasks.generateGrammarSource)
+}
+
 tasks.test {
     useJUnitPlatform()
     systemProperties["junit.jupiter.execution.parallel.enabled"] = true
