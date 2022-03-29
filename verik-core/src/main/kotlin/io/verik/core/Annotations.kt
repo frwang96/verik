@@ -10,7 +10,7 @@ package io.verik.core
  * Annotates Verik source files. This enables inspections by the
  * [Verik IntelliJ plugin](https://plugins.jetbrains.com/plugin/18275-verik).
  *
- * Verik source files should begin with the Verik annotation and an import for `io.verik.core`.
+ * Verik source files should begin with the Verik file annotation and an import of `io.verik.core`.
  *
  *  ```
  *  @file:Verik
@@ -64,7 +64,7 @@ annotation class Entry
  *  class C : Class() {
  *
  *      @Inj
- *      val macro = "`macro(C);"
+ *      val macro = "`macro;"
  *  }
  *  ```
  */
@@ -93,31 +93,69 @@ annotation class In
 annotation class Out
 
 /**
+ * Annotates bidirectional wire ports of a component. Wire ports must be declared as var.
+ *
+ *  ```
+ *  class M(@Wire var x: Boolean) : Module()
+ *  ```
+ */
+@Target(AnnotationTarget.PROPERTY)
+annotation class Wire
+
+/**
  * Annotates that a property in a [Class] should be randomized.
+ *
+ *  ```
+ *  class C : Class() {
+ *
+ *      @Rand
+ *      var x = false
+ *  }
+ *  ```
  */
 @Target(AnnotationTarget.PROPERTY)
 annotation class Rand
 
 /**
- * Annotates that a property in a [Class] should be randomized cyclically.
+ * Annotates that a property in a [Class] should be randomized cyclically. The property cycles through all values within
+ * its range before repeating.
+ *
+ *  ```
+ *  class C : Class() {
+ *
+ *      @Randc
+ *      var x = false
+ *  }
+ *  ```
  */
 @Target(AnnotationTarget.PROPERTY)
 annotation class Randc
 
 /**
- * Annotates randomization constraints in a [Class].
+ * Annotates randomization constraints in a [Class]. Construct a constraint with the [c] function.
+ *
+ *  ```
+ *  class C : Class() {
+ *
+ *      @Rand
+ *      var x = 0
+ *
+ *      @Cons
+ *      val c = c(x > 0, x <= 6)
+ *  }
+ *  ```
  */
 @Target(AnnotationTarget.PROPERTY)
 annotation class Cons
 
 /**
- * Annotates assertion properties.
+ * (UNIMPLEMENTED) Annotates assertion properties.
  */
 @Target(AnnotationTarget.PROPERTY)
 annotation class Assert
 
 /**
- * Annotates cover properties, cover points, and cover crosses.
+ * Annotates cover properties, [cover points][CoverPoint], and [cover crosses][CoverCross].
  */
 @Target(AnnotationTarget.PROPERTY)
 annotation class Cover

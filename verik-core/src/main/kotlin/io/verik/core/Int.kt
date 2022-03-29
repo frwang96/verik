@@ -16,6 +16,6 @@ fun <N : `*`> Int.toUbit(): Ubit<N> {
 /**
  * Convert this value to an [Sbit] of width [N].
  */
-fun <N : `*`> Int.toSbit(): Ubit<N> {
+fun <N : `*`> Int.toSbit(): Sbit<N> {
     throw VerikException()
 }

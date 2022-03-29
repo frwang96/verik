@@ -7,18 +7,18 @@
 package io.verik.core
 
 /**
- * An unpacked array of size [X] of elements of type [E].
+ * An unpacked array of size [X] of elements of type [E]. They correspond to SystemVerilog unpacked arrays.
  */
 class Unpacked<X : `*`, E> private constructor() : Iterable<E> {
-
-    override fun iterator(): Iterator<E> {
-        throw VerikException()
-    }
 
     /**
      * The size of the array.
      */
     var size: Int by VerikExceptionDelegate()
+
+    override fun iterator(): Iterator<E> {
+        throw VerikException()
+    }
 
     /**
      * Returns the array element at the specified [index].

@@ -26,6 +26,20 @@ import io.verik.compiler.resolve.TypeConstraintKind
 
 object CoreVkData : CoreScope(CorePackage.VK) {
 
+    val P_unknown = object : CorePropertyDeclaration(parent, "unknown") {
+
+        override fun transform(referenceExpression: EReferenceExpression): EExpression {
+            return ConstantBuilder.buildBoolean(referenceExpression, BooleanConstantKind.UNKNOWN)
+        }
+    }
+
+    val P_floating = object : CorePropertyDeclaration(parent, "floating") {
+
+        override fun transform(referenceExpression: EReferenceExpression): EExpression {
+            return ConstantBuilder.buildBoolean(referenceExpression, BooleanConstantKind.FLOATING)
+        }
+    }
+
     val F_b = object : TransformableCoreFunctionDeclaration(parent, "b", "fun b()") {
 
         override fun transform(callExpression: ECallExpression): EExpression {
@@ -225,20 +239,6 @@ object CoreVkData : CoreScope(CorePackage.VK) {
                     EArrayLiteralExpression(callExpression.location, callExpression.type, "'z")
                 else -> Messages.INTERNAL_ERROR.on(callExpression, "Unable to fill ${callExpression.type}")
             }
-        }
-    }
-
-    val P_unknown = object : CorePropertyDeclaration(parent, "unknown") {
-
-        override fun transform(referenceExpression: EReferenceExpression): EExpression {
-            return ConstantBuilder.buildBoolean(referenceExpression, BooleanConstantKind.UNKNOWN)
-        }
-    }
-
-    val P_floating = object : CorePropertyDeclaration(parent, "floating") {
-
-        override fun transform(referenceExpression: EReferenceExpression): EExpression {
-            return ConstantBuilder.buildBoolean(referenceExpression, BooleanConstantKind.FLOATING)
         }
     }
 }

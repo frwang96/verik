@@ -10,6 +10,7 @@ import io.verik.compiler.ast.element.expression.common.EExpression
 import io.verik.compiler.ast.property.AnnotationEntry
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
+import io.verik.compiler.common.replaceIfContains
 import io.verik.compiler.message.SourceLocation
 import io.verik.compiler.target.common.Target
 
@@ -20,14 +21,14 @@ class ECoverPoint(
     override var annotationEntries: List<AnnotationEntry>,
     override var documentationLines: List<String>?,
     var expression: EExpression,
-    val coverBins: List<ECoverBin>
+    val binExpressions: ArrayList<EExpression>
 ) : EAbstractProperty(), ExpressionContainer {
 
     override var type = Target.C_Void.toType()
 
     init {
         expression.parent = this
-        coverBins.forEach { it.parent = this }
+        binExpressions.forEach { it.parent = this }
     }
 
     override fun accept(visitor: Visitor) {
@@ -36,7 +37,7 @@ class ECoverPoint(
 
     override fun acceptChildren(visitor: TreeVisitor) {
         expression.accept(visitor)
-        coverBins.forEach { it.accept(visitor) }
+        binExpressions.forEach { it.accept(visitor) }
     }
 
     override fun replaceChild(oldExpression: EExpression, newExpression: EExpression): Boolean {
@@ -44,6 +45,6 @@ class ECoverPoint(
         return if (expression == oldExpression) {
             expression = newExpression
             true
-        } else false
+        } else binExpressions.replaceIfContains(oldExpression, newExpression)
     }
 }

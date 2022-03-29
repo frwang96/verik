@@ -17,6 +17,8 @@
 - Modify interface for functions `optional` and `cluster`.
 - Replace generate for blocks with elaborated clusters.
 - Move cluster elaboration to evaluate stage.
+- Support `Wire` ports for bidirectional signals.
+- Simplify cover bin representation.
 
 ## [0.1.14]
 ### Importer

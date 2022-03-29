@@ -22,28 +22,38 @@ fun inj(content: String) {
 }
 
 /**
- * Inject [content] directly as an inline SystemVerilog expression. The injected expression has type [T].
+ * Inject [content] directly as an inline SystemVerilog expression. The injected expression has type [T]. To inject a
+ * statement use [inj].
  */
 fun <T> inji(content: String): T {
     throw VerikException()
 }
 
 /**
- * Returns the SystemVerilog representation of type [T]. This should only be used in injected string literals.
+ * Returns the SystemVerilog representation of type [T]. This should only be used in injected string literals to inject
+ * the type [T].
+ *
+ *  ```
+ *  class C : Class() {
+ *
+ *      @Inj
+ *      val macro = "`macro(${t<C>()})"
+ *  }
+ *  ```
  */
 fun <T> t(): String {
     throw VerikException()
 }
 
 /**
- * Represents a value that is not connected in output port connections or property declarations.
+ * Represents a value that is not connected in port connections or property declarations.
  */
 fun <T> nc(): T {
     throw VerikException()
 }
 
 /**
- * Construct a [Sequence] that evaluates [value] on the current cycle.
+ * (UNIMPLEMENTED) Construct a [Sequence] that evaluates [value] on the current cycle.
  */
 fun q(value: Boolean): Sequence {
     throw VerikException()
@@ -51,43 +61,43 @@ fun q(value: Boolean): Sequence {
 
 /**
  * Construct a randomization constraint from [conditions].
+ *
+ *  ```
+ *  class C : Class() {
+ *
+ *      @Rand
+ *      var x = 0
+ *
+ *      @Cons
+ *      val c = c(x > 0, x <= 6)
+ *  }
+ *  ```
  */
 fun c(vararg conditions: Boolean): Constraint {
     throw VerikException()
 }
 
 /**
- * Construct a randomization constraint from [conditions]. [conditions] will be injected as SystemVerilog.
+ * Construct a [CoverPoint] for [value]. Optionally, specify the [bins] to be used. [bins] will be injected as
+ * SystemVerilog.
  */
-fun c(vararg conditions: String): Constraint {
+fun cp(value: Any, vararg bins: String): CoverPoint {
     throw VerikException()
 }
 
 /**
- * Construct a [CoverPoint] for [value].
+ * Construct a [CoverCross] for cover points [x] and [y]. Optionally, specify the [bins] to be used. [bins] will be
+ * injected as SystemVerilog.
  */
-fun cp(value: Any): CoverPoint {
+fun cc(x: CoverPoint, y: CoverPoint, vararg bins: String): CoverCross {
     throw VerikException()
 }
 
 /**
- * Construct a [CoverPoint] for [value] with configuration [config].
+ * Construct a [CoverCross] for cover points [x], [y], and [z]. Optionally, specify the [bins] to be used. [bins] will
+ * be injected as SystemVerilog.
  */
-fun cp(value: Any, config: CoverPoint.(CoverPoint) -> Unit): CoverPoint {
-    throw VerikException()
-}
-
-/**
- * Construct a [CoverCross] for the cover points.
- */
-fun cc(vararg cover_point: CoverPoint): CoverCross {
-    throw VerikException()
-}
-
-/**
- * Construct a [CoverCross] for the cover points with configuration [config].
- */
-fun cc(vararg cover_point: CoverPoint, config: CoverPoint.(CoverPoint) -> Unit): CoverCross {
+fun cc(x: CoverPoint, y: CoverPoint, z: CoverPoint, vararg bins: String): CoverCross {
     throw VerikException()
 }
 
@@ -107,6 +117,16 @@ fun <T> unpack(value: Ubit<`*`>): T {
 
 /**
  * Conditionally instantiate [T] based on [value]. [value] must be a compile time constant.
+ *
+ *  ```
+ *  class M : Module()
+ *
+ *  class Top : Module() {
+ *
+ *      @Make
+ *      val m = optional(true) { M() }
+ *  }
+ *  ```
  */
 fun <T> optional(value: Boolean, instantiator: () -> T): T? {
     throw VerikException()
@@ -114,6 +134,16 @@ fun <T> optional(value: Boolean, instantiator: () -> T): T? {
 
 /**
  * Instantiate a [Cluster] of type [T] with [size] members. [size] must be a compile time constant.
+ *
+ *  ```
+ *  class M : Module()
+ *
+ *  class Top : Module() {
+ *
+ *      @Make
+ *      val m = cluster(4) { M() }
+ *  }
+ *  ```
  */
 fun <T> cluster(size: Int, instantiator: (Int) -> T): Cluster<`*`, T> {
     throw VerikException()

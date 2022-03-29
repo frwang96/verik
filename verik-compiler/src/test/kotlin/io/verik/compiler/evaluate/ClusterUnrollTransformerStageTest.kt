@@ -132,4 +132,21 @@ internal class ClusterUnrollTransformerStageTest : BaseTest() {
             """.trimIndent()
         ) { it.regularFiles()[0].declarations }
     }
+
+    @Test
+    fun `cluster property multiple`() {
+        driveElementTest(
+            """
+                val x = cluster(1) { it }
+                val y = cluster(1) { x[it] }
+            """.trimIndent(),
+            ClusterUnrollTransformerStage::class,
+            """
+                [
+                    Property(x_0, Int, ConstantExpression(Int, 0), 0, 0),
+                    Property(y_0, Int, ReferenceExpression(Int, x_0, null, 0), 0, 0)
+                ]
+            """.trimIndent()
+        ) { it.regularFiles()[0].declarations }
+    }
 }

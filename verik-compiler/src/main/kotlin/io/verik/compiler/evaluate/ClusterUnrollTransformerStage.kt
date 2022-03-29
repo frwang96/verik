@@ -35,6 +35,9 @@ object ClusterUnrollTransformerStage : ProjectStage() {
             clusterIndexerVisitor.valueParameterClusterMap
         )
         projectContext.project.accept(clusterCallExpressionTransformerVisitor)
+        clusterIndexerVisitor.propertyClusterMap.values.flatten().forEach {
+            it.accept(clusterCallExpressionTransformerVisitor)
+        }
         val clusterDeclarationTransformerVisitor = ClusterDeclarationTransformerVisitor(
             clusterIndexerVisitor.propertyClusterMap,
             clusterIndexerVisitor.valueParameterClusterMap
@@ -126,6 +129,12 @@ object ClusterUnrollTransformerStage : ProjectStage() {
         private val propertyClusterMap: HashMap<EProperty, List<EProperty>>,
         private val valueParameterClusterMap: HashMap<EKtValueParameter, List<EKtValueParameter>>
     ) : TreeVisitor() {
+
+        override fun visitProperty(property: EProperty) {
+            if (property.type.reference != Core.Vk.C_Cluster) {
+                super.visitProperty(property)
+            }
+        }
 
         override fun visitCallExpression(callExpression: ECallExpression) {
             super.visitCallExpression(callExpression)

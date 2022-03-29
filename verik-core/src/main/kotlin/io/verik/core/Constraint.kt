@@ -7,12 +7,24 @@
 package io.verik.core
 
 /**
- * Randomization constraint for random properties of [classes][Class].
+ * Randomization constraint for random properties of [classes][Class]. Constraints are annotated with [Cons] and
+ * constructed with the [c] function.
+ *
+ *  ```
+ *  class C : Class() {
+ *
+ *      @Rand
+ *      var x = 0
+ *
+ *      @Cons
+ *      val c = c(x > 0, x <= 6)
+ *  }
+ *  ```
  */
 class Constraint private constructor() {
 
     /**
-     * Whether this randomization constraint is enabled.
+     * (UNIMPLEMENTED) Whether this randomization constraint is enabled.
      */
-    var enable: Boolean by VerikExceptionDelegate()
+    var enabled: Boolean by VerikExceptionDelegate()
 }

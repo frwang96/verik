@@ -15,6 +15,13 @@ import io.verik.compiler.resolve.TypeConstraint
 
 object CoreVkUnpacked : CoreScope(Core.Vk.C_Unpacked) {
 
+    val P_size = object : CorePropertyDeclaration(parent, "size") {
+
+        override fun transform(referenceExpression: EReferenceExpression): EExpression {
+            return CoreVkPacked.P_size.transform(referenceExpression)
+        }
+    }
+
     val F_get_Int = object : TransformableCoreFunctionDeclaration(parent, "get", "fun get(Int)") {
 
         override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
@@ -56,13 +63,6 @@ object CoreVkUnpacked : CoreScope(Core.Vk.C_Unpacked) {
 
         override fun transform(callExpression: ECallExpression): EExpression {
             return CoreVkPacked.F_set_Ubit_E.transform(callExpression)
-        }
-    }
-
-    val P_size = object : CorePropertyDeclaration(parent, "size") {
-
-        override fun transform(referenceExpression: EReferenceExpression): EExpression {
-            return CoreVkPacked.P_size.transform(referenceExpression)
         }
     }
 }

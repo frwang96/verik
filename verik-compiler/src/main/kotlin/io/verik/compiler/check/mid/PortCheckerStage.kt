@@ -40,20 +40,29 @@ object PortCheckerStage : ProjectStage() {
             when {
                 valueParameter.hasAnnotationEntry(AnnotationEntries.IN) -> {}
                 valueParameter.hasAnnotationEntry(AnnotationEntries.OUT) -> {
-                    if (!valueParameter.isMutable)
+                    if (!valueParameter.isMutable) {
                         Messages.PORT_NOT_MUTABLE.on(valueParameter, "Output", valueParameter.name)
+                    }
+                }
+                valueParameter.hasAnnotationEntry(AnnotationEntries.WIRE) -> {
+                    if (!valueParameter.isMutable) {
+                        Messages.PORT_NOT_MUTABLE.on(valueParameter, "Wire", valueParameter.name)
+                    }
                 }
                 type.isSubtype(Core.Vk.C_ModuleInterface) -> {
-                    if (valueParameter.isMutable)
+                    if (valueParameter.isMutable) {
                         Messages.PORT_MUTABLE.on(valueParameter, "Module interface", valueParameter.name)
+                    }
                 }
                 type.isSubtype(Core.Vk.C_ModulePort) -> {
-                    if (valueParameter.isMutable)
+                    if (valueParameter.isMutable) {
                         Messages.PORT_MUTABLE.on(valueParameter, "Module", valueParameter.name)
+                    }
                 }
                 type.isSubtype(Core.Vk.C_ClockingBlock) -> {
-                    if (valueParameter.isMutable)
+                    if (valueParameter.isMutable) {
                         Messages.PORT_MUTABLE.on(valueParameter, "Clocking block", valueParameter.name)
+                    }
                 }
                 else -> {
                     Messages.PORT_NO_DIRECTIONALITY.on(valueParameter, valueParameter.name)

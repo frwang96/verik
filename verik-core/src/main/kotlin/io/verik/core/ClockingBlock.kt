@@ -7,7 +7,7 @@
 package io.verik.core
 
 /**
- * A clocking block to bundle signals synchronized on an event. Clocking blocks can be instantiated in
+ * A clocking block to bundle signals synchronized on an [event]. Clocking blocks can be instantiated in
  * [modules][Module] and [module interfaces][ModuleInterface]. They correspond to SystemVerilog clocking blocks.
  *
  *  ```

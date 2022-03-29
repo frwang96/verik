@@ -26,9 +26,7 @@ import io.verik.compiler.core.declaration.vk.CoreVkClass
 import io.verik.compiler.core.declaration.vk.CoreVkClasses
 import io.verik.compiler.core.declaration.vk.CoreVkCluster
 import io.verik.compiler.core.declaration.vk.CoreVkControl
-import io.verik.compiler.core.declaration.vk.CoreVkCoverCross
 import io.verik.compiler.core.declaration.vk.CoreVkCoverGroup
-import io.verik.compiler.core.declaration.vk.CoreVkCoverPoint
 import io.verik.compiler.core.declaration.vk.CoreVkData
 import io.verik.compiler.core.declaration.vk.CoreVkEvent
 import io.verik.compiler.core.declaration.vk.CoreVkMailbox
@@ -141,11 +139,10 @@ object Core {
 
             object ArrayList {
 
+                val P_size = CoreJvArrayList.P_size
                 val F_add_E = CoreJvArrayList.F_add_E
                 val F_get_Int = CoreJvArrayList.F_get_Int
                 val F_set_Int_E = CoreJvArrayList.F_set_Int_E
-
-                val P_size = CoreJvArrayList.P_size
             }
         }
     }
@@ -221,14 +218,14 @@ object Core {
         val F_t = CoreVkSpecial.F_t
         val F_nc = CoreVkSpecial.F_nc
         val F_c_Boolean = CoreVkSpecial.F_c_Boolean
-        val F_c_String = CoreVkSpecial.F_c_String
-        val F_cp_Any = CoreVkSpecial.F_cp_Any
-        val F_cp_Any_Function = CoreVkSpecial.F_cp_Any_Function
-        val F_cc_Any = CoreVkSpecial.F_cc_Any
-        val F_cc_Any_Function = CoreVkSpecial.F_cc_Any_Function
+        val F_cp_Any_String = CoreVkSpecial.F_cp_Any_String
+        val F_cc_CoverPoint_CoverPoint_String = CoreVkSpecial.F_cc_CoverPoint_CoverPoint_String
+        val F_cc_CoverPoint_CoverPoint_CoverPoint_String = CoreVkSpecial.F_cc_CoverPoint_CoverPoint_CoverPoint_String
         val F_optional_Boolean_Function = CoreVkSpecial.F_optional_Boolean_Function
         val F_cluster_Int_Function = CoreVkSpecial.F_cluster_Int_Function
 
+        val P_unknown = CoreVkData.P_unknown
+        val P_floating = CoreVkData.P_floating
         val F_b = CoreVkData.F_b
         val F_i = CoreVkData.F_i
         val F_u = CoreVkData.F_u
@@ -246,13 +243,11 @@ object Core {
         val F_fill1 = CoreVkData.F_fill1
         val F_fillx = CoreVkData.F_fillx
         val F_fillz = CoreVkData.F_fillz
-        val P_unknown = CoreVkData.P_unknown
-        val P_floating = CoreVkData.P_floating
 
         val F_posedge_Boolean = CoreVkControl.F_posedge_Boolean
         val F_negedge_Boolean = CoreVkControl.F_negedge_Boolean
-        val F_on_Event_Event_Function = CoreVkControl.F_on_Event_Event_Function
-        val F_oni_Event_Event_Function = CoreVkControl.F_oni_Event_Event_Function
+        val F_on_Event_Function = CoreVkControl.F_on_Event_Function
+        val F_oni_Event_Function = CoreVkControl.F_oni_Event_Function
         val F_forever_Function = CoreVkControl.F_forever_Function
         val F_delay_Int = CoreVkControl.F_delay_Int
         val F_wait_Boolean = CoreVkControl.F_wait_Boolean
@@ -261,14 +256,14 @@ object Core {
         val F_fork_Function = CoreVkControl.F_fork_Function
         val F_join = CoreVkControl.F_join
 
-        val F_cat_Any_Any = CoreVkMisc.F_cat_Any_Any
+        val F_cat_Any = CoreVkMisc.F_cat_Any
         val F_rep_Any = CoreVkMisc.F_rep_Any
-        val F_max_Int_Int = CoreVkMisc.F_max_Int_Int
-        val F_max_Ubit_Ubit = CoreVkMisc.F_max_Ubit_Ubit
-        val F_max_Sbit_Sbit = CoreVkMisc.F_max_Sbit_Sbit
-        val F_min_Int_Int = CoreVkMisc.F_min_Int_Int
-        val F_min_Ubit_Ubit = CoreVkMisc.F_min_Ubit_Ubit
-        val F_min_Sbit_Sbit = CoreVkMisc.F_min_Sbit_Sbit
+        val F_max_Int = CoreVkMisc.F_max_Int
+        val F_max_Ubit = CoreVkMisc.F_max_Ubit
+        val F_max_Sbit = CoreVkMisc.F_max_Sbit
+        val F_min_Int = CoreVkMisc.F_min_Int
+        val F_min_Ubit = CoreVkMisc.F_min_Ubit
+        val F_min_Sbit = CoreVkMisc.F_min_Sbit
         val F_log_Int = CoreVkMisc.F_log_Int
         val F_exp_Int = CoreVkMisc.F_exp_Int
 
@@ -379,29 +374,27 @@ object Core {
 
         object Packed {
 
+            val P_size = CoreVkPacked.P_size
             val F_get_Int = CoreVkPacked.F_get_Int
             val F_get_Ubit = CoreVkPacked.F_get_Ubit
             val F_set_Int_E = CoreVkPacked.F_set_Int_E
             val F_set_Ubit_E = CoreVkPacked.F_set_Ubit_E
-
-            val P_size = CoreVkPacked.P_size
         }
 
         object Unpacked {
 
+            val P_size = CoreVkUnpacked.P_size
             val F_get_Int = CoreVkUnpacked.F_get_Int
             val F_get_Ubit = CoreVkUnpacked.F_get_Ubit
             val F_set_Int_E = CoreVkUnpacked.F_set_Int_E
             val F_set_Ubit_E = CoreVkUnpacked.F_set_Ubit_E
-
-            val P_size = CoreVkUnpacked.P_size
         }
 
         object Queue {
 
+            val P_size = CoreVkQueue.P_size
             val F_add_E = CoreVkQueue.F_add_E
             val F_get_Int = CoreVkQueue.F_get_Int
-            val F_size = CoreVkQueue.F_size
         }
 
         object AssociativeArray {
@@ -431,21 +424,7 @@ object Core {
         object CoverGroup {
 
             val F_sample = CoreVkCoverGroup.F_sample
-            val F_getCoverage = CoreVkCoverGroup.F_getCoverage
-        }
-
-        object CoverPoint {
-
-            val F_bin_String_String = CoreVkCoverPoint.F_bin_String_String
-            val F_bins_String_String = CoreVkCoverPoint.F_bins_String_String
-            val F_ignoreBin_String_String = CoreVkCoverPoint.F_ignoreBin_String_String
-        }
-
-        object CoverCross {
-
-            val F_bin_String_String = CoreVkCoverCross.F_bin_String_String
-            val F_bins_String_String = CoreVkCoverCross.F_bins_String_String
-            val F_ignoreBin_String_String = CoreVkCoverCross.F_ignoreBin_String_String
+            val F_coverage = CoreVkCoverGroup.F_coverage
         }
 
         object Cluster {

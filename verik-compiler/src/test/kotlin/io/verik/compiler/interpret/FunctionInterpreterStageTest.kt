@@ -64,7 +64,7 @@ internal class FunctionInterpreterStageTest : BaseTest() {
     }
 
     @Test
-    fun `interpret always seq block error`() {
+    fun `interpret always seq block error expected on`() {
         driveMessageTest(
             """
             class M: Module() {
@@ -76,6 +76,22 @@ internal class FunctionInterpreterStageTest : BaseTest() {
             """.trimIndent(),
             true,
             "Expected on expression"
+        )
+    }
+
+    @Test
+    fun `interpret always seq block error insufficient arguments`() {
+        driveMessageTest(
+            """
+            class M: Module() {
+                @Seq
+                fun f() {
+                    on {}
+                }
+            }
+            """.trimIndent(),
+            true,
+            "Insufficient arguments to call expression: on"
         )
     }
 

@@ -40,16 +40,16 @@ internal class InjectedExpressionTransformerStageTest : BaseTest() {
     }
 
     @Test
-    fun `injected expression constraint`() {
+    fun `injected expression cover point`() {
         driveElementTest(
             """
-                class C : Class() {
-                    @Cons
-                    val c = c("1")
+                class CG(@In var x: Boolean): CoverGroup() {
+                    @Cover
+                    val cp = cp(x, "bins b = {1'b0}")
                 }
             """.trimIndent(),
             InjectedExpressionTransformerStage::class,
-            "Constraint(c, BlockExpression(Unit, [InjectedExpression(Void, [1])]))"
-        ) { it.findDeclaration("c") }
+            "CoverPoint(cp, ReferenceExpression(Boolean, x, null, 0), [InjectedExpression(Void, *)])"
+        ) { it.findDeclaration("cp") }
     }
 }

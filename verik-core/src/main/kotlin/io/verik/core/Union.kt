@@ -7,8 +7,15 @@
 package io.verik.core
 
 /**
- * The base class of all unions. Corresponds to SystemVerilog packed unions. All members of the union must have the same
- * width.
+ * The base class of all unions. They correspond to SystemVerilog packed unions. All members of the union must have the
+ * same width.
+ *
+ *  ```
+ *  class U(
+ *      var a: Boolean,
+ *      var b: Ubit<`1`>
+ *  ) : Union()
+ *  ```
  */
 abstract class Union {
 

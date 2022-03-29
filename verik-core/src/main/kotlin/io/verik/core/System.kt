@@ -29,14 +29,14 @@ fun finish(): Nothing {
 }
 
 /**
- * Exits the simulation with error status.
+ * Exits the simulation with an error status.
  */
 fun fatal(): Nothing {
     throw VerikException()
 }
 
 /**
- * Logs [message] with severity fatal and exits the simulation with error status.
+ * Logs [message] with severity fatal and exits the simulation with an error status.
  */
 fun fatal(message: String): Nothing {
     throw VerikException()

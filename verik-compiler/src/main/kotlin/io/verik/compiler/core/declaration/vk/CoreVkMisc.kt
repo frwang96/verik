@@ -7,6 +7,7 @@ package io.verik.compiler.core.declaration.vk
 import io.verik.compiler.ast.element.expression.common.ECallExpression
 import io.verik.compiler.ast.element.expression.common.EConstantExpression
 import io.verik.compiler.ast.element.expression.common.EExpression
+import io.verik.compiler.ast.element.expression.common.ENothingExpression
 import io.verik.compiler.ast.element.expression.kt.EKtBinaryExpression
 import io.verik.compiler.ast.element.expression.sv.EConcatenationExpression
 import io.verik.compiler.ast.element.expression.sv.EInlineIfExpression
@@ -26,7 +27,7 @@ import io.verik.compiler.target.common.Target
 
 object CoreVkMisc : CoreScope(CorePackage.VK) {
 
-    val F_cat_Any_Any = object : TransformableCoreFunctionDeclaration(parent, "cat", "fun cat(Any, vararg Any)") {
+    val F_cat_Any = object : TransformableCoreFunctionDeclaration(parent, "cat", "fun cat(vararg Any)") {
 
         override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
             val typeAdapters = callExpression.valueArguments.map { TypeAdapter.ofElement(it) }
@@ -39,6 +40,9 @@ object CoreVkMisc : CoreScope(CorePackage.VK) {
         }
 
         override fun transform(callExpression: ECallExpression): EExpression {
+            if (callExpression.valueArguments.isEmpty()) {
+                Messages.CALL_EXPRESSION_INSUFFICIENT_ARGUMENTS.on(callExpression, name)
+            }
             return EConcatenationExpression(callExpression.location, callExpression.type, callExpression.valueArguments)
         }
     }
@@ -66,35 +70,33 @@ object CoreVkMisc : CoreScope(CorePackage.VK) {
         }
     }
 
-    val F_max_Int_Int = object : TransformableCoreFunctionDeclaration(parent, "max", "fun max(Int, vararg Int)") {
+    val F_max_Int = object : TransformableCoreFunctionDeclaration(parent, "max", "fun max(vararg Int)") {
 
         override fun transform(callExpression: ECallExpression): EExpression {
-            return when (callExpression.valueArguments.size) {
-                0 -> Messages.INTERNAL_ERROR.on(callExpression, "Value arguments expected for max")
-                1 -> callExpression.valueArguments[0]
-                else -> {
-                    callExpression.valueArguments.reduce { accumulatedValueArgument, valueArgument ->
-                        val binaryExpression = EKtBinaryExpression(
-                            callExpression.location,
-                            Core.Kt.C_Boolean.toType(),
-                            accumulatedValueArgument,
-                            valueArgument,
-                            KtBinaryOperatorKind.GT
-                        )
-                        EInlineIfExpression(
-                            callExpression.location,
-                            callExpression.type.copy(),
-                            binaryExpression,
-                            ExpressionCopier.deepCopy(accumulatedValueArgument),
-                            ExpressionCopier.deepCopy(valueArgument)
-                        )
-                    }
-                }
+            if (callExpression.valueArguments.size < 2) {
+                Messages.CALL_EXPRESSION_INSUFFICIENT_ARGUMENTS.on(callExpression, name)
+                return ENothingExpression(callExpression.location)
+            }
+            return callExpression.valueArguments.reduce { accumulatedValueArgument, valueArgument ->
+                val binaryExpression = EKtBinaryExpression(
+                    callExpression.location,
+                    Core.Kt.C_Boolean.toType(),
+                    accumulatedValueArgument,
+                    valueArgument,
+                    KtBinaryOperatorKind.GT
+                )
+                EInlineIfExpression(
+                    callExpression.location,
+                    callExpression.type.copy(),
+                    binaryExpression,
+                    ExpressionCopier.deepCopy(accumulatedValueArgument),
+                    ExpressionCopier.deepCopy(valueArgument)
+                )
             }
         }
     }
 
-    val F_max_Ubit_Ubit = object : TransformableCoreFunctionDeclaration(parent, "max", "fun max(Ubit, vararg Ubit)") {
+    val F_max_Ubit = object : TransformableCoreFunctionDeclaration(parent, "max", "fun max(vararg Ubit)") {
 
         override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
             return callExpression.valueArguments.map {
@@ -107,68 +109,66 @@ object CoreVkMisc : CoreScope(CorePackage.VK) {
         }
 
         override fun transform(callExpression: ECallExpression): EExpression {
-            return F_max_Int_Int.transform(callExpression)
+            return F_max_Int.transform(callExpression)
         }
     }
 
-    val F_max_Sbit_Sbit = object : TransformableCoreFunctionDeclaration(parent, "max", "fun max(Sbit, vararg Sbit)") {
+    val F_max_Sbit = object : TransformableCoreFunctionDeclaration(parent, "max", "fun max(vararg Sbit)") {
 
         override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
-            return F_max_Ubit_Ubit.getTypeConstraints(callExpression)
+            return F_max_Ubit.getTypeConstraints(callExpression)
         }
 
         override fun transform(callExpression: ECallExpression): EExpression {
-            return F_max_Int_Int.transform(callExpression)
+            return F_max_Int.transform(callExpression)
         }
     }
 
-    val F_min_Int_Int = object : TransformableCoreFunctionDeclaration(parent, "min", "fun min(Int, vararg Int)") {
+    val F_min_Int = object : TransformableCoreFunctionDeclaration(parent, "min", "fun min(vararg Int)") {
 
         override fun transform(callExpression: ECallExpression): EExpression {
-            return when (callExpression.valueArguments.size) {
-                0 -> Messages.INTERNAL_ERROR.on(callExpression, "Value arguments expected for min")
-                1 -> callExpression.valueArguments[0]
-                else -> {
-                    callExpression.valueArguments.reduce { accumulatedValueArgument, valueArgument ->
-                        val binaryExpression = EKtBinaryExpression(
-                            callExpression.location,
-                            Core.Kt.C_Boolean.toType(),
-                            accumulatedValueArgument,
-                            valueArgument,
-                            KtBinaryOperatorKind.LT
-                        )
-                        EInlineIfExpression(
-                            callExpression.location,
-                            callExpression.type.copy(),
-                            binaryExpression,
-                            ExpressionCopier.deepCopy(accumulatedValueArgument),
-                            ExpressionCopier.deepCopy(valueArgument)
-                        )
-                    }
-                }
+            if (callExpression.valueArguments.size < 2) {
+                Messages.CALL_EXPRESSION_INSUFFICIENT_ARGUMENTS.on(callExpression, name)
+                return ENothingExpression(callExpression.location)
+            }
+            return callExpression.valueArguments.reduce { accumulatedValueArgument, valueArgument ->
+                val binaryExpression = EKtBinaryExpression(
+                    callExpression.location,
+                    Core.Kt.C_Boolean.toType(),
+                    accumulatedValueArgument,
+                    valueArgument,
+                    KtBinaryOperatorKind.LT
+                )
+                EInlineIfExpression(
+                    callExpression.location,
+                    callExpression.type.copy(),
+                    binaryExpression,
+                    ExpressionCopier.deepCopy(accumulatedValueArgument),
+                    ExpressionCopier.deepCopy(valueArgument)
+                )
             }
         }
     }
 
-    val F_min_Ubit_Ubit = object : TransformableCoreFunctionDeclaration(parent, "min", "fun min(Ubit, vararg Ubit)") {
+    val F_min_Ubit = object : TransformableCoreFunctionDeclaration(parent, "min", "fun min(vararg Ubit)") {
 
         override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
-            return F_max_Ubit_Ubit.getTypeConstraints(callExpression)
+            return F_max_Ubit.getTypeConstraints(callExpression)
         }
 
         override fun transform(callExpression: ECallExpression): EExpression {
-            return F_min_Int_Int.transform(callExpression)
+            return F_min_Int.transform(callExpression)
         }
     }
 
-    val F_min_Sbit_Sbit = object : TransformableCoreFunctionDeclaration(parent, "min", "fun min(Sbit, vararg Sbit)") {
+    val F_min_Sbit = object : TransformableCoreFunctionDeclaration(parent, "min", "fun min(vararg Sbit)") {
 
         override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
-            return F_max_Ubit_Ubit.getTypeConstraints(callExpression)
+            return F_max_Ubit.getTypeConstraints(callExpression)
         }
 
         override fun transform(callExpression: ECallExpression): EExpression {
-            return F_min_Int_Int.transform(callExpression)
+            return F_min_Int.transform(callExpression)
         }
     }
 

@@ -7,7 +7,7 @@
 package io.verik.core
 
 /**
- * A mailbox of type [T] that is synchronized across processes. It corresponds to a SystemVerilog mailbox.
+ * A mailbox of type [T] that is synchronized across processes. They correspond to SystemVerilog mailboxes.
  */
 class Mailbox<T> {
 

@@ -15,6 +15,7 @@ object AnnotationEntries {
     val MAKE = AnnotationEntry("io.verik.core.Make")
     val IN = AnnotationEntry("io.verik.core.In")
     val OUT = AnnotationEntry("io.verik.core.Out")
+    val WIRE = AnnotationEntry("io.verik.core.Wire")
     val RAND = AnnotationEntry("io.verik.core.Rand")
     val RANDC = AnnotationEntry("io.verik.core.Randc")
     val CONS = AnnotationEntry("io.verik.core.Cons")

@@ -12,6 +12,13 @@ package io.verik.kotlin
 class ArrayList<E> : Iterable<E> {
 
     /**
+     * Returns the number of elements in this list.
+     */
+    val size: Int by lazy<Int> {
+        throw VerikException()
+    }
+
+    /**
      * Appends element [e] to the end of this list.
      */
     fun add(e: E) {
@@ -29,13 +36,6 @@ class ArrayList<E> : Iterable<E> {
      * Replaces the element at the specified [index] in this list.
      */
     fun set(index: Int, element: E) {
-        throw VerikException()
-    }
-
-    /**
-     * Returns the number of elements in this list.
-     */
-    val size: Int by lazy<Int> {
         throw VerikException()
     }
 }

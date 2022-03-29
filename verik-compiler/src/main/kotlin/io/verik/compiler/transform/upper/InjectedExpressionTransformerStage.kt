@@ -4,8 +4,8 @@
 
 package io.verik.compiler.transform.upper
 
-import io.verik.compiler.ast.element.declaration.sv.EConstraint
-import io.verik.compiler.ast.element.declaration.sv.ECoverBin
+import io.verik.compiler.ast.element.declaration.sv.ECoverCross
+import io.verik.compiler.ast.element.declaration.sv.ECoverPoint
 import io.verik.compiler.ast.element.expression.common.ECallExpression
 import io.verik.compiler.ast.element.expression.common.EExpression
 import io.verik.compiler.ast.element.expression.kt.EStringTemplateExpression
@@ -44,18 +44,19 @@ object InjectedExpressionTransformerStage : ProjectStage() {
             return null
         }
 
-        override fun visitCoverBin(coverBin: ECoverBin) {
-            val injectedExpression = getInjectedExpression(coverBin.expression)
-            if (injectedExpression != null) coverBin.expression.replace(injectedExpression)
+        override fun visitCoverPoint(coverPoint: ECoverPoint) {
+            super.visitCoverPoint(coverPoint)
+            coverPoint.binExpressions.forEach {
+                val injectedExpression = getInjectedExpression(it)
+                if (injectedExpression != null) it.replace(injectedExpression)
+            }
         }
 
-        override fun visitConstraint(constraint: EConstraint) {
-            super.visitConstraint(constraint)
-            constraint.body.statements.forEach {
-                if (it.type.reference == Core.Kt.C_String) {
-                    val injectedExpression = getInjectedExpression(it)
-                    if (injectedExpression != null) it.replace(injectedExpression)
-                }
+        override fun visitCoverCross(coverCross: ECoverCross) {
+            super.visitCoverCross(coverCross)
+            coverCross.binExpressions.forEach {
+                val injectedExpression = getInjectedExpression(it)
+                if (injectedExpression != null) it.replace(injectedExpression)
             }
         }
 

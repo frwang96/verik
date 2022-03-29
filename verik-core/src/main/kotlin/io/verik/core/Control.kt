@@ -7,21 +7,21 @@
 package io.verik.core
 
 /**
- * Returns an event for a positive edge transition of [value].
+ * Returns the event corresponding to the positive edge transition of [value].
  */
 fun posedge(value: Boolean): Event {
     throw VerikException()
 }
 
 /**
- * Returns an event for a negative edge transition of [value].
+ * Returns the event corresponding to the negative edge transition of [value].
  */
 fun negedge(value: Boolean): Event {
     throw VerikException()
 }
 
 /**
- * Trigger a [sequential][Seq] action block on event [event] and optionally [additional_events].
+ * Trigger a [sequential][Seq] action block on [events]. [events] should not be empty.
  *
  *  ```
  *  @Seq
@@ -32,20 +32,19 @@ fun negedge(value: Boolean): Event {
  *  }
  *  ```
  */
-fun on(event: Event, vararg additional_events: Event, block: () -> Unit) {
+fun on(vararg events: Event, block: () -> Unit) {
     throw Exception()
 }
 
 /**
- * Inline form of [on]. Trigger a [sequentially][Seq] assigned property on event [event] and optionally
- * [additional_events].
+ * Inline form of [on]. Trigger a [sequentially][Seq] assigned property on [events]. [events] should not be empty.
  *
  *  ```
  *  @Seq
- *  var x = onr(posedge(clk)) { !y }
+ *  var x = oni(posedge(clk)) { !y }
  *  ```
  */
-fun <T> oni(event: Event, vararg additional_events: Event, block: () -> T): T {
+fun <T> oni(vararg events: Event, block: () -> T): T {
     throw Exception()
 }
 
@@ -78,16 +77,16 @@ fun wait(value: Boolean) {
 }
 
 /**
- * Wait until event [event] occurs.
+ * Wait until [event] occurs.
  */
 fun wait(event: Event) {
     throw VerikException()
 }
 
 /**
- * Wait until clocking block event occurs.
+ * Wait until the clocking block event occurs.
  */
-fun wait(clocking_block: ClockingBlock) {
+fun wait(cb: ClockingBlock) {
     throw VerikException()
 }
 

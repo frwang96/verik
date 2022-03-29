@@ -89,7 +89,7 @@ object ProceduralAssignmentTransformerStage : ProjectStage() {
 
         private fun splitAlwaysSeqBlock(property: EProperty): EAlwaysSeqBlock? {
             val initializer = property.initializer
-            return if (initializer is ECallExpression && initializer.reference == Core.Vk.F_oni_Event_Event_Function) {
+            return if (initializer is ECallExpression && initializer.reference == Core.Vk.F_oni_Event_Function) {
                 property.initializer = null
                 val referenceExpression = EReferenceExpression.of(property.location, property)
                 val body = initializer.valueArguments.last().cast<EFunctionLiteralExpression>().body
@@ -107,6 +107,9 @@ object ProceduralAssignmentTransformerStage : ProjectStage() {
                 binaryExpression.parent = body
                 body.statements.add(binaryExpression)
                 val eventExpressions = initializer.valueArguments.dropLast(1)
+                if (eventExpressions.isEmpty()) {
+                    Messages.CALL_EXPRESSION_INSUFFICIENT_ARGUMENTS.on(initializer, initializer.reference.name)
+                }
                 val eventControlExpression = EEventControlExpression(property.location, ArrayList(eventExpressions))
                 EAlwaysSeqBlock(
                     property.location,

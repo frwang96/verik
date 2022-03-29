@@ -88,17 +88,13 @@ object PortInstantiationCheckerStage : ProjectStage() {
                 }
                 is ECallExpression -> {
                     when (expression.reference) {
-                        in arrayTypeReferences ->
-                            checkOutputPortExpression(expression.receiver!!)
-                        Core.Vk.F_cat_Any_Any ->
-                            expression.valueArguments.forEach { checkOutputPortExpression(it) }
+                        in arrayTypeReferences -> checkOutputPortExpression(expression.receiver!!)
+                        Core.Vk.F_cat_Any -> expression.valueArguments.forEach { checkOutputPortExpression(it) }
                         Core.Vk.F_nc -> {}
-                        else ->
-                            Messages.ILLEGAL_OUTPUT_PORT_EXPRESSION.on(expression)
+                        else -> Messages.ILLEGAL_OUTPUT_PORT_EXPRESSION.on(expression)
                     }
                 }
-                else ->
-                    Messages.ILLEGAL_OUTPUT_PORT_EXPRESSION.on(expression)
+                else -> Messages.ILLEGAL_OUTPUT_PORT_EXPRESSION.on(expression)
             }
         }
 

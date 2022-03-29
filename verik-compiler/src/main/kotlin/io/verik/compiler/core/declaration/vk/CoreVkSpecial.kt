@@ -83,7 +83,7 @@ object CoreVkSpecial : CoreScope(CorePackage.VK) {
         }
     }
 
-    val F_c_String = object : TransformableCoreFunctionDeclaration(parent, "c", "fun c(vararg String)") {
+    val F_cp_Any_String = object : TransformableCoreFunctionDeclaration(parent, "cp", "fun cp(Any, vararg String)") {
 
         override fun transform(callExpression: ECallExpression): EExpression {
             Messages.EXPRESSION_OUT_OF_CONTEXT.on(callExpression, name)
@@ -91,34 +91,22 @@ object CoreVkSpecial : CoreScope(CorePackage.VK) {
         }
     }
 
-    val F_cp_Any = object : TransformableCoreFunctionDeclaration(parent, "cp", "fun cp(Any)") {
-
-        override fun transform(callExpression: ECallExpression): EExpression {
-            Messages.EXPRESSION_OUT_OF_CONTEXT.on(callExpression, name)
-            return ENothingExpression(callExpression.location)
-        }
-    }
-
-    val F_cp_Any_Function = object : TransformableCoreFunctionDeclaration(parent, "cp", "fun cp(Any, Function)") {
-
-        override fun transform(callExpression: ECallExpression): EExpression {
-            Messages.EXPRESSION_OUT_OF_CONTEXT.on(callExpression, name)
-            return ENothingExpression(callExpression.location)
-        }
-    }
-
-    val F_cc_Any = object : TransformableCoreFunctionDeclaration(parent, "cc", "fun cc(vararg CoverPoint)") {
-
-        override fun transform(callExpression: ECallExpression): EExpression {
-            Messages.EXPRESSION_OUT_OF_CONTEXT.on(callExpression, name)
-            return ENothingExpression(callExpression.location)
-        }
-    }
-
-    val F_cc_Any_Function = object : TransformableCoreFunctionDeclaration(
+    val F_cc_CoverPoint_CoverPoint_String = object : TransformableCoreFunctionDeclaration(
         parent,
         "cc",
-        "fun cc(vararg CoverPoint, Function)"
+        "fun cc(CoverPoint, CoverPoint, vararg String)"
+    ) {
+
+        override fun transform(callExpression: ECallExpression): EExpression {
+            Messages.EXPRESSION_OUT_OF_CONTEXT.on(callExpression, name)
+            return ENothingExpression(callExpression.location)
+        }
+    }
+
+    val F_cc_CoverPoint_CoverPoint_CoverPoint_String = object : TransformableCoreFunctionDeclaration(
+        parent,
+        "cc",
+        "fun cc(CoverPoint, CoverPoint, CoverPoint, vararg String)"
     ) {
 
         override fun transform(callExpression: ECallExpression): EExpression {

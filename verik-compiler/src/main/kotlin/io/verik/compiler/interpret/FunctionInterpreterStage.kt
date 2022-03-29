@@ -84,11 +84,14 @@ object FunctionInterpreterStage : ProjectStage() {
                     Messages.EXPECTED_ON_EXPRESSION.on(function)
                 return getEmptyAlwaysSeqBlock(function)
             }
-            if (onExpression !is ECallExpression || onExpression.reference != Core.Vk.F_on_Event_Event_Function) {
+            if (onExpression !is ECallExpression || onExpression.reference != Core.Vk.F_on_Event_Function) {
                 Messages.EXPECTED_ON_EXPRESSION.on(function)
                 return getEmptyAlwaysSeqBlock(function)
             }
             val eventExpressions = onExpression.valueArguments.dropLast(1)
+            if (eventExpressions.isEmpty()) {
+                Messages.CALL_EXPRESSION_INSUFFICIENT_ARGUMENTS.on(onExpression, onExpression.reference.name)
+            }
             val eventControlExpression = EEventControlExpression(function.location, ArrayList(eventExpressions))
             val alwaysSeqBody = onExpression.valueArguments.last().cast<EFunctionLiteralExpression>().body
             return EAlwaysSeqBlock(

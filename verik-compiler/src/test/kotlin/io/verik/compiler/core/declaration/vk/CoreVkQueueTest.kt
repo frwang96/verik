@@ -15,7 +15,8 @@ internal class CoreVkQueueTest : CoreDeclarationTest() {
         driveCoreDeclarationTest(
             listOf(
                 Core.Vk.Queue.F_add_E,
-                Core.Vk.Queue.F_size
+                Core.Vk.Queue.F_get_Int,
+                Core.Vk.Queue.P_size
             ),
             """
                 val x: Queue<Int> = nc()
@@ -23,7 +24,7 @@ internal class CoreVkQueueTest : CoreDeclarationTest() {
                 fun f() {
                     x.add(0)
                     y = x[0]
-                    y = x.size()
+                    y = x.size
                 }
             """.trimIndent(),
             """

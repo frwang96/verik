@@ -18,6 +18,21 @@ import io.verik.compiler.target.common.Target
 
 object CoreJvArrayList : CoreScope(Core.Jv.Util.C_ArrayList) {
 
+    val P_size = object : CorePropertyDeclaration(parent, "size") {
+
+        override fun transform(referenceExpression: EReferenceExpression): EExpression {
+            return ECallExpression(
+                referenceExpression.location,
+                referenceExpression.type,
+                Target.ArrayList.F_size,
+                referenceExpression.receiver,
+                false,
+                arrayListOf(),
+                arrayListOf()
+            )
+        }
+    }
+
     val F_add_E = object : BasicCoreFunctionDeclaration(parent, "add", "fun add(E)", Target.ArrayList.F_add) {
 
         override fun getTypeConstraints(callExpression: ECallExpression): List<TypeConstraint> {
@@ -53,21 +68,6 @@ object CoreJvArrayList : CoreScope(Core.Jv.Util.C_ArrayList) {
                     TypeAdapter.ofElement(callExpression.valueArguments[1]),
                     TypeAdapter.ofElement(callExpression.receiver!!, 0)
                 )
-            )
-        }
-    }
-
-    val P_size = object : CorePropertyDeclaration(parent, "size") {
-
-        override fun transform(referenceExpression: EReferenceExpression): EExpression {
-            return ECallExpression(
-                referenceExpression.location,
-                referenceExpression.type,
-                Target.ArrayList.F_size,
-                referenceExpression.receiver,
-                false,
-                arrayListOf(),
-                arrayListOf()
             )
         }
     }

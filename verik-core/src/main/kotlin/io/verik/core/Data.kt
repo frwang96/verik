@@ -7,6 +7,16 @@
 package io.verik.core
 
 /**
+ * Unknown boolean value. Also referred to as the x value.
+ */
+val unknown: Boolean by VerikExceptionDelegate()
+
+/**
+ * Floating boolean value. Also referred to as the z value.
+ */
+val floating: Boolean by VerikExceptionDelegate()
+
+/**
  * Returns the value of the cardinal [X] as a [Boolean]. [X] must take the value of either zero or one.
  */
 fun <X : `*`> b(): Boolean {
@@ -138,13 +148,3 @@ fun <T> fillx(): T {
 fun <T> fillz(): T {
     throw VerikException()
 }
-
-/**
- * Unknown boolean value.
- */
-val unknown: Boolean by VerikExceptionDelegate()
-
-/**
- * Floating boolean value.
- */
-val floating: Boolean by VerikExceptionDelegate()

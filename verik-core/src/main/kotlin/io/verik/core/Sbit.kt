@@ -7,7 +7,7 @@
 package io.verik.core
 
 /**
- * Represents a sequence of [N] bits that is signed. Corresponds to SystemVerilog packed signed logic.
+ * Represents a sequence of [N] bits that is signed. They correspond to SystemVerilog packed signed logic.
  */
 class Sbit<N : `*`> private constructor() {
 
@@ -132,42 +132,42 @@ class Sbit<N : `*`> private constructor() {
     }
 
     /**
-     * Subtract specified [value] from this value without bit growth * `Sbit<N> - Ubit<M> = Ubit<MAX<N, M>>`.
+     * Subtract specified [value] from this value without bit growth `Sbit<N> - Ubit<M> = Ubit<MAX<N, M>>`.
      */
     operator fun minus(value: Ubit<`*`>): Ubit<`*`> {
         throw VerikException()
     }
 
     /**
-     * Subtract specified [value] from this value without bit growth * `Sbit<N> - Sbit<M> = Sbit<MAX<N, M>>`.
+     * Subtract specified [value] from this value without bit growth `Sbit<N> - Sbit<M> = Sbit<MAX<N, M>>`.
      */
     operator fun minus(value: Sbit<`*`>): Sbit<`*`> {
         throw VerikException()
     }
 
     /**
-     * Multiply specified [value] to this value without bit growth * `Sbit<N> * Ubit<M> = Ubit<MAX<N, M>>`.
+     * Multiply specified [value] to this value without bit growth `Sbit<N> * Ubit<M> = Ubit<MAX<N, M>>`.
      */
     operator fun times(value: Ubit<`*`>): Ubit<`*`> {
         throw VerikException()
     }
 
     /**
-     * Multiply specified [value] to this value without bit growth * `Sbit<N> * Sbit<M> = Sbit<MAX<N, M>>`.
+     * Multiply specified [value] to this value without bit growth `Sbit<N> * Sbit<M> = Sbit<MAX<N, M>>`.
      */
     operator fun times(value: Sbit<`*`>): Sbit<`*`> {
         throw VerikException()
     }
 
     /**
-     * Multiply specified [value] to this value with bit growth `Sbit<N> mul Ubit<M> = Ubit<N * M>`.
+     * Multiply specified [value] to this value with bit growth `Sbit<N> mul Ubit<M> = Ubit<ADD<N, M>>`.
      */
     infix fun mul(value: Ubit<`*`>): Ubit<`*`> {
         throw VerikException()
     }
 
     /**
-     * Multiply specified [value] to this value with bit growth `Sbit<N> mul Sbit<M> = Sbit<N * M>`.
+     * Multiply specified [value] to this value with bit growth `Sbit<N> mul Sbit<M> = Sbit<ADD<N, M>>`.
      */
     infix fun mul(value: Sbit<`*`>): Sbit<`*`> {
         throw VerikException()

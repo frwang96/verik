@@ -7,28 +7,18 @@
 package io.verik.core
 
 /**
- * A cover point within a [cover group][CoverGroup] that specifies a value to be covered.
+ * A cover point within a [cover group][CoverGroup] that specifies a value to be covered. Construct a cover point with
+ * the [cp] function.
+ *
+ *  ```
+ *  class CG(
+ *      @In var x: Boolean,
+ *      @In var y: Boolean
+ *  ) : CoverGroup() {
+ *
+ *      @Cover val cp_x = cp(x)
+ *      @Cover val cp_y = cp(y)
+ *  }
+ *  ```
  */
-abstract class CoverPoint {
-
-    /**
-     * Create a cover bin. [value] will be injected as SystemVerilog and used to specify the bin.
-     */
-    fun bin(name: String, value: String) {
-        throw VerikException()
-    }
-
-    /**
-     * Create an array of cover bins. [value] will be injected as SystemVerilog and used to specify the bins.
-     */
-    fun bins(name: String, value: String) {
-        throw VerikException()
-    }
-
-    /**
-     * Ignore a bin. [value] will be injected as SystemVerilog and used to specify the bin.
-     */
-    fun ignoreBin(name: String, value: String) {
-        throw VerikException()
-    }
-}
+class CoverPoint private constructor()

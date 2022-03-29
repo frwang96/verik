@@ -288,24 +288,16 @@ object Messages {
         "Union should have at least two properties: $0"
     )
 
+    val CALL_EXPRESSION_INSUFFICIENT_ARGUMENTS = ErrorMessageTemplate1<String>(
+        "Insufficient arguments to call expression: $0"
+    )
+
     val EXPECTED_ON_EXPRESSION = ErrorMessageTemplate0(
         "Expected on expression"
     )
 
-    val COVER_CROSS_INSUFFICIENT_ARGUMENTS = ErrorMessageTemplate0(
-        "Cover cross should cross at least two cover points"
-    )
-
     val COVER_POINT_EXPECTED = ErrorMessageTemplate0(
         "Cover point expected"
-    )
-
-    val COVER_BIN_EXPECTED = ErrorMessageTemplate0(
-        "Cover bin expected"
-    )
-
-    val COVER_BIN_NAME_EXPECTED = ErrorMessageTemplate0(
-        "Cover bin name expected"
     )
 
     val MISMATCHED_PORT_NAME = ErrorMessageTemplate1<String>(
