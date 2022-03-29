@@ -1,6 +1,8 @@
 # Changelog
 
 ## [Unreleased]
+
+## [0.1.15]
 ### Compiler
 - Support `Double` data type.
 - Support `monitor` and `strobe` functions.
