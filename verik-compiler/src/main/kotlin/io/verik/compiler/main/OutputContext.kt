@@ -6,6 +6,9 @@ package io.verik.compiler.main
 
 import io.verik.compiler.common.TextFile
 
+/**
+ * Context that stores the output text files to be written to the build directory.
+ */
 class OutputContext {
 
     lateinit var reportTextFile: TextFile

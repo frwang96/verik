@@ -4,6 +4,9 @@
 
 package io.verik.compiler.target.common
 
+/**
+ * A target declaration that represents a property.
+ */
 class TargetPropertyDeclaration(
     override val parent: TargetDeclaration?,
     override var name: String

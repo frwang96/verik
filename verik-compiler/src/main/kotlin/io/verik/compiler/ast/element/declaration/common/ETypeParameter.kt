@@ -10,6 +10,9 @@ import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
 
+/**
+ * Element that represents a type parameter declaration. The upper bound of the type parameter is given by [type].
+ */
 class ETypeParameter(
     override val location: SourceLocation,
     override var name: String,

@@ -7,6 +7,9 @@ package io.verik.compiler.cast
 import io.verik.compiler.ast.element.expression.common.EReferenceExpression
 import org.jetbrains.kotlin.psi.KtExpression
 
+/**
+ * Caster that checks for reference expressions that are smart casts.
+ */
 object ReferenceExpressionCaster {
 
     fun checkSmartCast(

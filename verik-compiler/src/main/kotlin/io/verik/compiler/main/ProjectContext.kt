@@ -11,6 +11,9 @@ import org.jetbrains.kotlin.cli.jvm.compiler.KotlinCoreEnvironment
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.resolve.BindingContext
 
+/**
+ * Context that stores all of the internal state of the compiler.
+ */
 class ProjectContext(
     val config: VerikConfig
 ) {

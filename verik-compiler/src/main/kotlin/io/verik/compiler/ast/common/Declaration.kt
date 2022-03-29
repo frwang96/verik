@@ -10,6 +10,9 @@ import io.verik.compiler.message.Messages
 import io.verik.compiler.message.SourceLocation
 import org.jetbrains.kotlin.psi.KtElement
 
+/**
+ * Interface for declarations that can be referred to in types, reference expressions, or call expressions.
+ */
 interface Declaration {
 
     var name: String

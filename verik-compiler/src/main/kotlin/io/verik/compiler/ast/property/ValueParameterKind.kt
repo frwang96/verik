@@ -4,6 +4,9 @@
 
 package io.verik.compiler.ast.property
 
+/**
+ * Enum for SystemVerilog value parameter kind.
+ */
 enum class ValueParameterKind {
     INPUT,
     OUTPUT,

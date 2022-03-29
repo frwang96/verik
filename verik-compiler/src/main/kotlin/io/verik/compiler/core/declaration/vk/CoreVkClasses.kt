@@ -11,6 +11,9 @@ import io.verik.compiler.core.common.CorePackage
 import io.verik.compiler.core.common.CoreScope
 import io.verik.compiler.target.common.Target
 
+/**
+ * Core classes and constructors from the Verik core package.
+ */
 object CoreVkClasses : CoreScope(CorePackage.VK) {
 
     val C_Ubit = CoreClassDeclaration(parent, "Ubit", Core.Kt.C_Any, Target.C_Ubit)

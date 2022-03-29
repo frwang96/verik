@@ -14,6 +14,10 @@ import io.verik.compiler.ast.element.expression.common.ECallExpression
 import io.verik.compiler.ast.element.expression.common.EReferenceExpression
 import io.verik.compiler.main.ProjectContext
 
+/**
+ * Class that updates references in the AST. Updates are registered with [replace] or [update] and executed with
+ * [flush]. This avoids mutating the AST during traversal.
+ */
 class ReferenceUpdater(val projectContext: ProjectContext) {
 
     private val referenceMap = HashMap<EDeclaration, EDeclaration>()

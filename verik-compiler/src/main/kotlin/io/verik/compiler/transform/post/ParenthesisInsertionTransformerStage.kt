@@ -15,8 +15,8 @@ import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 
 /**
- * Inserts parenthesis to enforce correctness of order of operations. Conservative parenthesis insertion strategy
- * inserts more parenthesis than necessary for readability.
+ * Stage that inserts parenthesis to enforce correctness of order of operations. Conservative parenthesis insertion
+ * strategy inserts more parenthesis than necessary for readability.
  */
 object ParenthesisInsertionTransformerStage : ProjectStage() {
 

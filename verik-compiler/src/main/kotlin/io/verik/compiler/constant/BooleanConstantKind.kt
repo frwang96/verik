@@ -4,6 +4,9 @@
 
 package io.verik.compiler.constant
 
+/**
+ * Enum for four-state boolean value.
+ */
 enum class BooleanConstantKind {
     TRUE,
     FALSE,

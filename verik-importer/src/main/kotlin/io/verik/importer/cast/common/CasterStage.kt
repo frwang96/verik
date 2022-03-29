@@ -10,6 +10,9 @@ import io.verik.importer.main.InputFileContext
 import io.verik.importer.main.ProjectContext
 import io.verik.importer.main.ProjectStage
 
+/**
+ * Stage that casts ANTLR rule contexts into a [project element][EProject].
+ */
 object CasterStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

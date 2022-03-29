@@ -19,6 +19,9 @@ import io.verik.compiler.ast.element.expression.common.ECallExpression
 import io.verik.compiler.ast.element.expression.common.EReferenceExpression
 import io.verik.compiler.common.TreeVisitor
 
+/**
+ * Indexer that determines the next declarations to be specialized.
+ */
 object SpecializerIndexer {
 
     fun index(declaration: EDeclaration): List<TypeParameterBinding> {

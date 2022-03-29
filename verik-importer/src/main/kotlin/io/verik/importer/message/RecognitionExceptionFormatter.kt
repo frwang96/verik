@@ -13,6 +13,9 @@ import org.antlr.v4.runtime.LexerNoViableAltException
 import org.antlr.v4.runtime.NoViableAltException
 import org.antlr.v4.runtime.RecognitionException
 
+/**
+ * Utility class that formats an ANTLR recognition exception.
+ */
 object RecognitionExceptionFormatter {
 
     fun format(recognitionException: RecognitionException?): String {

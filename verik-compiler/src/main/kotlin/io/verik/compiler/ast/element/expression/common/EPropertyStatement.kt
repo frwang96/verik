@@ -13,6 +13,9 @@ import io.verik.compiler.common.Visitor
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.message.SourceLocation
 
+/**
+ * Element that represents a property statement.
+ */
 class EPropertyStatement(
     override val location: SourceLocation,
     var property: EProperty

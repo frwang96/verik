@@ -12,6 +12,10 @@ import io.verik.importer.ast.element.descriptor.EDescriptor
 import io.verik.importer.ast.element.descriptor.EReferenceDescriptor
 import io.verik.importer.main.ProjectContext
 
+/**
+ * Class that updates references in the AST. Updates are registered with [replace] or [update] and executed with
+ * [flush]. This avoids mutating the AST during traversal.
+ */
 class ReferenceUpdater(val projectContext: ProjectContext) {
 
     private val referenceMap = HashMap<EDeclaration, EDeclaration>()

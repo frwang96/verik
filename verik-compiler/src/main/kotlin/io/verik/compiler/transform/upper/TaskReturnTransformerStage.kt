@@ -22,6 +22,9 @@ import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 
+/**
+ * Stage that transforms the return value of a task to an output value parameter.
+ */
 object TaskReturnTransformerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

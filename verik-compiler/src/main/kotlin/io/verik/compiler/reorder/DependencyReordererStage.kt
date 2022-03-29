@@ -16,6 +16,9 @@ import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 
+/**
+ * Stage that reorders the AST based on dependencies imposed by the SystemVerilog compilation order.
+ */
 object DependencyReordererStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

@@ -12,6 +12,9 @@ import io.verik.compiler.core.common.TransformableCoreFunctionDeclaration
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 
+/**
+ * Stage that transforms core function declarations.
+ */
 object FunctionTransformerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

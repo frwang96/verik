@@ -19,6 +19,9 @@ import io.verik.compiler.resolve.TypeAdapter
 import io.verik.compiler.resolve.TypeConstraint
 import io.verik.compiler.resolve.TypeConstraintKind
 
+/**
+ * Core special functions from the Verik core package.
+ */
 object CoreVkSpecial : CoreScope(CorePackage.VK) {
 
     val F_imp = object : TransformableCoreFunctionDeclaration(parent, "imp", "fun imp()") {

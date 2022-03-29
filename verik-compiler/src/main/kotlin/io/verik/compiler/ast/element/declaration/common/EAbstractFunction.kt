@@ -9,6 +9,9 @@ import io.verik.compiler.ast.element.expression.common.EBlockExpression
 import io.verik.compiler.ast.element.expression.common.EExpression
 import io.verik.compiler.common.TreeVisitor
 
+/**
+ * Base class for all elements that are function declarations.
+ */
 abstract class EAbstractFunction : EDeclaration(), ExpressionContainer {
 
     abstract var body: EBlockExpression

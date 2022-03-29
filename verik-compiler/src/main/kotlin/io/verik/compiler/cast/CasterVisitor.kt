@@ -44,6 +44,9 @@ import org.jetbrains.kotlin.psi.KtVisitor
 import org.jetbrains.kotlin.psi.KtWhenExpression
 import org.jetbrains.kotlin.psi.KtWhileExpression
 
+/**
+ * Visitor that traverses the Kotlin AST to cast it to a Verik AST.
+ */
 class CasterVisitor(private val castContext: CastContext) : KtVisitor<EElement, Unit>() {
 
     inline fun <reified E : EElement> getElement(element: KtElement): E? {

@@ -12,6 +12,9 @@ import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 
+/**
+ * Stage that checks for value parameters with types that should not ever be passed as a value argument.
+ */
 object ValueParameterCheckerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

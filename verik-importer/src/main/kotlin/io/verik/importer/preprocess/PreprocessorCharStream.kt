@@ -9,6 +9,10 @@ import org.antlr.v4.runtime.CharStream
 import org.antlr.v4.runtime.CharStreams
 import org.antlr.v4.runtime.misc.Interval
 
+/**
+ * Character stream that keeps track of the [location] in the original text file. [isOriginal] indicates that the
+ * content comes directly from a text file and not a macro expansion.
+ */
 class PreprocessorCharStream(
     val location: SourceLocation,
     val isOriginal: Boolean,

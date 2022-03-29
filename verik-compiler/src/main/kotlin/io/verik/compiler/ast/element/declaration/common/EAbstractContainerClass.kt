@@ -10,6 +10,9 @@ import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.replaceIfContains
 import io.verik.compiler.message.Messages
 
+/**
+ * Abstract class that contains [declarations].
+ */
 abstract class EAbstractContainerClass : EAbstractClass(), ResizableDeclarationContainer, TypeParameterized {
 
     abstract var declarations: ArrayList<EDeclaration>

@@ -12,6 +12,9 @@ import org.jetbrains.kotlin.lexer.KtToken
 import java.nio.file.Path
 import kotlin.reflect.full.declaredMemberProperties
 
+/**
+ * Messages that can be printed by the compiler.
+ */
 object Messages {
 
     val INTERNAL_ERROR = FatalMessageTemplate1<String>(

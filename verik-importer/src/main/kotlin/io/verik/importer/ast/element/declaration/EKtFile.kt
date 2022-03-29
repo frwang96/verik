@@ -8,6 +8,9 @@ import io.verik.importer.common.Visitor
 import io.verik.importer.message.SourceLocation
 import java.nio.file.Path
 
+/**
+ * Element that represents a Kotlin file. The file contains [declarations].
+ */
 class EKtFile(
     override val location: SourceLocation,
     override var declarations: ArrayList<EDeclaration>,

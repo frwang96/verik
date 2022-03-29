@@ -32,6 +32,9 @@ import io.verik.compiler.core.common.CoreFunctionDeclaration
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.message.Messages
 
+/**
+ * Collector that collects all of the type constraints from the AST.
+ */
 object TypeConstraintCollector {
 
     fun collect(projectContext: ProjectContext): List<TypeConstraint> {

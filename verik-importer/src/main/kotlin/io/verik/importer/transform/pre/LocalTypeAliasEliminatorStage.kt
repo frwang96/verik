@@ -14,6 +14,9 @@ import io.verik.importer.common.TreeVisitor
 import io.verik.importer.main.ProjectContext
 import io.verik.importer.main.ProjectStage
 
+/**
+ * Stage that substitutes local type aliases. Local type aliases are not permitted in Kotlin.
+ */
 object LocalTypeAliasEliminatorStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

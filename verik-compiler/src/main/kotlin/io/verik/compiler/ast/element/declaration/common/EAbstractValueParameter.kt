@@ -8,6 +8,10 @@ import io.verik.compiler.ast.common.ExpressionContainer
 import io.verik.compiler.ast.element.expression.common.EExpression
 import io.verik.compiler.common.TreeVisitor
 
+/**
+ * Base class for all elements that are value parameter declarations. The value parameter may have a default
+ * [expression].
+ */
 abstract class EAbstractValueParameter : EAbstractProperty(), ExpressionContainer {
 
     abstract var expression: EExpression?

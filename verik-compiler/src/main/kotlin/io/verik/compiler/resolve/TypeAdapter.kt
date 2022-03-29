@@ -9,6 +9,9 @@ import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.common.ETypedElement
 import io.verik.compiler.ast.element.expression.common.ECallExpression
 
+/**
+ * An adapter that references a type in the AST.
+ */
 sealed class TypeAdapter {
 
     abstract fun getElement(): EElement
@@ -33,6 +36,9 @@ sealed class TypeAdapter {
     }
 }
 
+/**
+ * A type adapter that references the type of a typed element.
+ */
 class ElementTypeAdapter(
     private val typedElement: ETypedElement,
     private val indices: List<Int>
@@ -71,6 +77,9 @@ class ElementTypeAdapter(
     }
 }
 
+/**
+ * A type adapter that references the type of a call expression type argument.
+ */
 class TypeArgumentTypeAdapter(
     private val callExpression: ECallExpression,
     private val index: Int

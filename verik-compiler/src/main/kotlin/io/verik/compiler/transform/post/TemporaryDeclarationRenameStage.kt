@@ -9,6 +9,9 @@ import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 
+/**
+ * Stage that indexes and renames the temporary declarations that have been generated.
+ */
 object TemporaryDeclarationRenameStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

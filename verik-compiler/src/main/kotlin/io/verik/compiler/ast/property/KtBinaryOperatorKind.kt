@@ -8,6 +8,9 @@ import io.verik.compiler.message.Messages
 import io.verik.compiler.message.SourceLocation
 import org.jetbrains.kotlin.lexer.KtSingleValueToken
 
+/**
+ * Enum for Kotlin binary operator kind.
+ */
 enum class KtBinaryOperatorKind {
     EQ,
     MUL,

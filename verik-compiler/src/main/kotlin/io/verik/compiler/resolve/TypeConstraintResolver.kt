@@ -9,6 +9,9 @@ import io.verik.compiler.core.common.Cardinal
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.message.Messages
 
+/**
+ * Resolver for resolving type constraints.
+ */
 object TypeConstraintResolver {
 
     fun resolve(typeConstraint: TypeConstraint): Boolean {

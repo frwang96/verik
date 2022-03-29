@@ -4,6 +4,9 @@
 
 package io.verik.compiler.message
 
+/**
+ * Abstract message printer that prints error and warning messages.
+ */
 abstract class MessagePrinter {
 
     abstract fun warning(message: String, location: SourceLocation, stackTrace: Array<StackTraceElement>)

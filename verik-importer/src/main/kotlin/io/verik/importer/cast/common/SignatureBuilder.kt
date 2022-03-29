@@ -6,6 +6,9 @@ package io.verik.importer.cast.common
 
 import org.antlr.v4.runtime.RuleContext
 
+/**
+ * Utility class that builds a declaration signature from a [RuleContext].
+ */
 class SignatureBuilder private constructor(private val name: String) {
 
     private val builder = StringBuilder()

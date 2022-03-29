@@ -13,6 +13,9 @@ import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 
+/**
+ * Stage that checks that declaration names are valid SystemVerilog identifiers.
+ */
 object PostNameCheckerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

@@ -15,6 +15,9 @@ import io.verik.compiler.resolve.TypeAdapter
 import io.verik.compiler.resolve.TypeConstraint
 import io.verik.compiler.resolve.TypeConstraintKind
 
+/**
+ * Core extension functions from Boolean.
+ */
 object CoreVkBoolean : CoreScope(CorePackage.VK) {
 
     val F_toUbit = object : TransformableCoreFunctionDeclaration(parent, "toUbit", "fun toUbit()") {

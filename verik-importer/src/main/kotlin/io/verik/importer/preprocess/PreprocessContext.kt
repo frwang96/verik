@@ -11,6 +11,9 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker
 import org.antlr.v4.runtime.tree.TerminalNode
 import java.nio.file.Path
 
+/**
+ * Context for building preprocessor fragments from text.
+ */
 class PreprocessContext(
     val preprocessorFragments: ArrayList<PreprocessorFragment>,
     val includedTextFiles: HashMap<Path, TextFile>,

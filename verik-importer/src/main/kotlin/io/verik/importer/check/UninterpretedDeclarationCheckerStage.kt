@@ -22,6 +22,9 @@ import io.verik.importer.main.ProjectContext
 import io.verik.importer.main.ProjectStage
 import io.verik.importer.message.Messages
 
+/**
+ * Stage that checks for declarations that have not be interpreted as Kotlin.
+ */
 object UninterpretedDeclarationCheckerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

@@ -8,6 +8,9 @@ import io.verik.compiler.core.common.CoreCardinalFunctionDeclaration
 import io.verik.compiler.core.common.CorePackage
 import io.verik.compiler.core.common.CoreScope
 
+/**
+ * Core cardinal functions from the Verik core package.
+ */
 object CoreVkCardinal : CoreScope(CorePackage.VK) {
 
     val T_TRUE = CoreCardinalFunctionDeclaration(parent, "TRUE")

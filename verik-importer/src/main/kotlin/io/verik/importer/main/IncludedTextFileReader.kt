@@ -11,6 +11,9 @@ import java.nio.file.Path
 import java.nio.file.Paths
 import kotlin.io.path.isReadable
 
+/**
+ * Utility class that reads the input files as well as any files that may be included.
+ */
 object IncludedTextFileReader {
 
     private val INCLUDE_PATTERN = Regex("\\s*`include\\s+\"(.+)\".*")

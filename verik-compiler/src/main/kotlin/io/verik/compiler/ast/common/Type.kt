@@ -19,6 +19,10 @@ import io.verik.compiler.message.SourceLocation
 import io.verik.compiler.target.common.Target
 import io.verik.compiler.target.common.TargetClassDeclaration
 
+/**
+ * Type with a [reference] and type [arguments]. Types should not be aliased between elements, even if they are of the
+ * same type. This avoids unintended consequences when mutating types.
+ */
 class Type(
     var reference: Declaration,
     var arguments: ArrayList<Type>

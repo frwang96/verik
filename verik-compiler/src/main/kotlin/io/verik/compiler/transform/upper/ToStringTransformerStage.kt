@@ -21,6 +21,9 @@ import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.target.common.Target
 
+/**
+ * Stage that transforms expressions to have a string type for the purposes of string formatting.
+ */
 object ToStringTransformerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

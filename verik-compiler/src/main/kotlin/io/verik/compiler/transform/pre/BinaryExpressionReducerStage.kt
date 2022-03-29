@@ -15,6 +15,9 @@ import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 
+/**
+ * Stage that reduces binary expressions to call expressions if possible.
+ */
 object BinaryExpressionReducerStage : ProjectStage() {
 
     private val referenceMap = HashMap<ReducerEntry, CoreFunctionDeclaration>()

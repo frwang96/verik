@@ -8,6 +8,9 @@ import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.common.location
 import org.jetbrains.kotlin.psi.KtElement
 
+/**
+ * Warning message template with no arguments.
+ */
 class WarningMessageTemplate0(
     override val template: String
 ) : AbstractMessageTemplate() {
@@ -17,6 +20,9 @@ class WarningMessageTemplate0(
     }
 }
 
+/**
+ * Warning message template with one argument.
+ */
 class WarningMessageTemplate1<A>(
     override val template: String
 ) : AbstractMessageTemplate() {
@@ -26,6 +32,9 @@ class WarningMessageTemplate1<A>(
     }
 }
 
+/**
+ * Error message template with no arguments.
+ */
 class ErrorMessageTemplate0(
     override val template: String
 ) : AbstractMessageTemplate() {
@@ -39,6 +48,9 @@ class ErrorMessageTemplate0(
     }
 }
 
+/**
+ * Error message template with one argument.
+ */
 class ErrorMessageTemplate1<A>(
     override val template: String
 ) : AbstractMessageTemplate() {
@@ -56,6 +68,9 @@ class ErrorMessageTemplate1<A>(
     }
 }
 
+/**
+ * Error message template with two arguments.
+ */
 class ErrorMessageTemplate2<A, B>(
     override val template: String
 ) : AbstractMessageTemplate() {
@@ -65,6 +80,9 @@ class ErrorMessageTemplate2<A, B>(
     }
 }
 
+/**
+ * Fatal message template with one argument.
+ */
 class FatalMessageTemplate1<A>(
     override val template: String
 ) : AbstractMessageTemplate() {
@@ -82,6 +100,9 @@ class FatalMessageTemplate1<A>(
     }
 }
 
+/**
+ * Fatal message template with two arguments.
+ */
 class FatalMessageTemplate2<A, B>(
     override val template: String
 ) : AbstractMessageTemplate() {

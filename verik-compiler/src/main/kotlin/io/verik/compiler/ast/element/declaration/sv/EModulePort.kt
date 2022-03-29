@@ -9,6 +9,10 @@ import io.verik.compiler.ast.property.AnnotationEntry
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
 
+/**
+ * Element that represents a SystemVerilog modport declaration. It represents the type of an [EModulePortInstantiation]
+ * and is not serialized as SystemVerilog.
+ */
 class EModulePort(
     override val location: SourceLocation,
     override val bodyStartLocation: SourceLocation,

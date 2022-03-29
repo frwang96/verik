@@ -13,6 +13,10 @@ import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 
+/**
+ * Stage that resolves the parent module interface of module ports. SystemVerilog requires that we reference module
+ * ports through their parent module interface.
+ */
 object ModulePortParentResolverStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
@@ -24,8 +28,7 @@ object ModulePortParentResolverStage : ProjectStage() {
                 override fun visitModulePortInstantiation(modulePortInstantiation: EModulePortInstantiation) {
                     super.visitModulePortInstantiation(modulePortInstantiation)
                     val parent = modulePortInstantiation.parent
-                    if (parent !is EModuleInterface)
-                        return
+                    if (parent !is EModuleInterface) return
                     if (modulePortInstantiation.type.reference in multipleParentModulePorts) {
                         Messages.MODULE_PORT_MULTIPLE_PARENTS.on(modulePortInstantiation, parent.name)
                     }
@@ -44,8 +47,9 @@ object ModulePortParentResolverStage : ProjectStage() {
             val parent = modulePortInstantiation.parent
             if (parent is EModuleInterface) {
                 val modulePort = modulePortInstantiation.type.reference.cast<EModulePort>(modulePortInstantiation)
-                if (modulePort.parentModuleInterface != null && modulePort.parentModuleInterface != parent)
+                if (modulePort.parentModuleInterface != null && modulePort.parentModuleInterface != parent) {
                     multipleParentModulePorts.add(modulePort)
+                }
                 modulePort.parentModuleInterface = parent
             } else {
                 Messages.ILLEGAL_MODULE_PORT_INSTANTIATION.on(modulePortInstantiation)

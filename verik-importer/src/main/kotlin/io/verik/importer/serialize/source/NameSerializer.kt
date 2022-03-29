@@ -6,6 +6,9 @@ package io.verik.importer.serialize.source
 
 import io.verik.importer.ast.element.declaration.EDeclaration
 
+/**
+ * Serializer that serializes Kotlin names. Keywords are delimited by back ticks.
+ */
 object NameSerializer {
 
     private val KEYWORDS: List<String> = listOf(

@@ -9,6 +9,9 @@ import io.verik.compiler.main.Platform
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 
+/**
+ * Stage that serializes the report file.
+ */
 object ReportFileSerializerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

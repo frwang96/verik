@@ -18,6 +18,9 @@ import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 
+/**
+ * Stage that interprets SystemVerilog cover points and cover crosses from Kotlin properties if applicable.
+ */
 object CoverPropertyInterpreterStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

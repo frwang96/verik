@@ -39,6 +39,9 @@ import io.verik.compiler.core.common.AnnotationEntries
 import io.verik.compiler.message.SourceLocation
 import io.verik.compiler.target.common.Target
 
+/**
+ * Serializer that serializes SystemVerilog declarations.
+ */
 object DeclarationSerializer {
 
     fun serializeTypeDefinition(typeDefinition: ETypeDefinition, serializeContext: SerializeContext) {

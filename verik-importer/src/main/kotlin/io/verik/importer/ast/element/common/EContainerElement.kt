@@ -8,6 +8,10 @@ import io.verik.importer.common.Visitor
 import io.verik.importer.message.Messages
 import io.verik.importer.message.SourceLocation
 
+/**
+ * Container element that contains other [elements]. It is used in the cast stage to return multiple elements and should
+ * not be used as part of the AST.
+ */
 class EContainerElement(
     override val location: SourceLocation,
     val elements: List<EElement>

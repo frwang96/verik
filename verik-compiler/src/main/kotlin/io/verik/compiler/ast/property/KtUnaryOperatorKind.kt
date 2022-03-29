@@ -8,6 +8,9 @@ import io.verik.compiler.message.Messages
 import io.verik.compiler.message.SourceLocation
 import org.jetbrains.kotlin.com.intellij.psi.tree.IElementType
 
+/**
+ * Enum for Kotlin unary operator kind.
+ */
 enum class KtUnaryOperatorKind {
     EXCL,
     EXCL_EXCL,

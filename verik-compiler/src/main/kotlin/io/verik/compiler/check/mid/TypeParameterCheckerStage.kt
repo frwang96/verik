@@ -12,6 +12,9 @@ import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 
+/**
+ * Stage that checks that functions that are not top-level are not type parameterized.
+ */
 object TypeParameterCheckerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

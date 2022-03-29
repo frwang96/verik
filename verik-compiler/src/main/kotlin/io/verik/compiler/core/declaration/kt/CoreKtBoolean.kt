@@ -14,6 +14,9 @@ import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreScope
 import io.verik.compiler.core.common.UnaryCoreFunctionDeclaration
 
+/**
+ * Core declarations from Boolean.
+ */
 object CoreKtBoolean : CoreScope(Core.Kt.C_Boolean) {
 
     val F_not = object : UnaryCoreFunctionDeclaration(parent, "not", "fun not()", SvUnaryOperatorKind.LOGICAL_NEG) {

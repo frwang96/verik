@@ -7,6 +7,10 @@ package io.verik.compiler.resolve
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 
+/**
+ * Stage that resolves types in the AST and forwards references of receiver expressions. Unfortunately, reference
+ * forwarding depends on type resolution in some cases and so it cannot be performed independently beforehand.
+ */
 object TypeResolverStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

@@ -10,6 +10,9 @@ import org.antlr.v4.runtime.Token
 import org.antlr.v4.runtime.tree.TerminalNode
 import java.nio.file.Path
 
+/**
+ * Location within the original source code.
+ */
 data class SourceLocation(
     val path: Path,
     val line: Int,

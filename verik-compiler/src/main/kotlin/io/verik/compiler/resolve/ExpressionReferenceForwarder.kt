@@ -23,6 +23,10 @@ import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.message.Messages
 import io.verik.compiler.specialize.SpecializeContext
 
+/**
+ * Utility class for indexing the receiver expressions with references that need to be forwarded and performing the
+ * reference forwarding.
+ */
 object ExpressionReferenceForwarder {
 
     fun getExpressionReferenceForwarderEntries(

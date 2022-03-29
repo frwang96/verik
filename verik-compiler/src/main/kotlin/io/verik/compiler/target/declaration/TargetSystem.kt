@@ -9,6 +9,9 @@ import io.verik.compiler.target.common.TargetPackage
 import io.verik.compiler.target.common.TargetPropertyDeclaration
 import io.verik.compiler.target.common.TargetScope
 
+/**
+ * Target system functions and properties from the SystemVerilog language.
+ */
 object TargetSystem : TargetScope(TargetPackage) {
 
     val F_cast = PrimitiveTargetFunctionDeclaration(parent, "\$cast")

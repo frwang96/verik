@@ -12,6 +12,9 @@ import io.verik.compiler.ast.property.SvUnaryOperatorKind
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
 
+/**
+ * Element that represents a SystemVerilog unary expression.
+ */
 class ESvUnaryExpression(
     override val location: SourceLocation,
     override var type: Type,

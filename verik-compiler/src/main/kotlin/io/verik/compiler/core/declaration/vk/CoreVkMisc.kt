@@ -25,6 +25,9 @@ import io.verik.compiler.resolve.TypeConstraint
 import io.verik.compiler.resolve.TypeConstraintKind
 import io.verik.compiler.target.common.Target
 
+/**
+ * Core miscellaneous functions from the Verik core package.
+ */
 object CoreVkMisc : CoreScope(CorePackage.VK) {
 
     val F_cat_Any = object : TransformableCoreFunctionDeclaration(parent, "cat", "fun cat(vararg Any)") {

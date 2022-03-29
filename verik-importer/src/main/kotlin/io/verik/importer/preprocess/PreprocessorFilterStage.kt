@@ -8,6 +8,9 @@ import io.verik.importer.main.InputFileContext
 import io.verik.importer.main.ProjectContext
 import io.verik.importer.main.ProjectStage
 
+/**
+ * Stage that filters out comments and white spaces from the preprocessor fragments.
+ */
 object PreprocessorFilterStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

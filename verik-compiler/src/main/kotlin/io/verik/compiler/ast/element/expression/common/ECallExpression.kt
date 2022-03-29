@@ -12,6 +12,9 @@ import io.verik.compiler.common.Visitor
 import io.verik.compiler.common.replaceIfContains
 import io.verik.compiler.message.SourceLocation
 
+/**
+ * Element that represents a call expression to [reference]. Call expression may act on a [receiver].
+ */
 class ECallExpression(
     override val location: SourceLocation,
     override var type: Type,

@@ -9,6 +9,9 @@ import io.verik.importer.ast.element.descriptor.EDescriptor
 import io.verik.importer.common.Visitor
 import io.verik.importer.message.SourceLocation
 
+/**
+ * Element that represents a SystemVerilog value parameter declaration.
+ */
 class ESvValueParameter(
     override val location: SourceLocation,
     override val name: String,

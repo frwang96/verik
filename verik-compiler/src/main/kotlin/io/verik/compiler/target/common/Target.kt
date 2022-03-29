@@ -10,6 +10,9 @@ import io.verik.compiler.target.declaration.TargetMailbox
 import io.verik.compiler.target.declaration.TargetQueue
 import io.verik.compiler.target.declaration.TargetSystem
 
+/**
+ * List of all the target declarations supported by the compiler.
+ */
 object Target {
 
     val C_Void = TargetClasses.C_Void

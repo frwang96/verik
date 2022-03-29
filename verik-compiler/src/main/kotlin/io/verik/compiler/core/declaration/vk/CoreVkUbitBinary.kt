@@ -19,6 +19,9 @@ import io.verik.compiler.resolve.TypeAdapter
 import io.verik.compiler.resolve.TypeConstraint
 import io.verik.compiler.resolve.TypeConstraintKind
 
+/**
+ * Core binary functions from Boolean.
+ */
 object CoreVkUbitBinary : CoreScope(Core.Vk.C_Ubit) {
 
     val F_plus_Ubit = object : BinaryCoreFunctionDeclaration(

@@ -17,6 +17,9 @@ import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 
+/**
+ * Stage that interprets SystemVerilog cover groups from Kotlin classes if applicable.
+ */
 object CoverGroupInterpreterStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

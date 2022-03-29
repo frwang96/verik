@@ -12,6 +12,10 @@ import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
 import io.verik.compiler.target.common.Target
 
+/**
+ * Element that represents a SystemVerilog event expression. Event expressions trigger on an edge of [expression].
+ * The edge kind is specified by [kind].
+ */
 class EEventExpression(
     override val location: SourceLocation,
     override var expression: EExpression,

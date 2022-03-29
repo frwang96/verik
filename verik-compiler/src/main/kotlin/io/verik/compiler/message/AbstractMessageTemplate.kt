@@ -4,6 +4,9 @@
 
 package io.verik.compiler.message
 
+/**
+ * Base class for all message templates. Arguments are delimited by a dollar sign in the [template].
+ */
 abstract class AbstractMessageTemplate {
 
     lateinit var name: String

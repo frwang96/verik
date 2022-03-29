@@ -8,6 +8,9 @@ import io.verik.compiler.target.common.PrimitiveTargetFunctionDeclaration
 import io.verik.compiler.target.common.Target
 import io.verik.compiler.target.common.TargetScope
 
+/**
+ * Target declarations from Queue.
+ */
 object TargetQueue : TargetScope(Target.C_Queue) {
 
     val F_push_back = PrimitiveTargetFunctionDeclaration(parent, "push_back")

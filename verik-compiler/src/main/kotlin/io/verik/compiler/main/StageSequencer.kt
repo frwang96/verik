@@ -53,7 +53,7 @@ import io.verik.compiler.interpret.FunctionLiteralInterpreterStage
 import io.verik.compiler.interpret.InitializerBlockReducerStage
 import io.verik.compiler.interpret.InjectedPropertyInterpreterStage
 import io.verik.compiler.interpret.ModulePortParentResolverStage
-import io.verik.compiler.interpret.PackageInjectedPropertyReducerStage
+import io.verik.compiler.interpret.PackageInjectedPropertyCollectorStage
 import io.verik.compiler.interpret.PrimaryConstructorReducerStage
 import io.verik.compiler.interpret.PropertyInterpreterStage
 import io.verik.compiler.interpret.StructUnionInterpreterStage
@@ -111,6 +111,10 @@ import io.verik.compiler.transform.upper.TaskReturnTransformerStage
 import io.verik.compiler.transform.upper.ToStringTransformerStage
 import io.verik.compiler.transform.upper.UninitializedPropertyTransformerStage
 
+/**
+ * Sequencer that creates the default [stage sequence][StageSequence] for the compiler. This is the order that the
+ * stages will be processed by the compiler.
+ */
 object StageSequencer {
 
     fun getStageSequence(): StageSequence {
@@ -185,7 +189,7 @@ object StageSequencer {
         stageSequence.add(StageType.INTERPRET, PropertyInterpreterStage)
         stageSequence.add(StageType.INTERPRET, FunctionLiteralInterpreterStage)
         stageSequence.add(StageType.INTERPRET, CompanionObjectReducerStage)
-        stageSequence.add(StageType.INTERPRET, PackageInjectedPropertyReducerStage)
+        stageSequence.add(StageType.INTERPRET, PackageInjectedPropertyCollectorStage)
         stageSequence.add(StageType.INTERPRET, ModulePortParentResolverStage)
         stageSequence.add(StageType.INTERPRET, FileSplitterStage)
 

@@ -11,6 +11,9 @@ import org.jetbrains.kotlin.lexer.KtTokens
 import org.jetbrains.kotlin.psi.KtModifierList
 import org.jetbrains.kotlin.psi.KtTreeVisitorVoid
 
+/**
+ * Check for unsupported modifiers.
+ */
 object UnsupportedModifierCheckerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

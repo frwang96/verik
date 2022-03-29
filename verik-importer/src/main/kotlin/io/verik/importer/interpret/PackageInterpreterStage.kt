@@ -14,6 +14,9 @@ import io.verik.importer.main.ProjectStage
 import io.verik.importer.message.SourceLocation
 import java.nio.file.Path
 
+/**
+ * Stage that interprets SystemVerilog packages to Kotlin packages.
+ */
 object PackageInterpreterStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

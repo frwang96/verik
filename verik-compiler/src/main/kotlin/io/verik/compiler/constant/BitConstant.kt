@@ -10,18 +10,15 @@ import io.verik.compiler.core.common.Core
 import java.lang.Integer.max
 import java.math.BigInteger
 
+/**
+ * A four-state bit constant encoded with [kind] and [value]. The encoding is given by 00 = 0, 01 = 1, 10 = x, 11 = z.
+ */
 class BitConstant(
     val kind: BitComponent,
     val value: BitComponent,
     val signed: Boolean,
     val width: Int
 ) {
-
-    // encoding (kind, value)
-    // 00: 0
-    // 01: 1
-    // 10: x
-    // 11: z
 
     constructor(value: Int, signed: Boolean, width: Int) : this(
         BitComponent.zeroes(width),

@@ -10,6 +10,9 @@ import io.verik.compiler.core.common.CorePackage
 import io.verik.compiler.core.common.CoreScope
 import io.verik.compiler.target.common.Target
 
+/**
+ * Core classes from the Kotlin standard library.
+ */
 object CoreKtClasses : CoreScope(CorePackage.KT) {
 
     val C_Function = CoreClassDeclaration(parent, "Function", null, Target.C_Void)

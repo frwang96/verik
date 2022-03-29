@@ -10,6 +10,9 @@ import io.verik.compiler.core.common.CorePropertyDeclaration
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 
+/**
+ * Stage that transforms core property declarations.
+ */
 object PropertyTransformerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

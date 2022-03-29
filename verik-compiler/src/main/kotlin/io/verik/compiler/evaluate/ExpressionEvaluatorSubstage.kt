@@ -10,6 +10,9 @@ import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.specialize.SpecializerSubstage
 import io.verik.compiler.specialize.TypeParameterBinding
 
+/**
+ * Specializer substage that evaluates expressions.
+ */
 object ExpressionEvaluatorSubstage : SpecializerSubstage() {
 
     override fun process(declaration: EDeclaration, typeParameterBinding: TypeParameterBinding) {

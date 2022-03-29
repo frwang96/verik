@@ -18,6 +18,10 @@ import org.gradle.api.plugins.JavaPluginExtension
 import io.verik.compiler.main.StageSequencer as VerikStageSequencer
 import io.verik.importer.main.StageSequencer as VerikImporterStageSequencer
 
+/**
+ * Top level plugin class that registers the verik and verikImport gradle tasks for the compiler and importer
+ * respectively.
+ */
 @Suppress("unused")
 class VerikPlugin : Plugin<Project> {
 

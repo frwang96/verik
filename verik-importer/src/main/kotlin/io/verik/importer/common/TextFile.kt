@@ -7,6 +7,9 @@ package io.verik.importer.common
 import io.verik.importer.message.SourceLocation
 import java.nio.file.Path
 
+/**
+ * Data class that represents a text file.
+ */
 class TextFile(
     val path: Path,
     val content: String

@@ -10,6 +10,9 @@ import io.verik.importer.common.TextFile
 import io.verik.importer.main.ProjectContext
 import java.nio.file.Path
 
+/**
+ * Context for serializing source text files from the AST.
+ */
 class SerializeContext(
     projectContext: ProjectContext,
     packageName: String,

@@ -11,6 +11,9 @@ import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 
+/**
+ * Stage that reduces assignment operators into assignments.
+ */
 object AssignmentOperatorReducerStage : ProjectStage() {
 
     private val assignmentOperatorMap = HashMap<KtBinaryOperatorKind, KtBinaryOperatorKind>()

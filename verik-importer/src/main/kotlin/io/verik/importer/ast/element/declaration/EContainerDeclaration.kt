@@ -8,6 +8,9 @@ import io.verik.importer.ast.common.DeclarationContainer
 import io.verik.importer.common.Visitor
 import io.verik.importer.common.replaceIfContains
 
+/**
+ * Abstract declaration element that contains other [declarations].
+ */
 abstract class EContainerDeclaration : EDeclaration(), DeclarationContainer {
 
     abstract var declarations: ArrayList<EDeclaration>

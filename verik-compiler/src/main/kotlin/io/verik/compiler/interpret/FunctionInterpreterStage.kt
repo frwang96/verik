@@ -30,6 +30,9 @@ import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 
+/**
+ * Stage that interprets SystemVerilog functions, tasks, and procedural blocks from Kotlin functions.
+ */
 object FunctionInterpreterStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

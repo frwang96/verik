@@ -8,6 +8,9 @@ import io.verik.importer.ast.common.TypeParameterized
 import io.verik.importer.common.Visitor
 import io.verik.importer.message.SourceLocation
 
+/**
+ * Element that represents a SystemVerilog module declaration.
+ */
 class EModule(
     override val location: SourceLocation,
     override val name: String,

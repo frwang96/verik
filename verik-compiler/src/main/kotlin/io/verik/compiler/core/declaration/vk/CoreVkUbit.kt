@@ -25,6 +25,9 @@ import io.verik.compiler.resolve.TypeConstraint
 import io.verik.compiler.resolve.TypeConstraintKind
 import io.verik.compiler.target.common.Target
 
+/**
+ * Core declarations from Ubit excluding binary functions.
+ */
 object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
 
     val F_unaryPlus = object : TransformableCoreFunctionDeclaration(parent, "unaryPlus", "fun unaryPlus()") {

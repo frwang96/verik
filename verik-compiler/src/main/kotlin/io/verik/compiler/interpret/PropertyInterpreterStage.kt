@@ -17,6 +17,9 @@ import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 
+/**
+ * Stage that interprets SystemVerilog properties and constraints from Kotlin properties.
+ */
 object PropertyInterpreterStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

@@ -12,6 +12,9 @@ import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 
+/**
+ * Stage that checks for functions that override tasks or tasks that override functions.
+ */
 object OverrideCheckerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

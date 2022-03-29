@@ -11,6 +11,9 @@ import io.verik.compiler.ast.element.expression.common.EExpression
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.replaceIfContains
 
+/**
+ * Base class for all SystemVerilog component instantiations.
+ */
 abstract class EAbstractComponentInstantiation : EAbstractProperty(), ExpressionContainer {
 
     abstract val valueArguments: ArrayList<EExpression>

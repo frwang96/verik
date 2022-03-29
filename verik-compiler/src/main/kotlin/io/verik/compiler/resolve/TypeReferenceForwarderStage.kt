@@ -15,6 +15,9 @@ import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.specialize.SpecializeContext
 
+/**
+ * Stage for forwarding type references.
+ */
 object TypeReferenceForwarderStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

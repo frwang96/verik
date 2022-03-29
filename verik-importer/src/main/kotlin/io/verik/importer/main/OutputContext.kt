@@ -6,6 +6,9 @@ package io.verik.importer.main
 
 import io.verik.importer.common.TextFile
 
+/**
+ * Context that stores the output text files to be written to the build directory.
+ */
 class OutputContext {
 
     var preprocessorTextFile: TextFile? = null

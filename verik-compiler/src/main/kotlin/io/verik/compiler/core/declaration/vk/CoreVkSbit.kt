@@ -15,6 +15,9 @@ import io.verik.compiler.core.common.TransformableCoreFunctionDeclaration
 import io.verik.compiler.core.common.UnaryCoreFunctionDeclaration
 import io.verik.compiler.resolve.TypeConstraint
 
+/**
+ * Core declarations from Sbit excluding binary functions.
+ */
 object CoreVkSbit : CoreScope(Core.Vk.C_Sbit) {
 
     val F_unaryPlus = object : TransformableCoreFunctionDeclaration(parent, "unaryPlus", "fun unaryPlus()") {

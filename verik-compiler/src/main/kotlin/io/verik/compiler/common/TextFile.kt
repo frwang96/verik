@@ -6,7 +6,10 @@ package io.verik.compiler.common
 
 import java.nio.file.Path
 
-class TextFile(
+/**
+ * Data class that represents a text file.
+ */
+data class TextFile(
     val path: Path,
     val content: String
 )

@@ -11,6 +11,9 @@ import org.jetbrains.kotlin.psi.KtClassInitializer
 import org.jetbrains.kotlin.psi.KtDeclaration
 import org.jetbrains.kotlin.psi.KtTreeVisitorVoid
 
+/**
+ * Check that the names of declarations do not have illegal special characters.
+ */
 object PreNameCheckerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

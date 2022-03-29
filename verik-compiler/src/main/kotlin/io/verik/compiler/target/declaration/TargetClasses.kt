@@ -13,6 +13,9 @@ import io.verik.compiler.target.common.PrimitiveTargetClassDeclaration
 import io.verik.compiler.target.common.TargetPackage
 import io.verik.compiler.target.common.TargetScope
 
+/**
+ * A list of all target classes.
+ */
 object TargetClasses : TargetScope(TargetPackage) {
 
     val C_Void = object : PrimitiveTargetClassDeclaration(parent, "Void") {

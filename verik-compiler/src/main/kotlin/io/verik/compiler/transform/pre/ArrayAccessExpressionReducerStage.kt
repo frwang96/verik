@@ -18,6 +18,9 @@ import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 
+/**
+ * Stage that reduces array access expressions to call expressions.
+ */
 object ArrayAccessExpressionReducerStage : ProjectStage() {
 
     private val getReducerEntries = ArrayList<GetReducerEntry>()

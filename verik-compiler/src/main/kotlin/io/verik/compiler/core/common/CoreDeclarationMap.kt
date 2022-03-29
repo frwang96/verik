@@ -11,6 +11,10 @@ import kotlin.reflect.KClass
 import kotlin.reflect.KProperty1
 import kotlin.reflect.full.declaredMemberProperties
 
+/**
+ * A map from [declaration descriptors][DeclarationDescriptor] to core declarations or cardinal declarations.
+ * Declarations are matched based on their [qualified signature][QualifiedSignature].
+ */
 object CoreDeclarationMap {
 
     private val qualifiedSignatureMap = HashMap<QualifiedSignature, Declaration>()

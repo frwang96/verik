@@ -11,6 +11,9 @@ import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 
+/**
+ * Stage that removes the initializer for uninitialized properties.
+ */
 object UninitializedPropertyTransformerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

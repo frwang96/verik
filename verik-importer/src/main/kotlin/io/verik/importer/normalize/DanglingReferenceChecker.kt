@@ -15,6 +15,9 @@ import io.verik.importer.main.ProjectContext
 import io.verik.importer.main.ProjectStage
 import io.verik.importer.message.Messages
 
+/**
+ * Normalization checker that checks that there are no dangling references to declarations that are not part of the AST.
+ */
 object DanglingReferenceChecker : NormalizationChecker {
 
     override fun check(projectContext: ProjectContext, projectStage: ProjectStage) {

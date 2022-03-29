@@ -18,6 +18,9 @@ import io.verik.compiler.ast.element.expression.common.EReceiverExpression
 import io.verik.compiler.common.TreeVisitor
 import java.lang.Integer.min
 
+/**
+ * Visitor that indexes the [dependencies][Dependency] of the AST.
+ */
 class DependencyIndexerVisitor(
     private val dependencyRegistry: DependencyRegistry
 ) : TreeVisitor() {

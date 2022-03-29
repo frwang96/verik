@@ -9,6 +9,9 @@ import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 import io.verik.compiler.message.SourceLocation
 
+/**
+ * Check that the compiler configuration is valid.
+ */
 object ConfigCheckerStage : ProjectStage() {
 
     private val timescaleRegex = Regex(

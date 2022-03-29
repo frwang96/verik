@@ -110,6 +110,10 @@ import io.verik.compiler.ast.element.expression.sv.ESvUnaryExpression
 import io.verik.compiler.ast.element.expression.sv.EWaitForkStatement
 import io.verik.compiler.ast.element.expression.sv.EWidthCastExpression
 
+/**
+ * Visitor class for traversing the AST. For a visitor that recursively visits the children of each element use
+ * [TreeVisitor].
+ */
 abstract class Visitor {
 
     open fun visitElement(element: EElement) {}

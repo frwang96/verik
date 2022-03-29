@@ -12,6 +12,9 @@ import io.verik.importer.core.Core
 import io.verik.importer.main.ProjectContext
 import io.verik.importer.main.ProjectStage
 
+/**
+ * Stage that simplifies cardinal types by evaluating the cardinal functions.
+ */
 object CardinalTypeSimplifierStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

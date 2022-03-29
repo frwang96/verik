@@ -16,6 +16,10 @@ import org.antlr.v4.runtime.RecognitionException
 import org.antlr.v4.runtime.Recognizer
 import org.antlr.v4.runtime.tree.ParseTree
 
+/**
+ * Parser that runs the [SystemVerilogPreprocessorLexer] and [SystemVerilogPreprocessorParser] to build a preprocessor
+ * AST.
+ */
 object PreprocessorParser {
 
     fun parse(textFile: TextFile): ParseTree {

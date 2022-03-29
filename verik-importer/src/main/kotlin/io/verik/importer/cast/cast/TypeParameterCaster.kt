@@ -9,6 +9,9 @@ import io.verik.importer.ast.element.common.EContainerElement
 import io.verik.importer.ast.element.declaration.ETypeParameter
 import io.verik.importer.cast.common.CastContext
 
+/**
+ * Caster for SystemVerilog type parameter declarations.
+ */
 object TypeParameterCaster {
 
     fun castTypeParametersFromParameterPortListDeclaration(

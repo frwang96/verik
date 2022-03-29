@@ -4,6 +4,9 @@
 
 package io.verik.compiler.main
 
+/**
+ * Base class for all compiler stages.
+ */
 abstract class ProjectStage {
 
     abstract fun process(projectContext: ProjectContext)

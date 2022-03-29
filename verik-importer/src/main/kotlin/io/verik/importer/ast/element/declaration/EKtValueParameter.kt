@@ -9,6 +9,9 @@ import io.verik.importer.ast.property.AnnotationEntry
 import io.verik.importer.common.Visitor
 import io.verik.importer.message.SourceLocation
 
+/**
+ * Element that represents a Kotlin value parameter declaration.
+ */
 class EKtValueParameter(
     override val location: SourceLocation,
     override val name: String,

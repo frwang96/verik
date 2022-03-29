@@ -9,6 +9,10 @@ import io.verik.importer.ast.element.declaration.ETypeAlias
 import io.verik.importer.core.CardinalConstantDeclaration
 import io.verik.importer.core.Core
 
+/**
+ * Type with a [reference] and type [arguments]. Types should not be aliased between elements, even if they are of the
+ * same type. This avoids unintended consequences when mutating types.
+ */
 class Type(
     var reference: Declaration,
     var arguments: ArrayList<Type>

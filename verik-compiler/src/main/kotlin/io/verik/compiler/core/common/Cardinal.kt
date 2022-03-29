@@ -4,11 +4,12 @@
 
 package io.verik.compiler.core.common
 
+/**
+ * Utility class to construct [cardinal declarations][CardinalDeclaration].
+ */
 object Cardinal {
 
     val UNRESOLVED = CardinalUnresolvedDeclaration
-    val FALSE = of(0)
-    val TRUE = of(1)
 
     fun of(value: Int): CardinalConstantDeclaration {
         return CardinalConstantDeclaration(value)

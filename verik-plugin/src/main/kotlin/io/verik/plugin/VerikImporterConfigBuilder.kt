@@ -8,6 +8,9 @@ import io.verik.importer.main.VerikImporterConfig
 import org.gradle.api.Project
 import java.nio.file.Path
 
+/**
+ * Factory class that builds a [VerikImporterConfig] object.
+ */
 object VerikImporterConfigBuilder {
 
     fun getConfig(project: Project, extension: VerikImporterPluginExtension): VerikImporterConfig {

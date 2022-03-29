@@ -6,6 +6,9 @@ package io.verik.compiler.main
 
 import java.nio.file.Path
 
+/**
+ * Overall configuration for the compiler.
+ */
 data class VerikConfig(
     val toolchain: String,
     val timestamp: String,

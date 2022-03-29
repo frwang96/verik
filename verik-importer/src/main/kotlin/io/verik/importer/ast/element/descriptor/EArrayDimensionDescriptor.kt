@@ -8,6 +8,10 @@ import io.verik.importer.ast.common.Type
 import io.verik.importer.common.Visitor
 import io.verik.importer.message.SourceLocation
 
+/**
+ * Element that represents an array dimension descriptor. If [isQueue] is true it is a queue dimension descriptor.
+ * Otherwise, it is an unsized dimension descriptor.
+ */
 class EArrayDimensionDescriptor(
     override val location: SourceLocation,
     override var type: Type,

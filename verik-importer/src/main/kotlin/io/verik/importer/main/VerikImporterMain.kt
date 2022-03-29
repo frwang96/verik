@@ -11,6 +11,10 @@ import io.verik.importer.serialize.general.FileHeaderBuilder
 import java.nio.file.Files
 import kotlin.io.path.exists
 
+/**
+ * Entry point of the importer. The importer reads the input files, processes the stage sequence, and writes the output
+ * files. Messages are written to a log file.
+ */
 object VerikImporterMain {
 
     fun run(config: VerikImporterConfig, stageSequence: StageSequence) {

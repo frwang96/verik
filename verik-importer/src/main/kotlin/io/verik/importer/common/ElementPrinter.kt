@@ -37,8 +37,13 @@ import io.verik.importer.ast.element.descriptor.ERangeDimensionDescriptor
 import io.verik.importer.ast.element.descriptor.EReferenceDescriptor
 import io.verik.importer.ast.element.descriptor.ESimpleDescriptor
 import io.verik.importer.ast.element.descriptor.ETypeArgument
+import io.verik.importer.common.ElementPrinter.Companion.dump
 import io.verik.importer.message.Messages
 
+/**
+ * Visitor that builds a string representation of an AST for testing and debug. Obtain the string with the [dump]
+ * function.
+ */
 class ElementPrinter : Visitor() {
 
     private val builder = StringBuilder()

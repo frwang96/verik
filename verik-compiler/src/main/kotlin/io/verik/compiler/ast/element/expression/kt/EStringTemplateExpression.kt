@@ -12,6 +12,9 @@ import io.verik.compiler.common.Visitor
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.message.SourceLocation
 
+/**
+ * Element that represents a Kotlin string template expression.
+ */
 class EStringTemplateExpression(
     override val location: SourceLocation,
     override val entries: List<StringEntry>

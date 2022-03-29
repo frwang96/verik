@@ -9,6 +9,9 @@ import io.verik.compiler.core.common.BinaryCoreFunctionDeclaration
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreScope
 
+/**
+ * Core declarations from Double.
+ */
 object CoreKtDouble : CoreScope(Core.Kt.C_Double) {
 
     val F_plus_Int = BinaryCoreFunctionDeclaration(

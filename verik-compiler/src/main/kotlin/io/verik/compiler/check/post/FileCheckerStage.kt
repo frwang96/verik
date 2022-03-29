@@ -9,6 +9,9 @@ import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 import java.nio.file.Path
 
+/**
+ * Stage that checks that the output paths of files are not duplicated.
+ */
 object FileCheckerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

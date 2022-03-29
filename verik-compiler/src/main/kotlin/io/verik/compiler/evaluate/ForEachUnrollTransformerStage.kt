@@ -22,19 +22,23 @@ import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 
+/**
+ * Stage that unrolls forEach expressions if its value parameter is used to index into a cluster. Clusters can only
+ * be indexed by constant expressions.
+ */
 object ForEachUnrollTransformerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
-        val generateForBlockReferenceIndexerVisitor = GenerateForBlockReferenceIndexerVisitor()
-        projectContext.project.accept(generateForBlockReferenceIndexerVisitor)
+        val forEachUnrollIndexerVisitor = ForEachUnrollIndexerVisitor()
+        projectContext.project.accept(forEachUnrollIndexerVisitor)
 
         val forEachUnrollTransformerVisitor = ForEachUnrollTransformerVisitor(
-            generateForBlockReferenceIndexerVisitor.references
+            forEachUnrollIndexerVisitor.references
         )
         projectContext.project.accept(forEachUnrollTransformerVisitor)
     }
 
-    private class GenerateForBlockReferenceIndexerVisitor : TreeVisitor() {
+    private class ForEachUnrollIndexerVisitor : TreeVisitor() {
 
         val references = HashSet<EKtValueParameter>()
 
@@ -59,6 +63,17 @@ object ForEachUnrollTransformerStage : ProjectStage() {
     private class ForEachUnrollTransformerVisitor(
         private val references: HashSet<EKtValueParameter>
     ) : TreeVisitor() {
+
+        override fun visitCallExpression(callExpression: ECallExpression) {
+            super.visitCallExpression(callExpression)
+            if (callExpression.reference == Core.Kt.Collections.F_forEach_Function) {
+                val functionLiteralExpression = callExpression.valueArguments[0].cast<EFunctionLiteralExpression>()
+                if (functionLiteralExpression.valueParameters[0] in references) {
+                    val indices = getIndices(callExpression.receiver!!)
+                    if (indices != null) unroll(callExpression, functionLiteralExpression, indices)
+                }
+            }
+        }
 
         private fun getIndices(expression: EExpression): Pair<Int, Int>? {
             if (expression !is ECallExpression) return null
@@ -123,17 +138,6 @@ object ForEachUnrollTransformerStage : ProjectStage() {
                 ArrayList(statementGroups.flatten())
             )
             callExpression.replace(blockExpression)
-        }
-
-        override fun visitCallExpression(callExpression: ECallExpression) {
-            super.visitCallExpression(callExpression)
-            if (callExpression.reference == Core.Kt.Collections.F_forEach_Function) {
-                val functionLiteralExpression = callExpression.valueArguments[0].cast<EFunctionLiteralExpression>()
-                if (functionLiteralExpression.valueParameters[0] in references) {
-                    val indices = getIndices(callExpression.receiver!!)
-                    if (indices != null) unroll(callExpression, functionLiteralExpression, indices)
-                }
-            }
         }
     }
 }

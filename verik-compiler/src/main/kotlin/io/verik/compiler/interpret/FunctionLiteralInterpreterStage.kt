@@ -13,6 +13,9 @@ import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 
+/**
+ * Stage that interprets Kotlin value parameters to SystemVerilog value parameters in function literal expressions.
+ */
 object FunctionLiteralInterpreterStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

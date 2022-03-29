@@ -11,6 +11,9 @@ import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
 
+/**
+ * Element that represents a SystemVerilog always_ff block declaration.
+ */
 class EAlwaysSeqBlock(
     override val location: SourceLocation,
     override var name: String,

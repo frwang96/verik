@@ -17,6 +17,9 @@ import io.verik.importer.ast.element.descriptor.ETypeArgument
 import io.verik.importer.message.Messages
 import io.verik.importer.message.SourceLocation
 
+/**
+ * Utility class that performs a deep copy of an element.
+ */
 object ElementCopier {
 
     fun <E : EElement> deepCopy(element: E, location: SourceLocation? = null): E {

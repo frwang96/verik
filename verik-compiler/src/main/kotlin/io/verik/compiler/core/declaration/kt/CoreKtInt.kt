@@ -17,6 +17,9 @@ import io.verik.compiler.core.common.CoreScope
 import io.verik.compiler.core.common.TransformableCoreFunctionDeclaration
 import io.verik.compiler.core.common.UnaryCoreFunctionDeclaration
 
+/**
+ * Core declarations from Int.
+ */
 object CoreKtInt : CoreScope(Core.Kt.C_Int) {
 
     val F_unaryPlus = object : TransformableCoreFunctionDeclaration(parent, "unaryPlus", "fun unaryPlus()") {

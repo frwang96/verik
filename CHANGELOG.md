@@ -1,6 +1,11 @@
 # Changelog
 
 ## [Unreleased]
+### Importer
+- Document importer classes.
+
+### Compiler
+- Document compiler classes.
 
 ## [0.1.15]
 ### Compiler

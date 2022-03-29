@@ -7,6 +7,10 @@ package io.verik.importer.message
 import io.verik.importer.main.VerikImporterConfig
 import io.verik.importer.main.VerikImporterException
 
+/**
+ * Message collector that dispatches messages to a [messagePrinter]. It terminates the importer when the error count
+ * exceeds the maximum error count or if it receives a fatal message.
+ */
 class MessageCollector(
     private val config: VerikImporterConfig,
     private val messagePrinter: MessagePrinter

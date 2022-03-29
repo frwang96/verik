@@ -8,6 +8,9 @@ import io.verik.compiler.ast.element.declaration.common.EAbstractClass
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.target.common.Target
 
+/**
+ * Base class for all SystemVerilog component declarations.
+ */
 abstract class EAbstractComponent : EAbstractClass() {
 
     override var superType = Target.C_Void.toType()

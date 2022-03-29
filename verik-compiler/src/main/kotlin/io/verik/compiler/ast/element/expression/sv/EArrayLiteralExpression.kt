@@ -11,6 +11,10 @@ import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
 
+/**
+ * Element that represents a SystemVerilog array literal expression with a [default] value. For an expression that does
+ * not use a default value see [EStructLiteralExpression].
+ */
 class EArrayLiteralExpression(
     override val location: SourceLocation,
     override var type: Type,

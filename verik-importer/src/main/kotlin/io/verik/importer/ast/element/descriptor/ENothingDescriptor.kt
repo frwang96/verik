@@ -8,6 +8,9 @@ import io.verik.importer.ast.common.Type
 import io.verik.importer.common.Visitor
 import io.verik.importer.message.SourceLocation
 
+/**
+ * Descriptor that represents nothing. It is used in the null object pattern to replace erroneous descriptors.
+ */
 class ENothingDescriptor(
     override val location: SourceLocation
 ) : EDescriptor() {

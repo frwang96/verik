@@ -16,6 +16,9 @@ import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
 
+/**
+ * Utility class for platform dependent functions such as file IO and path conversion.
+ */
 object Platform {
 
     const val separator = "/"

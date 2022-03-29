@@ -13,6 +13,9 @@ import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 
+/**
+ * Stage that generates type definitions for functions with return types with variable dimensions.
+ */
 object VariableDimensionEliminatorStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

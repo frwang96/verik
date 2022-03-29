@@ -14,6 +14,9 @@ import io.verik.compiler.core.common.CoreScope
 import io.verik.compiler.core.common.TransformableCoreFunctionDeclaration
 import io.verik.compiler.target.common.Target
 
+/**
+ * Core system functions from the Verik core package.
+ */
 object CoreVkSystem : CoreScope(CorePackage.VK) {
 
     val F_strobe_String = BasicCoreFunctionDeclaration(parent, "strobe", "fun strobe(String)", Target.F_strobe)

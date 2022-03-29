@@ -4,6 +4,9 @@
 
 package io.verik.compiler.ast.property
 
+/**
+ * Enum for SystemVerilog port kind.
+ */
 enum class PortKind {
     INPUT,
     OUTPUT,

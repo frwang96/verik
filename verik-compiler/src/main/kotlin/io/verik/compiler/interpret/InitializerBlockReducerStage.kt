@@ -15,6 +15,9 @@ import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 import org.jetbrains.kotlin.utils.addToStdlib.firstIsInstanceOrNull
 
+/**
+ * Stage that reduces Kotlin initializer blocks by folding them into constructors.
+ */
 object InitializerBlockReducerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

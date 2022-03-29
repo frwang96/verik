@@ -20,6 +20,10 @@ import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 
+/**
+ * Stage that interprets SystemVerilog modules, interfaces, module ports, and clocking blocks from Kotlin classes if
+ * applicable.
+ */
 object ComponentInterpreterStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

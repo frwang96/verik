@@ -10,6 +10,10 @@ import io.verik.compiler.common.Visitor
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.message.SourceLocation
 
+/**
+ * Expression that represents nothing, such as in the case of component instantiations with ports that are not
+ * connected. It may also be used as a null object pattern to replace erroneous expressions.
+ */
 class ENothingExpression(
     override val location: SourceLocation
 ) : EExpression() {

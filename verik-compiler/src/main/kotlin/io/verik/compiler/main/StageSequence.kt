@@ -8,6 +8,9 @@ import io.verik.compiler.message.MessageCollector
 import io.verik.compiler.normalize.NormalizationChecker
 import kotlin.reflect.KClass
 
+/**
+ * Stage sequence that drives the execution of each of the compiler [stages][ProjectStage].
+ */
 class StageSequence {
 
     @Suppress("MemberVisibilityCanBePrivate")

@@ -21,6 +21,9 @@ import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 
+/**
+ * Stage that reduces Kotlin safe accesses on receiver expressions.
+ */
 object SafeAccessReducerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

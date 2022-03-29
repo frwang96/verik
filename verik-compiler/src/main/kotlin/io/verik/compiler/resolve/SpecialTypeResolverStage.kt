@@ -15,6 +15,10 @@ import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 import kotlin.math.abs
 
+/**
+ * Stage that performs type resolution in the special case where the type of a call expression depends on its value
+ * arguments.
+ */
 object SpecialTypeResolverStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

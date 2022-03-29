@@ -19,6 +19,9 @@ import org.antlr.v4.runtime.RuleContext
 import org.antlr.v4.runtime.TokenStream
 import org.antlr.v4.runtime.tree.TerminalNode
 
+/**
+ * Context for casting an element from a [RuleContext].
+ */
 class CastContext(
     private val parserTokenStream: TokenStream
 ) {

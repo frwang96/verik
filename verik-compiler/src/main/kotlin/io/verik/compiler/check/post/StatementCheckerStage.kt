@@ -20,6 +20,9 @@ import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 
+/**
+ * Stage that checks that all block expressions only contain SystemVerilog statements.
+ */
 object StatementCheckerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

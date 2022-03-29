@@ -13,6 +13,9 @@ import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
 import io.verik.compiler.target.common.Target
 
+/**
+ * Element that represents a SystemVerilog fork statement. [body] is executed concurrently with the parent process.
+ */
 class EForkStatement(
     override val location: SourceLocation,
     var body: EBlockExpression

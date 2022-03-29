@@ -15,6 +15,9 @@ import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 
+/**
+ * Stage that checks for references that have not been transformed to SystemVerilog.
+ */
 object UntransformedReferenceCheckerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
@@ -42,8 +45,9 @@ object UntransformedReferenceCheckerStage : ProjectStage() {
 
         private fun checkType(type: Type, element: EElement) {
             type.arguments.forEach { checkType(it, element) }
-            if (type.reference is CoreDeclaration)
+            if (type.reference is CoreDeclaration) {
                 Messages.INTERNAL_ERROR.on(element, "$message : ${type.reference.name}")
+            }
         }
     }
 }

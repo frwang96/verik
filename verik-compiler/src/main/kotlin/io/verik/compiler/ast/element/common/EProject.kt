@@ -10,6 +10,11 @@ import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
 
+/**
+ * Element that represents the entire project. It contains regular packages and imported packages. Root packages are
+ * handled separately from non-root packages as SystemVerilog handles the root namespace differently from package
+ * namespaces.
+ */
 class EProject(
     override val location: SourceLocation,
     var regularNonRootPackages: ArrayList<EPackage>,

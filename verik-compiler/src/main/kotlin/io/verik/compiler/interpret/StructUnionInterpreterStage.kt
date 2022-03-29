@@ -16,6 +16,9 @@ import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 
+/**
+ * Stage that interprets SystemVerilog packed structs and packed unions from Kotlin classes if applicable.
+ */
 object StructUnionInterpreterStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

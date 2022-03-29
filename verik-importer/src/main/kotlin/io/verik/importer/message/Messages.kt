@@ -8,6 +8,9 @@ import io.verik.importer.main.ProjectStage
 import java.nio.file.Path
 import kotlin.reflect.full.declaredMemberProperties
 
+/**
+ * Messages that can be printed by the importer.
+ */
 object Messages {
 
     val INTERNAL_ERROR = FatalMessageTemplate1<String>(

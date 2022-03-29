@@ -4,6 +4,9 @@
 
 package io.verik.compiler.core.common
 
+/**
+ * A cardinal declaration that represents the integer [value].
+ */
 class CardinalConstantDeclaration(
     val value: Int
 ) : CardinalDeclaration {

@@ -18,6 +18,9 @@ import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 
+/**
+ * Stage that checks for invalid or conflicting annotations on declarations.
+ */
 object AnnotationEntryCheckerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

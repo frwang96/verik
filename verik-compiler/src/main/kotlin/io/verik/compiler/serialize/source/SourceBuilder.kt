@@ -9,6 +9,9 @@ import io.verik.compiler.common.TextFile
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.serialize.general.FileHeaderBuilder
 
+/**
+ * Builder for source text files that handles indentation, line labeling, and line wrapping.
+ */
 class SourceBuilder(
     projectContext: ProjectContext,
     private val file: EFile

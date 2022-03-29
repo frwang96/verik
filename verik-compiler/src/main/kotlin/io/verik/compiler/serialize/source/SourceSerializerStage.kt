@@ -9,6 +9,9 @@ import io.verik.compiler.common.TextFile
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 
+/**
+ * Stage that serializes source text files.
+ */
 object SourceSerializerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

@@ -24,6 +24,9 @@ import io.verik.compiler.resolve.TypeAdapter
 import io.verik.compiler.resolve.TypeConstraint
 import io.verik.compiler.resolve.TypeConstraintKind
 
+/**
+ * Core data functions from the Verik core package.
+ */
 object CoreVkData : CoreScope(CorePackage.VK) {
 
     val P_unknown = object : CorePropertyDeclaration(parent, "unknown") {

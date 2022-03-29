@@ -7,6 +7,9 @@ package io.verik.importer.ast.element.declaration
 import io.verik.importer.common.Visitor
 import io.verik.importer.message.SourceLocation
 
+/**
+ * Element that represents a Kotlin companion object declaration.
+ */
 class ECompanionObject(
     override val location: SourceLocation,
     override var declarations: ArrayList<EDeclaration>

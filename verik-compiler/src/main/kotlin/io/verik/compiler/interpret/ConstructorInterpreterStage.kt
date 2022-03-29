@@ -17,6 +17,9 @@ import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 
+/**
+ * Stage that interprets SystemVerilog constructors from Kotlin secondary constructors.
+ */
 object ConstructorInterpreterStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

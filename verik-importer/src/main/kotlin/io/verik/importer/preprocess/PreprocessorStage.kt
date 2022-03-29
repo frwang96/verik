@@ -8,6 +8,9 @@ import io.verik.importer.main.InputFileContext
 import io.verik.importer.main.ProjectContext
 import io.verik.importer.main.ProjectStage
 
+/**
+ * Stage that runs the preprocessor to build preprocessor fragments.
+ */
 object PreprocessorStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

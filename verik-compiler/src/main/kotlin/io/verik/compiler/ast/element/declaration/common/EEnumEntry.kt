@@ -12,6 +12,9 @@ import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
 
+/**
+ * Element that represents an enum entry. If the enum entry has a corresponding value, it is given by [expression].
+ */
 class EEnumEntry(
     override val location: SourceLocation,
     override var name: String,

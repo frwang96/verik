@@ -22,6 +22,9 @@ import io.verik.importer.cast.cast.TypeParameterCaster
 import io.verik.importer.cast.cast.ValueParameterCaster
 import org.antlr.v4.runtime.RuleContext
 
+/**
+ * Visitor that traverses [rule contexts][RuleContext] and builds the AST.
+ */
 class CasterVisitor(
     val castContext: CastContext
 ) : SystemVerilogParserBaseVisitor<EElement>() {

@@ -11,6 +11,9 @@ import org.jetbrains.kotlin.cli.jvm.compiler.NoScopeRecordCliBindingTrace
 import org.jetbrains.kotlin.cli.jvm.compiler.TopDownAnalyzerFacadeForJVM
 import org.jetbrains.kotlin.resolve.lazy.declarations.FileBasedDeclarationProviderFactory
 
+/**
+ * Stage that runs the Kotlin compiler analyzer.
+ */
 object KotlinCompilerAnalyzerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

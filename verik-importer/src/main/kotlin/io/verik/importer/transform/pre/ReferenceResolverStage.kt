@@ -15,6 +15,9 @@ import io.verik.importer.main.ProjectContext
 import io.verik.importer.main.ProjectStage
 import io.verik.importer.message.Messages
 
+/**
+ * Stage that indexes the namespaces and resolves the references of reference descriptors.
+ */
 object ReferenceResolverStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

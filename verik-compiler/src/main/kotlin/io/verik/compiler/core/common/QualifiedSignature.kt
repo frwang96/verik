@@ -16,6 +16,10 @@ import org.jetbrains.kotlin.descriptors.impl.AbstractTypeAliasDescriptor
 import org.jetbrains.kotlin.resolve.calls.components.isVararg
 import org.jetbrains.kotlin.resolve.descriptorUtil.fqNameSafe
 
+/**
+ * A qualified signature that uniquely identifies a declaration. It is used to map
+ * [declaration descriptors][DeclarationDescriptor] to core declarations.
+ */
 data class QualifiedSignature(val qualifiedName: String, val signature: String) {
 
     companion object {

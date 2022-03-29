@@ -21,6 +21,9 @@ import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 
+/**
+ * Stage that transforms Kotlin assignments into SystemVerilog blocking and non-blocking assignments.
+ */
 object AssignmentTransformerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

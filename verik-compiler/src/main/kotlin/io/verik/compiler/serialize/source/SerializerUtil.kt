@@ -9,6 +9,9 @@ import io.verik.compiler.ast.element.declaration.common.EEnumEntry
 import io.verik.compiler.ast.element.declaration.sv.EClockingBlock
 import io.verik.compiler.ast.element.declaration.sv.EModulePort
 
+/**
+ * Utility class for functions related to serialization.
+ */
 object SerializerUtil {
 
     fun declarationIsHidden(element: EElement): Boolean {

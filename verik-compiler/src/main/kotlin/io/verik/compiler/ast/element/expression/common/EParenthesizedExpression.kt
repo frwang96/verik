@@ -9,6 +9,9 @@ import io.verik.compiler.ast.property.SerializationKind
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
 
+/**
+ * Element that represents a parenthesized expression.
+ */
 class EParenthesizedExpression(
     override val location: SourceLocation,
     override var type: Type,

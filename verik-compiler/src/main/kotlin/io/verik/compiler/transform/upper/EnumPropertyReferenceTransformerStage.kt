@@ -11,6 +11,10 @@ import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 
+/**
+ * Stage that substitutes references to the value of enum properties with references to the enum property itself as this
+ * is how the values of enum properties are accessed in SystemVerilog.
+ */
 object EnumPropertyReferenceTransformerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

@@ -15,6 +15,9 @@ import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 
+/**
+ * Stage that reduces type aliases by substituting their definitions.
+ */
 object TypeAliasReducerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

@@ -14,6 +14,9 @@ import io.verik.compiler.common.Visitor
 import io.verik.compiler.common.replaceIfContains
 import io.verik.compiler.message.SourceLocation
 
+/**
+ * Element that represents a Kotlin when expression.
+ */
 class EWhenExpression(
     override val location: SourceLocation,
     val endLocation: SourceLocation,

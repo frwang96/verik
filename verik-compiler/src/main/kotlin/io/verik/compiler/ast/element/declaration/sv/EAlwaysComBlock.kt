@@ -9,6 +9,9 @@ import io.verik.compiler.ast.property.AnnotationEntry
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
 
+/**
+ * Element that represents a SystemVerilog always_comb block declaration.
+ */
 class EAlwaysComBlock(
     override val location: SourceLocation,
     override var name: String,

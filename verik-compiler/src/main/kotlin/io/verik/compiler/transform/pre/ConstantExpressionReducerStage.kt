@@ -11,6 +11,9 @@ import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 
+/**
+ * Stage that normalizes the representation of constant expressions.
+ */
 object ConstantExpressionReducerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
@@ -22,10 +25,12 @@ object ConstantExpressionReducerStage : ProjectStage() {
         override fun visitConstantExpression(constantExpression: EConstantExpression) {
             super.visitConstantExpression(constantExpression)
             when (constantExpression.type.reference) {
-                Core.Kt.C_Boolean ->
+                Core.Kt.C_Boolean -> {
                     constantExpression.replace(ConstantNormalizer.normalizeBoolean(constantExpression))
-                Core.Kt.C_Int ->
+                }
+                Core.Kt.C_Int -> {
                     constantExpression.replace(ConstantNormalizer.normalizeInt(constantExpression))
+                }
             }
         }
     }

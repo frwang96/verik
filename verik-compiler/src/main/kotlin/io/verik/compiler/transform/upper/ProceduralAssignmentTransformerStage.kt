@@ -23,6 +23,9 @@ import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 
+/**
+ * Stage that splits inline combinational or sequential assignments into a property declaration and a procedural block.
+ */
 object ProceduralAssignmentTransformerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

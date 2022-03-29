@@ -8,6 +8,9 @@ import io.verik.importer.antlr.SystemVerilogParser
 import io.verik.importer.ast.element.declaration.ESvPackage
 import io.verik.importer.cast.common.CastContext
 
+/**
+ * Caster for SystemVerilog package declarations.
+ */
 object PackageCaster {
 
     fun castPackageFromPackageDeclaration(

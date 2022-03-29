@@ -19,6 +19,9 @@ import io.verik.compiler.resolve.TypeAdapter
 import io.verik.compiler.resolve.TypeConstraint
 import io.verik.compiler.resolve.TypeConstraintKind
 
+/**
+ * Core declarations from Packed.
+ */
 object CoreVkPacked : CoreScope(Core.Vk.C_Packed) {
 
     val P_size = object : CorePropertyDeclaration(parent, "size") {

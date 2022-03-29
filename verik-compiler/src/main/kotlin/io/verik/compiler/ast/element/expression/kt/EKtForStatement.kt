@@ -14,6 +14,9 @@ import io.verik.compiler.common.Visitor
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.message.SourceLocation
 
+/**
+ * Element that represents a Kotlin for statement.
+ */
 class EKtForStatement(
     override val location: SourceLocation,
     val valueParameter: EKtValueParameter,

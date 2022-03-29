@@ -4,6 +4,9 @@
 
 package io.verik.importer.cast.common
 
+/**
+ * A signature fragment with a [kind] and some [text].
+ */
 class SignatureFragment {
 
     val kind: SignatureFragmentKind

@@ -12,6 +12,9 @@ import org.gradle.api.plugins.JavaPluginExtension
 import java.nio.file.Path
 import kotlin.io.path.extension
 
+/**
+ * Factory class that builds a [VerikConfig] object.
+ */
 object VerikConfigBuilder {
 
     fun getConfig(project: Project, extension: VerikPluginExtension): VerikConfig {

@@ -16,6 +16,9 @@ import io.verik.importer.cast.common.SignatureBuilder
 import io.verik.importer.common.ElementCopier
 import io.verik.importer.message.SourceLocation
 
+/**
+ * Caster for SystemVerilog type definition declarations.
+ */
 object TypeDeclarationCaster {
 
     fun castTypeDeclarationFromTypeDeclarationData(

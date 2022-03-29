@@ -7,6 +7,9 @@ package io.verik.importer.ast.element.descriptor
 import io.verik.importer.ast.common.DescriptorContainer
 import io.verik.importer.common.Visitor
 
+/**
+ * Abstract descriptor that contains another [descriptor].
+ */
 abstract class EContainerDescriptor : EDescriptor(), DescriptorContainer {
 
     abstract var descriptor: EDescriptor

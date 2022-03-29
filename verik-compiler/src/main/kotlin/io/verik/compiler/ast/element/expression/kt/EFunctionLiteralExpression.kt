@@ -17,6 +17,9 @@ import io.verik.compiler.common.replaceIfContains
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.message.SourceLocation
 
+/**
+ * Element that represents a Kotlin function literal expression.
+ */
 class EFunctionLiteralExpression(
     override val location: SourceLocation,
     val valueParameters: ArrayList<EAbstractValueParameter>,

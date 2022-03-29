@@ -15,6 +15,9 @@ import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.Messages
 import io.verik.compiler.message.SourceLocation
 
+/**
+ * Abstract base element class with a [location] and a [parent] element.
+ */
 abstract class EElement {
 
     abstract val location: SourceLocation

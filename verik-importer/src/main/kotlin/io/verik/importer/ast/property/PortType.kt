@@ -4,6 +4,9 @@
 
 package io.verik.importer.ast.property
 
+/**
+ * Enum for port type.
+ */
 enum class PortType {
     INPUT,
     OUTPUT;

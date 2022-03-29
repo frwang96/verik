@@ -23,6 +23,9 @@ import io.verik.compiler.target.common.CompositeTargetFunctionDeclaration
 import io.verik.compiler.target.common.Target
 import io.verik.compiler.target.common.TargetDeclaration
 
+/**
+ * Stage that inserts scope expressions as necessary.
+ */
 object ScopeExpressionInsertionTransformerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

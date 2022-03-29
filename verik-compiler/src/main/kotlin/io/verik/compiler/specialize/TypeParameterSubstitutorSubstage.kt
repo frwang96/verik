@@ -16,6 +16,9 @@ import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.CardinalConstantDeclaration
 import io.verik.compiler.message.Messages
 
+/**
+ * Specializer substage that substitutes type parameters based on the type parameter binding.
+ */
 object TypeParameterSubstitutorSubstage : SpecializerSubstage() {
 
     override fun process(declaration: EDeclaration, typeParameterBinding: TypeParameterBinding) {

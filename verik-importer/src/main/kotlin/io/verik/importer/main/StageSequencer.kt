@@ -25,6 +25,10 @@ import io.verik.importer.transform.pre.DescriptorResolverStage
 import io.verik.importer.transform.pre.LocalTypeAliasEliminatorStage
 import io.verik.importer.transform.pre.ReferenceResolverStage
 
+/**
+ * Sequencer that creates the default [stage sequence][StageSequence] for the importer. This is the order that the
+ * stages will be processed by the importer.
+ */
 object StageSequencer {
 
     fun getStageSequence(): StageSequence {

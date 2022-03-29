@@ -26,6 +26,9 @@ import io.verik.compiler.resolve.TypeConstraint
 import io.verik.compiler.resolve.TypeConstraintKind
 import io.verik.compiler.target.common.Target
 
+/**
+ * Core control functions from the Verik core package.
+ */
 object CoreVkControl : CoreScope(CorePackage.VK) {
 
     val F_posedge_Boolean = object : TransformableCoreFunctionDeclaration(parent, "posedge", "fun posedge(Boolean)") {

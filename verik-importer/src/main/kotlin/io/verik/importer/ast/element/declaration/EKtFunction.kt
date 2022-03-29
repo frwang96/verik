@@ -9,6 +9,9 @@ import io.verik.importer.ast.property.AnnotationEntry
 import io.verik.importer.common.Visitor
 import io.verik.importer.message.SourceLocation
 
+/**
+ * Element that represents a Kotlin function declaration.
+ */
 class EKtFunction(
     override val location: SourceLocation,
     override val name: String,

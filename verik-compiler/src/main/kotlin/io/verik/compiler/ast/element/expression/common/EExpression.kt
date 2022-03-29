@@ -12,6 +12,9 @@ import io.verik.compiler.ast.property.ExpressionKind
 import io.verik.compiler.ast.property.KtBinaryOperatorKind
 import io.verik.compiler.ast.property.SerializationKind
 
+/**
+ * Base class of all expression elements.
+ */
 abstract class EExpression : ETypedElement() {
 
     abstract val serializationKind: SerializationKind

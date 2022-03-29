@@ -10,6 +10,9 @@ import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 
+/**
+ * Stage that transforms the names of functions that override core functions if required.
+ */
 object CoreFunctionOverrideTransformerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

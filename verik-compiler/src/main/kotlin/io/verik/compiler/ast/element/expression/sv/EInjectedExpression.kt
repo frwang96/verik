@@ -12,6 +12,9 @@ import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
 import io.verik.compiler.target.common.Target
 
+/**
+ * Expression that contains string entries that are injected directly as SystemVerilog.
+ */
 class EInjectedExpression(
     override val location: SourceLocation,
     override val entries: List<StringEntry>

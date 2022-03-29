@@ -45,6 +45,9 @@ import org.jetbrains.kotlin.resolve.descriptorUtil.overriddenTreeUniqueAsSequenc
 import org.jetbrains.kotlin.types.typeUtil.isNullableAny
 import org.jetbrains.kotlin.types.typeUtil.representativeUpperBound
 
+/**
+ * Caster that fetches declarations from the cast context and fills in its contents.
+ */
 object DeclarationCaster {
 
     fun castTypeAlias(alias: KtTypeAlias, castContext: CastContext): ETypeAlias {

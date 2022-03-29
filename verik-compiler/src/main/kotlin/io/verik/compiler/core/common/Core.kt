@@ -42,6 +42,9 @@ import io.verik.compiler.core.declaration.vk.CoreVkUbit
 import io.verik.compiler.core.declaration.vk.CoreVkUbitBinary
 import io.verik.compiler.core.declaration.vk.CoreVkUnpacked
 
+/**
+ * List of all the core declarations supported by the compiler.
+ */
 object Core {
 
     object Kt {

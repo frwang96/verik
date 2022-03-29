@@ -4,6 +4,9 @@
 
 package io.verik.importer.ast.common
 
+/**
+ * Interface for declarations that can be referred to in types or reference descriptors.
+ */
 interface Declaration {
 
     val name: String

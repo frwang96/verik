@@ -7,6 +7,9 @@ package io.verik.importer.ast.element.declaration
 import io.verik.importer.common.Visitor
 import io.verik.importer.message.SourceLocation
 
+/**
+ * Element that represents a SystemVerilog package declaration.
+ */
 class ESvPackage(
     override val location: SourceLocation,
     override val name: String,

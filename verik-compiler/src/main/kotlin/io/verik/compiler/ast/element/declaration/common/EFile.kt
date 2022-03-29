@@ -15,6 +15,9 @@ import io.verik.compiler.message.SourceLocation
 import io.verik.compiler.serialize.source.SerializerUtil
 import java.nio.file.Path
 
+/**
+ * Element that represents a file. The file contains [declarations].
+ */
 class EFile(
     override val location: SourceLocation,
     val inputPath: Path,

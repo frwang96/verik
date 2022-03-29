@@ -4,6 +4,9 @@
 
 package io.verik.plugin
 
+/**
+ * Plugin extension class that is used to configure the compiler.
+ */
 abstract class VerikPluginExtension {
 
     var timescale: String = "1ns / 1ns"

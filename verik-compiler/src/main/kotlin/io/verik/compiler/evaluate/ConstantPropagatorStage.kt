@@ -12,8 +12,9 @@ import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 
 /**
- * Most constant propagation happens in [ConstantPropagatorSubstage] during specialization. This catches remaining
- * constant expressions that need to be propagated.
+ * Stage that propagates properties that are constant expressions. Most constant propagation happens in
+ * [ConstantPropagatorSubstage] during specialization. This catches the remaining constant expressions that need to be
+ * propagated.
  */
 object ConstantPropagatorStage : ProjectStage() {
 

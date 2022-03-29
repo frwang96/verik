@@ -7,6 +7,9 @@ package io.verik.compiler.constant
 import io.verik.compiler.ast.element.expression.common.EConstantExpression
 import io.verik.compiler.ast.element.expression.common.EExpression
 
+/**
+ * Evaluator for operators on boolean constants.
+ */
 object BooleanConstantEvaluator {
 
     fun binaryAndBoolean(original: EExpression, left: EExpression, right: EExpression): EExpression? {

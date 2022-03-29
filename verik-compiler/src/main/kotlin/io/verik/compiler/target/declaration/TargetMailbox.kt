@@ -8,6 +8,9 @@ import io.verik.compiler.target.common.PrimitiveTargetFunctionDeclaration
 import io.verik.compiler.target.common.Target
 import io.verik.compiler.target.common.TargetScope
 
+/**
+ * Target declarations from Mailbox.
+ */
 object TargetMailbox : TargetScope(Target.C_Mailbox) {
 
     val F_new = PrimitiveTargetFunctionDeclaration(parent, "new")

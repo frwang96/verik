@@ -22,6 +22,9 @@ import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 
+/**
+ * Stage that reduces Kotlin primary constructors to Kotlin secondary constructors.
+ */
 object PrimaryConstructorReducerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

@@ -9,6 +9,9 @@ import io.verik.importer.main.ProjectContext
 import io.verik.importer.serialize.general.FileHeaderBuilder
 import java.nio.file.Path
 
+/**
+ * Builder for source text files that handles indentation.
+ */
 class SourceBuilder(
     projectContext: ProjectContext,
     private val packageName: String,

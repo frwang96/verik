@@ -6,6 +6,9 @@ package io.verik.compiler.reorder
 
 import io.verik.compiler.ast.element.declaration.common.EDeclaration
 
+/**
+ * Utility class that reorders declarations based on their dependencies.
+ */
 object DependencyReorderer {
 
     fun <D : EDeclaration> reorder(

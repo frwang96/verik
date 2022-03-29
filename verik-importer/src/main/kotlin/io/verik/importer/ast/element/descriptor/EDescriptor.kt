@@ -7,6 +7,9 @@ package io.verik.importer.ast.element.descriptor
 import io.verik.importer.ast.common.Type
 import io.verik.importer.ast.element.common.EElement
 
+/**
+ * Base class of all descriptor elements. Descriptors can either be types or constant expressions.
+ */
 abstract class EDescriptor : EElement() {
 
     abstract var type: Type

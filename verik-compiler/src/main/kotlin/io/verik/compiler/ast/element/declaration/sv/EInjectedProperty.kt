@@ -12,6 +12,9 @@ import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
 import io.verik.compiler.target.common.Target
 
+/**
+ * Element that represents an [injectedExpression] injected as a SystemVerilog declaration with [name].
+ */
 class EInjectedProperty(
     override val location: SourceLocation,
     override var name: String,

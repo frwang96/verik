@@ -16,6 +16,9 @@ import io.verik.compiler.resolve.TypeConstraint
 import io.verik.compiler.resolve.TypeConstraintKind
 import io.verik.compiler.target.common.Target
 
+/**
+ * Core random functions from the Verik core package.
+ */
 object CoreVkRandom : CoreScope(CorePackage.VK) {
 
     val F_random = BasicCoreFunctionDeclaration(parent, "random", "fun random()", Target.F_random)

@@ -15,6 +15,9 @@ import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 
+/**
+ * Stage that reduces unary expressions to call expressions if possible.
+ */
 object UnaryExpressionReducerStage : ProjectStage() {
 
     private val referenceMap = HashMap<ReducerEntry, CoreFunctionDeclaration>()

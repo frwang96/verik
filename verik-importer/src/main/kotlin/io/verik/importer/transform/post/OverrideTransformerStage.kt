@@ -15,6 +15,9 @@ import io.verik.importer.common.TreeVisitor
 import io.verik.importer.main.ProjectContext
 import io.verik.importer.main.ProjectStage
 
+/**
+ * Stage that determines if a property or function is an override.
+ */
 object OverrideTransformerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
@@ -22,6 +25,29 @@ object OverrideTransformerStage : ProjectStage() {
     }
 
     object OverrideTransformerVisitor : TreeVisitor() {
+
+        override fun visitKtClass(cls: EKtClass) {
+            super.visitKtClass(cls)
+            val superClass = getSuperClass(cls.superDescriptor)
+            if (superClass != null) {
+                val declarations = ArrayList<EDeclaration>()
+                cls.declarations.forEach { declaration ->
+                    when (declaration) {
+                        is EProperty -> {
+                            if (!isOverride(declaration, superClass)) declarations.add(declaration)
+                        }
+                        is EKtFunction -> {
+                            val isOverride = isOverride(declaration, superClass)
+                            declaration.isOverride = isOverride
+                            if (isOverride) declaration.valueParameters.forEach { it.hasDefault = false }
+                            declarations.add(declaration)
+                        }
+                        else -> declarations.add(declaration)
+                    }
+                }
+                cls.declarations = ArrayList(declarations)
+            }
+        }
 
         private fun getSuperClass(descriptor: EDescriptor): EKtClass? {
             return when (val declaration = descriptor.type.reference) {
@@ -61,29 +87,6 @@ object OverrideTransformerStage : ProjectStage() {
                 }
             }
             return false
-        }
-
-        override fun visitKtClass(cls: EKtClass) {
-            super.visitKtClass(cls)
-            val superClass = getSuperClass(cls.superDescriptor)
-            if (superClass != null) {
-                val declarations = ArrayList<EDeclaration>()
-                cls.declarations.forEach { declaration ->
-                    when (declaration) {
-                        is EProperty -> {
-                            if (!isOverride(declaration, superClass)) declarations.add(declaration)
-                        }
-                        is EKtFunction -> {
-                            val isOverride = isOverride(declaration, superClass)
-                            declaration.isOverride = isOverride
-                            if (isOverride) declaration.valueParameters.forEach { it.hasDefault = false }
-                            declarations.add(declaration)
-                        }
-                        else -> declarations.add(declaration)
-                    }
-                }
-                cls.declarations = ArrayList(declarations)
-            }
         }
     }
 }

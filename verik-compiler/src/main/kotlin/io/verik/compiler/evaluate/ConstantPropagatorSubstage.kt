@@ -17,6 +17,9 @@ import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.specialize.SpecializerSubstage
 import io.verik.compiler.specialize.TypeParameterBinding
 
+/**
+ * Specializer substage that propagates properties that are constant expressions.
+ */
 object ConstantPropagatorSubstage : SpecializerSubstage() {
 
     override fun process(declaration: EDeclaration, typeParameterBinding: TypeParameterBinding) {

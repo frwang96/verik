@@ -8,6 +8,9 @@ import io.verik.compiler.core.common.BasicCoreFunctionDeclaration
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreScope
 
+/**
+ * Core declarations from Any.
+ */
 object CoreKtAny : CoreScope(Core.Kt.C_Any) {
 
     val F_toString = BasicCoreFunctionDeclaration(parent, "toString", "fun toString()", null)

@@ -11,6 +11,9 @@ import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 
+/**
+ * Stage that reduces companion objects by inserting its child declarations into its parent class.
+ */
 object CompanionObjectReducerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

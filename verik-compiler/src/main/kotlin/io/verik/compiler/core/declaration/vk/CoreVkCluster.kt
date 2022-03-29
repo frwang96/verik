@@ -12,6 +12,9 @@ import io.verik.compiler.core.common.CoreScope
 import io.verik.compiler.core.common.TransformableCoreFunctionDeclaration
 import io.verik.compiler.message.Messages
 
+/**
+ * Core declarations from Cluster.
+ */
 object CoreVkCluster : CoreScope(Core.Vk.C_Cluster) {
 
     val F_get_Int = object : TransformableCoreFunctionDeclaration(parent, "get", "fun get(Int)") {

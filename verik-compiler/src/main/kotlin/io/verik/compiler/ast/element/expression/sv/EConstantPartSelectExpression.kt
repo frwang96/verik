@@ -12,6 +12,10 @@ import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
 
+/**
+ * Element that represents a SystemVerilog constant part select expression. [startIndex] and [endIndex] must be
+ * constant expressions.
+ */
 class EConstantPartSelectExpression(
     override val location: SourceLocation,
     override var type: Type,

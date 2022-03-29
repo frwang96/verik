@@ -12,6 +12,10 @@ import io.verik.importer.core.Core
 import io.verik.importer.main.ProjectContext
 import io.verik.importer.main.ProjectStage
 
+/**
+ * Stage that eliminates the super descriptor in the case that it is also a type parameter. Such inheritance is not
+ * permitted in Kotlin.
+ */
 object SuperDescriptorTransformerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

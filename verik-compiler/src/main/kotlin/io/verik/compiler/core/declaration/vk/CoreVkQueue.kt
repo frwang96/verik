@@ -14,6 +14,9 @@ import io.verik.compiler.core.common.CoreScope
 import io.verik.compiler.core.common.TransformableCoreFunctionDeclaration
 import io.verik.compiler.target.common.Target
 
+/**
+ * Core declarations from Queue.
+ */
 object CoreVkQueue : CoreScope(Core.Vk.C_Queue) {
 
     val P_size = object : CorePropertyDeclaration(parent, "size") {

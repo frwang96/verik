@@ -28,6 +28,9 @@ import org.jetbrains.kotlin.config.LanguageVersion
 import org.jetbrains.kotlin.config.LanguageVersionSettingsImpl
 import java.io.File
 
+/**
+ * Stage that builds the Kotlin environment for the Kotlin compiler.
+ */
 object KotlinEnvironmentBuilderStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

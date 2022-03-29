@@ -11,6 +11,9 @@ import io.verik.importer.cast.common.CastContext
 import io.verik.importer.cast.common.SignatureBuilder
 import io.verik.importer.common.ElementCopier
 
+/**
+ * Caster for SystemVerilog property declarations.
+ */
 object PropertyCaster {
 
     fun castPropertiesFromClassProperty(

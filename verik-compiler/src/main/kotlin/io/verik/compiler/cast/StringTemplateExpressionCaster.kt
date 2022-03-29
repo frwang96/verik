@@ -16,6 +16,9 @@ import org.jetbrains.kotlin.psi.KtStringTemplateEntry
 import org.jetbrains.kotlin.psi.KtStringTemplateEntryWithExpression
 import org.jetbrains.kotlin.psi.KtStringTemplateExpression
 
+/**
+ * Caster that builds [string template expressions][EStringTemplateExpression].
+ */
 object StringTemplateExpressionCaster {
 
     fun castStringTemplateExpression(

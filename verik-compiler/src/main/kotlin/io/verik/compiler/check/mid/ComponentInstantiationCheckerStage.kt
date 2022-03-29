@@ -14,6 +14,9 @@ import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 
+/**
+ * Stage that checks for component instantiations are not situated in the right context.
+ */
 object ComponentInstantiationCheckerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

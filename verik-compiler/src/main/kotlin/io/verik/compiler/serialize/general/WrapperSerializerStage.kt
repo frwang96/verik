@@ -15,6 +15,10 @@ import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import java.nio.file.Path
 
+/**
+ * Stage that serializes the wrapper file. The wrapper file has include directives to all of the other generated source
+ * files.
+ */
 object WrapperSerializerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

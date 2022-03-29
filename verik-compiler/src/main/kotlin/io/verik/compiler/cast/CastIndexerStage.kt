@@ -33,6 +33,9 @@ import org.jetbrains.kotlin.psi.KtTreeVisitorVoid
 import org.jetbrains.kotlin.psi.KtTypeAlias
 import org.jetbrains.kotlin.psi.KtTypeParameter
 
+/**
+ * Stage that indexes the declarations of the Kotlin AST to build a [CastContext].
+ */
 object CastIndexerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

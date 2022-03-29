@@ -13,6 +13,10 @@ import io.verik.compiler.message.Messages
 import io.verik.compiler.message.SourceLocation
 import java.math.BigInteger
 
+/**
+ * Utility class for normalizing and parsing constant expressions. Normalization is the process of converting Kotlin
+ * constant expressions to SystemVerilog constant expressions.
+ */
 object ConstantNormalizer {
 
     fun normalizeBoolean(constantExpression: EConstantExpression): EConstantExpression {

@@ -41,6 +41,9 @@ import io.verik.compiler.ast.property.LiteralStringEntry
 import io.verik.compiler.ast.property.WhenEntry
 import io.verik.compiler.message.Messages
 
+/**
+ * Copier that copies elements as they are specialized.
+ */
 object SpecializerCopier {
 
     fun <E : EElement> copy(element: E, typeArguments: List<Type>, specializeContext: SpecializeContext): E {
@@ -469,10 +472,12 @@ object SpecializerCopier {
     ): EStringTemplateExpression {
         val entries = stringTemplateExpression.entries.map {
             when (it) {
-                is LiteralStringEntry ->
+                is LiteralStringEntry -> {
                     LiteralStringEntry(it.text)
-                is ExpressionStringEntry ->
+                }
+                is ExpressionStringEntry -> {
                     ExpressionStringEntry(copy(it.expression, typeArguments, specializeContext))
+                }
             }
         }
         return EStringTemplateExpression(

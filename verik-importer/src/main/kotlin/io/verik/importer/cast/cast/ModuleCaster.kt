@@ -12,6 +12,9 @@ import io.verik.importer.cast.common.CastContext
 import io.verik.importer.cast.common.SignatureBuilder
 import io.verik.importer.message.Messages
 
+/**
+ * Caster for SystemVerilog module declarations.
+ */
 object ModuleCaster {
 
     fun castModuleFromModuleDeclarationNonAnsi(

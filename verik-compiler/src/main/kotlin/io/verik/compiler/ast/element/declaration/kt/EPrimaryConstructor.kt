@@ -12,6 +12,9 @@ import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
 
+/**
+ * Element that represents a Kotlin primary constructor.
+ */
 class EPrimaryConstructor(
     override val location: SourceLocation,
     override var name: String,

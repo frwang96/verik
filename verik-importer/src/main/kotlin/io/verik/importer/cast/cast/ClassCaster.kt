@@ -11,6 +11,9 @@ import io.verik.importer.cast.common.CastContext
 import io.verik.importer.cast.common.SignatureBuilder
 import io.verik.importer.core.Core
 
+/**
+ * Caster for SystemVerilog class declarations.
+ */
 object ClassCaster {
 
     fun castClassFromClassDeclaration(

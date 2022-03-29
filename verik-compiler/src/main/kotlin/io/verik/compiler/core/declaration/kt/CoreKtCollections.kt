@@ -13,6 +13,9 @@ import io.verik.compiler.resolve.TypeAdapter
 import io.verik.compiler.resolve.TypeConstraint
 import io.verik.compiler.resolve.TypeConstraintKind
 
+/**
+ * Core declarations from the Kotlin collections package.
+ */
 object CoreKtCollections : CoreScope(CorePackage.KT_COLLECTIONS) {
 
     val F_forEach_Function = object : BasicCoreFunctionDeclaration(

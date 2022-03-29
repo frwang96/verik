@@ -17,6 +17,11 @@ import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 import org.jetbrains.kotlin.backend.common.pop
 
+/**
+ * Stage that specializes type parameterized declarations according to its usage. Specialization is performed
+ * incrementally from the entry points. Specialized declarations are processed with a sequence of
+ * [substages][SpecializerSubstage] to evaluate the AST and determine the next declarations to be specialized.
+ */
 object SpecializerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

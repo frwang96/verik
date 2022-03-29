@@ -13,6 +13,9 @@ import io.verik.compiler.common.replaceIfContains
 import io.verik.compiler.message.SourceLocation
 import io.verik.compiler.target.common.Target
 
+/**
+ * Element that represents a SystemVerilog event control expression.
+ */
 class EEventControlExpression(
     override val location: SourceLocation,
     var expressions: ArrayList<EExpression>

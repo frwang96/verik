@@ -11,6 +11,10 @@ import kotlin.reflect.KClass
 import kotlin.reflect.KProperty1
 import kotlin.reflect.full.declaredMemberProperties
 
+/**
+ * Utility class that checks that the target serialization sequence is complete and contains no duplication. This
+ * check is only performed in debug mode.
+ */
 object TargetSerializationSequenceChecker {
 
     fun checkSequence(sequence: TargetSerializationSequence) {

@@ -6,6 +6,9 @@ package io.verik.importer.message
 
 import io.verik.importer.main.VerikImporterConfig
 
+/**
+ * Message printer that prints gradle style error and warning messages.
+ */
 class GradleMessagePrinter(config: VerikImporterConfig) : MessagePrinter() {
 
     private val debug = config.debug

@@ -19,6 +19,9 @@ import io.verik.importer.core.Core
 import io.verik.importer.main.ProjectContext
 import io.verik.importer.main.ProjectStage
 
+/**
+ * Stage that resolves the types of the descriptors.
+ */
 object DescriptorResolverStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

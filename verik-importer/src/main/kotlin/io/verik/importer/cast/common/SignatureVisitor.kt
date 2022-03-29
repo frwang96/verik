@@ -10,6 +10,10 @@ import org.antlr.v4.runtime.RuleContext
 import org.antlr.v4.runtime.tree.ParseTree
 import org.antlr.v4.runtime.tree.TerminalNode
 
+/**
+ * Visitor that traverses a [RuleContext] to collect [signatureFragments] that are used to build a declaration
+ * signature.
+ */
 class SignatureVisitor(
     private val name: String
 ) : SystemVerilogParserBaseVisitor<Unit>() {

@@ -6,6 +6,9 @@ package io.verik.compiler.message
 
 import io.verik.compiler.main.VerikConfig
 
+/**
+ * Message printer that prints gradle style error and warning messages.
+ */
 class GradleMessagePrinter(config: VerikConfig) : MessagePrinter() {
 
     private val debug = config.debug
@@ -17,15 +20,17 @@ class GradleMessagePrinter(config: VerikConfig) : MessagePrinter() {
     override fun warning(message: String, location: SourceLocation, stackTrace: Array<StackTraceElement>) {
         logPrint("w: ")
         printMessage(message, location)
-        if (debug)
+        if (debug) {
             printStackTrace(stackTrace)
+        }
     }
 
     override fun error(message: String, location: SourceLocation, stackTrace: Array<StackTraceElement>) {
         logPrint("e: ")
         printMessage(message, location)
-        if (debug)
+        if (debug) {
             printStackTrace(stackTrace)
+        }
     }
 
     override fun toString(): String {
@@ -35,11 +40,13 @@ class GradleMessagePrinter(config: VerikConfig) : MessagePrinter() {
     private fun printMessage(message: String, location: SourceLocation) {
         if (location != SourceLocation.NULL) {
             logPrint("${location.path.toAbsolutePath()}: ")
-            if (location.line != 0)
+            if (location.line != 0) {
                 logPrint("(${location.line}, ${location.column}): ")
+            }
         } else {
-            if (!message.contains(":"))
+            if (!message.contains(":")) {
                 logPrint("Unknown error: ")
+            }
         }
         logPrintLine(message)
     }

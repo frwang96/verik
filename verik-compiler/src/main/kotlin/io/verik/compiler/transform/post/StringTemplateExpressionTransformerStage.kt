@@ -16,6 +16,9 @@ import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.target.common.Target
 
+/**
+ * Stage that converts string template expressions into sformatf call expressions.
+ */
 object StringTemplateExpressionTransformerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

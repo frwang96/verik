@@ -4,6 +4,9 @@
 
 package io.verik.compiler.core.common
 
+/**
+ * A cardinal declaration that represents a function on other cardinals.
+ */
 class CoreCardinalFunctionDeclaration(
     override val parent: CoreDeclaration,
     override var name: String

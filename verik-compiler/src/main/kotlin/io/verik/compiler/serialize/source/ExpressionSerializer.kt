@@ -41,6 +41,9 @@ import io.verik.compiler.ast.property.EdgeKind
 import io.verik.compiler.ast.property.ExpressionStringEntry
 import io.verik.compiler.ast.property.LiteralStringEntry
 
+/**
+ * Serializer that serializes SystemVerilog expressions.
+ */
 object ExpressionSerializer {
 
     fun serializeBlockExpression(blockExpression: EBlockExpression, serializeContext: SerializeContext) {

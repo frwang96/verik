@@ -11,6 +11,9 @@ import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 
+/**
+ * Stage that substitutes call expressions representing bit constants to constant expressions.
+ */
 object BitConstantReducerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

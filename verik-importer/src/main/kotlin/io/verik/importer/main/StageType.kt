@@ -4,6 +4,9 @@
 
 package io.verik.importer.main
 
+/**
+ * Enum for stage type that is used to group the compiler stages.
+ */
 enum class StageType {
     PREPROCESS,
     PARSE,

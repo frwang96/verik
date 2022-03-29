@@ -8,6 +8,9 @@ import io.verik.compiler.ast.property.AnnotationEntry
 import kotlin.reflect.full.createType
 import kotlin.reflect.full.declaredMemberProperties
 
+/**
+ * List of annotation entries supported by the compiler.
+ */
 object AnnotationEntries {
 
     val ENTRY = AnnotationEntry("io.verik.core.Entry")

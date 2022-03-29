@@ -11,6 +11,9 @@ import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
 
+/**
+ * Element that represents an if expression.
+ */
 class EIfExpression(
     override val location: SourceLocation,
     override var type: Type,

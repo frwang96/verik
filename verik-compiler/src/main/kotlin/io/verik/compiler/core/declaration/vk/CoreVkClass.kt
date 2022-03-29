@@ -14,6 +14,9 @@ import io.verik.compiler.core.common.CoreScope
 import io.verik.compiler.core.common.TransformableCoreFunctionDeclaration
 import io.verik.compiler.target.common.Target
 
+/**
+ * Core declarations from Class.
+ */
 object CoreVkClass : CoreScope(Core.Vk.C_Class) {
 
     val F_randomize = object : TransformableCoreFunctionDeclaration(parent, "randomize", "fun randomize()") {

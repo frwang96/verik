@@ -14,6 +14,9 @@ import io.verik.compiler.core.common.CoreScope
 import io.verik.compiler.core.common.TransformableCoreFunctionDeclaration
 import io.verik.compiler.resolve.TypeConstraint
 
+/**
+ * Core binary functions from Sbit.
+ */
 object CoreVkSbitBinary : CoreScope(Core.Vk.C_Sbit) {
 
     val F_plus_Ubit = object : BinaryCoreFunctionDeclaration(

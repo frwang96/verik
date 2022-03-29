@@ -7,6 +7,9 @@ package io.verik.importer.transform.pre
 import io.verik.importer.ast.element.declaration.EDeclaration
 import io.verik.importer.message.Messages
 
+/**
+ * Class that represents a SystemVerilog namespace.
+ */
 class Namespace {
 
     private val namespace = HashMap<String, EDeclaration>()

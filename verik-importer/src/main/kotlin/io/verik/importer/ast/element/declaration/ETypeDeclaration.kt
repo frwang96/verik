@@ -4,4 +4,7 @@
 
 package io.verik.importer.ast.element.declaration
 
+/**
+ * Base class for SystemVerilog type definition declarations.
+ */
 abstract class ETypeDeclaration : EDeclaration()

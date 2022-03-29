@@ -11,6 +11,9 @@ import io.verik.importer.main.ProjectContext
 import io.verik.importer.main.ProjectStage
 import io.verik.importer.message.Messages
 
+/**
+ * Normalization checker that checks that the parent of each element has that element as its child.
+ */
 object ElementParentChecker : NormalizationChecker {
 
     override fun check(projectContext: ProjectContext, projectStage: ProjectStage) {

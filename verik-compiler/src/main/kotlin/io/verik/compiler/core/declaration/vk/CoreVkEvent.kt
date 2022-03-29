@@ -12,6 +12,9 @@ import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreScope
 import io.verik.compiler.core.common.TransformableCoreFunctionDeclaration
 
+/**
+ * Core declarations from Event.
+ */
 object CoreVkEvent : CoreScope(Core.Vk.C_Event) {
 
     val F_trigger = object : TransformableCoreFunctionDeclaration(parent, "trigger", "fun trigger()") {

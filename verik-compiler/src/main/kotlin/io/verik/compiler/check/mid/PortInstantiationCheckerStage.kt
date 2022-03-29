@@ -17,6 +17,9 @@ import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 
+/**
+ * Stage that checks that all port instantiations are consistent with the declared port directions.
+ */
 object PortInstantiationCheckerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

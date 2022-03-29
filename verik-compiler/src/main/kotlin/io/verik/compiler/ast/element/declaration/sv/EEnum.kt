@@ -14,6 +14,10 @@ import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
 import io.verik.compiler.target.common.Target
 
+/**
+ * Element that represents a SystemVerilog enum declaration. While it contains references to [enumEntries], the enum
+ * entries are siblings and not children in the AST to account for SystemVerilog scoping rules.
+ */
 class EEnum(
     override val location: SourceLocation,
     override val bodyStartLocation: SourceLocation,

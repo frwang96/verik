@@ -15,6 +15,10 @@ import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 
+/**
+ * Stage that moves property statements to the top of block expressions. SystemVerilog prohibits property declarations
+ * that are not at the top of a block expression.
+ */
 object PropertyStatementReordererStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

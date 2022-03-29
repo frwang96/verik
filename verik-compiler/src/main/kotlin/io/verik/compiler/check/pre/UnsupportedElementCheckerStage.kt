@@ -15,6 +15,9 @@ import org.jetbrains.kotlin.psi.KtThrowExpression
 import org.jetbrains.kotlin.psi.KtTreeVisitorVoid
 import org.jetbrains.kotlin.psi.KtTryExpression
 
+/**
+ * Check for unsupported elements.
+ */
 object UnsupportedElementCheckerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

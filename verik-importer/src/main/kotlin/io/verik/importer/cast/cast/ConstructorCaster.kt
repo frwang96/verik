@@ -10,6 +10,9 @@ import io.verik.importer.ast.element.declaration.ESvConstructor
 import io.verik.importer.cast.common.CastContext
 import io.verik.importer.cast.common.SignatureBuilder
 
+/**
+ * Caster for SystemVerilog constructor declarations.
+ */
 object ConstructorCaster {
 
     fun castConstructorFromClassMethodConstructor(

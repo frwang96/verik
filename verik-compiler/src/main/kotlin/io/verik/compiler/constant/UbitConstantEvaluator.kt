@@ -7,6 +7,9 @@ package io.verik.compiler.constant
 import io.verik.compiler.ast.element.expression.common.EConstantExpression
 import io.verik.compiler.ast.element.expression.common.EExpression
 
+/**
+ * Evaluator for operators on unsigned bit constants.
+ */
 object UbitConstantEvaluator {
 
     fun plusUbit(original: EExpression, left: EConstantExpression, right: EConstantExpression): EConstantExpression {

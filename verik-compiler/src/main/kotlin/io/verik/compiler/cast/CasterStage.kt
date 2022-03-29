@@ -15,6 +15,9 @@ import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.SourceLocation
 import java.nio.file.Path
 
+/**
+ * Stage that casts the Kotlin AST to a Verik AST.
+ */
 object CasterStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

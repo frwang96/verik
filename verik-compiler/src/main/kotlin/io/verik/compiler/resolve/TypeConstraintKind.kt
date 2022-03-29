@@ -5,8 +5,8 @@
 package io.verik.compiler.resolve
 
 /**
- * Type constraint kind. IN / OUT is whether the type under consideration is inward or outwards and is used to
- * generate expected type and actual type in error messages.
+ * Enum for type constraint kind. In or out refers to whether the type under consideration is inwards or outwards
+ * with respect to the type constraint and is used to generate expected type and actual type in error messages.
  */
 enum class TypeConstraintKind {
     EQ_IN,

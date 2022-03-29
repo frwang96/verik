@@ -12,6 +12,9 @@ import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
 
+/**
+ * Element that represents a SystemVerilog clocking block instantiation.
+ */
 class EClockingBlockInstantiation(
     override val location: SourceLocation,
     override val endLocation: SourceLocation,

@@ -13,6 +13,9 @@ import org.jetbrains.kotlin.psi.KtCallElement
 import org.jetbrains.kotlin.psi.KtExpression
 import org.jetbrains.kotlin.resolve.calls.components.isVararg
 
+/**
+ * Caster that builds the value arguments and type arguments of call expressions.
+ */
 object CallExpressionCaster {
 
     fun castValueArguments(calleeExpression: KtExpression, castContext: CastContext): ArrayList<EExpression> {

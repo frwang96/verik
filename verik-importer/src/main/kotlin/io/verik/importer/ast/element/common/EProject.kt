@@ -10,6 +10,9 @@ import io.verik.importer.common.Visitor
 import io.verik.importer.common.replaceIfContains
 import io.verik.importer.message.SourceLocation
 
+/**
+ * Element that represents the entire project. The project contains [declarations].
+ */
 class EProject(
     var declarations: ArrayList<EDeclaration>
 ) : EElement(), DeclarationContainer {

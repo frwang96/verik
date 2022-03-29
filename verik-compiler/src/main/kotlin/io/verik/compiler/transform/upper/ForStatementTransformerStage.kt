@@ -25,6 +25,9 @@ import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 
+/**
+ * Stage that transforms forEach call expressions to SystemVerilog for statements.
+ */
 object ForStatementTransformerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

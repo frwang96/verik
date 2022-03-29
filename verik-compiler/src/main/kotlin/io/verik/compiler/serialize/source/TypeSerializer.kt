@@ -17,6 +17,9 @@ import io.verik.compiler.message.Messages
 import io.verik.compiler.target.common.TargetClassDeclaration
 import io.verik.compiler.target.common.TargetPackage
 
+/**
+ * Serializer that serializes SystemVerilog types.
+ */
 object TypeSerializer {
 
     fun serialize(type: Type, element: EElement): SerializedType {

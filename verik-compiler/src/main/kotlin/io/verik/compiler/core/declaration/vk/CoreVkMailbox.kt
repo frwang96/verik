@@ -17,6 +17,9 @@ import io.verik.compiler.core.common.CoreScope
 import io.verik.compiler.core.common.TransformableCoreFunctionDeclaration
 import io.verik.compiler.target.common.Target
 
+/**
+ * Core declarations from Mailbox.
+ */
 object CoreVkMailbox : CoreScope(Core.Vk.C_Mailbox) {
 
     val F_put_T = BasicCoreFunctionDeclaration(parent, "put", "fun put(T)", Target.Mailbox.F_put)

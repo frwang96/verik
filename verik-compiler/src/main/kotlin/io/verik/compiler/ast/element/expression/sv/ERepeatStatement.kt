@@ -13,6 +13,9 @@ import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
 import io.verik.compiler.target.common.Target
 
+/**
+ * Element that represents a SystemVerilog repeat statement.
+ */
 class ERepeatStatement(
     override val location: SourceLocation,
     var condition: EExpression,

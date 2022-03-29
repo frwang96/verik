@@ -10,6 +10,9 @@ import io.verik.compiler.ast.property.AnnotationEntry
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
 
+/**
+ * Element that represents a SystemVerilog module or interface instantiation.
+ */
 class EComponentInstantiation(
     override val location: SourceLocation,
     override val endLocation: SourceLocation,

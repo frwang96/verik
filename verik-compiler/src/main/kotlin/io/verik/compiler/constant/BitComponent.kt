@@ -6,6 +6,9 @@ package io.verik.compiler.constant
 
 import java.math.BigInteger
 
+/**
+ * A component of a [BitConstant] that is used to encode its kind or value.
+ */
 class BitComponent(
     private val value: ByteArray,
     val width: Int

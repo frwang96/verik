@@ -4,6 +4,9 @@
 
 package io.verik.compiler.ast.property
 
+/**
+ * Enum for SystemVerilog unary operator kind.
+ */
 enum class SvUnaryOperatorKind {
     LOGICAL_NEG,
     BITWISE_NEG,

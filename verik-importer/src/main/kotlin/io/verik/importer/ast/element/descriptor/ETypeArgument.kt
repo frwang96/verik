@@ -9,6 +9,9 @@ import io.verik.importer.ast.element.common.EElement
 import io.verik.importer.common.Visitor
 import io.verik.importer.message.SourceLocation
 
+/**
+ * Element that represents a type argument.
+ */
 class ETypeArgument(
     override val location: SourceLocation,
     val name: String?,

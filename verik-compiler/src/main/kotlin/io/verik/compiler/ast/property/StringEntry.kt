@@ -6,6 +6,9 @@ package io.verik.compiler.ast.property
 
 import io.verik.compiler.ast.element.expression.common.EExpression
 
+/**
+ * Entry of a string entry expression. It can either hold an expression or a string literal.
+ */
 sealed class StringEntry {
 
     companion object {
@@ -61,6 +64,12 @@ sealed class StringEntry {
     }
 }
 
+/**
+ * String entry that holds a string literal.
+ */
 class LiteralStringEntry(var text: String) : StringEntry()
 
+/**
+ * String entry that holds an expression.
+ */
 class ExpressionStringEntry(var expression: EExpression) : StringEntry()

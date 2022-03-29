@@ -17,6 +17,9 @@ import io.verik.compiler.constant.BooleanConstantKind
 import io.verik.compiler.constant.ConstantNormalizer
 import io.verik.compiler.core.common.CoreFunctionDeclaration
 
+/**
+ * Utility class for evaluating expressions.
+ */
 object ExpressionEvaluator {
 
     fun evaluate(expression: EExpression): EExpression? {

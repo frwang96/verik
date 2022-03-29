@@ -16,6 +16,10 @@ import io.verik.compiler.common.Visitor
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.message.SourceLocation
 
+/**
+ * Element that represents a Kotlin is expression. Is expressions cast the [expression] to [castType] and declares
+ * [property] to hold the result of the smart cast.
+ */
 class EIsExpression(
     override val location: SourceLocation,
     override var expression: EExpression,

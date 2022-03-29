@@ -8,6 +8,9 @@ import io.verik.importer.ast.element.common.EProject
 import io.verik.importer.common.TextFile
 import java.nio.file.Path
 
+/**
+ * Context that stores all of the internal state of the importer.
+ */
 class ProjectContext(
     val config: VerikImporterConfig
 ) {

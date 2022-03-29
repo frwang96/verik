@@ -20,7 +20,9 @@ import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 
-// TODO move before ForEachUnrollTransformerStage
+/**
+ * Stage that extracts expressions that must be evaluated independently according to SystemVerilog syntax.
+ */
 object ExpressionExtractorStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

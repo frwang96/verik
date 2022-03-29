@@ -15,6 +15,9 @@ import java.nio.charset.CodingErrorAction
 import java.nio.file.Files
 import java.nio.file.Path
 
+/**
+ * Utility class for platform dependent functions such as file IO and path conversion.
+ */
 object Platform {
 
     fun readTextFile(path: Path): TextFile {

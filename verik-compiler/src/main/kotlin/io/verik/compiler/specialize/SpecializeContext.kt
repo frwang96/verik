@@ -10,6 +10,10 @@ import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.declaration.common.EDeclaration
 import io.verik.compiler.message.Messages
 
+/**
+ * Context that stores the mapping between the original declarations and the specialized declarations. This mapping
+ * is used for reference forwarding.
+ */
 class SpecializeContext {
 
     private val originalDeclarations = HashSet<EDeclaration>()

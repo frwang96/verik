@@ -8,6 +8,9 @@ import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 
+/**
+ * Check that the input source files have the Verik file annotation.
+ */
 object FileAnnotationCheckerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

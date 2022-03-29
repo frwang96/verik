@@ -15,6 +15,10 @@ import io.verik.importer.main.ProjectContext
 import io.verik.importer.main.ProjectStage
 import io.verik.importer.message.Messages
 
+/**
+ * Stage that interprets static SystemVerilog declarations as child declarations of a Kotlin companion object. Static
+ * properties of parameterized classes cannot be interpreted because of limitations of the Kotlin type system.
+ */
 object CompanionObjectInterpreterStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

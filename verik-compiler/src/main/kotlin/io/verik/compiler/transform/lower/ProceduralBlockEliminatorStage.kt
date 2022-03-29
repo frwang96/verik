@@ -10,6 +10,9 @@ import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 
+/**
+ * Stage that eliminates procedural blocks that are empty.
+ */
 object ProceduralBlockEliminatorStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

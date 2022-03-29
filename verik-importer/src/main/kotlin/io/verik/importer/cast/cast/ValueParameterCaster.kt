@@ -10,6 +10,9 @@ import io.verik.importer.ast.element.declaration.ESvValueParameter
 import io.verik.importer.cast.common.CastContext
 import io.verik.importer.common.ElementCopier
 
+/**
+ * Caster for SystemVerilog value parameters declarations.
+ */
 object ValueParameterCaster {
 
     fun castValueParameterFromTfPortItem(

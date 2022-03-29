@@ -10,6 +10,9 @@ import io.verik.compiler.ast.element.expression.common.EReferenceExpression
 import io.verik.compiler.common.ExpressionCopier
 import io.verik.compiler.common.TreeVisitor
 
+/**
+ * Utility class for unrolling expressions.
+ */
 object UnrollUtil {
 
     fun substituteValueParameter(

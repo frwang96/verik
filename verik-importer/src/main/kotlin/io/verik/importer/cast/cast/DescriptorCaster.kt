@@ -19,6 +19,9 @@ import io.verik.importer.core.Cardinal
 import io.verik.importer.core.Core
 import io.verik.importer.message.SourceLocation
 
+/**
+ * Caster for SystemVerilog descriptors.
+ */
 object DescriptorCaster {
 
     fun castDescriptorFromDataTypeVector(

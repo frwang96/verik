@@ -72,6 +72,9 @@ import io.verik.compiler.ast.property.SerializationKind
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.Messages
 
+/**
+ * Visitor that traverses the AST to serialize it to a text file.
+ */
 class SourceSerializerVisitor(
     private val serializeContext: SerializeContext
 ) : Visitor() {

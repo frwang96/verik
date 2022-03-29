@@ -16,6 +16,9 @@ import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 
+/**
+ * Stage that interprets SystemVerilog enums from Kotlin enum classes.
+ */
 object EnumInterpreterStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

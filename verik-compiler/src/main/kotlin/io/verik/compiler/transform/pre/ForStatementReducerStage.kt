@@ -12,6 +12,9 @@ import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 
+/**
+ * Stage that reduces for statements to forEach call expressions.
+ */
 object ForStatementReducerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

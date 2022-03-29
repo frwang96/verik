@@ -6,6 +6,9 @@ package io.verik.importer.main
 
 import java.nio.file.Path
 
+/**
+ * Overall configuration for the importer.
+ */
 data class VerikImporterConfig(
     val toolchain: String,
     val timestamp: String,

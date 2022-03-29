@@ -4,6 +4,9 @@
 
 package io.verik.compiler.ast.property
 
+/**
+ * Enum for SystemVerilog binary operator kind.
+ */
 enum class SvBinaryOperatorKind {
     ASSIGN,
     ARROW_ASSIGN,

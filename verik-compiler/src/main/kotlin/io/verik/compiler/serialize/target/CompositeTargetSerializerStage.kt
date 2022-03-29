@@ -17,6 +17,9 @@ import io.verik.compiler.target.serialize.FunctionTargetSerializationEntry
 import io.verik.compiler.target.serialize.TargetSerializationSequenceChecker
 import io.verik.compiler.target.serialize.TargetSerializationSequencer
 
+/**
+ * Stage that serializes the text file that declares the Verik SystemVerilog package.
+ */
 object CompositeTargetSerializerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
@@ -31,8 +34,9 @@ object CompositeTargetSerializerStage : ProjectStage() {
         targetSourceBuilder.appendLine("package ${TargetPackage.name};")
         targetSourceBuilder.indent {
             val sequence = TargetSerializationSequencer.getSequence()
-            if (projectContext.config.debug)
+            if (projectContext.config.debug) {
                 TargetSerializationSequenceChecker.checkSequence(sequence)
+            }
             sequence.entries.forEach {
                 when (it) {
                     is FunctionTargetSerializationEntry ->

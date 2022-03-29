@@ -11,6 +11,9 @@ import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 
+/**
+ * Stage that transforms the Kotlin package names to SystemVerilog package names.
+ */
 object PackageNameTransformerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

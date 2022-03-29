@@ -23,6 +23,9 @@ import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 
+/**
+ * Stage that counts the declarations in the AST.
+ */
 object DeclarationCounterStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

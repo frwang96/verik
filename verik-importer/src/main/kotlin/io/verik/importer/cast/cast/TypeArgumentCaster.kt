@@ -9,6 +9,9 @@ import io.verik.importer.ast.element.common.EContainerElement
 import io.verik.importer.ast.element.descriptor.ETypeArgument
 import io.verik.importer.cast.common.CastContext
 
+/**
+ * Caster for SystemVerilog type argument declarations.
+ */
 object TypeArgumentCaster {
 
     fun castTypeArgumentsFromListOfParameterAssignmentsOrdered(

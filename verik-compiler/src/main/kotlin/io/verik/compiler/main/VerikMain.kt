@@ -11,6 +11,10 @@ import io.verik.compiler.serialize.general.FileHeaderBuilder
 import java.nio.file.Files
 import kotlin.io.path.exists
 
+/**
+ * Entry point of the compiler. The compiler reads the input files, processes the stage sequence, and writes the output
+ * files. Messages are written to a log file.
+ */
 object VerikMain {
 
     fun run(config: VerikConfig, stageSequence: StageSequence) {

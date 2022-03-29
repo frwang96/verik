@@ -14,6 +14,9 @@ import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 
+/**
+ * Stage that reduces reference expressions that are smart casts.
+ */
 object SmartCastReducerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

@@ -18,6 +18,9 @@ import io.verik.importer.ast.element.declaration.ETypeParameter
 import io.verik.importer.common.Visitor
 import io.verik.importer.message.Messages
 
+/**
+ * Visitor that traverses the AST to serialize it to a text file.
+ */
 class SourceSerializerVisitor(
     private val serializeContext: SerializeContext
 ) : Visitor() {

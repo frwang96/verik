@@ -13,6 +13,9 @@ import io.verik.compiler.common.replaceIfContains
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.message.SourceLocation
 
+/**
+ * Element that represents a block expression. Block expressions contain [statements].
+ */
 class EBlockExpression(
     override val location: SourceLocation,
     val endLocation: SourceLocation,

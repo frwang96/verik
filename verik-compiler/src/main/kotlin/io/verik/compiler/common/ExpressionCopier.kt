@@ -27,9 +27,14 @@ import io.verik.compiler.ast.element.expression.sv.ESvBinaryExpression
 import io.verik.compiler.ast.property.ExpressionStringEntry
 import io.verik.compiler.ast.property.LiteralStringEntry
 import io.verik.compiler.ast.property.WhenEntry
+import io.verik.compiler.common.ExpressionCopier.deepCopy
+import io.verik.compiler.common.ExpressionCopier.shallowCopy
 import io.verik.compiler.message.Messages
 import io.verik.compiler.message.SourceLocation
 
+/**
+ * Utility class that copies an expression. We can either do a [shallowCopy] or a [deepCopy].
+ */
 object ExpressionCopier {
 
     fun <E : EExpression> shallowCopy(expression: E): E {

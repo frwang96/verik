@@ -15,6 +15,9 @@ import io.verik.compiler.common.Visitor
 import io.verik.compiler.common.replaceIfContains
 import io.verik.compiler.message.SourceLocation
 
+/**
+ * Element that represents a SystemVerilog case statement.
+ */
 class ECaseStatement(
     override val location: SourceLocation,
     val endLocation: SourceLocation,

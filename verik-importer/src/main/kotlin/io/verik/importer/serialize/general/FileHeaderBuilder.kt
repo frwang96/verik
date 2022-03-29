@@ -8,6 +8,9 @@ import io.verik.importer.main.Platform
 import io.verik.importer.main.VerikImporterConfig
 import java.nio.file.Path
 
+/**
+ * Utility class that builds file headers for output text files.
+ */
 object FileHeaderBuilder {
 
     fun build(config: VerikImporterConfig, outputPath: Path, headerStyle: HeaderStyle): String {

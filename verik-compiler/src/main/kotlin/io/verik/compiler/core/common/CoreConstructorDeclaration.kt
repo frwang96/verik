@@ -6,6 +6,9 @@ package io.verik.compiler.core.common
 
 import io.verik.compiler.target.common.TargetFunctionDeclaration
 
+/**
+ * A core declaration that represents a constructor.
+ */
 class CoreConstructorDeclaration(
     override val parent: CoreDeclaration,
     val targetFunctionDeclaration: TargetFunctionDeclaration?

@@ -10,6 +10,10 @@ import io.verik.compiler.ast.element.declaration.common.EFile
 import io.verik.compiler.ast.element.expression.common.EExpression
 import io.verik.compiler.message.SourceLocation
 
+/**
+ * Context for serializing source text files from the AST. [sourceActionBuilder] builds a list of source action lines
+ * that are used to format the contents and whitespace of a source files.
+ */
 class SerializeContext(file: EFile) {
 
     private val sourceSerializerVisitor = SourceSerializerVisitor(this)

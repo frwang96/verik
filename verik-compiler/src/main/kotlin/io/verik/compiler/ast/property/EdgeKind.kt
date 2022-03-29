@@ -4,6 +4,9 @@
 
 package io.verik.compiler.ast.property
 
+/**
+ * Enum for edge kind.
+ */
 enum class EdgeKind {
     POSEDGE,
     NEGEDGE,

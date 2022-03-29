@@ -14,6 +14,9 @@ import io.verik.compiler.core.common.BinaryCoreFunctionDeclaration
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 
+/**
+ * Stage that transforms expressions to SystemVerilog binary expressions if applicable.
+ */
 object BinaryExpressionTransformerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

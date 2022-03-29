@@ -16,6 +16,9 @@ import io.verik.compiler.resolve.TypeConstraint
 import io.verik.compiler.resolve.TypeConstraintKind
 import io.verik.compiler.target.common.Target
 
+/**
+ * Core declarations from ArrayList.
+ */
 object CoreJvArrayList : CoreScope(Core.Jv.Util.C_ArrayList) {
 
     val P_size = object : CorePropertyDeclaration(parent, "size") {

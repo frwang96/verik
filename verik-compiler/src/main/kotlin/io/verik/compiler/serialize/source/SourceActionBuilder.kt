@@ -11,6 +11,10 @@ import org.jetbrains.kotlin.backend.common.peek
 import org.jetbrains.kotlin.backend.common.pop
 import org.jetbrains.kotlin.backend.common.push
 
+/**
+ * Builder that builds a list of [sourceActionLines] that are used to format the contents and whitespace of a source
+ * file.
+ */
 class SourceActionBuilder(
     private val file: EFile
 ) {
@@ -21,8 +25,9 @@ class SourceActionBuilder(
     private var indent = 0
 
     fun getSourceActionLines(): List<SourceActionLine> {
-        if (sourceActionLine.sourceActions.isNotEmpty())
+        if (sourceActionLine.sourceActions.isNotEmpty()) {
             Messages.INTERNAL_ERROR.on(file, "Serialized source must end with a new line")
+        }
         return sourceActionLines
     }
 
@@ -33,12 +38,14 @@ class SourceActionBuilder(
     }
 
     fun indent(block: () -> Unit) {
-        if (sourceActionLine.sourceActions.isNotEmpty())
+        if (sourceActionLine.sourceActions.isNotEmpty()) {
             Messages.INTERNAL_ERROR.on(file, "Indent in must start at a new line")
+        }
         sourceActionLine = SourceActionLine(++indent, ArrayList())
         block()
-        if (sourceActionLine.sourceActions.isNotEmpty())
+        if (sourceActionLine.sourceActions.isNotEmpty()) {
             Messages.INTERNAL_ERROR.on(file, "Indent out must start at a new line")
+        }
         sourceActionLine = SourceActionLine(--indent, ArrayList())
     }
 

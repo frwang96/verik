@@ -14,6 +14,9 @@ import io.verik.compiler.core.common.UnaryCoreFunctionDeclaration
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 
+/**
+ * Stage that transforms expressions to SystemVerilog unary expressions if applicable.
+ */
 object UnaryExpressionTransformerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

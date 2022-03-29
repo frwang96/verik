@@ -12,6 +12,9 @@ import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 import io.verik.compiler.message.SourceLocation
 
+/**
+ * Stage that checks that the configured entry points exist and are legal entry points.
+ */
 object EntryPointCheckerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

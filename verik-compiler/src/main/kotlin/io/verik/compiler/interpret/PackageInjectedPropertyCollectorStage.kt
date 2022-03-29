@@ -12,7 +12,10 @@ import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 
-object PackageInjectedPropertyReducerStage : ProjectStage() {
+/**
+ * Stage that collects injected properties that should be placed in the package header.
+ */
+object PackageInjectedPropertyCollectorStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
         projectContext.project.regularPackages().forEach { processPackage(it) }

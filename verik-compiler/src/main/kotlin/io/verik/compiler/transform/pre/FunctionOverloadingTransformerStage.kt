@@ -11,6 +11,9 @@ import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 
+/**
+ * Stage that performs name manging on overloaded functions.
+ */
 object FunctionOverloadingTransformerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

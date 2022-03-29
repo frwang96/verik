@@ -20,6 +20,9 @@ import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.target.common.Target
 
+/**
+ * Stage that transforms type casts introduced by is expressions and as expressions.
+ */
 object CastTransformerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

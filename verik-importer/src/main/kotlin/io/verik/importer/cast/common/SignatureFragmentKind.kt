@@ -4,6 +4,9 @@
 
 package io.verik.importer.cast.common
 
+/**
+ * Enum for signature fragment kind.
+ */
 enum class SignatureFragmentKind {
     TEXT,
     NULL,

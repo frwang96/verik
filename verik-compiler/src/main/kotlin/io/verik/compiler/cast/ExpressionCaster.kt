@@ -59,6 +59,9 @@ import org.jetbrains.kotlin.psi.KtWhileExpression
 import org.jetbrains.kotlin.resolve.descriptorUtil.classValueType
 import org.jetbrains.kotlin.resolve.lazy.descriptors.LazyClassDescriptor
 
+/**
+ * Caster that builds expressions.
+ */
 object ExpressionCaster {
 
     fun castBlockExpression(expression: KtBlockExpression, castContext: CastContext): EBlockExpression {

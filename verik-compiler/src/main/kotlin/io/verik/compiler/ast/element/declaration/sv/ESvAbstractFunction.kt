@@ -8,6 +8,9 @@ import io.verik.compiler.ast.common.TypeParameterized
 import io.verik.compiler.ast.element.declaration.common.EAbstractFunction
 import io.verik.compiler.common.TreeVisitor
 
+/**
+ * Base class for all SystemVerilog function declarations.
+ */
 abstract class ESvAbstractFunction : EAbstractFunction(), TypeParameterized {
 
     abstract var valueParameters: ArrayList<ESvValueParameter>

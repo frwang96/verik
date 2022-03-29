@@ -11,6 +11,9 @@ import io.verik.importer.common.TreeVisitor
 import io.verik.importer.main.ProjectContext
 import io.verik.importer.main.ProjectStage
 
+/**
+ * Stage that identifies unresolved declarations and removes them from the AST.
+ */
 object UnresolvedDeclarationEliminatorStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

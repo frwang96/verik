@@ -11,6 +11,9 @@ import io.verik.importer.ast.element.declaration.ETask
 import io.verik.importer.cast.common.CastContext
 import io.verik.importer.cast.common.SignatureBuilder
 
+/**
+ * Caster for SystemVerilog function declarations.
+ */
 object FunctionCaster {
 
     fun castFunctionFromClassMethodFunction(

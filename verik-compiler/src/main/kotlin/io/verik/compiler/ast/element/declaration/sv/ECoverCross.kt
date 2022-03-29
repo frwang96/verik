@@ -14,6 +14,9 @@ import io.verik.compiler.common.replaceIfContains
 import io.verik.compiler.message.SourceLocation
 import io.verik.compiler.target.common.Target
 
+/**
+ * Element that represents a SystemVerilog cross coverage declaration.
+ */
 class ECoverCross(
     override val location: SourceLocation,
     override val endLocation: SourceLocation,

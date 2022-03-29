@@ -7,6 +7,9 @@ package io.verik.compiler.reorder
 import io.verik.compiler.ast.element.common.EElement
 import io.verik.compiler.ast.element.declaration.common.EDeclaration
 
+/**
+ * Dependency that is used to reorder the AST. The dependency is originated by [element].
+ */
 class Dependency(
     val fromDeclaration: EDeclaration,
     val toDeclaration: EDeclaration,

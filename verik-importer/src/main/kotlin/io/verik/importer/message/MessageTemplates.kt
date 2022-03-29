@@ -7,6 +7,9 @@ package io.verik.importer.message
 import io.verik.importer.ast.element.common.EElement
 import org.antlr.v4.runtime.tree.TerminalNode
 
+/**
+ * Warning message template with one argument.
+ */
 class WarningMessageTemplate1<A>(
     override val template: String
 ) : AbstractMessageTemplate() {
@@ -20,6 +23,9 @@ class WarningMessageTemplate1<A>(
     }
 }
 
+/**
+ * Error message template with no arguments.
+ */
 class ErrorMessageTemplate0(
     override val template: String
 ) : AbstractMessageTemplate() {
@@ -29,6 +35,9 @@ class ErrorMessageTemplate0(
     }
 }
 
+/**
+ * Error message template with one argument.
+ */
 class ErrorMessageTemplate1<A>(
     override val template: String
 ) : AbstractMessageTemplate() {
@@ -42,6 +51,9 @@ class ErrorMessageTemplate1<A>(
     }
 }
 
+/**
+ * Error message template with two arguments.
+ */
 class ErrorMessageTemplate2<A, B>(
     override val template: String
 ) : AbstractMessageTemplate() {
@@ -51,6 +63,9 @@ class ErrorMessageTemplate2<A, B>(
     }
 }
 
+/**
+ * Fatal message template with one argument.
+ */
 class FatalMessageTemplate1<A>(
     override val template: String
 ) : AbstractMessageTemplate() {
@@ -64,6 +79,9 @@ class FatalMessageTemplate1<A>(
     }
 }
 
+/**
+ * Fatal message template with two arguments.
+ */
 class FatalMessageTemplate2<A, B>(
     override val template: String
 ) : AbstractMessageTemplate() {

@@ -15,6 +15,9 @@ import io.verik.compiler.core.common.CoreScope
 import io.verik.compiler.core.common.TransformableCoreFunctionDeclaration
 import io.verik.compiler.target.common.Target
 
+/**
+ * Core functions from the Kotlin IO package.
+ */
 object CoreKtIo : CoreScope(CorePackage.KT_IO) {
 
     val F_print_Any = object : TransformableCoreFunctionDeclaration(parent, "print", "fun print(Any)") {

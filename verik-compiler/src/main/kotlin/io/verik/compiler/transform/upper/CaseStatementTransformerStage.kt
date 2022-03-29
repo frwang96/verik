@@ -14,6 +14,9 @@ import io.verik.compiler.constant.ConstantBuilder
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 
+/**
+ * Stage that transforms Kotlin when statements into SystemVerilog case expressions.
+ */
 object CaseStatementTransformerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

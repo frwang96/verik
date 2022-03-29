@@ -18,6 +18,9 @@ import io.verik.compiler.core.common.Core
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 
+/**
+ * Stage that unlifts the return value of if and when expressions.
+ */
 object IfAndWhenExpressionUnlifterStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

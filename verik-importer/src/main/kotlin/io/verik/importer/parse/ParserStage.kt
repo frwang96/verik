@@ -17,6 +17,9 @@ import org.antlr.v4.runtime.RecognitionException
 import org.antlr.v4.runtime.Recognizer
 import org.antlr.v4.runtime.WritableToken
 
+/**
+ * Stage that runs the [SystemVerilogLexer] and [SystemVerilogParser] to generate the token streams and rule contexts.
+ */
 object ParserStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

@@ -15,6 +15,9 @@ import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 
+/**
+ * Stage that checks that type arguments that expect a cardinal type are satisfied.
+ */
 object TypeArgumentTypeCheckerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

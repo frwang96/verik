@@ -8,6 +8,9 @@ import io.verik.importer.ast.element.common.EElement
 import io.verik.importer.ast.element.declaration.EDeclaration
 import io.verik.importer.message.Messages
 
+/**
+ * A map from elements to namespaces.
+ */
 class NamespaceMap {
 
     private val namespaceMap = HashMap<EElement, Namespace>()

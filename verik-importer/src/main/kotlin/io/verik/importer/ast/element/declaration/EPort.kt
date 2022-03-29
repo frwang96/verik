@@ -10,6 +10,9 @@ import io.verik.importer.ast.property.PortType
 import io.verik.importer.common.Visitor
 import io.verik.importer.message.SourceLocation
 
+/**
+ * Element that represents a SystemVerilog port declaration.
+ */
 class EPort(
     override val location: SourceLocation,
     override val name: String,

@@ -13,6 +13,9 @@ import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
 
+/**
+ * Element that represents a Kotlin class declaration.
+ */
 class EKtClass(
     override val location: SourceLocation,
     override val bodyStartLocation: SourceLocation,

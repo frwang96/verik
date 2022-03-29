@@ -13,6 +13,9 @@ import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
 import io.verik.compiler.target.common.Target
 
+/**
+ * Expression that represents a SystemVerilog [scope] with [typeParameters].
+ */
 class EScopeExpression(
     override val location: SourceLocation,
     val scope: Type,

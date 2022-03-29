@@ -15,6 +15,10 @@ import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.AnnotationEntries
 import io.verik.compiler.main.ProjectContext
 
+/**
+ * Utility class for indexing entry points for the specializer. If dead code elimination is not enabled, all eligible
+ * entry points are indexed.
+ */
 object EntryPointIndexer {
 
     fun getEntryPoints(projectContext: ProjectContext): List<EDeclaration> {

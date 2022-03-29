@@ -15,6 +15,9 @@ import org.jetbrains.kotlin.psi.KtWhenConditionWithExpression
 import org.jetbrains.kotlin.psi.KtWhenEntry
 import org.jetbrains.kotlin.psi.KtWhenExpression
 
+/**
+ * Caster that builds [when expressions][EWhenExpression].
+ */
 object WhenExpressionCaster {
 
     fun castWhenExpression(expression: KtWhenExpression, castContext: CastContext): EWhenExpression {

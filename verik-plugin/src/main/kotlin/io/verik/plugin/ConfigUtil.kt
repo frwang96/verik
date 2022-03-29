@@ -9,6 +9,9 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.Properties
 
+/**
+ * Utility class for obtaining toolchain configuration.
+ */
 object ConfigUtil {
 
     fun getVersion(): String {

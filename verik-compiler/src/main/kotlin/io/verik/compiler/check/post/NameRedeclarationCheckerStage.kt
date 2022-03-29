@@ -12,6 +12,9 @@ import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 
+/**
+ * Stage that checks for the illegal redeclarations of names.
+ */
 object NameRedeclarationCheckerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

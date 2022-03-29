@@ -16,6 +16,9 @@ import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
 import io.verik.compiler.target.common.Target
 
+/**
+ * Element that represents a SystemVerilog for statement.
+ */
 class ESvForStatement(
     override val location: SourceLocation,
     var property: EProperty,

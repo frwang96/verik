@@ -15,6 +15,10 @@ import io.verik.compiler.constant.ConstantNormalizer
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.message.Messages
 
+/**
+ * Specializer substage that reduces optional call expressions based on its value argument. The value argument of an
+ * optional call expression must be a compile time constant.
+ */
 object OptionalReducerSubstage : SpecializerSubstage() {
 
     override fun process(declaration: EDeclaration, typeParameterBinding: TypeParameterBinding) {

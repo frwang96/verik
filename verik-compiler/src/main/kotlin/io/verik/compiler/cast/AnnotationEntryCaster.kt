@@ -9,6 +9,9 @@ import io.verik.compiler.core.common.AnnotationEntries
 import io.verik.compiler.message.Messages
 import org.jetbrains.kotlin.psi.KtAnnotationEntry
 
+/**
+ * Caster that builds [annotation entries][AnnotationEntry].
+ */
 object AnnotationEntryCaster {
 
     fun castAnnotationEntry(annotationEntry: KtAnnotationEntry, castContext: CastContext): AnnotationEntry {

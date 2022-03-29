@@ -7,6 +7,9 @@ package io.verik.compiler.ast.element.expression.common
 import io.verik.compiler.ast.common.ExpressionContainer
 import io.verik.compiler.common.TreeVisitor
 
+/**
+ * Abstract expression that contains another [expression].
+ */
 abstract class EAbstractContainerExpression : EExpression(), ExpressionContainer {
 
     abstract var expression: EExpression

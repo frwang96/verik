@@ -10,16 +10,26 @@ import io.verik.compiler.message.Messages
 import io.verik.compiler.serialize.source.SerializedType
 import io.verik.compiler.serialize.source.TypeSerializer
 
+/**
+ * A target declaration that represents a class.
+ */
 sealed class TargetClassDeclaration : TargetDeclaration {
 
     abstract fun serializeType(typeArguments: List<Type>, element: EElement): SerializedType
 }
 
+/**
+ * A target class declaration that is defined by the SystemVerilog language. A class in this context should be
+ * interpreted as a SystemVerilog type.
+ */
 abstract class PrimitiveTargetClassDeclaration(
     override val parent: TargetDeclaration,
     override var name: String
 ) : TargetClassDeclaration()
 
+/**
+ * A target class declaration that is generated in the Verik SystemVerilog package.
+ */
 class CompositeTargetClassDeclaration(
     override val parent: TargetDeclaration,
     override var name: String,

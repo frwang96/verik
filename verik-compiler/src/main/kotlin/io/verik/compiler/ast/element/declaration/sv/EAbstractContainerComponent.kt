@@ -10,6 +10,9 @@ import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.replaceIfContains
 import io.verik.compiler.message.Messages
 
+/**
+ * Base class for all SystemVerilog component declarations that contain other [declarations].
+ */
 abstract class EAbstractContainerComponent : EAbstractComponent(), ResizableDeclarationContainer {
 
     abstract var declarations: ArrayList<EDeclaration>

@@ -11,6 +11,9 @@ import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreScope
 import io.verik.compiler.core.common.TransformableCoreFunctionDeclaration
 
+/**
+ * Core declarations from String.
+ */
 object CoreKtString : CoreScope(Core.Kt.C_String) {
 
     val F_plus_Any = object : TransformableCoreFunctionDeclaration(

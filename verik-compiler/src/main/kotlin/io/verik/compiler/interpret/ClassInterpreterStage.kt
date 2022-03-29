@@ -11,6 +11,9 @@ import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 
+/**
+ * Stage that interprets SystemVerilog classes from Kotlin classes.
+ */
 object ClassInterpreterStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

@@ -17,6 +17,9 @@ import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 
+/**
+ * Stage that eliminates constant properties that are not referenced anywhere in the AST.
+ */
 object ConstantPropertyEliminatorStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

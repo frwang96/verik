@@ -10,6 +10,9 @@ import io.verik.compiler.ast.property.StringEntry
 import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.common.Visitor
 
+/**
+ * Base class for expressions that contain string entries. String entries either hold an expression or a string literal.
+ */
 abstract class EStringEntryExpression : EExpression(), ExpressionContainer {
 
     abstract val entries: List<StringEntry>

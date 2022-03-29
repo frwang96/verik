@@ -17,6 +17,9 @@ import io.verik.importer.ast.element.declaration.ETypeAlias
 import io.verik.importer.ast.element.declaration.ETypeParameter
 import io.verik.importer.ast.element.descriptor.EDescriptor
 
+/**
+ * Serializer that serializes Kotlin declarations.
+ */
 object DeclarationSerializer {
 
     fun serializeClass(cls: EKtClass, serializeContext: SerializeContext) {

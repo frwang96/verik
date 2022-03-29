@@ -7,6 +7,9 @@ package io.verik.importer.ast.element.declaration
 import io.verik.importer.common.Visitor
 import io.verik.importer.message.SourceLocation
 
+/**
+ * Element that represents a SystemVerilog task declaration.
+ */
 class ETask(
     override val location: SourceLocation,
     override val name: String,

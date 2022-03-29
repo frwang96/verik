@@ -8,6 +8,10 @@ import io.verik.compiler.ast.common.Declaration
 import io.verik.compiler.ast.common.ExpressionContainer
 import io.verik.compiler.common.TreeVisitor
 
+/**
+ * Base class for call expressions and reference expressions. Receiver expressions may operate on a [receiver].
+ * [isSafeAccess] specifies if it performs a Kotlin safe access on the receiver.
+ */
 abstract class EReceiverExpression : EExpression(), ExpressionContainer {
 
     abstract var reference: Declaration

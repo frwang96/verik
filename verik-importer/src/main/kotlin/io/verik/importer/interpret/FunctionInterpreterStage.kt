@@ -21,6 +21,9 @@ import io.verik.importer.core.Core
 import io.verik.importer.main.ProjectContext
 import io.verik.importer.main.ProjectStage
 
+/**
+ * Stage that interprets SystemVerilog function-like declarations to Kotlin functions.
+ */
 object FunctionInterpreterStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

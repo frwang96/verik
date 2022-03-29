@@ -12,6 +12,9 @@ import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 
+/**
+ * Stage that checks for the illegal use of SystemVerilog keywords.
+ */
 object KeywordCheckerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

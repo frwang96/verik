@@ -10,6 +10,9 @@ import io.verik.importer.message.Messages
 import io.verik.importer.message.SourceLocation
 import org.antlr.v4.runtime.tree.TerminalNode
 
+/**
+ * Preprocessor for directives that involve macro definitions and macro expansions.
+ */
 object MacroPreprocessor {
 
     fun preprocessDirectiveUndefineAll(preprocessContext: PreprocessContext) {

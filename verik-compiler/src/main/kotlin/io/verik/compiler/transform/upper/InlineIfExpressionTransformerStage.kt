@@ -12,6 +12,9 @@ import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 
+/**
+ * Stage that transforms if expressions to SystemVerilog inline if expressions if suitable.
+ */
 object InlineIfExpressionTransformerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

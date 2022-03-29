@@ -12,6 +12,9 @@ import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 
+/**
+ * Stage that checks for illegal class declarations based on the type of the class.
+ */
 object ClassDeclarationCheckerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

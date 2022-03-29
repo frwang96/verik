@@ -11,6 +11,9 @@ import io.verik.compiler.common.Visitor
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.message.SourceLocation
 
+/**
+ * Element that represents a SystemVerilog task declaration.
+ */
 class ETask(
     override val location: SourceLocation,
     override var name: String,

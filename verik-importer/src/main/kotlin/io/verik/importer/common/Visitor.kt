@@ -45,6 +45,10 @@ import io.verik.importer.ast.element.descriptor.EReferenceDescriptor
 import io.verik.importer.ast.element.descriptor.ESimpleDescriptor
 import io.verik.importer.ast.element.descriptor.ETypeArgument
 
+/**
+ * Visitor class for traversing the AST. For a visitor that recursively visits the children of each element use
+ * [TreeVisitor].
+ */
 abstract class Visitor {
 
     open fun visitElement(element: EElement) {}

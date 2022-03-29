@@ -13,6 +13,9 @@ import io.verik.compiler.core.common.CoreScope
 import io.verik.compiler.core.common.TransformableCoreFunctionDeclaration
 import io.verik.compiler.resolve.TypeConstraint
 
+/**
+ * Core declarations from Unpacked.
+ */
 object CoreVkUnpacked : CoreScope(Core.Vk.C_Unpacked) {
 
     val P_size = object : CorePropertyDeclaration(parent, "size") {

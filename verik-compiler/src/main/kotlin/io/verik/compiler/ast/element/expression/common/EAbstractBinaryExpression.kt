@@ -7,6 +7,9 @@ package io.verik.compiler.ast.element.expression.common
 import io.verik.compiler.ast.common.ExpressionContainer
 import io.verik.compiler.common.TreeVisitor
 
+/**
+ * Base class for all binary expressions.
+ */
 abstract class EAbstractBinaryExpression : EExpression(), ExpressionContainer {
 
     abstract var left: EExpression

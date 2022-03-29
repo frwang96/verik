@@ -6,6 +6,9 @@ package io.verik.compiler.reorder
 
 import io.verik.compiler.ast.element.common.EElement
 
+/**
+ * A registry that stores the dependencies between the child declarations of an element.
+ */
 class DependencyRegistry {
 
     private val dependencyRegistry = HashMap<EElement, HashSet<Dependency>>()

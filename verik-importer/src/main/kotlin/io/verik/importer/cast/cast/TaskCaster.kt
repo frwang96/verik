@@ -10,6 +10,9 @@ import io.verik.importer.ast.element.declaration.ETask
 import io.verik.importer.cast.common.CastContext
 import io.verik.importer.cast.common.SignatureBuilder
 
+/**
+ * Caster for SystemVerilog task declarations.
+ */
 object TaskCaster {
 
     fun castTaskFromClassMethodTask(

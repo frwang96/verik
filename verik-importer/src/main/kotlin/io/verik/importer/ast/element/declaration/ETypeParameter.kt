@@ -8,6 +8,9 @@ import io.verik.importer.ast.element.descriptor.EDescriptor
 import io.verik.importer.common.Visitor
 import io.verik.importer.message.SourceLocation
 
+/**
+ * Element that represents a type parameter.
+ */
 class ETypeParameter(
     override val location: SourceLocation,
     override val name: String,

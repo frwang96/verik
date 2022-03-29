@@ -11,6 +11,9 @@ import io.verik.compiler.common.Visitor
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.message.SourceLocation
 
+/**
+ * Element that represents a while statement. [isDoWhile] indicates if it is a do-while statement.
+ */
 class EWhileStatement(
     override val location: SourceLocation,
     var condition: EExpression,

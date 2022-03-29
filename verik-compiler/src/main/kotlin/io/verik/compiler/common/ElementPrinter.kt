@@ -90,9 +90,14 @@ import io.verik.compiler.ast.element.expression.sv.EWidthCastExpression
 import io.verik.compiler.ast.property.AnnotationEntry
 import io.verik.compiler.ast.property.ExpressionStringEntry
 import io.verik.compiler.ast.property.LiteralStringEntry
+import io.verik.compiler.common.ElementPrinter.Companion.dump
 import io.verik.compiler.message.Messages
 import io.verik.compiler.message.SourceLocation
 
+/**
+ * Visitor that builds a string representation of an AST for testing and debug. Obtain the string with the [dump]
+ * function.
+ */
 class ElementPrinter : Visitor() {
 
     private val builder = StringBuilder()

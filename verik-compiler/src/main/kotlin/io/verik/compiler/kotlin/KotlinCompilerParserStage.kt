@@ -8,6 +8,9 @@ import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import org.jetbrains.kotlin.psi.KtPsiFactory
 
+/**
+ * Stage that runs the Kotlin compiler parser.
+ */
 object KotlinCompilerParserStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

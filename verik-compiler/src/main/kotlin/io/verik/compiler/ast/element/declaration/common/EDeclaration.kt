@@ -10,6 +10,9 @@ import io.verik.compiler.ast.element.declaration.kt.EKtClass
 import io.verik.compiler.ast.property.AnnotationEntry
 import io.verik.compiler.ast.property.PackageKind
 
+/**
+ * Base class for all elements that are declarations.
+ */
 abstract class EDeclaration : ETypedElement(), Declaration {
 
     abstract var annotationEntries: List<AnnotationEntry>

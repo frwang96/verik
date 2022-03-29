@@ -15,6 +15,9 @@ import io.verik.compiler.common.TreeVisitor
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.core.common.CoreFunctionDeclaration
 
+/**
+ * Utility class for propagating constant expressions.
+ */
 object ConstantPropagator {
 
     fun expand(expression: EExpression): EExpression {

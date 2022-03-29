@@ -40,6 +40,11 @@ import org.jetbrains.kotlin.resolve.descriptorUtil.overriddenTreeAsSequence
 import org.jetbrains.kotlin.serialization.deserialization.descriptors.DeserializedTypeAliasDescriptor
 import org.jetbrains.kotlin.types.KotlinType
 
+/**
+ * Context that holds the Kotlin compiler binding context and the [declarationMap] that maps Kotlin
+ * [declaration descriptors][DeclarationDescriptor] to [declarations][Declaration]. It is used to cast the Kotlin AST to
+ * a Verik AST.
+ */
 class CastContext(
     bindingContext: BindingContext
 ) {

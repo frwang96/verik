@@ -4,6 +4,9 @@
 
 package io.verik.compiler.ast.property
 
+/**
+ * Annotation entry that represents a Kotlin annotation.
+ */
 class AnnotationEntry(
     val qualifiedName: String
 ) {

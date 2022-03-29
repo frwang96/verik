@@ -21,6 +21,10 @@ import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 
+/**
+ * Stage that splits each file into a file that contains root package declarations and a file that contains non-root
+ * package declarations.
+ */
 object FileSplitterStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

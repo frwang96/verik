@@ -17,6 +17,10 @@ import org.jetbrains.kotlin.psi.KtTypeReference
 import org.jetbrains.kotlin.psi.KtUserType
 import org.jetbrains.kotlin.types.KotlinType
 
+/**
+ * Caster that builds types from [expressions][KtExpression], [Kotlin types][KotlinType], or
+ * [type references][KtTypeReference].
+ */
 object TypeCaster {
 
     fun cast(castContext: CastContext, expression: KtExpression): Type {

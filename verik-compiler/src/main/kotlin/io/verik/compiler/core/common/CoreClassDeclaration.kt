@@ -6,6 +6,9 @@ package io.verik.compiler.core.common
 
 import io.verik.compiler.target.common.TargetClassDeclaration
 
+/**
+ * A core declaration that represents a class.
+ */
 class CoreClassDeclaration(
     override val parent: CoreDeclaration,
     override var name: String,

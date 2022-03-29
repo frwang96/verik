@@ -24,6 +24,9 @@ import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 
+/**
+ * Stage that interprets SystemVerilog component instantiations from Kotlin property declarations if applicable.
+ */
 object ComponentInstantiationInterpreterStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

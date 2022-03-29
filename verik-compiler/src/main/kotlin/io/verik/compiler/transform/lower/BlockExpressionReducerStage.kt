@@ -12,6 +12,9 @@ import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 
+/**
+ * Stage that reduces block expressions that are generated as a result of expression extraction.
+ */
 object BlockExpressionReducerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

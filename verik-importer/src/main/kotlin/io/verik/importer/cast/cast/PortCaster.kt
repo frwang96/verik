@@ -9,6 +9,9 @@ import io.verik.importer.ast.element.declaration.EPort
 import io.verik.importer.ast.property.PortType
 import io.verik.importer.cast.common.CastContext
 
+/**
+ * Caster for SystemVerilog port declarations.
+ */
 object PortCaster {
 
     fun castPortFromAnsiPortDeclaration(

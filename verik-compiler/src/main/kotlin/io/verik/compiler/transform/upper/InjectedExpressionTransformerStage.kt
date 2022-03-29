@@ -17,6 +17,9 @@ import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.message.Messages
 
+/**
+ * Stage that transforms string template expressions to injected expressions.
+ */
 object InjectedExpressionTransformerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {

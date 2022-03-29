@@ -9,6 +9,9 @@ import io.verik.compiler.ast.element.expression.common.EExpression
 import io.verik.compiler.core.common.Core
 import io.verik.compiler.message.SourceLocation
 
+/**
+ * Utility class for building constant expressions.
+ */
 object ConstantBuilder {
 
     const val MIN_HEX_CONSTANT_WIDTH = 8

@@ -11,6 +11,9 @@ import org.antlr.v4.runtime.CharStream
 import org.antlr.v4.runtime.CharStreams
 import org.antlr.v4.runtime.misc.Interval
 
+/**
+ * Character stream that keeps track of locations in the original source file before preprocessing.
+ */
 class ParserCharStream(
     private val preprocessorFragments: ArrayList<PreprocessorFragment>,
     textFile: TextFile

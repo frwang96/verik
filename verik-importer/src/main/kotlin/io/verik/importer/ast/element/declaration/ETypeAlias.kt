@@ -9,6 +9,9 @@ import io.verik.importer.ast.element.descriptor.EDescriptor
 import io.verik.importer.common.Visitor
 import io.verik.importer.message.SourceLocation
 
+/**
+ * Element that represents a Kotlin type alias declaration or a SystemVerilog typedef declaration.
+ */
 class ETypeAlias(
     override val location: SourceLocation,
     override val name: String,

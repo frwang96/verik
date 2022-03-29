@@ -14,6 +14,9 @@ import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
 import io.verik.compiler.target.common.Target
 
+/**
+ * Element that represents a SystemVerilog cover group declaration.
+ */
 class ECoverGroup(
     override val location: SourceLocation,
     override val bodyStartLocation: SourceLocation,

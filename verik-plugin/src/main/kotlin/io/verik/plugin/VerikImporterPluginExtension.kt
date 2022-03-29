@@ -6,6 +6,9 @@ package io.verik.plugin
 
 import java.nio.file.Path
 
+/**
+ * Plugin extension class that is used to configure the importer.
+ */
 abstract class VerikImporterPluginExtension {
 
     var importedFiles: List<Path> = listOf()

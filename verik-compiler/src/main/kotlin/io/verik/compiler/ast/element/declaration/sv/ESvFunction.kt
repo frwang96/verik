@@ -11,6 +11,9 @@ import io.verik.compiler.ast.property.AnnotationEntry
 import io.verik.compiler.common.Visitor
 import io.verik.compiler.message.SourceLocation
 
+/**
+ * Element that represents a SystemVerilog function declaration.
+ */
 class ESvFunction(
     override val location: SourceLocation,
     override var name: String,

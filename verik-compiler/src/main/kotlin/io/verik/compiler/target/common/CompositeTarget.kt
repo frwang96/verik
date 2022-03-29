@@ -4,6 +4,10 @@
 
 package io.verik.compiler.target.common
 
+/**
+ * Interface for composite targets. Composite targets are target declarations that are not defined by the SystemVerilog
+ * langauge and are generated in the Verik SystemVerilog package.
+ */
 interface CompositeTarget {
 
     val name: String

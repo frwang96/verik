@@ -4,6 +4,9 @@
 
 package io.verik.compiler.core.common
 
+/**
+ * List of packages that contain core declarations.
+ */
 class CorePackage(
     override var name: String
 ) : CoreDeclaration {

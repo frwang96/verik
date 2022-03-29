@@ -11,6 +11,9 @@ import io.verik.importer.message.SourceLocation
 import java.nio.file.Path
 import java.nio.file.Paths
 
+/**
+ * Preprocessor for directives that do not involve macros definitions and macro expansions.
+ */
 object BasePreprocessor {
 
     private val INCLUDE_PATTERN = Regex("\\s*\"(.+)\".*")

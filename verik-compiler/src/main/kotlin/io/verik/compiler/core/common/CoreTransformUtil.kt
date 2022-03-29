@@ -10,6 +10,9 @@ import io.verik.compiler.constant.ConstantBuilder
 import io.verik.compiler.evaluate.ExpressionEvaluator
 import io.verik.compiler.target.common.Target
 
+/**
+ * Utility class for transforming expressions.
+ */
 object CoreTransformUtil {
 
     fun callExpressionDecrement(expression: EExpression): EExpression {

@@ -8,6 +8,9 @@ import io.verik.importer.antlr.SystemVerilogParser
 import org.antlr.v4.runtime.Token
 import org.antlr.v4.runtime.WritableToken
 
+/**
+ * Filter that removes the bodies of functions and tasks to speed up parsing.
+ */
 object ParserFilter {
 
     fun filter(tokens: List<WritableToken>) {

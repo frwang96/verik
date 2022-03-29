@@ -8,6 +8,9 @@ import io.verik.importer.ast.common.Type
 import io.verik.importer.common.Visitor
 import io.verik.importer.message.SourceLocation
 
+/**
+ * Element that represents a range dimension descriptor with MSB index [left] and LSB index [right].
+ */
 class ERangeDimensionDescriptor(
     override val location: SourceLocation,
     override var type: Type,

@@ -6,6 +6,10 @@ package io.verik.compiler.target.serialize
 
 import io.verik.compiler.target.common.Target
 
+/**
+ * Sequencer that creates the [TargetSerializationSequence]. This is the order that declarations will be serialized in
+ * the Verik SystemVerilog package.
+ */
 object TargetSerializationSequencer {
 
     fun getSequence(): TargetSerializationSequence {
