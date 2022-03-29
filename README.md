@@ -59,7 +59,13 @@ Install JDK 17 and set up IntelliJ IDEA as specified in [setup](https://verik.io
 In order for a pull request to be merged onto the `master` branch it must pass all of the test suites and lint checks.
 Run these checks by executing the `mainCheck` gradle task.
 
-### Gradle Modules
+To run a broader regression, install the local build of the toolchain with `mainInstall` and run the `verik` gradle task
+on all of the [examples](https://github.com/frwang96/verik-examples) to check for unexpected error messages.
+Automated results of this regression that include compiling and running the generated SystemVerilog are shown
+[here](https://verik.io/docs/regression).
+If you have a Verik project that you are willing to share I would love to add it to this regression.
+
+## Gradle Modules
 
 Verik makes use of [gradle](https://gradle.org) for build automation.
 The Verik toolchain is structured as a gradle composite build.
@@ -67,36 +73,40 @@ The final output of the build is a [gradle plugin](https://plugins.gradle.org/pl
 packages the importer and compiler, allowing them to be run as gradle tasks in Verik projects.
 The project consists of the following gradle modules.
 
-#### `verik-kotlin`
+### `verik-kotlin`
 Documentation for declarations from the Kotlin standard library that are shared with Verik.
 This is used to generate part of the [API docs](https://verik.io/api/-verik/io.verik.kotlin/index.html) but are not used
 anywhere else in the toolchain.
 
-#### `verik-core`
+### `verik-core`
 Core library that is imported in all Verik projects that are used to express HDL semantics.
 The Verik importer and compiler recognize these as built-in declarations.
 
-#### `verik-importer`
+### `verik-importer`
 Importer that brings in SystemVerilog declarations to be used in Verik projects. 
 The importer parses SystemVerilog source files with [ANTLR](https://www.antlr.org) and executes a sequence of stages
 to convert the syntax trees to Verik source files.
 
-#### `verik-compiler`
+### `verik-compiler`
 Compiler that generates SystemVerilog output from Verik source files.
 The compiler first runs the Kotlin compiler front-end and extracts its intermediate syntax tree representation.
 It then executes a sequence of stages to convert the syntax trees to SystemVerilog source files.
 
-#### `verik-plugin`
+### `verik-plugin`
 Gradle plugin that packages the importer and compiler.
 It configures the toolchain based on the `verik` and `verikImport` blocks that are specified in `build.gradle.kts`.
 
-#### `verik-sandbox`
+### `verik-sandbox`
 Sandbox project that can be used for quick development and debugging.
 The toolchain is automatically recompiled when the sandbox project is run.
 Verilog or SystemVerilog source code to be imported should be placed under `verik-sandbox/src/main/verilog` and Verik
 source code to be compiled should be placed under `verik-sandbox/src/main/kotlin`.
 
-### Gradle Tasks
+## Gradle Tasks
+
+Here are the main gradle tasks for the project.
+Each module also defines its own tasks for building, testing, and reformatting.
+These can be accessed from the Gradle toolbar.
 
 - `mainCheck`: Run the test suites and lint checks.
 - `mainClean`: Clean all build directories.
