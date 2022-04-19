@@ -18,7 +18,7 @@ import io.verik.compiler.message.Messages
  * Stage that checks for violations of the mutability of bit types. Contrary to Kotlin, Verik considers it a violation
  * of mutability if a bit type property declared as val is mutated with the set function.
  */
-object ArrayAccessMutabilityChecker : ProjectStage() {
+object ArrayAccessMutabilityCheckerStage : ProjectStage() {
 
     override fun process(projectContext: ProjectContext) {
         projectContext.project.accept(ArrayAccessMutabilityVisitor)
