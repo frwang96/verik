@@ -7,7 +7,7 @@ package io.verik.compiler.check.mid
 import io.verik.compiler.test.BaseTest
 import org.junit.jupiter.api.Test
 
-internal class ArrayAccessMutabilityCheckerTest : BaseTest() {
+internal class ArrayAccessMutabilityCheckerStageTest : BaseTest() {
 
     @Test
     fun `array access expression illegal`() {

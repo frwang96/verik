@@ -261,13 +261,33 @@ object CoreVkUbit : CoreScope(Core.Vk.C_Ubit) {
         }
 
         override fun transform(callExpression: ECallExpression): EExpression {
-            val width = callExpression.typeArguments[0].asCardinalValue(callExpression)
-            return EWidthCastExpression(
-                callExpression.location,
-                callExpression.type,
-                callExpression.receiver!!,
-                width
-            )
+            val extWidth = callExpression.typeArguments[0].asCardinalValue(callExpression)
+            val receiver = callExpression.receiver!!
+            // TODO more general way of inserting additional width cast
+            if (receiver is ECallExpression &&
+                receiver.reference in listOf(Core.Vk.Ubit.F_plus_Ubit, Core.Vk.Ubit.F_times_Ubit)
+            ) {
+                val width = receiver.type.asBitWidth(callExpression)
+                val widthCastExpression = EWidthCastExpression(
+                    callExpression.location,
+                    receiver.type.copy(),
+                    receiver,
+                    width
+                )
+                return EWidthCastExpression(
+                    callExpression.location,
+                    callExpression.type,
+                    widthCastExpression,
+                    extWidth
+                )
+            } else {
+                return EWidthCastExpression(
+                    callExpression.location,
+                    callExpression.type,
+                    callExpression.receiver!!,
+                    extWidth
+                )
+            }
         }
     }
 
