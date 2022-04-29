@@ -2,10 +2,14 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-package io.verik.plugin
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ */
 
-import io.verik.compiler.main.VerikException
-import io.verik.compiler.main.VerikMain
+package io.verik.plugin.main
+
+import io.verik.compiler.main.VerikCompilerException
+import io.verik.compiler.main.VerikCompilerMain
 import io.verik.importer.main.VerikImporterException
 import io.verik.importer.main.VerikImporterMain
 import org.gradle.api.Action
@@ -15,8 +19,6 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.plugins.JavaPluginExtension
-import io.verik.compiler.main.StageSequencer as VerikStageSequencer
-import io.verik.importer.main.StageSequencer as VerikImporterStageSequencer
 
 /**
  * Top level plugin class that registers the verik and verikImport gradle tasks for the compiler and importer
@@ -27,9 +29,9 @@ class VerikPlugin : Plugin<Project> {
 
     override fun apply(project: Project) {
         project.dependencies.add("implementation", "io.verik:verik-core:${ConfigUtil.getVersion()}")
-        val verikTask = createVerikTask(project)
+        val verikCompileTask = createVerikCompileTask(project)
         val verikImportTask = createVerikImportTask(project)
-        verikTask.dependsOn(verikImportTask)
+        verikCompileTask.dependsOn(verikImportTask)
 
         val javaPluginExtension = project.extensions.getByType(JavaPluginExtension::class.java)
         javaPluginExtension.sourceCompatibility = JavaVersion.VERSION_1_8
@@ -40,10 +42,10 @@ class VerikPlugin : Plugin<Project> {
     }
 
     @Suppress("DuplicatedCode")
-    private fun createVerikTask(project: Project): Task {
-        val extension = project.extensions.create("verik", VerikPluginExtension::class.java)
-        val task = project.tasks.create("verik") {
-            it.doLast(VerikAction(project, extension))
+    private fun createVerikCompileTask(project: Project): Task {
+        val extension = project.extensions.create("verikCompile", VerikCompilerPluginExtension::class.java)
+        val task = project.tasks.create("verikCompile") {
+            it.doLast(VerikCompileAction(project, extension))
         }
 
         task.group = "verik"
@@ -58,8 +60,8 @@ class VerikPlugin : Plugin<Project> {
         task.inputs.property("promotedWarnings", { extension.promotedWarnings })
         task.inputs.property("maxErrorCount", { extension.maxErrorCount })
         task.inputs.property("debug", { extension.debug })
-        task.inputs.files({ VerikConfigBuilder.getSourceSetConfigs(project).flatMap { it.files } })
-        task.outputs.dir(VerikConfigBuilder.getBuildDir(project))
+        task.inputs.files({ VerikCompilerConfigBuilder.getSourceSetConfigs(project).flatMap { it.files } })
+        task.outputs.dir(VerikCompilerConfigBuilder.getBuildDir(project))
         return task
     }
 
@@ -86,16 +88,15 @@ class VerikPlugin : Plugin<Project> {
         return task
     }
 
-    private class VerikAction(
+    private class VerikCompileAction(
         private val project: Project,
-        private val extension: VerikPluginExtension
+        private val extension: VerikCompilerPluginExtension
     ) : Action<Task> {
 
         override fun execute(task: Task) {
             try {
-                val stageSequence = VerikStageSequencer.getStageSequence()
-                VerikMain.run(VerikConfigBuilder.getConfig(project, extension), stageSequence)
-            } catch (exception: VerikException) {
+                VerikCompilerMain.run(VerikCompilerConfigBuilder.getConfig(project, extension))
+            } catch (exception: VerikCompilerException) {
                 throw GradleException("Verik compilation failed")
             }
         }
@@ -108,8 +109,7 @@ class VerikPlugin : Plugin<Project> {
 
         override fun execute(task: Task) {
             try {
-                val stageSequence = VerikImporterStageSequencer.getStageSequence()
-                VerikImporterMain.run(VerikImporterConfigBuilder.getConfig(project, extension), stageSequence)
+                VerikImporterMain.run(VerikImporterConfigBuilder.getConfig(project, extension))
             } catch (exception: VerikImporterException) {
                 throw GradleException("Verik import failed")
             }

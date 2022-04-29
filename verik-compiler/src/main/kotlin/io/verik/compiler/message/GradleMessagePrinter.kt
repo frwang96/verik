@@ -4,12 +4,12 @@
 
 package io.verik.compiler.message
 
-import io.verik.compiler.main.VerikConfig
+import io.verik.compiler.main.VerikCompilerConfig
 
 /**
  * Message printer that prints gradle style error and warning messages.
  */
-class GradleMessagePrinter(config: VerikConfig) : MessagePrinter() {
+class GradleMessagePrinter(config: VerikCompilerConfig) : MessagePrinter() {
 
     private val debug = config.debug
     private val builder = StringBuilder()

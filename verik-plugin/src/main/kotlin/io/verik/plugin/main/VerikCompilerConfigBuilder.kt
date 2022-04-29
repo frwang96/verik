@@ -2,10 +2,14 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-package io.verik.plugin
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+package io.verik.plugin.main
 
 import io.verik.compiler.main.SourceSetConfig
-import io.verik.compiler.main.VerikConfig
+import io.verik.compiler.main.VerikCompilerConfig
 import org.gradle.api.Project
 import org.gradle.api.internal.artifacts.dependencies.DefaultProjectDependency
 import org.gradle.api.plugins.JavaPluginExtension
@@ -13,12 +17,12 @@ import java.nio.file.Path
 import kotlin.io.path.extension
 
 /**
- * Factory class that builds a [VerikConfig] object.
+ * Factory class that builds a [VerikCompilerConfig] object.
  */
-object VerikConfigBuilder {
+object VerikCompilerConfigBuilder {
 
-    fun getConfig(project: Project, extension: VerikPluginExtension): VerikConfig {
-        return VerikConfig(
+    fun getConfig(project: Project, extension: VerikCompilerPluginExtension): VerikCompilerConfig {
+        return VerikCompilerConfig(
             toolchain = ConfigUtil.getToolchain(),
             timestamp = ConfigUtil.getTimestamp(),
             projectName = project.name,
@@ -38,7 +42,7 @@ object VerikConfigBuilder {
     }
 
     fun getBuildDir(project: Project): Path {
-        return project.buildDir.resolve("verik").toPath()
+        return project.buildDir.resolve("verik-compile").toPath()
     }
 
     fun getSourceSetConfigs(project: Project): List<SourceSetConfig> {

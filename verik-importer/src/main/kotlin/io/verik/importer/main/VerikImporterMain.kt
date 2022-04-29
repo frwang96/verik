@@ -17,7 +17,7 @@ import kotlin.io.path.exists
  */
 object VerikImporterMain {
 
-    fun run(config: VerikImporterConfig, stageSequence: StageSequence) {
+    fun run(config: VerikImporterConfig) {
         if (config.buildDir.exists())
             config.buildDir.toFile().deleteRecursively()
         if (config.importedFiles.isEmpty())
@@ -29,7 +29,7 @@ object VerikImporterMain {
         val projectContext = ProjectContext(config)
         try {
             readFiles(projectContext)
-            stageSequence.processAll(projectContext)
+            StageSequencer.getStageSequence().processAll(projectContext)
             writeFiles(projectContext)
         } catch (exception: Exception) {
             if (exception !is VerikImporterException) {

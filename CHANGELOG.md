@@ -7,6 +7,9 @@
 ### Compiler
 - Document compiler classes.
 
+### Plugin
+- Rename `verik` task to `verikCompile`.
+
 ## [0.1.15]
 ### Compiler
 - Support `Double` data type.

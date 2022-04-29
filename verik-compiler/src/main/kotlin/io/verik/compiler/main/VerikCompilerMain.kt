@@ -15,9 +15,9 @@ import kotlin.io.path.exists
  * Entry point of the compiler. The compiler reads the input files, processes the stage sequence, and writes the output
  * files. Messages are written to a log file.
  */
-object VerikMain {
+object VerikCompilerMain {
 
-    fun run(config: VerikConfig, stageSequence: StageSequence) {
+    fun run(config: VerikCompilerConfig) {
         if (config.buildDir.exists()) {
             config.buildDir.toFile().deleteRecursively()
         }
@@ -28,10 +28,10 @@ object VerikMain {
         try {
             val projectContext = ProjectContext(config)
             readFiles(projectContext)
-            stageSequence.processAll(projectContext)
+            StageSequencer.getStageSequence().processAll(projectContext)
             writeFiles(projectContext)
         } catch (exception: Exception) {
-            if (exception !is VerikException) {
+            if (exception !is VerikCompilerException) {
                 messagePrinter.error(
                     "Uncaught exception: ${exception.message}",
                     SourceLocation.NULL,
@@ -39,7 +39,7 @@ object VerikMain {
                 )
             }
             writeLogFile(config, messagePrinter, startTime, false)
-            throw VerikException()
+            throw VerikCompilerException()
         }
         writeLogFile(config, messagePrinter, startTime, true)
     }
@@ -58,7 +58,7 @@ object VerikMain {
     }
 
     private fun writeLogFile(
-        config: VerikConfig,
+        config: VerikCompilerConfig,
         messagePrinter: GradleMessagePrinter,
         startTime: Long,
         isPass: Boolean

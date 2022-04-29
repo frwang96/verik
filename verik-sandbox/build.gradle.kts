@@ -15,7 +15,7 @@ repositories {
     mavenCentral()
 }
 
-verik {
+verikCompile {
     debug = true
     enableDeadCodeElimination = false
 }

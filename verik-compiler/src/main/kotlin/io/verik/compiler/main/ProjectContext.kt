@@ -15,10 +15,10 @@ import org.jetbrains.kotlin.resolve.BindingContext
  * Context that stores all of the internal state of the compiler.
  */
 class ProjectContext(
-    val config: VerikConfig
+    val config: VerikCompilerConfig
 ) {
 
-    val report = VerikReport()
+    val report = VerikCompilerReport()
     var sourceSetContexts: List<SourceSetContext> = listOf()
     val processedProjectStages = HashSet<ProjectStage>()
     lateinit var kotlinCoreEnvironment: KotlinCoreEnvironment

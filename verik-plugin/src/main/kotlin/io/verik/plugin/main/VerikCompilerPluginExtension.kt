@@ -2,12 +2,12 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-package io.verik.plugin
+package io.verik.plugin.main
 
 /**
  * Plugin extension class that is used to configure the compiler.
  */
-abstract class VerikPluginExtension {
+abstract class VerikCompilerPluginExtension {
 
     var timescale: String = "1ns / 1ns"
     var entryPoints: ArrayList<String> = ArrayList()

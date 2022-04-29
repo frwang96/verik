@@ -2,7 +2,11 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-package io.verik.plugin
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+package io.verik.plugin.main
 
 import io.verik.importer.main.VerikImporterConfig
 import org.gradle.api.Project

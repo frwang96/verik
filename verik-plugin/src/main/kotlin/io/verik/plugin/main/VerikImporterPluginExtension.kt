@@ -2,7 +2,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-package io.verik.plugin
+package io.verik.plugin.main
 
 import java.nio.file.Path
 
