@@ -2,10 +2,6 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-/*
- * SPDX-License-Identifier: Apache-2.0
- */
-
 package io.verik.plugin.main
 
 import io.verik.compiler.main.VerikCompilerException
@@ -29,8 +25,10 @@ class VerikPlugin : Plugin<Project> {
 
     override fun apply(project: Project) {
         project.dependencies.add("implementation", "io.verik:verik-core:${ConfigUtil.getVersion()}")
+        val verikBuildTask = createVerikBuildTask(project)
         val verikCompileTask = createVerikCompileTask(project)
         val verikImportTask = createVerikImportTask(project)
+        verikBuildTask.dependsOn(verikCompileTask)
         verikCompileTask.dependsOn(verikImportTask)
 
         val javaPluginExtension = project.extensions.getByType(JavaPluginExtension::class.java)
@@ -39,6 +37,19 @@ class VerikPlugin : Plugin<Project> {
         javaPluginExtension.sourceSets.getByName("main").java {
             it.srcDir(VerikImporterConfigBuilder.getBuildDir(project).resolve("src"))
         }
+    }
+
+    private fun createVerikBuildTask(project: Project): Task {
+        val targetContainer = TargetContainer(
+            project.objects.polymorphicDomainObjectContainer(TargetDomainObject::class.java)
+        )
+        project.extensions.add("verikBuild", targetContainer)
+        val task = project.tasks.create("verikBuild") {
+            it.doLast(VerikBuildAction(project, targetContainer))
+        }
+
+        task.group = "verik"
+        return task
     }
 
     @Suppress("DuplicatedCode")
@@ -86,6 +97,14 @@ class VerikPlugin : Plugin<Project> {
             } else listOf()
         })
         return task
+    }
+
+    private class VerikBuildAction(
+        private val project: Project,
+        private val targetContainer: TargetContainer
+    ) : Action<Task> {
+
+        override fun execute(task: Task) {}
     }
 
     private class VerikCompileAction(

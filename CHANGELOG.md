@@ -9,6 +9,7 @@
 
 ### Plugin
 - Rename `verik` task to `verikCompile`.
+- Add `verikBuild` task that generates build scripts for downstream tools.
 
 ## [0.1.15]
 ### Compiler

@@ -15,6 +15,15 @@ repositories {
     mavenCentral()
 }
 
+verikBuild {
+    aurora {
+        compileFlags = ""
+    }
+    vivado {
+        isSimulation = true
+    }
+}
+
 verikCompile {
     debug = true
     enableDeadCodeElimination = false
