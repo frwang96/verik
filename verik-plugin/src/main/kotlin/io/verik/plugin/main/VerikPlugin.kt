@@ -43,20 +43,12 @@ class VerikPlugin : Plugin<Project> {
         }
     }
 
-    @Suppress("DuplicatedCode")
     private fun createVerikImportTask(project: Project, extension: VerikDomainObjectImpl): Task {
         val task = project.tasks.create("verikImport") {
             it.doLast(VerikImportAction(project, extension))
         }
         task.group = "verik"
-        task.inputs.property("toolchain", { ConfigUtil.getToolchain() })
-        task.inputs.property("maxErrorCount", { extension.maxErrorCount })
-        task.inputs.property("debug", { extension.debug })
-        task.inputs.property("includeDirs", { extension.import.includeDirs.joinToString() })
-        task.inputs.property("enablePreprocessorOutput", { extension.import.enablePreprocessorOutput })
-        task.inputs.property("suppressedWarnings", { extension.import.suppressedWarnings })
-        task.inputs.property("promotedWarnings", { extension.import.promotedWarnings })
-
+        task.inputs.property("hash", { VerikImporterConfigBuilder.getHash(project, extension) })
         task.inputs.files({ extension.import.importedFiles })
         task.outputs.dirs({
             if (extension.import.importedFiles.isNotEmpty()) {
@@ -66,25 +58,13 @@ class VerikPlugin : Plugin<Project> {
         return task
     }
 
-    @Suppress("DuplicatedCode")
     private fun createVerikCompileTask(project: Project, extension: VerikDomainObjectImpl): Task {
         val task = project.tasks.create("verikCompile") {
             it.doLast(VerikCompileAction(project, extension))
         }
 
         task.group = "verik"
-        task.inputs.property("toolchain", { ConfigUtil.getToolchain() })
-        task.inputs.property("maxErrorCount", { extension.maxErrorCount })
-        task.inputs.property("debug", { extension.debug })
-        task.inputs.property("timescale", { extension.compile.timescale })
-        task.inputs.property("entryPoints", { extension.compile.entryPoints })
-        task.inputs.property("enableDeadCodeElimination", { extension.compile.enableDeadCodeElimination })
-        task.inputs.property("labelLines", { extension.compile.labelLines })
-        task.inputs.property("indentLength", { extension.compile.indentLength })
-        task.inputs.property("wrapLength", { extension.compile.wrapLength })
-        task.inputs.property("suppressedWarnings", { extension.compile.suppressedWarnings })
-        task.inputs.property("promotedWarnings", { extension.compile.promotedWarnings })
-
+        task.inputs.property("hash", { VerikCompilerConfigBuilder.getHash(project, extension) })
         task.inputs.files({ VerikCompilerConfigBuilder.getSourceSetConfigs(project).flatMap { it.files } })
         task.outputs.dir(VerikCompilerConfigBuilder.getBuildDir(project))
         return task

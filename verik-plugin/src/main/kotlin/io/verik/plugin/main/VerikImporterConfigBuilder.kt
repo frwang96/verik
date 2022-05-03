@@ -30,7 +30,23 @@ object VerikImporterConfigBuilder {
         )
     }
 
+    @Suppress("DuplicatedCode")
+    fun getHash(project: Project, extension: VerikDomainObjectImpl): Int {
+        val config = getConfig(project, extension)
+        val builder = StringBuilder()
+        builder.appendLine(config.toolchain)
+        builder.appendLine(config.projectName)
+        builder.appendLine(config.buildDir)
+        builder.appendLine(config.includeDirs)
+        builder.appendLine(config.enablePreprocessorOutput)
+        builder.appendLine(config.suppressedWarnings.joinToString())
+        builder.appendLine(config.promotedWarnings.joinToString())
+        builder.appendLine(config.maxErrorCount)
+        builder.appendLine(config.debug)
+        return builder.toString().hashCode()
+    }
+
     fun getBuildDir(project: Project): Path {
-        return project.buildDir.resolve("verik-import").toPath()
+        return project.buildDir.resolve("import").toPath()
     }
 }

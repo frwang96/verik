@@ -38,8 +38,28 @@ object VerikCompilerConfigBuilder {
         )
     }
 
+    @Suppress("DuplicatedCode")
+    fun getHash(project: Project, extension: VerikDomainObjectImpl): Int {
+        val config = getConfig(project, extension)
+        val builder = StringBuilder()
+        builder.appendLine(config.toolchain)
+        builder.appendLine(config.projectName)
+        builder.appendLine(config.buildDir)
+        builder.appendLine(config.timescale)
+        builder.appendLine(config.entryPoints.joinToString())
+        builder.appendLine(config.enableDeadCodeElimination)
+        builder.appendLine(config.labelLines)
+        builder.appendLine(config.indentLength)
+        builder.appendLine(config.wrapLength)
+        builder.appendLine(config.suppressedWarnings.joinToString())
+        builder.appendLine(config.promotedWarnings.joinToString())
+        builder.appendLine(config.maxErrorCount)
+        builder.appendLine(config.debug)
+        return builder.toString().hashCode()
+    }
+
     fun getBuildDir(project: Project): Path {
-        return project.buildDir.resolve("verik-compile").toPath()
+        return project.buildDir.resolve("compile").toPath()
     }
 
     fun getSourceSetConfigs(project: Project): List<SourceSetConfig> {

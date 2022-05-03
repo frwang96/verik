@@ -17,11 +17,13 @@ class VerikDomainObjectImpl : VerikDomainObject {
     val import = VerikImportDomainObjectImpl()
     val compile = VerikCompileDomainObjectImpl()
 
-    override fun import(configure: Action<VerikImportDomainObject>) {
-        configure.execute(import)
+    override fun import(configure: VerikImportDomainObject.() -> Unit) {
+        val action = Action<VerikImportDomainObject> { it.configure() }
+        action.execute(import)
     }
 
-    override fun compile(configure: Action<VerikCompileDomainObject>) {
-        configure.execute(compile)
+    override fun compile(configure: VerikCompileDomainObject.() -> Unit) {
+        val action = Action<VerikCompileDomainObject> { it.configure() }
+        action.execute(compile)
     }
 }
