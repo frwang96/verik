@@ -5,6 +5,7 @@
 package io.verik.plugin.main
 
 import io.verik.importer.main.VerikImporterConfig
+import io.verik.plugin.`object`.VerikDomainObjectImpl
 import org.gradle.api.Project
 import java.nio.file.Path
 
@@ -13,17 +14,17 @@ import java.nio.file.Path
  */
 object VerikImporterConfigBuilder {
 
-    fun getConfig(project: Project, extension: VerikImporterPluginExtension): VerikImporterConfig {
+    fun getConfig(project: Project, extension: VerikDomainObjectImpl): VerikImporterConfig {
         return VerikImporterConfig(
             toolchain = ConfigUtil.getToolchain(),
             timestamp = ConfigUtil.getTimestamp(),
             projectName = project.name,
             buildDir = getBuildDir(project),
-            importedFiles = extension.importedFiles,
-            includeDirs = extension.includeDirs,
-            enablePreprocessorOutput = extension.enablePreprocessorOutput,
-            suppressedWarnings = extension.suppressedWarnings,
-            promotedWarnings = extension.promotedWarnings,
+            importedFiles = extension.import.importedFiles,
+            includeDirs = extension.import.includeDirs,
+            enablePreprocessorOutput = extension.import.enablePreprocessorOutput,
+            suppressedWarnings = extension.import.suppressedWarnings,
+            promotedWarnings = extension.import.promotedWarnings,
             maxErrorCount = extension.maxErrorCount,
             debug = extension.debug
         )

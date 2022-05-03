@@ -80,9 +80,9 @@ tasks.register("mainClean") {
     dependsOn(gradle.includedBuild("verik-sandbox").task(":clean"))
 }
 
-tasks.register("mainVerikBuild") {
+tasks.register("mainVerik") {
     group = "main"
-    dependsOn(gradle.includedBuild("verik-sandbox").task(":verikBuild"))
+    dependsOn(gradle.includedBuild("verik-sandbox").task(":verik"))
 }
 
 tasks.register("mainVerikCompile") {

@@ -6,6 +6,7 @@ package io.verik.plugin.main
 
 import io.verik.compiler.main.SourceSetConfig
 import io.verik.compiler.main.VerikCompilerConfig
+import io.verik.plugin.`object`.VerikDomainObjectImpl
 import org.gradle.api.Project
 import org.gradle.api.internal.artifacts.dependencies.DefaultProjectDependency
 import org.gradle.api.plugins.JavaPluginExtension
@@ -17,21 +18,21 @@ import kotlin.io.path.extension
  */
 object VerikCompilerConfigBuilder {
 
-    fun getConfig(project: Project, extension: VerikCompilerPluginExtension): VerikCompilerConfig {
+    fun getConfig(project: Project, extension: VerikDomainObjectImpl): VerikCompilerConfig {
         return VerikCompilerConfig(
             toolchain = ConfigUtil.getToolchain(),
             timestamp = ConfigUtil.getTimestamp(),
             projectName = project.name,
             buildDir = getBuildDir(project),
             sourceSetConfigs = getSourceSetConfigs(project),
-            timescale = extension.timescale,
-            entryPoints = extension.entryPoints,
-            enableDeadCodeElimination = extension.enableDeadCodeElimination,
-            labelLines = extension.labelLines,
-            indentLength = extension.indentLength,
-            wrapLength = extension.wrapLength,
-            suppressedWarnings = extension.suppressedWarnings,
-            promotedWarnings = extension.promotedWarnings,
+            timescale = extension.compile.timescale,
+            entryPoints = extension.compile.entryPoints,
+            enableDeadCodeElimination = extension.compile.enableDeadCodeElimination,
+            labelLines = extension.compile.labelLines,
+            indentLength = extension.compile.indentLength,
+            wrapLength = extension.compile.wrapLength,
+            suppressedWarnings = extension.compile.suppressedWarnings,
+            promotedWarnings = extension.compile.promotedWarnings,
             maxErrorCount = extension.maxErrorCount,
             debug = extension.debug
         )

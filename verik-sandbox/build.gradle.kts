@@ -15,25 +15,16 @@ repositories {
     mavenCentral()
 }
 
-verikBuild {
-    aurora {
-        compileFlags = ""
-    }
-    vivado {
-        isSimulation = true
-    }
-}
-
-verikCompile {
+verik {
     debug = true
-    enableDeadCodeElimination = false
-}
-
-verikImport {
-    val verilogSrcDir = projectDir.resolve("src/main/verilog").toPath()
-    if (Files.exists(verilogSrcDir)) {
-        importedFiles = Files.walk(verilogSrcDir).toList()
-            .filter { it.toFile().extension in listOf("v", "sv") }
+    import {
+        val verilogSrcDir = projectDir.resolve("src/main/verilog").toPath()
+        if (Files.exists(verilogSrcDir)) {
+            importedFiles = Files.walk(verilogSrcDir).toList()
+                .filter { it.toFile().extension in listOf("v", "sv") }
+        }
     }
-    debug = true
+    compile {
+        enableDeadCodeElimination = false
+    }
 }

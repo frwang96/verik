@@ -8,8 +8,9 @@
 - Document compiler classes.
 
 ### Plugin
-- Rename `verik` task to `verikCompile`.
-- Add `verikBuild` task that generates build scripts for downstream tools.
+- Rewrite plugin extension domain object classes.
+- Move compiler to `verikCompile` task.
+- Add `verik` task that generates build scripts for downstream tools.
 
 ## [0.1.15]
 ### Compiler
