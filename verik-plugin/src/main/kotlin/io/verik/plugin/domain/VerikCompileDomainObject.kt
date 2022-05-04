@@ -2,10 +2,10 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-package io.verik.plugin.`object`
+package io.verik.plugin.domain
 
 /**
- * Interface for domain object that configures the compiler.
+ * Interface for domain objects that configure the compiler.
  */
 interface VerikCompileDomainObject {
 

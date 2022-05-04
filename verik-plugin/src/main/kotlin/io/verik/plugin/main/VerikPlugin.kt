@@ -8,8 +8,9 @@ import io.verik.compiler.main.VerikCompilerException
 import io.verik.compiler.main.VerikCompilerMain
 import io.verik.importer.main.VerikImporterException
 import io.verik.importer.main.VerikImporterMain
-import io.verik.plugin.`object`.VerikDomainObject
-import io.verik.plugin.`object`.VerikDomainObjectImpl
+import io.verik.plugin.config.TargetConfigBuilder
+import io.verik.plugin.domain.VerikDomainObject
+import io.verik.plugin.domain.VerikDomainObjectImpl
 import org.gradle.api.Action
 import org.gradle.api.GradleException
 import org.gradle.api.JavaVersion
@@ -49,9 +50,9 @@ class VerikPlugin : Plugin<Project> {
         }
         task.group = "verik"
         task.inputs.property("hash", { VerikImporterConfigBuilder.getHash(project, extension) })
-        task.inputs.files({ extension.import.importedFiles })
+        task.inputs.files({ extension.importDomainObject.importedFiles })
         task.outputs.dirs({
-            if (extension.import.importedFiles.isNotEmpty()) {
+            if (extension.importDomainObject.importedFiles.isNotEmpty()) {
                 VerikImporterConfigBuilder.getBuildDir(project)
             } else listOf()
         })
@@ -112,6 +113,8 @@ class VerikPlugin : Plugin<Project> {
         private val extension: VerikDomainObjectImpl
     ) : Action<Task> {
 
-        override fun execute(task: Task) {}
+        override fun execute(task: Task) {
+            TargetConfigBuilder.getTargetConfigs(project, extension)
+        }
     }
 }

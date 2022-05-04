@@ -2,10 +2,10 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-package io.verik.plugin.`object`
+package io.verik.plugin.domain
 
 /**
- * Interface for domain object that configures the toolchain.
+ * Interface for domain objects that configure the toolchain.
  */
 interface VerikDomainObject {
 
@@ -14,4 +14,6 @@ interface VerikDomainObject {
 
     fun import(configure: VerikImportDomainObject.() -> Unit)
     fun compile(configure: VerikCompileDomainObject.() -> Unit)
+    fun aurora(configure: AuroraTargetDomainObject.() -> Unit)
+    fun vivado(configure: VivadoTargetDomainObject.() -> Unit)
 }

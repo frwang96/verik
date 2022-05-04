@@ -2,12 +2,12 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-package io.verik.plugin.`object`
+package io.verik.plugin.domain
 
 import java.nio.file.Path
 
 /**
- * Interface for domain object that configures the importer.
+ * Interface for domain objects that configure the importer.
  */
 interface VerikImportDomainObject {
 

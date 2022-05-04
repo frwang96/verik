@@ -6,7 +6,7 @@ package io.verik.plugin.main
 
 import io.verik.compiler.main.SourceSetConfig
 import io.verik.compiler.main.VerikCompilerConfig
-import io.verik.plugin.`object`.VerikDomainObjectImpl
+import io.verik.plugin.domain.VerikDomainObjectImpl
 import org.gradle.api.Project
 import org.gradle.api.internal.artifacts.dependencies.DefaultProjectDependency
 import org.gradle.api.plugins.JavaPluginExtension
@@ -25,14 +25,14 @@ object VerikCompilerConfigBuilder {
             projectName = project.name,
             buildDir = getBuildDir(project),
             sourceSetConfigs = getSourceSetConfigs(project),
-            timescale = extension.compile.timescale,
-            entryPoints = extension.compile.entryPoints,
-            enableDeadCodeElimination = extension.compile.enableDeadCodeElimination,
-            labelLines = extension.compile.labelLines,
-            indentLength = extension.compile.indentLength,
-            wrapLength = extension.compile.wrapLength,
-            suppressedWarnings = extension.compile.suppressedWarnings,
-            promotedWarnings = extension.compile.promotedWarnings,
+            timescale = extension.compileDomainObject.timescale,
+            entryPoints = extension.compileDomainObject.entryPoints,
+            enableDeadCodeElimination = extension.compileDomainObject.enableDeadCodeElimination,
+            labelLines = extension.compileDomainObject.labelLines,
+            indentLength = extension.compileDomainObject.indentLength,
+            wrapLength = extension.compileDomainObject.wrapLength,
+            suppressedWarnings = extension.compileDomainObject.suppressedWarnings,
+            promotedWarnings = extension.compileDomainObject.promotedWarnings,
             maxErrorCount = extension.maxErrorCount,
             debug = extension.debug
         )

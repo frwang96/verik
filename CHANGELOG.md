@@ -11,6 +11,7 @@
 - Rewrite plugin extension domain object classes.
 - Move compiler to `verikCompile` task.
 - Add `verik` task that generates build scripts for downstream tools.
+- Move compiler and importer build directories to `build/compile` and `build/import`.
 
 ## [0.1.15]
 ### Compiler
