@@ -7,7 +7,7 @@ package io.verik.plugin.domain
 import java.nio.file.Path
 
 /**
- * Interface for domain objects that configure a vivado target.
+ * Interface for domain objects that configure a Xilinx vivado target.
  */
 interface VivadoTargetDomainObject : TargetDomainObject {
 

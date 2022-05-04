@@ -4,13 +4,14 @@
 
 package io.verik.plugin.config
 
+import java.nio.file.Path
+
 /**
  * Abstract target configuration.
  */
 abstract class TargetConfig {
 
-    abstract val toolchain: String
-    abstract val timestamp: String
-    abstract val projectName: String
+    abstract val projectConfig: ProjectConfig
     abstract val targetName: String
+    abstract val buildDir: Path
 }

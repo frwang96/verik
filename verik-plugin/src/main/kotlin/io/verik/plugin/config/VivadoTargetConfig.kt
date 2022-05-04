@@ -7,13 +7,12 @@ package io.verik.plugin.config
 import java.nio.file.Path
 
 /**
- * Configuration for a vivado target.
+ * Configuration for a Xilinx vivado target.
  */
 class VivadoTargetConfig(
-    override val toolchain: String,
-    override val timestamp: String,
-    override val projectName: String,
+    override val projectConfig: ProjectConfig,
     override val targetName: String,
+    override val buildDir: Path,
     val part: String,
     val ipConfigFiles: List<Path>
 ) : TargetConfig()

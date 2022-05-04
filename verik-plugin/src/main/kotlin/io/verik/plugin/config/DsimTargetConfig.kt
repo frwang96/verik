@@ -7,13 +7,12 @@ package io.verik.plugin.config
 import java.nio.file.Path
 
 /**
- * Configuration for an aurora target.
+ * Configuration for a Metrics dsim target.
  */
-class AuroraTargetConfig(
-    override val toolchain: String,
-    override val timestamp: String,
-    override val projectName: String,
+class DsimTargetConfig(
+    override val projectConfig: ProjectConfig,
     override val targetName: String,
+    override val buildDir: Path,
     val compileTops: List<String>,
     val dpiLibs: List<Path>
 ) : TargetConfig()

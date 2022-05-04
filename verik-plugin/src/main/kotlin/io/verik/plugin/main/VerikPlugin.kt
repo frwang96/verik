@@ -8,7 +8,6 @@ import io.verik.compiler.main.VerikCompilerException
 import io.verik.compiler.main.VerikCompilerMain
 import io.verik.importer.main.VerikImporterException
 import io.verik.importer.main.VerikImporterMain
-import io.verik.plugin.config.TargetConfigBuilder
 import io.verik.plugin.domain.VerikDomainObject
 import io.verik.plugin.domain.VerikDomainObjectImpl
 import org.gradle.api.Action
@@ -114,7 +113,16 @@ class VerikPlugin : Plugin<Project> {
     ) : Action<Task> {
 
         override fun execute(task: Task) {
-            TargetConfigBuilder.getTargetConfigs(project, extension)
+            try {
+                VerikTargetMain.run(project, extension)
+            } catch (exception: Exception) {
+                if (exception is VerikTargetException) {
+                    println("e: Target ${exception.targetName}: ${exception.message}")
+                } else {
+                    println("e: Uncaught exception: ${exception.message}")
+                }
+                throw GradleException("Verik target generation failed")
+            }
         }
     }
 }

@@ -4,53 +4,84 @@
 
 package io.verik.plugin.config
 
-import io.verik.plugin.domain.AuroraTargetDomainObjectImpl
+import io.verik.plugin.domain.DsimTargetDomainObjectImpl
+import io.verik.plugin.domain.TargetDomainObject
 import io.verik.plugin.domain.VerikDomainObjectImpl
 import io.verik.plugin.domain.VivadoTargetDomainObjectImpl
-import io.verik.plugin.main.ConfigUtil
-import org.gradle.api.Project
+import io.verik.plugin.main.VerikTargetException
+import java.nio.file.Path
 
 /**
  * Factory class that builds [TargetConfig] objects from domain objects.
  */
 object TargetConfigBuilder {
 
-    fun getTargetConfigs(project: Project, extension: VerikDomainObjectImpl): List<TargetConfig> {
+    private val nameRegex = Regex("[_\\-a-zA-Z0-9]*")
+
+    fun getTargetConfigs(projectConfig: ProjectConfig, extension: VerikDomainObjectImpl): List<TargetConfig> {
         val targetConfigs = ArrayList<TargetConfig>()
-        extension.auroraDomainObjects.forEach {
-            targetConfigs.add(getAuroraTargetConfig(project, it))
+        extension.dsimDomainObjects.forEach {
+            targetConfigs.add(getDsimTargetConfig(projectConfig, it))
         }
         extension.vivadoDomainObjects.forEach {
-            targetConfigs.add(getVivadoTargetConfig(project, it))
+            targetConfigs.add(getVivadoTargetConfig(projectConfig, it))
         }
+        check(targetConfigs)
         return targetConfigs
     }
 
-    private fun getAuroraTargetConfig(
-        project: Project,
-        domainObject: AuroraTargetDomainObjectImpl,
-    ): AuroraTargetConfig {
-        return AuroraTargetConfig(
-            toolchain = ConfigUtil.getToolchain(),
-            timestamp = ConfigUtil.getTimestamp(),
-            projectName = project.name,
+    private fun getDsimTargetConfig(
+        projectConfig: ProjectConfig,
+        domainObject: DsimTargetDomainObjectImpl,
+    ): DsimTargetConfig {
+        val targetConfig = DsimTargetConfig(
+            projectConfig = projectConfig,
             targetName = domainObject.name,
+            buildDir = getBuildDir(projectConfig, domainObject),
             compileTops = domainObject.compileTops,
             dpiLibs = domainObject.dpiLibs
         )
+
+        if (targetConfig.compileTops.isEmpty()) {
+            throw VerikTargetException(targetConfig, "Property not provided: compileTops")
+        }
+
+        return targetConfig
     }
 
     private fun getVivadoTargetConfig(
-        project: Project,
+        projectConfig: ProjectConfig,
         domainObject: VivadoTargetDomainObjectImpl
     ): VivadoTargetConfig {
-        return VivadoTargetConfig(
-            toolchain = ConfigUtil.getToolchain(),
-            timestamp = ConfigUtil.getTimestamp(),
-            projectName = project.name,
+        val targetConfig = VivadoTargetConfig(
+            projectConfig = projectConfig,
             targetName = domainObject.name,
+            buildDir = getBuildDir(projectConfig, domainObject),
             part = domainObject.part,
             ipConfigFiles = domainObject.ipConfigFiles
         )
+
+        if (targetConfig.part.isBlank()) {
+            throw VerikTargetException(targetConfig, "Property not provided: part")
+        }
+
+        return targetConfig
+    }
+
+    private fun getBuildDir(projectConfig: ProjectConfig, domainObject: TargetDomainObject): Path {
+        return projectConfig.buildDir.resolve(domainObject.name)
+    }
+
+    private fun check(targetConfigs: List<TargetConfig>) {
+        val targetNameSet = HashSet<String>()
+        targetConfigs.forEach {
+            if (it.targetName in targetNameSet) {
+                throw VerikTargetException(it, "Target with this name has already been registered")
+            }
+            targetNameSet.add(it.targetName)
+            if (!it.targetName.matches(nameRegex)) {
+                throw VerikTargetException(it, "Illegal target name")
+            }
+        }
     }
 }

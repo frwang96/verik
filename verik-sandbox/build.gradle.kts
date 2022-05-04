@@ -27,7 +27,7 @@ verik {
     compile {
         enableDeadCodeElimination = false
     }
-    aurora {
+    dsim {
         compileTops = listOf("Top")
     }
 }
