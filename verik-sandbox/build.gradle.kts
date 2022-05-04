@@ -29,5 +29,8 @@ verik {
     }
     dsim {
         compileTops = listOf("Top")
+        sim {
+            name = "sim"
+        }
     }
 }

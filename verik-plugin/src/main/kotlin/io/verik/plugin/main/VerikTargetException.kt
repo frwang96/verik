@@ -5,14 +5,17 @@
 package io.verik.plugin.main
 
 import io.verik.plugin.config.TargetConfig
+import io.verik.plugin.domain.TargetDomainObject
 
 /**
  * Exception to be thrown for errors that arise during target generation.
  */
-class VerikTargetException(
-    targetConfig: TargetConfig,
+class VerikTargetException private constructor(
+    val targetName: String,
     override val message: String
 ) : Exception() {
 
-    val targetName: String = targetConfig.targetName
+    constructor(domainObject: TargetDomainObject, message: String) : this(domainObject.name, message)
+
+    constructor(targetConfig: TargetConfig, message: String) : this(targetConfig.name, message)
 }

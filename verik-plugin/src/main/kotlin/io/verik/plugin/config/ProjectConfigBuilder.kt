@@ -16,7 +16,7 @@ object ProjectConfigBuilder {
         return ProjectConfig(
             toolchain = ConfigUtil.getToolchain(),
             timestamp = ConfigUtil.getTimestamp(),
-            projectName = project.name,
+            name = project.name,
             buildDir = project.buildDir.toPath()
         )
     }

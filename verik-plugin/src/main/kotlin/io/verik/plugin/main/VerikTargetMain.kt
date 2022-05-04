@@ -11,6 +11,7 @@ import io.verik.plugin.config.TargetConfigBuilder
 import io.verik.plugin.domain.VerikDomainObjectImpl
 import io.verik.plugin.target.DsimTargetBuilder
 import org.gradle.api.Project
+import java.nio.file.Files
 import kotlin.io.path.createDirectories
 import kotlin.io.path.exists
 
@@ -31,9 +32,18 @@ object VerikTargetMain {
         }
         targetConfig.buildDir.createDirectories()
 
-        when (targetConfig) {
-            is DsimTargetConfig -> DsimTargetBuilder.build(targetConfig)
+        val textFiles = when (targetConfig) {
+            is DsimTargetConfig -> listOf(DsimTargetBuilder.build(targetConfig))
             else -> throw VerikTargetException(targetConfig, "Unknown target type")
+        }
+
+        try {
+            textFiles.forEach {
+                Files.createDirectories(it.path.parent)
+                Files.writeString(it.path, it.content)
+            }
+        } catch (exception: Exception) {
+            throw VerikTargetException(targetConfig, "Unable to write files")
         }
     }
 }

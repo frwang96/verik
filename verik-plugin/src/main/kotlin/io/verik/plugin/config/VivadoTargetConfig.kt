@@ -11,7 +11,7 @@ import java.nio.file.Path
  */
 class VivadoTargetConfig(
     override val projectConfig: ProjectConfig,
-    override val targetName: String,
+    override val name: String,
     override val buildDir: Path,
     val part: String,
     val ipConfigFiles: List<Path>

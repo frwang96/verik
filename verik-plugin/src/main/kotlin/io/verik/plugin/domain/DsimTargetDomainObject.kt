@@ -12,5 +12,9 @@ import java.nio.file.Path
 interface DsimTargetDomainObject : TargetDomainObject {
 
     var compileTops: List<String>
+    var extraIncludeDirs: List<Path>
+    var extraFiles: List<Path>
     var dpiLibs: List<Path>
+
+    fun sim(configure: DsimSimDomainObject.() -> Unit)
 }

@@ -4,6 +4,7 @@
 
 package io.verik.plugin.config
 
+import io.verik.plugin.domain.DsimSimDomainObjectImpl
 import io.verik.plugin.domain.DsimTargetDomainObjectImpl
 import io.verik.plugin.domain.TargetDomainObject
 import io.verik.plugin.domain.VerikDomainObjectImpl
@@ -19,14 +20,26 @@ object TargetConfigBuilder {
     private val nameRegex = Regex("[_\\-a-zA-Z0-9]*")
 
     fun getTargetConfigs(projectConfig: ProjectConfig, extension: VerikDomainObjectImpl): List<TargetConfig> {
+        val targetNameSet = HashSet<String>()
+        extension.targetDomainObjects.forEach {
+            if (it.name in targetNameSet) {
+                throw VerikTargetException(it, "Target with this name has already been registered")
+            }
+            targetNameSet.add(it.name)
+            if (!it.name.matches(nameRegex)) {
+                throw VerikTargetException(it, "Illegal target name")
+            }
+        }
+
         val targetConfigs = ArrayList<TargetConfig>()
-        extension.dsimDomainObjects.forEach {
-            targetConfigs.add(getDsimTargetConfig(projectConfig, it))
+        extension.targetDomainObjects.forEach {
+            val targetConfig = when (it) {
+                is DsimTargetDomainObjectImpl -> getDsimTargetConfig(projectConfig, it)
+                is VivadoTargetDomainObjectImpl -> getVivadoTargetConfig(projectConfig, it)
+                else -> throw VerikTargetException(it, "Unknown target type")
+            }
+            targetConfigs.add(targetConfig)
         }
-        extension.vivadoDomainObjects.forEach {
-            targetConfigs.add(getVivadoTargetConfig(projectConfig, it))
-        }
-        check(targetConfigs)
         return targetConfigs
     }
 
@@ -34,54 +47,65 @@ object TargetConfigBuilder {
         projectConfig: ProjectConfig,
         domainObject: DsimTargetDomainObjectImpl,
     ): DsimTargetConfig {
-        val targetConfig = DsimTargetConfig(
+        if (domainObject.compileTops.isEmpty()) {
+            throw VerikTargetException(domainObject, "Property not provided: compileTops")
+        }
+        val simConfigs = domainObject.simDomainObjects.map { getDsimSimConfig(domainObject, it) }
+        return DsimTargetConfig(
             projectConfig = projectConfig,
-            targetName = domainObject.name,
+            name = domainObject.name,
             buildDir = getBuildDir(projectConfig, domainObject),
             compileTops = domainObject.compileTops,
-            dpiLibs = domainObject.dpiLibs
+            extraIncludeDirs = domainObject.extraIncludeDirs,
+            extraFiles = domainObject.extraFiles,
+            dpiLibs = domainObject.dpiLibs,
+            simConfigs = simConfigs
         )
+    }
 
-        if (targetConfig.compileTops.isEmpty()) {
-            throw VerikTargetException(targetConfig, "Property not provided: compileTops")
+    private fun getDsimSimConfig(
+        targetDomainObject: DsimTargetDomainObjectImpl,
+        simDomainObject: DsimSimDomainObjectImpl
+    ): DsimSimConfig {
+        if (simDomainObject.name.isBlank()) {
+            throw VerikTargetException(targetDomainObject, "Sim property not provided: name")
         }
-
-        return targetConfig
+        val runTop = if (simDomainObject.runTop.isBlank()) {
+            if (targetDomainObject.compileTops.size != 1) {
+                throw VerikTargetException(targetDomainObject, "Sim property not provided: runTop")
+            }
+            targetDomainObject.compileTops.first()
+        } else {
+            if (simDomainObject.runTop !in targetDomainObject.compileTops) {
+                throw VerikTargetException(targetDomainObject, "Run top not in compile tops: ${simDomainObject.runTop}")
+            }
+            simDomainObject.runTop
+        }
+        return DsimSimConfig(
+            name = simDomainObject.name,
+            runTop = runTop,
+            plusArgs = simDomainObject.plusArgs
+        )
     }
 
     private fun getVivadoTargetConfig(
         projectConfig: ProjectConfig,
         domainObject: VivadoTargetDomainObjectImpl
     ): VivadoTargetConfig {
-        val targetConfig = VivadoTargetConfig(
+        if (domainObject.part.isBlank()) {
+            throw VerikTargetException(domainObject, "Property not provided: part")
+        }
+
+        return VivadoTargetConfig(
             projectConfig = projectConfig,
-            targetName = domainObject.name,
+            name = domainObject.name,
             buildDir = getBuildDir(projectConfig, domainObject),
             part = domainObject.part,
             ipConfigFiles = domainObject.ipConfigFiles
         )
-
-        if (targetConfig.part.isBlank()) {
-            throw VerikTargetException(targetConfig, "Property not provided: part")
-        }
-
-        return targetConfig
     }
 
     private fun getBuildDir(projectConfig: ProjectConfig, domainObject: TargetDomainObject): Path {
         return projectConfig.buildDir.resolve(domainObject.name)
-    }
-
-    private fun check(targetConfigs: List<TargetConfig>) {
-        val targetNameSet = HashSet<String>()
-        targetConfigs.forEach {
-            if (it.targetName in targetNameSet) {
-                throw VerikTargetException(it, "Target with this name has already been registered")
-            }
-            targetNameSet.add(it.targetName)
-            if (!it.targetName.matches(nameRegex)) {
-                throw VerikTargetException(it, "Illegal target name")
-            }
-        }
     }
 }

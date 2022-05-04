@@ -12,6 +12,6 @@ import java.nio.file.Path
 abstract class TargetConfig {
 
     abstract val projectConfig: ProjectConfig
-    abstract val targetName: String
+    abstract val name: String
     abstract val buildDir: Path
 }

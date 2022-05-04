@@ -12,6 +12,6 @@ import java.nio.file.Path
 data class ProjectConfig(
     val toolchain: String,
     val timestamp: String,
-    val projectName: String,
+    val name: String,
     val buildDir: Path
 )

@@ -16,8 +16,7 @@ class VerikDomainObjectImpl : VerikDomainObject {
 
     val importDomainObject = VerikImportDomainObjectImpl()
     val compileDomainObject = VerikCompileDomainObjectImpl()
-    val dsimDomainObjects = ArrayList<DsimTargetDomainObjectImpl>()
-    val vivadoDomainObjects = ArrayList<VivadoTargetDomainObjectImpl>()
+    val targetDomainObjects = ArrayList<TargetDomainObject>()
 
     override fun import(configure: VerikImportDomainObject.() -> Unit) {
         val action = Action<VerikImportDomainObject> { it.configure() }
@@ -33,13 +32,13 @@ class VerikDomainObjectImpl : VerikDomainObject {
         val action = Action<DsimTargetDomainObject> { it.configure() }
         val domainObject = DsimTargetDomainObjectImpl()
         action.execute(domainObject)
-        dsimDomainObjects.add(domainObject)
+        targetDomainObjects.add(domainObject)
     }
 
     override fun vivado(configure: VivadoTargetDomainObject.() -> Unit) {
         val action = Action<VivadoTargetDomainObject> { it.configure() }
         val domainObject = VivadoTargetDomainObjectImpl()
         action.execute(domainObject)
-        vivadoDomainObjects.add(domainObject)
+        targetDomainObjects.add(domainObject)
     }
 }

@@ -11,8 +11,11 @@ import java.nio.file.Path
  */
 class DsimTargetConfig(
     override val projectConfig: ProjectConfig,
-    override val targetName: String,
+    override val name: String,
     override val buildDir: Path,
     val compileTops: List<String>,
-    val dpiLibs: List<Path>
+    val extraIncludeDirs: List<Path>,
+    val extraFiles: List<Path>,
+    val dpiLibs: List<Path>,
+    val simConfigs: List<DsimSimConfig>
 ) : TargetConfig()
