@@ -14,6 +14,7 @@
 - Move compiler and importer build directories to `build/compile` and `build/import`.
 - Add the Metrics dsim generation target.
 - Add the Xilinx vivado generation target.
+- Add the Icarus Verilog generation target.
 
 ## [0.1.15]
 ### Compiler

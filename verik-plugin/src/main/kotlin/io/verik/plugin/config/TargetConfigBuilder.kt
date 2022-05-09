@@ -6,6 +6,7 @@ package io.verik.plugin.config
 
 import io.verik.plugin.domain.DsimSimDomainObjectImpl
 import io.verik.plugin.domain.DsimTargetDomainObjectImpl
+import io.verik.plugin.domain.IverilogTargetDomainObjectImpl
 import io.verik.plugin.domain.TargetDomainObject
 import io.verik.plugin.domain.VerikDomainObjectImpl
 import io.verik.plugin.domain.VivadoTargetDomainObjectImpl
@@ -35,6 +36,7 @@ object TargetConfigBuilder {
         extension.targetDomainObjects.forEach {
             val targetConfig = when (it) {
                 is DsimTargetDomainObjectImpl -> getDsimTargetConfig(projectConfig, it)
+                is IverilogTargetDomainObjectImpl -> getIverilogTargetConfig(projectConfig, it)
                 is VivadoTargetDomainObjectImpl -> getVivadoTargetConfig(projectConfig, it)
                 else -> throw VerikTargetException(it, "Unknown target type")
             }
@@ -56,8 +58,8 @@ object TargetConfigBuilder {
             name = domainObject.name,
             buildDir = getBuildDir(projectConfig, domainObject),
             compileTops = domainObject.compileTops,
-            extraIncludeDirs = domainObject.extraIncludeDirs,
             extraFiles = domainObject.extraFiles,
+            extraIncludeDirs = domainObject.extraIncludeDirs,
             dpiLibs = domainObject.dpiLibs,
             simConfigs = simConfigs
         )
@@ -70,21 +72,36 @@ object TargetConfigBuilder {
         if (simDomainObject.name.isBlank()) {
             throw VerikTargetException(targetDomainObject, "Sim property not provided: name")
         }
-        val runTop = if (simDomainObject.runTop.isBlank()) {
+        val simTop = if (simDomainObject.simTop.isBlank()) {
             if (targetDomainObject.compileTops.size != 1) {
-                throw VerikTargetException(targetDomainObject, "Sim property not provided: runTop")
+                throw VerikTargetException(targetDomainObject, "Sim property not provided: simTop")
             }
             targetDomainObject.compileTops.first()
         } else {
-            if (simDomainObject.runTop !in targetDomainObject.compileTops) {
-                throw VerikTargetException(targetDomainObject, "Run top not in compile tops: ${simDomainObject.runTop}")
+            if (simDomainObject.simTop !in targetDomainObject.compileTops) {
+                throw VerikTargetException(targetDomainObject, "Sim top not in compile tops: ${simDomainObject.simTop}")
             }
-            simDomainObject.runTop
+            simDomainObject.simTop
         }
         return DsimSimConfig(
             name = simDomainObject.name,
-            runTop = runTop,
+            simTop = simTop,
             plusArgs = simDomainObject.plusArgs
+        )
+    }
+
+    private fun getIverilogTargetConfig(
+        projectConfig: ProjectConfig,
+        domainObject: IverilogTargetDomainObjectImpl
+    ): IverilogTargetConfig {
+        if (domainObject.top.isBlank()) {
+            throw VerikTargetException(domainObject, "Property not provided: top")
+        }
+        return IverilogTargetConfig(
+            projectConfig = projectConfig,
+            name = domainObject.name,
+            buildDir = getBuildDir(projectConfig, domainObject),
+            top = domainObject.top
         )
     }
 

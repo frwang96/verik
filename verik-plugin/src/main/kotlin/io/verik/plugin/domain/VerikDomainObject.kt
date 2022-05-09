@@ -15,5 +15,6 @@ interface VerikDomainObject {
     fun import(configure: VerikImportDomainObject.() -> Unit)
     fun compile(configure: VerikCompileDomainObject.() -> Unit)
     fun dsim(configure: DsimTargetDomainObject.() -> Unit)
+    fun iverilog(configure: IverilogTargetDomainObject.() -> Unit)
     fun vivado(configure: VivadoTargetDomainObject.() -> Unit)
 }

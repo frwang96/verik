@@ -9,6 +9,6 @@ package io.verik.plugin.config
  */
 data class DsimSimConfig(
     val name: String,
-    val runTop: String,
+    val simTop: String,
     val plusArgs: Map<String, String>
 )

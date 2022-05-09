@@ -33,4 +33,7 @@ verik {
             name = "sim"
         }
     }
+    iverilog {
+        top = "Top"
+    }
 }

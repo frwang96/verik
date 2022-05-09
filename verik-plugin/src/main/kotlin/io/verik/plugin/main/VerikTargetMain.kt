@@ -5,11 +5,13 @@
 package io.verik.plugin.main
 
 import io.verik.plugin.config.DsimTargetConfig
+import io.verik.plugin.config.IverilogTargetConfig
 import io.verik.plugin.config.ProjectConfigBuilder
 import io.verik.plugin.config.TargetConfig
 import io.verik.plugin.config.TargetConfigBuilder
 import io.verik.plugin.domain.VerikDomainObjectImpl
 import io.verik.plugin.target.DsimTargetBuilder
+import io.verik.plugin.target.IverilogTargetBuilder
 import org.gradle.api.Project
 import java.nio.file.Files
 import kotlin.io.path.createDirectories
@@ -34,6 +36,7 @@ object VerikTargetMain {
 
         val textFiles = when (targetConfig) {
             is DsimTargetConfig -> listOf(DsimTargetBuilder.build(targetConfig))
+            is IverilogTargetConfig -> listOf(IverilogTargetBuilder.build(targetConfig))
             else -> throw VerikTargetException(targetConfig, "Unknown target type")
         }
 

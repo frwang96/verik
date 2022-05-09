@@ -14,8 +14,8 @@ class DsimTargetDomainObjectImpl : DsimTargetDomainObject {
 
     override var name: String = "dsim"
     override var compileTops: List<String> = listOf()
-    override var extraIncludeDirs: List<Path> = listOf()
     override var extraFiles: List<Path> = listOf()
+    override var extraIncludeDirs: List<Path> = listOf()
     override var dpiLibs: List<Path> = listOf()
 
     val simDomainObjects = ArrayList<DsimSimDomainObjectImpl>()
