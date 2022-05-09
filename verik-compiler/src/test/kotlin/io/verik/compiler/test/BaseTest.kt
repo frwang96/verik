@@ -14,7 +14,7 @@ import io.verik.compiler.main.ProjectStage
 import io.verik.compiler.main.SourceSetConfig
 import io.verik.compiler.main.SourceSetContext
 import io.verik.compiler.main.StageSequencer
-import io.verik.compiler.main.VerikConfig
+import io.verik.compiler.main.VerikCompilerConfig
 import io.verik.compiler.message.MessageCollector
 import org.intellij.lang.annotations.Language
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -180,11 +180,11 @@ abstract class BaseTest {
             MessageCollector.messageCollector = MessageCollector(getConfig(), TestMessagePrinter())
         }
 
-        fun getConfig(): VerikConfig {
+        fun getConfig(): VerikCompilerConfig {
             val buildDir = Paths.get("/build/verik")
             val projectFile = Paths.get("/src/main/kotlin/test/Test.kt")
             val sourceSetConfig = SourceSetConfig("test", listOf(projectFile))
-            return VerikConfig(
+            return VerikCompilerConfig(
                 toolchain = "verik",
                 timestamp = "",
                 projectName = "test",

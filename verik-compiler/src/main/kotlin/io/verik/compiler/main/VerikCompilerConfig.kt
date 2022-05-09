@@ -9,7 +9,7 @@ import java.nio.file.Path
 /**
  * Overall configuration for the compiler.
  */
-data class VerikConfig(
+data class VerikCompilerConfig(
     val toolchain: String,
     val timestamp: String,
     val projectName: String,

@@ -85,6 +85,11 @@ tasks.register("mainVerik") {
     dependsOn(gradle.includedBuild("verik-sandbox").task(":verik"))
 }
 
+tasks.register("mainVerikCompile") {
+    group = "main"
+    dependsOn(gradle.includedBuild("verik-sandbox").task(":verikCompile"))
+}
+
 tasks.register("mainVerikImport") {
     group = "main"
     dependsOn(gradle.includedBuild("verik-sandbox").task(":verikImport"))

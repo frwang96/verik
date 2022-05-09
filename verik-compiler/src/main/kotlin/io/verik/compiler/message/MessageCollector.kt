@@ -4,15 +4,15 @@
 
 package io.verik.compiler.message
 
-import io.verik.compiler.main.VerikConfig
-import io.verik.compiler.main.VerikException
+import io.verik.compiler.main.VerikCompilerConfig
+import io.verik.compiler.main.VerikCompilerException
 
 /**
  * Message collector that dispatches messages to a [messagePrinter]. It terminates the compiler when the error count
  * exceeds the maximum error count or if it receives a fatal message.
  */
 class MessageCollector(
-    private val config: VerikConfig,
+    private val config: VerikCompilerConfig,
     private val messagePrinter: MessagePrinter
 ) {
 
@@ -20,7 +20,7 @@ class MessageCollector(
 
     fun flush() {
         if (errorCount != 0)
-            throw VerikException()
+            throw VerikCompilerException()
     }
 
     fun warning(templateName: String, message: String, location: SourceLocation) {
@@ -38,12 +38,12 @@ class MessageCollector(
 
     fun fatal(message: String, location: SourceLocation): Nothing {
         messagePrinter.error(message, location, Thread.currentThread().stackTrace)
-        throw VerikException()
+        throw VerikCompilerException()
     }
 
     private fun incrementErrorCount() {
         errorCount++
-        if (errorCount >= config.maxErrorCount) throw VerikException()
+        if (errorCount >= config.maxErrorCount) throw VerikCompilerException()
     }
 
     companion object {

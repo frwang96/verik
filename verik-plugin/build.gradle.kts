@@ -59,7 +59,7 @@ gradlePlugin {
             id = "io.verik.verik-plugin"
             displayName = "Verik Plugin"
             description = "Plugin for the Verik toolchain"
-            implementationClass = "io.verik.plugin.VerikPlugin"
+            implementationClass = "io.verik.plugin.main.VerikPlugin"
         }
     }
 }

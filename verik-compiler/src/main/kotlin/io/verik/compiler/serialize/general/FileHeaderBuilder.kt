@@ -5,7 +5,7 @@
 package io.verik.compiler.serialize.general
 
 import io.verik.compiler.main.Platform
-import io.verik.compiler.main.VerikConfig
+import io.verik.compiler.main.VerikCompilerConfig
 import java.nio.file.Path
 
 /**
@@ -13,7 +13,7 @@ import java.nio.file.Path
  */
 object FileHeaderBuilder {
 
-    fun build(config: VerikConfig, inputPath: Path?, outputPath: Path, commentStyle: CommentStyle): String {
+    fun build(config: VerikCompilerConfig, inputPath: Path?, outputPath: Path, commentStyle: CommentStyle): String {
         val lines = ArrayList<String>()
         val inputPathString = inputPath?.let { Platform.getStringFromPath(it.toAbsolutePath()) }
         val outputPathString = Platform.getStringFromPath(outputPath.toAbsolutePath())

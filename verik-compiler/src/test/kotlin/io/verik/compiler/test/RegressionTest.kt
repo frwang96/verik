@@ -11,7 +11,7 @@ import io.verik.compiler.main.ProjectContext
 import io.verik.compiler.main.SourceSetConfig
 import io.verik.compiler.main.SourceSetContext
 import io.verik.compiler.main.StageSequencer
-import io.verik.compiler.main.VerikConfig
+import io.verik.compiler.main.VerikCompilerConfig
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.DynamicTest
@@ -93,7 +93,7 @@ internal class RegressionTest {
 
     private fun getProjectContext(kotlinTextFiles: List<TextFile>): ProjectContext {
         val sourceSetConfig = SourceSetConfig("test", kotlinTextFiles.map { it.path })
-        val config = VerikConfig(
+        val config = VerikCompilerConfig(
             toolchain = "verik",
             timestamp = "",
             projectName = "test",
