@@ -48,4 +48,11 @@ class VerikDomainObjectImpl : VerikDomainObject {
         action.execute(domainObject)
         targetDomainObjects.add(domainObject)
     }
+
+    override fun xrun(configure: XrunTargetDomainObject.() -> Unit) {
+        val action = Action<XrunTargetDomainObject> { it.configure() }
+        val domainObject = XrunTargetDomainObjectImpl()
+        action.execute(domainObject)
+        targetDomainObjects.add(domainObject)
+    }
 }

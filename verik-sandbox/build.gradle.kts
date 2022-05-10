@@ -36,4 +36,7 @@ verik {
     iverilog {
         top = "Top"
     }
+    xrun {
+        top = "Top"
+    }
 }

@@ -10,6 +10,7 @@ import io.verik.plugin.domain.IverilogTargetDomainObjectImpl
 import io.verik.plugin.domain.TargetDomainObject
 import io.verik.plugin.domain.VerikDomainObjectImpl
 import io.verik.plugin.domain.VivadoTargetDomainObjectImpl
+import io.verik.plugin.domain.XrunTargetDomainObjectImpl
 import io.verik.plugin.main.VerikTargetException
 import java.nio.file.Path
 
@@ -38,6 +39,7 @@ object TargetConfigBuilder {
                 is DsimTargetDomainObjectImpl -> getDsimTargetConfig(projectConfig, it)
                 is IverilogTargetDomainObjectImpl -> getIverilogTargetConfig(projectConfig, it)
                 is VivadoTargetDomainObjectImpl -> getVivadoTargetConfig(projectConfig, it)
+                is XrunTargetDomainObjectImpl -> getXrunTargetConfig(projectConfig, it)
                 else -> throw VerikTargetException(it, "Unknown target type")
             }
             targetConfigs.add(targetConfig)
@@ -119,6 +121,21 @@ object TargetConfigBuilder {
             buildDir = getBuildDir(projectConfig, domainObject),
             part = domainObject.part,
             ipConfigFiles = domainObject.ipConfigFiles
+        )
+    }
+
+    private fun getXrunTargetConfig(
+        projectConfig: ProjectConfig,
+        domainObject: XrunTargetDomainObjectImpl
+    ): XrunTargetConfig {
+        if (domainObject.top.isBlank()) {
+            throw VerikTargetException(domainObject, "Property not provided: top")
+        }
+        return XrunTargetConfig(
+            projectConfig = projectConfig,
+            name = domainObject.name,
+            buildDir = getBuildDir(projectConfig, domainObject),
+            top = domainObject.top
         )
     }
 

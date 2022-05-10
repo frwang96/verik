@@ -68,7 +68,6 @@ object DsimTargetBuilder {
 
         builder.appendLine("clean:")
         builder.appendLine("\trm -rf log dsim_work dsim.env metrics.db metrics_history.db")
-        builder.appendLine()
 
         return TextFile(path, builder.toString())
     }
