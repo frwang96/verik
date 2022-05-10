@@ -4,6 +4,7 @@
 
 package io.verik.plugin.config
 
+import io.verik.compiler.main.Platform
 import io.verik.plugin.domain.DsimSimDomainObjectImpl
 import io.verik.plugin.domain.DsimTargetDomainObjectImpl
 import io.verik.plugin.domain.IverilogTargetDomainObjectImpl
@@ -13,6 +14,7 @@ import io.verik.plugin.domain.VivadoTargetDomainObjectImpl
 import io.verik.plugin.domain.XrunTargetDomainObjectImpl
 import io.verik.plugin.main.VerikTargetException
 import java.nio.file.Path
+import kotlin.io.path.notExists
 
 /**
  * Factory class that builds [TargetConfig] objects from domain objects.
@@ -114,13 +116,36 @@ object TargetConfigBuilder {
         if (domainObject.part.isBlank()) {
             throw VerikTargetException(domainObject, "Property not provided: part")
         }
+        if (domainObject.simTop.isBlank() && domainObject.synthTop.isBlank()) {
+            throw VerikTargetException(domainObject, "Both simTop and synthTop are not defined")
+        }
+
+        domainObject.ipConfigFiles.forEach {
+            if (it.notExists()) {
+                throw VerikTargetException(domainObject, "Ip config file not found: ${Platform.getStringFromPath(it)}")
+            }
+        }
+
+        val constraintsFile = domainObject.constraintsFile
+        if (domainObject.synthTop.isNotBlank() && constraintsFile == null) {
+            throw VerikTargetException(domainObject, "Property not provided: constraintsFile")
+        }
+        if (constraintsFile != null && constraintsFile.notExists()) {
+            throw VerikTargetException(
+                domainObject,
+                "Constraints file not found: ${Platform.getStringFromPath(constraintsFile)}"
+            )
+        }
 
         return VivadoTargetConfig(
             projectConfig = projectConfig,
             name = domainObject.name,
             buildDir = getBuildDir(projectConfig, domainObject),
             part = domainObject.part,
-            ipConfigFiles = domainObject.ipConfigFiles
+            ipConfigFiles = domainObject.ipConfigFiles,
+            simTop = domainObject.simTop,
+            synthTop = domainObject.synthTop,
+            constraintsFile = constraintsFile
         )
     }
 

@@ -36,6 +36,10 @@ verik {
     iverilog {
         top = "Top"
     }
+    vivado {
+        part = "xc7a100tcsg324-3"
+        simTop = "Top"
+    }
     xrun {
         top = "Top"
     }

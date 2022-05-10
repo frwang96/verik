@@ -9,10 +9,12 @@ import io.verik.plugin.config.IverilogTargetConfig
 import io.verik.plugin.config.ProjectConfigBuilder
 import io.verik.plugin.config.TargetConfig
 import io.verik.plugin.config.TargetConfigBuilder
+import io.verik.plugin.config.VivadoTargetConfig
 import io.verik.plugin.config.XrunTargetConfig
 import io.verik.plugin.domain.VerikDomainObjectImpl
 import io.verik.plugin.target.DsimTargetBuilder
 import io.verik.plugin.target.IverilogTargetBuilder
+import io.verik.plugin.target.VivadoTargetBuilder
 import io.verik.plugin.target.XrunTargetBuilder
 import org.gradle.api.Project
 import java.nio.file.Files
@@ -39,6 +41,7 @@ object VerikTargetMain {
         val textFiles = when (targetConfig) {
             is DsimTargetConfig -> listOf(DsimTargetBuilder.build(targetConfig))
             is IverilogTargetConfig -> listOf(IverilogTargetBuilder.build(targetConfig))
+            is VivadoTargetConfig -> VivadoTargetBuilder.build(targetConfig)
             is XrunTargetConfig -> listOf(XrunTargetBuilder.build(targetConfig))
             else -> throw VerikTargetException(targetConfig, "Unknown target type")
         }
