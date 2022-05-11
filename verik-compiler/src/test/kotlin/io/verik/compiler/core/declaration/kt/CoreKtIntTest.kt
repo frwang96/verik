@@ -35,12 +35,13 @@ internal class CoreKtIntTest : CoreDeclarationTest() {
     }
 
     @Test
-    fun `serialize plus minus times`() {
+    fun `serialize plus minus times div`() {
         driveCoreDeclarationTest(
             listOf(
                 Core.Kt.Int.F_plus_Int,
                 Core.Kt.Int.F_minus_Int,
-                Core.Kt.Int.F_times_Int
+                Core.Kt.Int.F_times_Int,
+                Core.Kt.Int.F_div_Int
             ),
             """
                 var a = 0
@@ -50,6 +51,7 @@ internal class CoreKtIntTest : CoreDeclarationTest() {
                     x = a + b
                     x = a - b
                     x = a * b
+                    x = a / b
                 }
             """.trimIndent(),
             """
@@ -57,6 +59,7 @@ internal class CoreKtIntTest : CoreDeclarationTest() {
                     x = a + b;
                     x = a - b;
                     x = a * b;
+                    x = a / b;
                 endfunction : f
             """.trimIndent()
         )

@@ -38,7 +38,7 @@ object DsimTargetBuilder {
 
         builder.appendLine("compile:")
         builder.appendLine("\tmkdir -p log")
-        builder.append("\tDSIM -genimage image -l log/compile.log")
+        builder.append("\t\$(DSIM) -genimage image -l log/compile.log")
         targetConfig.compileTops.forEach {
             builder.append(" -compile-top $it")
         }
@@ -51,10 +51,11 @@ object DsimTargetBuilder {
         }
         builder.append(" ../compile/out.sv")
         builder.appendLine()
+        builder.appendLine()
 
         targetConfig.simConfigs.forEach { simConfig ->
             builder.appendLine("${simConfig.name}:")
-            builder.append("\tDSIM -image image -l log/${simConfig.name}.log -run-top ${simConfig.runTop}")
+            builder.append("\t\$(DSIM) -image image -l log/${simConfig.name}.log -run-top ${simConfig.simTop}")
             targetConfig.dpiLibs.forEach {
                 builder.append(" -sv_lib ${Platform.getStringFromPath(it)}")
             }
@@ -67,7 +68,6 @@ object DsimTargetBuilder {
 
         builder.appendLine("clean:")
         builder.appendLine("\trm -rf log dsim_work dsim.env metrics.db metrics_history.db")
-        builder.appendLine()
 
         return TextFile(path, builder.toString())
     }

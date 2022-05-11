@@ -35,9 +35,23 @@ class VerikDomainObjectImpl : VerikDomainObject {
         targetDomainObjects.add(domainObject)
     }
 
+    override fun iverilog(configure: IverilogTargetDomainObject.() -> Unit) {
+        val action = Action<IverilogTargetDomainObject> { it.configure() }
+        val domainObject = IverilogTargetDomainObjectImpl()
+        action.execute(domainObject)
+        targetDomainObjects.add(domainObject)
+    }
+
     override fun vivado(configure: VivadoTargetDomainObject.() -> Unit) {
         val action = Action<VivadoTargetDomainObject> { it.configure() }
         val domainObject = VivadoTargetDomainObjectImpl()
+        action.execute(domainObject)
+        targetDomainObjects.add(domainObject)
+    }
+
+    override fun xrun(configure: XrunTargetDomainObject.() -> Unit) {
+        val action = Action<XrunTargetDomainObject> { it.configure() }
+        val domainObject = XrunTargetDomainObjectImpl()
         action.execute(domainObject)
         targetDomainObjects.add(domainObject)
     }

@@ -13,4 +13,7 @@ interface VivadoTargetDomainObject : TargetDomainObject {
 
     var part: String
     var ipConfigFiles: List<Path>
+    var simTop: String
+    var synthTop: String
+    var constraintsFile: Path?
 }

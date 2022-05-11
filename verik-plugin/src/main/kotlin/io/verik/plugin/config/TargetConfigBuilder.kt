@@ -4,13 +4,17 @@
 
 package io.verik.plugin.config
 
+import io.verik.compiler.main.Platform
 import io.verik.plugin.domain.DsimSimDomainObjectImpl
 import io.verik.plugin.domain.DsimTargetDomainObjectImpl
+import io.verik.plugin.domain.IverilogTargetDomainObjectImpl
 import io.verik.plugin.domain.TargetDomainObject
 import io.verik.plugin.domain.VerikDomainObjectImpl
 import io.verik.plugin.domain.VivadoTargetDomainObjectImpl
+import io.verik.plugin.domain.XrunTargetDomainObjectImpl
 import io.verik.plugin.main.VerikTargetException
 import java.nio.file.Path
+import kotlin.io.path.notExists
 
 /**
  * Factory class that builds [TargetConfig] objects from domain objects.
@@ -35,7 +39,9 @@ object TargetConfigBuilder {
         extension.targetDomainObjects.forEach {
             val targetConfig = when (it) {
                 is DsimTargetDomainObjectImpl -> getDsimTargetConfig(projectConfig, it)
+                is IverilogTargetDomainObjectImpl -> getIverilogTargetConfig(projectConfig, it)
                 is VivadoTargetDomainObjectImpl -> getVivadoTargetConfig(projectConfig, it)
+                is XrunTargetDomainObjectImpl -> getXrunTargetConfig(projectConfig, it)
                 else -> throw VerikTargetException(it, "Unknown target type")
             }
             targetConfigs.add(targetConfig)
@@ -56,8 +62,8 @@ object TargetConfigBuilder {
             name = domainObject.name,
             buildDir = getBuildDir(projectConfig, domainObject),
             compileTops = domainObject.compileTops,
-            extraIncludeDirs = domainObject.extraIncludeDirs,
             extraFiles = domainObject.extraFiles,
+            extraIncludeDirs = domainObject.extraIncludeDirs,
             dpiLibs = domainObject.dpiLibs,
             simConfigs = simConfigs
         )
@@ -70,21 +76,36 @@ object TargetConfigBuilder {
         if (simDomainObject.name.isBlank()) {
             throw VerikTargetException(targetDomainObject, "Sim property not provided: name")
         }
-        val runTop = if (simDomainObject.runTop.isBlank()) {
+        val simTop = if (simDomainObject.simTop.isBlank()) {
             if (targetDomainObject.compileTops.size != 1) {
-                throw VerikTargetException(targetDomainObject, "Sim property not provided: runTop")
+                throw VerikTargetException(targetDomainObject, "Sim property not provided: simTop")
             }
             targetDomainObject.compileTops.first()
         } else {
-            if (simDomainObject.runTop !in targetDomainObject.compileTops) {
-                throw VerikTargetException(targetDomainObject, "Run top not in compile tops: ${simDomainObject.runTop}")
+            if (simDomainObject.simTop !in targetDomainObject.compileTops) {
+                throw VerikTargetException(targetDomainObject, "Sim top not in compile tops: ${simDomainObject.simTop}")
             }
-            simDomainObject.runTop
+            simDomainObject.simTop
         }
         return DsimSimConfig(
             name = simDomainObject.name,
-            runTop = runTop,
+            simTop = simTop,
             plusArgs = simDomainObject.plusArgs
+        )
+    }
+
+    private fun getIverilogTargetConfig(
+        projectConfig: ProjectConfig,
+        domainObject: IverilogTargetDomainObjectImpl
+    ): IverilogTargetConfig {
+        if (domainObject.top.isBlank()) {
+            throw VerikTargetException(domainObject, "Property not provided: top")
+        }
+        return IverilogTargetConfig(
+            projectConfig = projectConfig,
+            name = domainObject.name,
+            buildDir = getBuildDir(projectConfig, domainObject),
+            top = domainObject.top
         )
     }
 
@@ -95,13 +116,51 @@ object TargetConfigBuilder {
         if (domainObject.part.isBlank()) {
             throw VerikTargetException(domainObject, "Property not provided: part")
         }
+        if (domainObject.simTop.isBlank() && domainObject.synthTop.isBlank()) {
+            throw VerikTargetException(domainObject, "Both simTop and synthTop are not defined")
+        }
+
+        domainObject.ipConfigFiles.forEach {
+            if (it.notExists()) {
+                throw VerikTargetException(domainObject, "Ip config file not found: ${Platform.getStringFromPath(it)}")
+            }
+        }
+
+        val constraintsFile = domainObject.constraintsFile
+        if (domainObject.synthTop.isNotBlank() && constraintsFile == null) {
+            throw VerikTargetException(domainObject, "Property not provided: constraintsFile")
+        }
+        if (constraintsFile != null && constraintsFile.notExists()) {
+            throw VerikTargetException(
+                domainObject,
+                "Constraints file not found: ${Platform.getStringFromPath(constraintsFile)}"
+            )
+        }
 
         return VivadoTargetConfig(
             projectConfig = projectConfig,
             name = domainObject.name,
             buildDir = getBuildDir(projectConfig, domainObject),
             part = domainObject.part,
-            ipConfigFiles = domainObject.ipConfigFiles
+            ipConfigFiles = domainObject.ipConfigFiles,
+            simTop = domainObject.simTop,
+            synthTop = domainObject.synthTop,
+            constraintsFile = constraintsFile
+        )
+    }
+
+    private fun getXrunTargetConfig(
+        projectConfig: ProjectConfig,
+        domainObject: XrunTargetDomainObjectImpl
+    ): XrunTargetConfig {
+        if (domainObject.top.isBlank()) {
+            throw VerikTargetException(domainObject, "Property not provided: top")
+        }
+        return XrunTargetConfig(
+            projectConfig = projectConfig,
+            name = domainObject.name,
+            buildDir = getBuildDir(projectConfig, domainObject),
+            top = domainObject.top
         )
     }
 

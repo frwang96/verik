@@ -7,15 +7,11 @@ package io.verik.plugin.config
 import java.nio.file.Path
 
 /**
- * Configuration for a Metrics dsim target.
+ * Configuration for a Cadence xrun target.
  */
-class DsimTargetConfig(
+class XrunTargetConfig(
     override val projectConfig: ProjectConfig,
     override val name: String,
     override val buildDir: Path,
-    val compileTops: List<String>,
-    val extraFiles: List<Path>,
-    val extraIncludeDirs: List<Path>,
-    val dpiLibs: List<Path>,
-    val simConfigs: List<DsimSimConfig>
+    val top: String
 ) : TargetConfig()

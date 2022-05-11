@@ -14,5 +14,8 @@ class VivadoTargetConfig(
     override val name: String,
     override val buildDir: Path,
     val part: String,
-    val ipConfigFiles: List<Path>
+    val ipConfigFiles: List<Path>,
+    val simTop: String,
+    val synthTop: String,
+    val constraintsFile: Path?
 ) : TargetConfig()

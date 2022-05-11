@@ -10,6 +10,6 @@ package io.verik.plugin.domain
 class DsimSimDomainObjectImpl : DsimSimDomainObject {
 
     override var name: String = ""
-    override var runTop: String = ""
+    override var simTop: String = ""
     override val plusArgs: HashMap<String, String> = HashMap()
 }

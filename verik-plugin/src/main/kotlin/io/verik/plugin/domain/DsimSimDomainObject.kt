@@ -10,6 +10,6 @@ package io.verik.plugin.domain
 interface DsimSimDomainObject {
 
     var name: String
-    var runTop: String
+    var simTop: String
     val plusArgs: HashMap<String, String>
 }

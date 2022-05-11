@@ -86,6 +86,22 @@ object CoreKtInt : CoreScope(Core.Kt.C_Int) {
         }
     }
 
+    val F_div_Int = object : BinaryCoreFunctionDeclaration(
+        parent,
+        "div",
+        "fun div(Int)",
+        SvBinaryOperatorKind.DIV
+    ) {
+
+        override fun evaluate(callExpression: ECallExpression): EConstantExpression? {
+            val left = callExpression.receiver!!
+            val right = callExpression.valueArguments[0]
+            return if (left is EConstantExpression && right is EConstantExpression) {
+                IntConstantEvaluator.divInt(callExpression, left, right)
+            } else null
+        }
+    }
+
     val F_shl_Int = BinaryCoreFunctionDeclaration(parent, "shl", "fun shl(Int)", SvBinaryOperatorKind.LTLT)
 
     val F_shr_Int = BinaryCoreFunctionDeclaration(parent, "shr", "fun shr(Int)", SvBinaryOperatorKind.GTGTGT)

@@ -29,4 +29,10 @@ object IntConstantEvaluator {
         val rightInt = ConstantNormalizer.parseInt(right)
         return ConstantBuilder.buildInt(original, leftInt * rightInt)
     }
+
+    fun divInt(original: EExpression, left: EConstantExpression, right: EConstantExpression): EConstantExpression {
+        val leftInt = ConstantNormalizer.parseInt(left)
+        val rightInt = ConstantNormalizer.parseInt(right)
+        return ConstantBuilder.buildInt(original, leftInt / rightInt)
+    }
 }
