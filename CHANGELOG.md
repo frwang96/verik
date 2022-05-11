@@ -1,6 +1,8 @@
 # Changelog
 
 ## [Unreleased]
+
+## [0.1.16]
 ### Importer
 - Document importer classes.
 
