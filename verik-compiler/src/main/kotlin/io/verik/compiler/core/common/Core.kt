@@ -84,6 +84,7 @@ object Core {
             val F_plus_Int = CoreKtInt.F_plus_Int
             val F_minus_Int = CoreKtInt.F_minus_Int
             val F_times_Int = CoreKtInt.F_times_Int
+            val F_div_Int = CoreKtInt.F_div_Int
             val F_shl_Int = CoreKtInt.F_shl_Int
             val F_shr_Int = CoreKtInt.F_shr_Int
             val F_ushr_Int = CoreKtInt.F_ushr_Int

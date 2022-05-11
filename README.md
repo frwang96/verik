@@ -35,9 +35,14 @@ This allows us to make use of SystemVerilog libraries such as the
 [UVM](https://www.accellera.org/downloads/standards/uvm) directly in Verik.
 It also enables us to benefit from the productivity improvements of Verik without having to rewrite any legacy code.
 
-To see examples of Verik projects refer to [examples](https://github.com/frwang96/verik-examples).
+For examples of Verik projects refer to [examples](https://github.com/frwang96/verik-examples).
 For a template project refer to [template](https://github.com/frwang96/verik-template).
 Setup instructions, tutorials, and other information can be found in the [docs](https://verik.io/docs/overview).
+
+Verik is an open source project under the Apache License, Version 2.0.
+It was initially developed as a [master's thesis](https://verik.io/pdf/thesis.pdf) project at the Massachusetts
+Institute of Technology.
+The whitepaper outlining the high-level design of Verik can be found [here](https://verik.io/pdf/whitepaper.pdf).
 
 ## Local Build
 
@@ -58,31 +63,25 @@ plugins {
 }
 ```
 
-## Contributor Guide
+## Gradle Tasks
 
-Anyone is welcome to contribute to Verik by raising [issues](https://github.com/frwang96/verik/issues), posting in
-[discussions](https://github.com/frwang96/verik/discussions), or creating
-[pull requests](https://github.com/frwang96/verik/pulls).
-A helpful guide for creating pull requests can be found
-[here](https://www.freecodecamp.org/news/how-to-make-your-first-pull-request-on-github-3/).
-A good starting point for understanding the high-level design of Verik is the
-[language whitepaper](https://verik.io/pdf/whitepaper.pdf).
+Verik makes use of [gradle](https://gradle.org) for build automation.
+Here are the main gradle tasks for the project.
+Each module also defines its own tasks for building, testing, and reformatting.
+These can be accessed from the Gradle toolbar.
 
-The setup for working on the Verik toolchain is very similar to the setup for working on a Verik project.
-Install JDK 17 and set up IntelliJ IDEA as specified in [setup](https://verik.io/docs/setup).
-In order for a pull request to be merged onto the `master` branch, it must pass all of the tests and lint checks.
-Run these checks by executing the `mainCheck` gradle task.
-
-To run a wider regression test, install the local build of the toolchain with `mainInstall` and run the `verik` gradle
-task on all of the [example projects](https://github.com/frwang96/verik-examples) to check for unexpected error
-messages.
-This regression test, as well as the compilation and execution of the generated SystemVerilog, is
-[automatically run](https://verik.io/docs/regression) when new changes are introduced.
-If you have a Verik project that you are willing to share, I would love to add it to this regression test.
+- `mainCheck`: Run the tests and lint checks.
+- `mainClean`: Clean all build directories.
+- `mainFormat`: Reformat the source code.
+- `mainGenerate`: Run the ANTLR parser generator for the importer.
+- `mainInstall`: Install the gradle plugin.
+- `mainTest`: Run the tests.
+- `mainVerik`: Run the toolchain on the sandbox project.
+- `mainVerikCompile`: Run the compiler on the sandbox project.
+- `mainVerikImport`: Run the importer on the sandbox project.
 
 ## Gradle Modules
 
-Verik makes use of [gradle](https://gradle.org) for build automation.
 The Verik toolchain is structured as a gradle composite build.
 The final output of the build is a [gradle plugin](https://plugins.gradle.org/plugin/io.verik.verik-plugin) that
 packages the importer and compiler, allowing them to be run as gradle tasks in Verik projects.
@@ -109,26 +108,11 @@ It then executes a sequence of stages to convert the syntax trees to SystemVeril
 
 ### verik-plugin
 The gradle plugin that packages the importer and compiler.
-It [configures](https://verik.io/docs/reference/toolchain-config) the toolchain based on the `verik` and `verikImport`
-blocks that are specified in `build.gradle.kts`.
+It [configures](https://verik.io/docs/reference/toolchain-config) the toolchain based on the `verik` block that is
+specified in `build.gradle.kts`.
 
 ### verik-sandbox
 A sandbox project that can be used for quick development and debugging.
 The toolchain is automatically recompiled when the sandbox project is run, so there is no need to execute `mainInstall`.
 Verilog or SystemVerilog source code to be imported should be placed under `verik-sandbox/src/main/verilog` and Verik
 source code to be compiled should be placed under `verik-sandbox/src/main/kotlin`.
-
-## Gradle Tasks
-
-Here are the main gradle tasks for the project.
-Each module also defines its own tasks for building, testing, and reformatting.
-These can be accessed from the Gradle toolbar.
-
-- `mainCheck`: Run the tests and lint checks.
-- `mainClean`: Clean all build directories.
-- `mainFormat`: Reformat the source code.
-- `mainGenerate`: Run the ANTLR parser generator for the importer.
-- `mainInstall`: Install the gradle plugin.
-- `mainTest`: Run the tests.
-- `mainVerik`: Run the compiler on the sandbox project.
-- `mainVerikImport`: Run the importer on the sandbox project.
