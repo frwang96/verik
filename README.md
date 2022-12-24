@@ -1,15 +1,10 @@
-[![Verik](https://verik.io/img/logo-banner.svg)](https://verik.io)
-
-[![Test](https://img.shields.io/github/workflow/status/frwang96/verik/Sanity)](
-https://github.com/frwang96/verik)
 [![Maven](https://img.shields.io/github/v/release/frwang96/verik)](
 https://search.maven.org/search?q=io.verik)
 [![License](https://img.shields.io/github/license/frwang96/verik)](
 https://opensource.org/licenses/Apache-2.0)
 
 
-[Verik](https://verik.io) is a hardware description language (HDL) for designing and verifying digital integrated
-circuits.
+Verik is a hardware description language (HDL) for designing and verifying digital integrated circuits.
 The goal of Verik is to enable the modern IDE workflow to bridge the technology gap between hardware and software
 development.
 Verik aims to be a drop-in replacement for SystemVerilog.
@@ -24,10 +19,8 @@ Verik is translated to SystemVerilog by the Verik compiler.
 This translation process is direct, typically with one-to-one correspondence between the input and output source files.
 Verik generates readable SystemVerilog similar to what an engineer would have written.
 
-![Block diagram](https://verik.io/img/overview/block-diagram.png)
-
 The Verik toolchain connects the Kotlin and SystemVerilog environments.
-Going towards the right, the Verik compiler translates Verik source code into SystemVerilog.
+The Verik compiler translates Verik source code into SystemVerilog.
 However, we can also go in the other direction.
 If we had SystemVerilog source code that we would like to reference from the Kotlin environment, the Verik importer can
 be used to import the declaration headers.
@@ -37,12 +30,9 @@ It also enables us to benefit from the productivity improvements of Verik withou
 
 For examples of Verik projects refer to [examples](https://github.com/frwang96/verik-examples).
 For a template project refer to [template](https://github.com/frwang96/verik-template).
-Setup instructions, tutorials, and other information can be found in the [docs](https://verik.io/docs/overview).
 
 Verik is an open source project under the Apache License, Version 2.0.
-It was initially developed as a [master's thesis](https://verik.io/pdf/thesis.pdf) project at the Massachusetts
-Institute of Technology.
-The whitepaper outlining the high-level design of Verik can be found [here](https://verik.io/pdf/whitepaper.pdf).
+It was initially developed as a master's thesis project at the Massachusetts Institute of Technology.
 
 ## Local Build
 
@@ -89,8 +79,7 @@ The project consists of the following gradle modules.
 
 ### verik-kotlin
 Documentation for declarations from the Kotlin standard library that are shared with Verik.
-This is used to generate part of the [API docs](https://verik.io/api/-verik/io.verik.kotlin/index.html) but are not used
-anywhere else in the toolchain.
+This is used to generate part of the API doc but are not used anywhere else in the toolchain.
 
 ### verik-core
 The core library that is imported in all Verik projects that is used to express HDL semantics.
@@ -108,8 +97,7 @@ It then executes a sequence of stages to convert the syntax trees to SystemVeril
 
 ### verik-plugin
 The gradle plugin that packages the importer and compiler.
-It [configures](https://verik.io/docs/reference/toolchain-config) the toolchain based on the `verik` block that is
-specified in `build.gradle.kts`.
+It configures the toolchain based on the `verik` block that is specified in `build.gradle.kts`.
 
 ### verik-sandbox
 A sandbox project that can be used for quick development and debugging.
